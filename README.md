@@ -1,5 +1,9 @@
 # 🤖 ASSISTENTE.DEV - Your Coding Companion
 
+ [Website](https://assistente.dev) | [Nuget](https://www.nuget.org/packages/ASSISTENTE/#readme-body-tab)
+
+---
+
 ![GitHub](https://img.shields.io/github/license/jarmatys/DEV_ASSISTENTE) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jarmatys/DEV_ASSISTENTE/release-package.yml?label=release) ![Nuget](https://img.shields.io/nuget/v/DEV_ASSISTENTE?label=version) ![Nuget](https://img.shields.io/nuget/dt/DEV_ASSISTENTE) ![GitHub issues](https://img.shields.io/github/issues/jarmatys/DEV_ASSISTENTE) ![GitHub pull requests](https://img.shields.io/github/issues-pr/jarmatys/DEV_ASSISTENTE) 
 
 ---
@@ -16,7 +20,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 ---
 
-## Roadmap
+### Roadmap
 
 TBD
 
