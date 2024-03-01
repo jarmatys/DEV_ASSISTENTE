@@ -1,4 +1,4 @@
-name: REGON - RELEASE NEW VERSION TO NUGET.ORG
+name: ASSISTENTE - RELEASE NEW VERSION TO NUGET.ORG
 
 on:
   release:
@@ -17,7 +17,7 @@ jobs:
         dotnet-version: 8.0.100
 
     - name: 🔗 Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./API
 
     - name: 📂 Create new nuget package
       run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=${{ github.ref_name }} /p:Version=${{ github.ref_name }} ./API/ASSISTENTE.Client/ASSISTENTE.Client.csproj
