@@ -1,0 +1,27 @@
+name: REGON - RELEASE NEW VERSION TO NUGET.ORG
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  publishing:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: ⚙️ Install dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.100
+
+    - name: 🔗 Restore dependencies
+      run: dotnet restore
+
+    - name: 📂 Create new nuget package
+      run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=${{ github.ref_name }} /p:Version=${{ github.ref_name }} ./API/ASSISTENTE.Client/ASSISTENTE.Client.csproj
+      continue-on-error: false
+
+    - name: 🚀 Push new nuget package
+      run: dotnet nuget push ./artifacts/ASSISTENTE.${{ github.ref_name }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
