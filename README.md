@@ -25,7 +25,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 **Phases:**
 
 - First phase of this POC will involve testing via a simple console app.
-- The prepared module will connect to the API.
+- The prepared module will be connect to the API.
 - `NICE TO HAVE` - A visual layer will be added.
 
 #### Loading user data
