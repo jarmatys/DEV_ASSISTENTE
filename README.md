@@ -20,9 +20,28 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 ---
 
-### Roadmap
+### `DRAFT` Roadmap
 
-TBD
+**Phases:**
+
+- First phase of this POC will involve testing via a simple console app.
+- The prepared module will connect to the API.
+- `NICE TO HAVE` - A visual layer will be added.
+
+#### Loading user data
+
+**TODO:**
+
+- [ ] Loading and parsing  `*.md` files - knowledge base
+- [ ] Loading and parsing  `*.cs` files - code base
+- [ ] Find open source solution for creating embeddins
+- [ ] Integration with Qdrant - saving embeddings
+
+#### Generating results
+
+- [ ] Generating prompt based on the 'knowledge base' & 'code base'
+- [ ] Integration with the OpenAI API
+- [ ] Generating answers or ready code - depending on what the user needs
 
 ---
 
