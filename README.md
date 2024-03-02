@@ -4,7 +4,7 @@
 
 ---
 
-![GitHub](https://img.shields.io/github/license/jarmatys/DEV_ASSISTENTE) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jarmatys/DEV_ASSISTENTE/release-package.yml?label=release) ![Nuget](https://img.shields.io/nuget/v/DEV_ASSISTENTE?label=version) ![Nuget](https://img.shields.io/nuget/dt/DEV_ASSISTENTE) ![GitHub issues](https://img.shields.io/github/issues/jarmatys/DEV_ASSISTENTE) ![GitHub pull requests](https://img.shields.io/github/issues-pr/jarmatys/DEV_ASSISTENTE) 
+![GitHub](https://img.shields.io/github/license/jarmatys/DEV_ASSISTENTE) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jarmatys/DEV_ASSISTENTE/release-package.yml?label=release) ![Nuget](https://img.shields.io/nuget/v/ASSISTENTE?label=version) ![Nuget](https://img.shields.io/nuget/dt/ASSISTENTE) ![GitHub issues](https://img.shields.io/github/issues/jarmatys/DEV_ASSISTENTE) ![GitHub pull requests](https://img.shields.io/github/issues-pr/jarmatys/DEV_ASSISTENTE) 
 
 ---
 
