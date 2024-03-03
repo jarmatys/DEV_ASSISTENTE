@@ -6,6 +6,8 @@ namespace ASSISTENTE.Infrastructure.FileParser
     {
         public static IServiceCollection AddFileParser(this IServiceCollection services)
         {
+            services.AddScoped<IFileParser, FileParser>();
+            
             return services;
         }
     }

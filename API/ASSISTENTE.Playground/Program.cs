@@ -1,5 +1,4 @@
 ﻿using ASSISTENTE.Client;
-using ASSISTENTE.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
