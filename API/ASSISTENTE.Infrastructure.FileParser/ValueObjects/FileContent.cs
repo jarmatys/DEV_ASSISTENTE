@@ -14,6 +14,15 @@ public sealed class FileContent
     
     public static Result<FileContent> Create(string content)
     {
+        if (string.IsNullOrWhiteSpace(content))
+            return Result<FileContent>.Fail(FileContentErrors.EmptyContent);
+        
         return new FileContent(content).ToResult();
     }
+}
+
+public static class FileContentErrors
+{
+    public static readonly Error EmptyContent = new(
+        "FileContent.EmptyContent", "File content is empty");
 }

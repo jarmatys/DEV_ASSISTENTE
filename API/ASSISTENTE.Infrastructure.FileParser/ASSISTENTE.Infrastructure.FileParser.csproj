@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Markdig" Version="0.35.0" />
+    </ItemGroup>
+
 </Project>

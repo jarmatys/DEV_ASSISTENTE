@@ -11,7 +11,8 @@ public sealed class Playground(IFileParser fileParser)
         Console.WriteLine("Starting Playground...");
 
         var content = FilePath.Create("test-file.md")
-            .OnSuccess(path => fileParser.Parse(path))
+            .OnSuccess(fileParser.Parse)
+            .OnSuccess(fileContent => Console.WriteLine(fileContent.Content))
             .OnFailure(Console.WriteLine);
         
         Console.WriteLine("Stopping Playground...");
