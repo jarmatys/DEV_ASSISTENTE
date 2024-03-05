@@ -1,5 +1,6 @@
 using ASSISTENTE.Common;
 using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Infrastructure.FileParser.Models;
 
 namespace ASSISTENTE.Infrastructure.FileParser.ValueObjects;
 
@@ -12,10 +13,13 @@ public sealed class FileContent
         Content = content;
     }
     
-    public static Result<FileContent> Create(string content)
+    public static Result<FileContent> Create(List<ElementBase> elements)
     {
-        if (string.IsNullOrWhiteSpace(content))
+        if (elements.Count == 0)
             return Result<FileContent>.Fail(FileContentErrors.EmptyContent);
+        
+        // TODO: Group by heading level
+        var content = string.Join("\n\n", elements.Select(x => x.Content));
         
         return new FileContent(content).ToResult();
     }
