@@ -37,6 +37,21 @@ public static class ResultExtensions
         throw new InvalidOperationException("Result is not in a valid state");
     }
 
+    public static Result<TNew> OnSuccess<T, TNew>(this Result<T> result, Func<T, TNew> func)
+    {
+        if (result.IsSuccess && result.Value != null)
+        {
+            return Result<TNew>.Ok(func(result.Value));
+        }
+
+        if (result is { IsFailure: true, ErrorMessage: not null })
+        {
+            return Result<TNew>.Fail(result.ErrorMessage);
+        }
+
+        throw new InvalidOperationException("Result is not in a valid state");
+    }
+    
     public static Result<T> OnFailure<T>(this Result<T> result, Action<Error> action)
     {
         if (result is { IsFailure: true, ErrorMessage: not null })
