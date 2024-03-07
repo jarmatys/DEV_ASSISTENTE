@@ -2,7 +2,7 @@ using ASSISTENTE.Common;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.Errors;
 
-public static class CodeParserErrors
+internal static class CodeParserErrors
 {
     public static readonly Error FailedToParseCodeContent = new(
         "CodeParser.FailedToParseCodeContent", "Failed to parse code content");

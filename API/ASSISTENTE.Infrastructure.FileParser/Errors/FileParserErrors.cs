@@ -2,7 +2,7 @@ using ASSISTENTE.Common;
 
 namespace ASSISTENTE.Infrastructure.FileParser.Errors;
 
-public static class FileParserErrors
+internal static class FileParserErrors
 {
     public static readonly Error UnsupportedBlock = new(
         "FileParser.UnsupportedBlock", "Block is not supported");

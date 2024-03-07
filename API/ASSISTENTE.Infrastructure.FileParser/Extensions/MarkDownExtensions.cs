@@ -4,7 +4,7 @@ using Markdig.Syntax.Inlines;
 
 namespace ASSISTENTE.Infrastructure.FileParser.Extensions;
 
-public static class MarkDownExtensions
+internal static class MarkDownExtensions
 {
     public static string GetContent(this LeafBlock leaf)
     {
