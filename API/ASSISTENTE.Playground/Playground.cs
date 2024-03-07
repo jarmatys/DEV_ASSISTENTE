@@ -17,7 +17,7 @@ public sealed class Playground(IFileParser fileParser, ICodeParser codeParser)
             .OnSuccess(fileContent => fileContent.Content)
             .OnFailure(Console.WriteLine);
         
-        var codeContent = CodePath.Create("Examples/test-file.cs")
+        var codeContent = CodeFile.Create("Examples/test-file.cs")
             .OnSuccess(codeParser.Parse)
             .OnSuccess(fileContent => fileContent.Content)
             .OnFailure(Console.WriteLine); 

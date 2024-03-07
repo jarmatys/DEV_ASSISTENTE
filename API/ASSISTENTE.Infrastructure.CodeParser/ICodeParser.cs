@@ -5,5 +5,5 @@ namespace ASSISTENTE.Infrastructure.CodeParser;
 
 public interface ICodeParser
 {
-    public Result<CodeContent> Parse(CodePath codePath);
+    public Result<CodeContent> Parse(CodeFile codeFile);
 }
