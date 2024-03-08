@@ -1,4 +1,5 @@
 ﻿using ASSISTENTE.Infrastructure.CodeParser;
+using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.FileParser;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ namespace ASSISTENTE.Infrastructure
         {
             services.AddFileParser();
             services.AddCodeParser();
+            services.AddEmbeddings();
             
             return services;
         }
