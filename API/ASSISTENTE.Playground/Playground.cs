@@ -19,8 +19,8 @@ public sealed class Playground(IFileParser fileParser, ICodeParser codeParser)
         
         var codeContent = CodeFile.Create("Examples/test-file.cs")
             .OnSuccess(codeParser.Parse)
-            .OnSuccess(fileContent => fileContent.Content)
-            .OnFailure(Console.WriteLine); 
+            .OnSuccess(fileContent => fileContent.Classes)
+            .OnFailure(Console.WriteLine);
         
         Console.WriteLine("Stopping Playground...");
     }

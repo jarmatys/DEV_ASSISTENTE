@@ -33,7 +33,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 **TODO:**
 
 - [X] Loading and parsing  `*.md` files - knowledge base
-- [ ] Loading and parsing  `*.cs` files - code base
+- [X] Loading and parsing  `*.cs` files - code base
 - [ ] Find open source solution for creating embeddins
 - [ ] Integration with Qdrant - saving embeddings
 

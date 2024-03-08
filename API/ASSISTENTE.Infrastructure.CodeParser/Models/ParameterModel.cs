@@ -1,6 +1,9 @@
+using System.Diagnostics;
+
 namespace ASSISTENTE.Infrastructure.CodeParser.Models;
 
-internal sealed class ParameterModel
+[DebuggerDisplay("{Type} {Name}")]
+public sealed class ParameterModel
 {
     private ParameterModel(string name, string? type, List<ModifierModel> modifiers)
     {
@@ -8,13 +11,20 @@ internal sealed class ParameterModel
         Type = type;
         Modifiers = modifiers;
     }
-    
-    public string Name { get; set; }
-    public string? Type { get; set; }
-    public List<ModifierModel> Modifiers { get; set; }
+
+    private string Name { get; }
+    private string? Type { get; }
+    private List<ModifierModel> Modifiers { get; }
     
     public static ParameterModel Create(string name, string? type, List<ModifierModel> modifiers)
     {
         return new ParameterModel(name, type, modifiers);
+    }
+    
+    public override string ToString()
+    {
+        var modifiers = string.Join(" ", Modifiers);
+
+        return $"{modifiers} {Type} {Name}";
     }
 }

@@ -28,10 +28,9 @@ internal sealed class CodeParser : ICodeParser
             let properties = classDeclaration.GetProperties()
             let methods = classDeclaration.GetMethods()
             select ClassModel.Create(className, file.FileName, modifiers, namespaces, properties, methods)
-        ).ToList();;
-        
-        
-        return CodeContent.Create(file.Content)
+        ).ToList();
+
+        return CodeContent.Create(classes)
             .OnFailure(error => Result<CodeContent>.Fail(error));
     }
 }

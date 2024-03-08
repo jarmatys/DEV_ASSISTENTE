@@ -1,6 +1,9 @@
+using System.Diagnostics;
+
 namespace ASSISTENTE.Infrastructure.CodeParser.Models;
 
-internal sealed class PropertyModel
+[DebuggerDisplay("{Type} {Name}")]
+public sealed class PropertyModel
 {
     private PropertyModel(
         string name, 
@@ -13,11 +16,11 @@ internal sealed class PropertyModel
         Accessors = accessors;
         Modifiers = modifiers;
     }
-    
-    public string Name { get; }
-    public string? Type { get; }
-    public List<string>? Accessors { get; }
-    public List<ModifierModel>? Modifiers { get; }
+
+    private string Name { get; }
+    private string? Type { get; }
+    private List<string>? Accessors { get; }
+    private List<ModifierModel>? Modifiers { get; }
     
     public static PropertyModel Create(
         string name, 
@@ -26,5 +29,13 @@ internal sealed class PropertyModel
         List<ModifierModel>? modifiers)
     {
         return new PropertyModel(name, type, accessors, modifiers);
+    }
+    
+    public override string ToString()
+    {
+        var modifiers = Modifiers != null ? string.Join(" ", Modifiers) : string.Empty;
+        var accessors = Accessors != null ? "{ " + string.Join("; ", Accessors) + " }" : string.Empty;
+        
+        return $"{modifiers} {Type} {Name} {accessors}";
     }
 }
