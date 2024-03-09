@@ -1,4 +1,5 @@
-using ASSISTENTE.Infrastructure.Embeddings.Models;
+using CSharpFunctionalExtensions;using ASSISTENTE.Infrastructure.Embeddings.Models;
+using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 
 namespace ASSISTENTE.Infrastructure.Embeddings.Providers.OpenSource;
 
@@ -8,7 +9,7 @@ internal class OpenSourceClient : IEmbeddingClient
     // Example service: https://github.com/clems4ever/torchserve-all-minilm-l6-v2
     // More information: https://www.youtube.com/watch?v=QdDoFfkVkcw
     
-    public Task<EmbeddingDto> GetAsync(string text)
+    public Task<Result<EmbeddingDto>> GetAsync(EmbeddingText text)
     {
         throw new NotImplementedException();
     }

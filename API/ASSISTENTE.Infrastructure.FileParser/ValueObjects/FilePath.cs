@@ -1,5 +1,5 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.Results;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.FileParser.ValueObjects;
 
@@ -19,12 +19,12 @@ public sealed class FilePath
         var extension = System.IO.Path.GetExtension(path);
 
         if (extension == string.Empty)
-            return Result<FilePath>.Fail(FilePathErrors.NotFound);
+            return Result.Failure<FilePath>(FilePathErrors.NotFound.Build());
 
         if (extension != ".md")
-            return Result<FilePath>.Fail(FilePathErrors.InvalidFileExtension);
+            return Result.Failure<FilePath>(FilePathErrors.InvalidFileExtension.Build());
 
-        return new FilePath(path, extension).ToResult();
+        return new FilePath(path, extension);
     }
 
     public static implicit operator string(FilePath filePath) => filePath.Path;

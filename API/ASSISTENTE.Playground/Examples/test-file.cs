@@ -1,5 +1,4 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.FileParser.Models;
 
 namespace ASSISTENTE.Infrastructure.FileParser.ValueObjects;

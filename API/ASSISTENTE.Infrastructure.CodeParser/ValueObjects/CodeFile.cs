@@ -1,5 +1,5 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.Results;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 
@@ -24,15 +24,15 @@ public sealed class CodeFile
         var extension = System.IO.Path.GetExtension(path);
 
         if (extension == string.Empty)
-            return Result<CodeFile>.Fail(FilePathErrors.NotFound);
+            return Result.Failure<CodeFile>(FilePathErrors.NotFound.Build());
 
         if (extension != ".cs")
-            return Result<CodeFile>.Fail(FilePathErrors.InvalidFileExtension);
+            return Result.Failure<CodeFile>(FilePathErrors.InvalidFileExtension.Build());
 
         var fileName = System.IO.Path.GetFileName(path);
         var content = System.IO.File.ReadAllText(path);
         
-        return new CodeFile(path, extension, fileName, content).ToResult();
+        return new CodeFile(path, extension, fileName, content);
     }
 
     public static implicit operator string(CodeFile codeFile) => codeFile.Path;

@@ -1,5 +1,4 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.CodeParser.Errors;
 using ASSISTENTE.Infrastructure.CodeParser.Extensions;
 using ASSISTENTE.Infrastructure.CodeParser.Models;
@@ -16,7 +15,7 @@ internal sealed class CodeParser : ICodeParser
         var syntaxTree = CSharpSyntaxTree.ParseText(file.Content);
 
         if (syntaxTree.GetRoot() is not CompilationUnitSyntax root)
-            return Result<CodeContent>.Fail(CodeParserErrors.FailedToParseCodeContent);
+            return Result.Failure<CodeContent>(CodeParserErrors.FailedToParseCodeContent.Build());
 
         var namespaces = root.GetNamespaces();
 
@@ -30,7 +29,6 @@ internal sealed class CodeParser : ICodeParser
             select ClassModel.Create(className, file.FileName, modifiers, namespaces, properties, methods)
         ).ToList();
 
-        return CodeContent.Create(classes)
-            .OnFailure(error => Result<CodeContent>.Fail(error));
+        return CodeContent.Create(classes);
     }
 }

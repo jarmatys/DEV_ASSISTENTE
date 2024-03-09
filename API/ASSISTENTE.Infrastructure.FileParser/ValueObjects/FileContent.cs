@@ -1,5 +1,5 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.Results;
+using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.FileParser.Models;
 
 namespace ASSISTENTE.Infrastructure.FileParser.ValueObjects;
@@ -16,12 +16,12 @@ public sealed class FileContent
     public static Result<FileContent> Create(List<ElementBase> elements)
     {
         if (elements.Count == 0)
-            return Result<FileContent>.Fail(FileContentErrors.EmptyContent);
+            return Result.Failure<FileContent>(FileContentErrors.EmptyContent.Build());
         
         // TODO: Group by heading level
         var content = string.Join("\n\n", elements.Select(x => x.Content));
-        
-        return new FileContent(content).ToResult();
+
+        return new FileContent(content);
     }
 }
 

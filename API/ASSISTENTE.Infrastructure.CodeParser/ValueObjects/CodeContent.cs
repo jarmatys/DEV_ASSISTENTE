@@ -1,5 +1,4 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.CodeParser.Models;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
@@ -17,6 +16,6 @@ public sealed class CodeContent
     {
         var classesContent = classes.Select(classModel => classModel.ToString()).ToList();
         
-        return new CodeContent(classesContent).ToResult();
+        return new CodeContent(classesContent);
     }
 }

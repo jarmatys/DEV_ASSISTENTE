@@ -1,5 +1,4 @@
-using ASSISTENTE.Common;
-using ASSISTENTE.Common.Extensions;
+using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.FileParser.Errors;
 using ASSISTENTE.Infrastructure.FileParser.Extensions;
 using ASSISTENTE.Infrastructure.FileParser.Models;
@@ -18,7 +17,7 @@ internal sealed class FileParser : IFileParser
         typeof(CodeBlock),
         typeof(ParagraphBlock)
     ];
-    
+
     public Result<FileContent> Parse(FilePath filePath)
     {
         var content = File.ReadAllText(filePath.Path);
@@ -28,21 +27,21 @@ internal sealed class FileParser : IFileParser
             .Where(element => _supportedBlocks.Contains(element.GetType()))
             .Select(GetElement)
             .ToList();
-        
+
         if (elementResults.Count == 0)
-            return Result<FileContent>.Fail(FileParserErrors.EmptyContent);
-        
+            return Result.Failure<FileContent>(FileParserErrors.EmptyContent.Build());
+
         if (elementResults.Any(x => x.IsFailure))
-            return Result<FileContent>.Fail(FileParserErrors.UnsupportedBlock);
-        
+            return Result.Failure<FileContent>(FileParserErrors.UnsupportedBlock.Build());
+
         var elements = elementResults
             .Select(x => x.Value)
             .ToList();
-        
+
         return FileContent.Create(elements!)
-            .OnFailure(error => Result<FileContent>.Fail(error));
+            .TapError(error => Result.Failure<FileContent>(error));
     }
-    
+
     private static Result<ElementBase> GetElement(IMarkdownObject block)
     {
         switch (block)
@@ -50,31 +49,39 @@ internal sealed class FileParser : IFileParser
             case HeadingBlock heading:
             {
                 var level = heading.Level;
-                
+
                 var headingContent = heading.GetContent();
+
+                var headingElement = new Heading(headingContent, level) as ElementBase;
                 
-                return Result<ElementBase>.Ok(new Heading(headingContent, level));
+                return Result.Success(headingElement);
             }
             case ListBlock list:
             {
                 var listContent = list.GetListContent();
-                
-                return Result<ElementBase>.Ok(new NumberedList(listContent));
+
+                var listElement = new NumberedList(listContent) as ElementBase;
+
+                return Result.Success(listElement);
             }
             case CodeBlock code:
             {
                 var codeContent = code.GetCode();
                 
-                return Result<ElementBase>.Ok(new Code(codeContent));
+                var codeElement = new Code(codeContent) as ElementBase;
+
+                return Result.Success(codeElement);
             }
             case ParagraphBlock paragraph:
             {
                 var paragraphContent = paragraph.GetContent();
+
+                var paragraphElement = new Paragraph(paragraphContent) as ElementBase;
                 
-                return Result<ElementBase>.Ok(new Paragraph(paragraphContent));
+                return Result.Success(paragraphElement);
             }
             default:
-                return Result<ElementBase>.Fail(FileParserErrors.UnsupportedBlock);
+                return Result.Failure<ElementBase>(FileParserErrors.UnsupportedBlock.Build());
         }
     }
 }
