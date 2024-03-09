@@ -12,7 +12,7 @@ namespace ASSISTENTE.Infrastructure
         {
             services.AddFileParser();
             services.AddCodeParser();
-            services.AddEmbeddings();
+            services.AddEmbeddings(configuration);
             
             return services;
         }
