@@ -1,3 +1,4 @@
+using ASSISTENTE.Common.Results.Extensions;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 using ASSISTENTE.Infrastructure.Embeddings;
@@ -25,11 +26,12 @@ public sealed class Playground(IFileParser fileParser, ICodeParser codeParser, I
             .Map(fileContent => fileContent.Classes)
             .TapError(errors => Console.WriteLine(errors))
             .GetValueOrDefault();
-        
+
         var embeddings = EmbeddingText.Create(mdFileContent)
-            .Bind(async text => await embeddingClient.GetAsync(text))
+            .BindAsync(async text => await embeddingClient.GetAsync(text))
             .Map(embedding => embedding)
-            .TapError(errors => Console.WriteLine(errors));
+            .TapError(errors => Console.WriteLine(errors))
+            .GetValueOrDefault();
         
         Console.WriteLine("Stopping Playground...");
     }

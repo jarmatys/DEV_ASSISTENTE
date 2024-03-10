@@ -2,14 +2,14 @@ namespace ASSISTENTE.Infrastructure.Embeddings.Models;
 
 public sealed class EmbeddingDto
 {
-    private EmbeddingDto(List<long> embeddings)
+    private EmbeddingDto(List<double> embeddings)
     {
         Embeddings = embeddings;
     }
     
-    public List<long> Embeddings { get; }
+    public List<double> Embeddings { get; }
     
-    public static EmbeddingDto Create(List<long> embeddings)
+    public static EmbeddingDto Create(List<double> embeddings)
     {
         return new EmbeddingDto(embeddings);
     }

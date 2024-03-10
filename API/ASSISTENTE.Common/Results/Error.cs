@@ -9,4 +9,5 @@ public record Error(string Type, string Description)
     public override string ToString() => $"{Type}: {Description}";
     
     public string Build() => $"{Type}: {Description}";
+    public string Build(string message) => $"{Type}: {Description} - {message}";
 }
