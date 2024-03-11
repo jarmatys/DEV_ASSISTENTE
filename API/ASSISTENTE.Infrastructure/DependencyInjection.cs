@@ -1,6 +1,7 @@
 ﻿using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.FileParser;
+using ASSISTENTE.Infrastructure.Qdrant;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddFileParser();
             services.AddCodeParser();
             services.AddEmbeddings(configuration);
+            services.AddQdrant(configuration);
             
             return services;
         }
