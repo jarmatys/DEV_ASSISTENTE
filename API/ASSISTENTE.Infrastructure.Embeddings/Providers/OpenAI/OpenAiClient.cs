@@ -15,7 +15,7 @@ internal class OpenAiClient(IOpenAIService openAiService) : IEmbeddingClient
         if (!response.IsSuccess)
             return Result.Failure<EmbeddingDto>(OpenAiClientErrors.InvalidResult.Build(response.ErrorResponse?.Error.Message!));
 
-        var embeddings = response.Result?.Data.First().Embedding.ToList();
+        var embeddings = response.Result?.Data.First().Embedding.Select(i => (float)i);
         
         return embeddings is null
             ? Result.Failure<EmbeddingDto>(OpenAiClientErrors.EmptyEmbeddings.Build())

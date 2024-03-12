@@ -11,7 +11,8 @@ var serviceProvider = serviceCollection.BuildServiceProvider();
 
 var playground = serviceProvider.GetService<Playground>();
 
-playground?.Start();
+if (playground != null)
+    await playground.StartAsync();
 
 return;
 

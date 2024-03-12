@@ -12,6 +12,7 @@ namespace ASSISTENTE.Infrastructure.Qdrant
             var qdrantHost = configuration["Qdrant:Host"] ?? throw new MissingSettingsException("Qdrant:Host");
             
             services.AddSingleton<QdrantClient>(_ => new QdrantClient(qdrantHost));
+            services.AddSingleton<IQdrantService, QdrantService>();
             
             return services;
         }
