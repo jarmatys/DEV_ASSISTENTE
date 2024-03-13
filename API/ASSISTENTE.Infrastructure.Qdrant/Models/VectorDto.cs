@@ -4,15 +4,17 @@ namespace ASSISTENTE.Infrastructure.Qdrant.Models;
 
 public sealed class VectorDto : QdrantBase
 {
-    private VectorDto(List<float> value, string collectionName) : base(collectionName)
+    private VectorDto(string collectionName, IEnumerable<float> value)  : base(collectionName)
     {
         Value = value;
     }
+
+    private IEnumerable<float> Value { get; }
     
-    public List<float> Value { get; }
-    
-    public static Result<VectorDto> Create(List<float> value, string collectionName)
+    public static Result<VectorDto> Create(string collectionName, IEnumerable<float> value)
     {
-        return new VectorDto(value, collectionName);
+        return new VectorDto(collectionName, value);
     }
+    
+    public float[] GetVector() => Value.ToArray();
 }

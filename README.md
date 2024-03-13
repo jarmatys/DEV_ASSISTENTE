@@ -35,8 +35,8 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - [X] Loading and parsing  `*.md` files - knowledge base
 - [X] Loading and parsing  `*.cs` files - code base
 - [ ] Find open source solution for creating embeddins
-    - Done partially (currently in use OpenAI embedding service)
-- [ ] Integration with Qdrant - saving embeddings
+    - [X] Done partially (currently in use OpenAI embedding service)
+- [X] Integration with Qdrant - saving embeddings
 
 #### Generating results
 

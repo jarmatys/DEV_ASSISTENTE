@@ -27,13 +27,23 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
             document.GetPoints()
         );
 
-        return response.Status == UpdateStatus.Completed 
-            ? Result.Success() 
+        return response.Status == UpdateStatus.Completed
+            ? Result.Success()
             : Result.Failure(QdrantServiceErrors.UpsertFailed.Build());
     }
 
     public async Task<Result<SearchResult>> SearchAsync(VectorDto vectorDto)
     {
-        throw new NotImplementedException();
+        var response = await client.SearchAsync(
+            vectorDto.GetCollectionName(),
+            vectorDto.GetVector(),
+            limit: 1
+        );
+
+        var result = response.FirstOrDefault();
+
+        return result == null
+            ? Result.Failure<SearchResult>(QdrantServiceErrors.SearchFailed.Build())
+            : SearchResult.Create(result.Id, result.Score);
     }
 }

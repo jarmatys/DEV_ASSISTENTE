@@ -31,7 +31,7 @@ public sealed class Playground(
             .Map(fileContent => fileContent.Classes)
             .TapError(errors => Console.WriteLine(errors))
             .GetValueOrDefault();
-
+        
         var embeddings = await EmbeddingText.Create(mdFileContent)
             .Bind(embeddingClient.GetAsync)
             .Map(embedding => embedding)
@@ -39,8 +39,19 @@ public sealed class Playground(
         
         await qdrantService.CreateCollectionAsync("embeddings");
         
-        var upsertResult = await DocumentDto.Create(embeddings.Value.Embeddings, "embeddings")
+        var upsertResult = await DocumentDto.Create("embeddings", embeddings.Value.Embeddings)
             .Bind(qdrantService.UpsertAsync)
+            .TapError(errors => Console.WriteLine(errors));
+        
+        const string searchText = "Lorem markdownum currere gramine Diti taedia etiam, quarta, tum tellus Diana tecum Lycei, detectique!";
+        
+        var searchEmbeddings = await EmbeddingText.Create(searchText)
+            .Bind(embeddingClient.GetAsync)
+            .Map(embedding => embedding)
+            .TapError(errors => Console.WriteLine(errors));
+        
+        var searchResult = await VectorDto.Create("embeddings", searchEmbeddings.Value.Embeddings)
+            .Bind(qdrantService.SearchAsync)
             .TapError(errors => Console.WriteLine(errors));
         
         Console.WriteLine("Stopping Playground...");

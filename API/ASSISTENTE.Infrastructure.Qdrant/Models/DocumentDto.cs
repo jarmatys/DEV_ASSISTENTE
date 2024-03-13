@@ -5,14 +5,14 @@ namespace ASSISTENTE.Infrastructure.Qdrant.Models;
 
 public sealed class DocumentDto : QdrantBase
 {
-    private DocumentDto(List<PointStruct> points, string collectionName) : base(collectionName)
+    private DocumentDto(string collectionName, List<PointStruct> points) : base(collectionName)
     {
         Points = points;
     }
 
     private List<PointStruct> Points { get; }
     
-    public static Result<DocumentDto> Create(IEnumerable<float> embeddings, string collectionName)
+    public static Result<DocumentDto> Create(string collectionName, IEnumerable<float> embeddings)
     {
         var point = new PointStruct
         {
@@ -26,7 +26,7 @@ public sealed class DocumentDto : QdrantBase
         
         var points = new List<PointStruct> { point };
         
-        return new DocumentDto(points, collectionName);
+        return new DocumentDto(collectionName, points);
     }
     
     public List<PointStruct> GetPoints() => Points;
