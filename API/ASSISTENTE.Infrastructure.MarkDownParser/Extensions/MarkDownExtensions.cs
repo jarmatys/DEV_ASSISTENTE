@@ -2,7 +2,7 @@ using Markdig.Helpers;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 
-namespace ASSISTENTE.Infrastructure.FileParser.Extensions;
+namespace ASSISTENTE.Infrastructure.MarkDownParser.Extensions;
 
 internal static class MarkDownExtensions
 {

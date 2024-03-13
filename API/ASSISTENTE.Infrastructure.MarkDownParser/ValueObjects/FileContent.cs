@@ -1,8 +1,8 @@
 using ASSISTENTE.Common.Results;
+using ASSISTENTE.Infrastructure.MarkDownParser.Models;
 using CSharpFunctionalExtensions;
-using ASSISTENTE.Infrastructure.FileParser.Models;
 
-namespace ASSISTENTE.Infrastructure.FileParser.ValueObjects;
+namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
 public sealed class FileContent
 {

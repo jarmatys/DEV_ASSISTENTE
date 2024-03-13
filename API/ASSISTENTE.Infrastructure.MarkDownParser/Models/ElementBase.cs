@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Infrastructure.FileParser.Models;
+namespace ASSISTENTE.Infrastructure.MarkDownParser.Models;
 
 public abstract record ElementBase(string Content)
 {

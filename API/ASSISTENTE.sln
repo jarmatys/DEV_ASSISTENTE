@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASSISTENTE.Application", "A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parsers", "Parsers", "{FE690E15-0DBE-41F9-A1BA-606B7A57DCEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASSISTENTE.Infrastructure.FileParser", "ASSISTENTE.Infrastructure.FileParser\ASSISTENTE.Infrastructure.FileParser.csproj", "{2E4B5D96-671E-47AC-AC6C-7CE75DD974A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASSISTENTE.Infrastructure.MarkDownParser", "ASSISTENTE.Infrastructure.MarkDownParser\ASSISTENTE.Infrastructure.MarkDownParser.csproj", "{2E4B5D96-671E-47AC-AC6C-7CE75DD974A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASSISTENTE.Infrastructure.Common", "ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj", "{59A6A2A7-2B21-49B7-AC3C-3FA31203C625}"
 EndProject

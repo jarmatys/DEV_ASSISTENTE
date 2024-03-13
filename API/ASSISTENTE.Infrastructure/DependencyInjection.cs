@@ -1,7 +1,9 @@
 ﻿using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
-using ASSISTENTE.Infrastructure.FileParser;
+using ASSISTENTE.Infrastructure.Interfaces;
+using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.Qdrant;
+using ASSISTENTE.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,10 +13,13 @@ namespace ASSISTENTE.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddFileParser();
+            services.AddMarkDownParser();
             services.AddCodeParser();
             services.AddEmbeddings(configuration);
             services.AddQdrant(configuration);
+            
+            services.AddScoped<IKnowledgeService, KnowledgeService>();
+            services.AddScoped<IFileParser, FileParser>();
             
             return services;
         }

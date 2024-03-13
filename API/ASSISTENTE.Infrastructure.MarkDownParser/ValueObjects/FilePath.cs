@@ -1,7 +1,7 @@
 using ASSISTENTE.Common.Results;
 using CSharpFunctionalExtensions;
 
-namespace ASSISTENTE.Infrastructure.FileParser.ValueObjects;
+namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
 public sealed class FilePath
 {

@@ -1,14 +1,14 @@
+using ASSISTENTE.Infrastructure.MarkDownParser.Errors;
+using ASSISTENTE.Infrastructure.MarkDownParser.Extensions;
+using ASSISTENTE.Infrastructure.MarkDownParser.Models;
+using ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 using CSharpFunctionalExtensions;
-using ASSISTENTE.Infrastructure.FileParser.Errors;
-using ASSISTENTE.Infrastructure.FileParser.Extensions;
-using ASSISTENTE.Infrastructure.FileParser.Models;
-using ASSISTENTE.Infrastructure.FileParser.ValueObjects;
 using Markdig;
 using Markdig.Syntax;
 
-namespace ASSISTENTE.Infrastructure.FileParser;
+namespace ASSISTENTE.Infrastructure.MarkDownParser;
 
-internal sealed class FileParser : IFileParser
+internal sealed class MarkDownParser : IMarkDownParser
 {
     private readonly List<Type> _supportedBlocks =
     [
@@ -29,10 +29,10 @@ internal sealed class FileParser : IFileParser
             .ToList();
 
         if (elementResults.Count == 0)
-            return Result.Failure<FileContent>(FileParserErrors.EmptyContent.Build());
+            return Result.Failure<FileContent>(MarkDownParserErrors.EmptyContent.Build());
 
         if (elementResults.Any(x => x.IsFailure))
-            return Result.Failure<FileContent>(FileParserErrors.UnsupportedBlock.Build());
+            return Result.Failure<FileContent>(MarkDownParserErrors.UnsupportedBlock.Build());
 
         var elements = elementResults
             .Select(x => x.Value)
@@ -81,7 +81,7 @@ internal sealed class FileParser : IFileParser
                 return Result.Success(paragraphElement);
             }
             default:
-                return Result.Failure<ElementBase>(FileParserErrors.UnsupportedBlock.Build());
+                return Result.Failure<ElementBase>(MarkDownParserErrors.UnsupportedBlock.Build());
         }
     }
 }
