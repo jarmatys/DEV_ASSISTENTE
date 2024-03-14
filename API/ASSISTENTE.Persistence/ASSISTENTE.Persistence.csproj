@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Persistence.MSSQL\ASSISTENTE.Persistence.MSSQL.csproj" />
+    </ItemGroup>
+
 </Project>
