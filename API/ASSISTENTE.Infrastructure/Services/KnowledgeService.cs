@@ -19,8 +19,6 @@ public sealed class KnowledgeService(
             .Map(embedding => embedding)
             .TapError(errors => Console.WriteLine(errors));
         
-        await qdrantService.CreateCollectionAsync("embeddings"); // TODO: move this method to init method
-        
         var upsertResult = await DocumentDto.Create("embeddings", embeddings.Value.Embeddings)
             .Bind(qdrantService.UpsertAsync)
             .TapError(errors => Console.WriteLine(errors));

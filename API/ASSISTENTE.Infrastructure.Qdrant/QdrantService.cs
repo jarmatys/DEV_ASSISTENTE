@@ -19,6 +19,17 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
 
         return Result.Success();
     }
+    
+    public async Task<Result> DropCollectionAsync(string name)
+    {
+        var collections = await client.ListCollectionsAsync();
+        
+        if (!collections.Contains(name)) return Result.Success();
+        
+        await client.DeleteCollectionAsync(name);
+
+        return Result.Success();
+    }
 
     public async Task<Result> UpsertAsync(DocumentDto document)
     {

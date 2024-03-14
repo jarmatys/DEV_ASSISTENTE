@@ -20,6 +20,7 @@ namespace ASSISTENTE.Infrastructure
             
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IFileParser, FileParser>();
+            services.AddScoped<IMaintenanceService, MaintenanceService>();
             
             return services;
         }

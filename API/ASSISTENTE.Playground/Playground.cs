@@ -12,7 +12,11 @@ public sealed class Playground(IFileParser fileParser, IKnowledgeService knowled
             .GetValueOrDefault();
         
         var knowledge = await knowledgeService.LearnAsync("");
-
+        
+        const string query = "How to create a new file in C#?";
+        
+        var result = await knowledgeService.RecallAsync(query);
+        
         Console.WriteLine("Stopping Playground...");
     }
 }
