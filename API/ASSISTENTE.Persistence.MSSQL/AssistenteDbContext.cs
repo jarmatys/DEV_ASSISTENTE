@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Entities;
+using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +29,7 @@ namespace ASSISTENTE.Persistence.MSSQL
 
         #region ENTITIES
 
-        public DbSet<Article> Articles { get; set; } 
+        public DbSet<Resource> Resources { get; set; } 
 
         #endregion
 

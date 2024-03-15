@@ -1,4 +1,6 @@
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Entities;
+using ASSISTENTE.Domain.Entities.Resources;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Persistence.MSSQL;
@@ -7,7 +9,7 @@ public interface IAssistenteDbContext
 {
     #region ENTITIES
 
-    DbSet<Article> Articles { get; set; }
+    DbSet<Resource> Resources { get; set; } 
 
     #endregion
         

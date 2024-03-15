@@ -35,6 +35,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

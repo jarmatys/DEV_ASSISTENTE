@@ -1,3 +1,4 @@
+using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Interfaces;
@@ -9,7 +10,8 @@ namespace ASSISTENTE.Infrastructure.Services;
 
 public sealed class KnowledgeService(
     IEmbeddingClient embeddingClient,
-    IQdrantService qdrantService
+    IQdrantService qdrantService,
+    IResourceRepository resourceRepository
 ) : IKnowledgeService
 {
     public async Task<Result> LearnAsync(string information)

@@ -1,6 +1,6 @@
 ﻿namespace ASSISTENTE.Domain.Commons
 {
-    public class AuditableEntity
+    public abstract class AuditableEntity
     {
         public int Id { get; set; }
         
