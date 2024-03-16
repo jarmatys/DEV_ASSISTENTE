@@ -2,7 +2,7 @@ using ASSISTENTE.Domain.Interfaces;
 
 namespace ASSISTENTE.Client.Commons;
 
-internal abstract class UserResolver : IUserResolver
+internal sealed class UserResolver : IUserResolver
 {
     public string GetUserEmail()
     {

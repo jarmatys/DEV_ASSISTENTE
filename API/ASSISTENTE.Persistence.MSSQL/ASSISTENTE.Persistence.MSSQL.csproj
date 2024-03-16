@@ -24,6 +24,7 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="ASSISTENTE.DB.Upgrade" />
+        <InternalsVisibleTo Include="ASSISTENTE.Persistence" />
     </ItemGroup>
 
 </Project>

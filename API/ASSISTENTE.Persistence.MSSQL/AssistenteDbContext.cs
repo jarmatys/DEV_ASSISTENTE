@@ -42,7 +42,7 @@ namespace ASSISTENTE.Persistence.MSSQL
         }
 
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {

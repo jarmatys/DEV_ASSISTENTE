@@ -15,6 +15,10 @@ var playground = serviceProvider.GetService<Playground>();
 if (playground != null)
     await playground.StartAsync();
 
+// TODO: Add console app parameters
+// if (playground != null)
+//     await playground.InitAsync();
+
 return;
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)

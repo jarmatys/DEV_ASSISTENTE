@@ -1,5 +1,6 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Enums;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Domain.Entities.Resources;
 
@@ -16,13 +17,8 @@ public sealed class Resource : AuditableEntity
     public string Content { get; private set; }
     public ResourceType Type { get; private set; }
     
-    public static Resource CreateNote(string content)
+    public static Result<Resource> Create(string content, ResourceType type)
     {
-        return new Resource(Guid.NewGuid(), content, ResourceType.Note);
-    }
-    
-    public static Resource CreateCode(string content)
-    {
-        return new Resource(Guid.NewGuid(), content, ResourceType.Note);
+        return new Resource(Guid.NewGuid(), content, type);
     }
 }

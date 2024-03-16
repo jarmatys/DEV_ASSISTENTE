@@ -1,4 +1,6 @@
+using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
+using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Interfaces;
@@ -14,19 +16,25 @@ public sealed class KnowledgeService(
     IResourceRepository resourceRepository
 ) : IKnowledgeService
 {
-    public async Task<Result> LearnAsync(string information)
+    public async Task<Result> LearnAsync(string information, ResourceType type)
     {
+        var resource = await Resource.Create(information, type)
+            .Bind(resourceRepository.AddAsync)
+            .TapError(errors => Console.WriteLine(errors));
+        
         var embeddings = await EmbeddingText.Create(information)
             .Bind(embeddingClient.GetAsync)
             .Map(embedding => embedding)
             .TapError(errors => Console.WriteLine(errors));
-        
-        var upsertResult = await DocumentDto.Create("embeddings", embeddings.Value.Embeddings)
+
+        var upsertResult = await DocumentDto.Create(
+                "embeddings",
+                embeddings.Value.Embeddings,
+                resource.Value.ResourceId
+            )
             .Bind(qdrantService.UpsertAsync)
             .TapError(errors => Console.WriteLine(errors));
 
-        // TODO: save information in database
-        
         return upsertResult;
     }
 
@@ -36,13 +44,13 @@ public sealed class KnowledgeService(
             .Bind(embeddingClient.GetAsync)
             .Map(embedding => embedding)
             .TapError(errors => Console.WriteLine(errors));
-        
+
         var searchResult = await VectorDto.Create("embeddings", searchEmbeddings.Value.Embeddings)
             .Bind(qdrantService.SearchAsync)
             .TapError(errors => Console.WriteLine(errors));
-        
+
         // TODO: get information from database
-        
+
         return string.Empty; // TODO: will be implemented
     }
 }

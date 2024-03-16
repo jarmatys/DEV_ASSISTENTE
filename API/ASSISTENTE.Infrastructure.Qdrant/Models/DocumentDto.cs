@@ -12,14 +12,14 @@ public sealed class DocumentDto : QdrantBase
 
     private List<PointStruct> Points { get; }
     
-    public static Result<DocumentDto> Create(string collectionName, IEnumerable<float> embeddings)
+    public static Result<DocumentDto> Create(string collectionName, IEnumerable<float> embeddings, Guid resourceId)
     {
         var point = new PointStruct
         {
-            Id = Guid.NewGuid(),
+            Id = resourceId,
             // Payload =
             // {
-            //     ["info"] = news.Info,
+            //     ["type"] = resourceType,
             // },
             Vectors = embeddings.ToArray()
         };

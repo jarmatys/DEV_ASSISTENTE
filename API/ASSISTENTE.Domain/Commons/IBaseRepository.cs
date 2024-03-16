@@ -2,11 +2,11 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Domain.Commons;
 
-public interface IBaseRepository<T>
+public interface IBaseRepository<TEntity>
 {
-    Task<Result<T>> AddAsync(T entity);
-    Task<Result<T>> UpdateAsync(T entity);
-    Task<Result<T>> RemoveAsync(T entity);
-    Task<Result<T>> GetByIdAsync(Guid id);
-    Task<Result<IEnumerable<T>>> GetAllAsync();
+    Task<Result<TEntity>> AddAsync(TEntity entity);
+    Task<Result<TEntity>> UpdateAsync(TEntity entity);
+    Task<Result<TEntity>> RemoveAsync(TEntity entity);
+    Task<Result<TEntity>> GetByIdAsync(int id);
+    Task<Result<IEnumerable<TEntity>>> GetAllAsync();
 }

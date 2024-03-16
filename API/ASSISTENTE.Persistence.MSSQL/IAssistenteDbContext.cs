@@ -12,6 +12,6 @@ internal interface IAssistenteDbContext
 
     #endregion
         
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     DbSet<TEntity> Set<TEntity>() where TEntity : AuditableEntity;
 }
