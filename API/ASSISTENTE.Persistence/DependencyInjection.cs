@@ -1,4 +1,5 @@
 ﻿using ASSISTENTE.Domain.Entities.Resources.Interfaces;
+using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL;
 using ASSISTENTE.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -8,11 +9,15 @@ namespace ASSISTENTE.Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPersistence<TUserResolver>(
+            this IServiceCollection services, 
+            IConfiguration configuration)
+        where TUserResolver : class, IUserResolver
         {
             services.AddMssql(configuration);
             
             services.AddScoped<IResourceRepository, ResourceRepository>();
+            services.AddScoped<IUserResolver, TUserResolver>();
             
             return services;
         }

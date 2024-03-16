@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Commons;
-using ASSISTENTE.Domain.Entities;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Persistence.MSSQL
 {
-    public class AssistenteDbContext : DbContext, IAssistenteDbContext
+    internal class AssistenteDbContext : DbContext, IAssistenteDbContext
     {
         private readonly IUserResolver? _userResolver;
         private readonly ISystemTimeProvider? _systemTimeProvider;

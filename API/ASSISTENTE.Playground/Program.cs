@@ -1,4 +1,5 @@
 ﻿using ASSISTENTE.Client;
+using ASSISTENTE.Client.Commons;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,7 @@ return;
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    services.AddAssistenteClient(configuration);
+    services.AddAssistenteClient<UserResolver>(configuration);
     
     services.AddTransient<Playground>();
 }

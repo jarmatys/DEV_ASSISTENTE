@@ -1,4 +1,5 @@
-﻿using ASSISTENTE.Infrastructure.CodeParser;
+﻿using ASSISTENTE.Domain.Interfaces;
+using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.MarkDownParser;
@@ -21,6 +22,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IFileParser, FileParser>();
             services.AddScoped<IMaintenanceService, MaintenanceService>();
+            services.AddScoped<ISystemTimeProvider, SystemTimeProvider>();
             
             return services;
         }

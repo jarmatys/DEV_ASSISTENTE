@@ -2,7 +2,7 @@
 
 namespace ASSISTENTE.Persistence.MSSQL.Utils
 {
-    public class AssistenteDbContextFactory : DesignTimeDbContextFactoryBase<AssistenteDbContext>
+    internal class AssistenteDbContextFactory : DesignTimeDbContextFactoryBase<AssistenteDbContext>
     {
         protected override AssistenteDbContext CreateNewInstance(DbContextOptions<AssistenteDbContext> options)
         {

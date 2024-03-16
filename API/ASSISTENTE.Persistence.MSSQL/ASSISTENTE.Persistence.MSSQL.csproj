@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Migrations\"/>
+        <InternalsVisibleTo Include="ASSISTENTE.DB.Upgrade" />
     </ItemGroup>
 
 </Project>

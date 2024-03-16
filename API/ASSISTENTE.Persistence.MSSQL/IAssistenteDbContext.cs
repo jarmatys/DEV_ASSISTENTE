@@ -1,11 +1,10 @@
 using ASSISTENTE.Domain.Commons;
-using ASSISTENTE.Domain.Entities;
 using ASSISTENTE.Domain.Entities.Resources;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Persistence.MSSQL;
 
-public interface IAssistenteDbContext
+internal interface IAssistenteDbContext
 {
     #region ENTITIES
 

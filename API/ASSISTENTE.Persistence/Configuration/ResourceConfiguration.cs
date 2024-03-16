@@ -1,5 +1,4 @@
-﻿using ASSISTENTE.Domain.Entities;
-using ASSISTENTE.Domain.Entities.Resources;
+﻿using ASSISTENTE.Domain.Entities.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
