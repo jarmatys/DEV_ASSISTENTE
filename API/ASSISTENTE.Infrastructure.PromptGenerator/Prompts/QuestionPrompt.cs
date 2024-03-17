@@ -12,16 +12,16 @@ internal class QuestionPrompt : IPrompt
         var prompt = $"""
                       You received the following question:
 
+                      ### question
                       {question}
-
+                      ###
+                      
                       -----------------------------
 
                       Based on the context below, answer them as best as you can and truthfully.
 
                       ### context
-                      
                       {context}
-
                       ###
                       """;
 

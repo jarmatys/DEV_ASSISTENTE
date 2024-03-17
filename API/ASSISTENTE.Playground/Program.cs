@@ -10,35 +10,40 @@ var serviceCollection = new ServiceCollection();
 ConfigureServices(serviceCollection, configuration);
 
 var serviceProvider = serviceCollection.BuildServiceProvider();
-
 var playground = serviceProvider.GetService<Playground>();
 
-Parser.Default.ParseArguments<PlaygroundParams>(args)
-    .WithParsed(RunPlayground);
+var parsedParams = ParseParams(args);
+
+if (playground == null) return;
+
+Console.WriteLine("Starting Playground...\n");
+
+if (parsedParams.Reset)
+    await playground.ResetAsync();
+if (parsedParams.Learn)
+    await playground.LearnAsync();
+if (parsedParams.Question != null)
+    await playground.AnswerAsync(parsedParams.Question);
+else
+    Console.WriteLine("Select an action: --reset, --learn, --question");
+    
+Console.WriteLine("\nStopping Playground...");
 
 return;
-
-async void RunPlayground(PlaygroundParams playgroundParams)
-{
-    if (playground == null) return;
-
-    Console.WriteLine("Starting Playground...\n");
-
-    if (playgroundParams.Reset)
-        await playground.ResetAsync();
-    if (playgroundParams.Learn)
-        await playground.LearnAsync();
-    if (playgroundParams.Question != null)
-        await playground.AnswerAsync(playgroundParams.Question);
-    else
-        Console.WriteLine("Select an action: --reset, --learn, --question");
-    
-    Console.WriteLine("\nStopping Playground...");
-}
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
     services.AddAssistenteClient<UserResolver>(configuration);
 
     services.AddTransient<Playground>();
+}
+
+PlaygroundParams ParseParams(IEnumerable<string> strings)
+{
+    var playgroundParams = new PlaygroundParams();
+    
+    Parser.Default.ParseArguments<PlaygroundParams>(strings)
+        .WithParsed(options => playgroundParams = options);
+    
+    return playgroundParams;
 }
