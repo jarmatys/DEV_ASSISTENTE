@@ -24,12 +24,12 @@ internal abstract class BaseRepository<TEntity>(IAssistenteDbContext context) : 
         throw new NotImplementedException();
     }
 
-    public Task<Result<TEntity>> GetByIdAsync(int id)
+    public Task<Maybe<TEntity>> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result<IEnumerable<TEntity>>> GetAllAsync()
+    public Task<Maybe<IEnumerable<TEntity>>> GetAllAsync()
     {
         throw new NotImplementedException();
     }

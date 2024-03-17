@@ -8,40 +8,25 @@ public sealed class Playground(
     IKnowledgeService knowledgeService, 
     IMaintenanceService maintenanceService)
 {
-    public async Task StartAsync()
+    public async Task AnswerAsync(string question)
     {
-        Console.WriteLine("Starting Playground...");
-        
+        var result = await knowledgeService.RecallAsync(question);
+    }
+
+    public async Task LearnAsync()
+    {
         var notes = fileParser.Parse("Examples/test-notes.md")
             .GetValueOrDefault();
-
+        
         foreach (var note in notes)
         {
             var knowledge = await knowledgeService.LearnAsync(note, ResourceType.Note);
         }
-        
-        //const string query = "What does Adam Kowalski do professionally?";
-        
-        //var result = await knowledgeService.RecallAsync(query);
-        
-        Console.WriteLine("Stopping Playground...");
-    }
-
-    public async Task CleanAsync()
-    {
-        Console.WriteLine("Start cleaning...");
-
-        await maintenanceService.ResetAsync();
-        
-        Console.WriteLine("Stop cleaning...");
     }
     
-    public async Task InitAsync()
+    public async Task ResetAsync()
     {
-        Console.WriteLine("Start initialization...");
-
+        await maintenanceService.ResetAsync();
         await maintenanceService.InitAsync();
-        
-        Console.WriteLine("Stop initialization...");
     }
 }

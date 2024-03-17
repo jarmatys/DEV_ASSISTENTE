@@ -3,6 +3,7 @@ using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.MarkDownParser;
+using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddCodeParser();
             services.AddEmbeddings(configuration);
             services.AddQdrant(configuration);
+            services.AddPromptGenerator();
             
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IFileParser, FileParser>();
