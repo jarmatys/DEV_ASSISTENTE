@@ -4,6 +4,8 @@ using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Interfaces;
+using ASSISTENTE.Infrastructure.LLM;
+using ASSISTENTE.Infrastructure.LLM.ValueObjects;
 using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.Qdrant;
@@ -16,7 +18,8 @@ public sealed class KnowledgeService(
     IEmbeddingClient embeddingClient,
     IQdrantService qdrantService,
     IPromptGenerator promptGenerator,
-    IResourceRepository resourceRepository
+    IResourceRepository resourceRepository,
+    ILLMClient llmClient
 ) : IKnowledgeService
 {
     public async Task<Result> LearnAsync(string information, ResourceType type)
@@ -59,9 +62,10 @@ public sealed class KnowledgeService(
             question,
             context: resource.Content,
             PromptType.Question);
+
+        var answer = await PromptText.Create(prompt.Value)
+            .Bind(llmClient.GenerateAnswer);
         
-        // TODO: Call the OPENAI API to generate the answer
-        
-        return string.Empty;
+        return answer.Value.Text;
     }
 }

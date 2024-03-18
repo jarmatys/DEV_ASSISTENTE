@@ -41,6 +41,8 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 #### Generating results
 
 - [ ] Generating prompt based on the 'knowledge base' & 'code base'
+    - [X] Generate prompt based on 'knowledge base'
+    - [ ] Generate prompto based on 'code base'
 - [ ] Integration with the OpenAI API
 - [ ] Generating answers or ready code - depending on what the user needs
 

@@ -2,6 +2,7 @@
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Interfaces;
+using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.Qdrant;
@@ -20,6 +21,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddEmbeddings(configuration);
             services.AddQdrant(configuration);
             services.AddPromptGenerator();
+            services.AddLLM(configuration);
             
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IFileParser, FileParser>();
