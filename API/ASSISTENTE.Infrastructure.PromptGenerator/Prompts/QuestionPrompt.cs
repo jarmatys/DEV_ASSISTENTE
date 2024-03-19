@@ -7,7 +7,7 @@ internal class QuestionPrompt : IPrompt
 {
     public PromptType Type => PromptType.Question;
 
-    public string Generate(string question, string context)
+    public string Generate(string question, IEnumerable<string> context)
     {
         var prompt = $"""
                       You received the following question:
@@ -21,7 +21,7 @@ internal class QuestionPrompt : IPrompt
                       Based on the context below, answer them as best as you can and truthfully.
 
                       ### context
-                      {context}
+                      {string.Join("\n", context)}
                       ###
                       """;
 

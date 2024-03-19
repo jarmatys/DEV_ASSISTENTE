@@ -5,9 +5,9 @@ namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 
 public sealed class CodeContent
 {
-    public List<string> Classes { get; }
+    public IEnumerable<string> Classes { get; }
 
-    private CodeContent(List<string> classes)
+    private CodeContent(IEnumerable<string> classes)
     {
         Classes = classes;
     }

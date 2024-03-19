@@ -5,5 +5,5 @@ namespace ASSISTENTE.Domain.Entities.Resources.Interfaces;
 
 public interface IResourceRepository : IBaseRepository<Resource>
 {
-    Task<Maybe<Resource>> FindByResourceIdAsync(Guid resourceId);
+    Task<Maybe<List<Resource>>> FindByResourceIdsAsync(List<Guid> resourceIds);
 }

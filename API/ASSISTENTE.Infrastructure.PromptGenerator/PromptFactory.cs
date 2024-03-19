@@ -7,7 +7,7 @@ namespace ASSISTENTE.Infrastructure.PromptGenerator;
 
 internal class PromptFactory(IEnumerable<IPrompt> prompts) : IPromptFactory
 {
-    public Result<string> GeneratePrompt(string question, string context, PromptType type)
+    public Result<string> GeneratePrompt(string question, IEnumerable<string> context, PromptType type)
     {
         var prompt = prompts.FirstOrDefault(p => p.Type == type);
         

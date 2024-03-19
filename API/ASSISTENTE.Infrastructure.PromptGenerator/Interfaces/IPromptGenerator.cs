@@ -5,5 +5,5 @@ namespace ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 
 public interface IPromptGenerator
 {
-    Result<string> GeneratePrompt(string question, string context, PromptType type);
+    Result<string> GeneratePrompt(string question, IEnumerable<string> context, PromptType type);
 }

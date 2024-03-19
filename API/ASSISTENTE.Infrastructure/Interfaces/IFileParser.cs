@@ -4,5 +4,6 @@ namespace ASSISTENTE.Infrastructure.Interfaces;
 
 public interface IFileParser
 {
-    public Result<List<string>> Parse(string filePath);
+    public Result<IEnumerable<string>> GetNotes();
+    public Result<IEnumerable<string>> GetCode();
 }

@@ -8,7 +8,7 @@ public sealed class PropertyModel
     private PropertyModel(
         string name, 
         string? type, 
-        List<string>? accessors, 
+        IEnumerable<string>? accessors, 
         List<ModifierModel>? modifiers)
     {
         Name = name;
@@ -19,13 +19,13 @@ public sealed class PropertyModel
 
     private string Name { get; }
     private string? Type { get; }
-    private List<string>? Accessors { get; }
+    private IEnumerable<string>? Accessors { get; }
     private List<ModifierModel>? Modifiers { get; }
     
     public static PropertyModel Create(
         string name, 
         string? type, 
-        List<string>? accessors, 
+        IEnumerable<string>? accessors, 
         List<ModifierModel>? modifiers)
     {
         return new PropertyModel(name, type, accessors, modifiers);

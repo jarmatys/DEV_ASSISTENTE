@@ -1,11 +1,12 @@
 using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Infrastructure.Interfaces;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Client;
 
 public sealed class Playground(
-    IFileParser fileParser, 
-    IKnowledgeService knowledgeService, 
+    IFileParser fileParser,
+    IKnowledgeService knowledgeService,
     IMaintenanceService maintenanceService)
 {
     public async Task AnswerAsync(string question)
@@ -15,15 +16,39 @@ public sealed class Playground(
 
     public async Task LearnAsync()
     {
-        var notes = fileParser.Parse("Examples/test-notes.md")
-            .GetValueOrDefault();
+        var notesLearnResult = await fileParser
+            .GetNotes()
+            .Bind(async texts =>
+            {
+                var results = new List<Result>();
+                
+                foreach (var text in texts)
+                {
+                    var learnResult = await knowledgeService.LearnAsync(text, ResourceType.Note);
+                    
+                    results.Add(learnResult);
+                }
+
+                return Result.Combine(results);
+            });
         
-        foreach (var note in notes)
-        {
-            var knowledge = await knowledgeService.LearnAsync(note, ResourceType.Note);
-        }
+        var codeLearnResult = await fileParser
+            .GetCode()
+            .Bind(async texts =>
+            {
+                var results = new List<Result>();
+                
+                foreach (var text in texts)
+                {
+                    var learnResult = await knowledgeService.LearnAsync(text, ResourceType.Code);
+                    
+                    results.Add(learnResult);
+                }
+
+                return Result.Combine(results);
+            });
     }
-    
+
     public async Task ResetAsync()
     {
         await maintenanceService.ResetAsync();

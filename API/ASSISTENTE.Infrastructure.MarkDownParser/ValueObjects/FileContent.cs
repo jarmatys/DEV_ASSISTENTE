@@ -6,22 +6,22 @@ namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
 public sealed class FileContent
 {
-    public string Content { get; }
+    public IEnumerable<string> TextBlocks { get; }
 
-    private FileContent(string content)
+    private FileContent(IEnumerable<string> textBlocks)
     {
-        Content = content;
+        TextBlocks = textBlocks;
     }
-    
+
     public static Result<FileContent> Create(List<ElementBase> elements)
     {
         if (elements.Count == 0)
             return Result.Failure<FileContent>(FileContentErrors.EmptyContent.Build());
-        
-        // TODO: Group by heading level
-        var content = string.Join("\n\n", elements.Select(x => x.Content));
 
-        return new FileContent(content);
+        // TODO: Group by headings and prepare smaller text blocks
+        var content = string.Join("\n", elements.Select(x => x.Content));
+
+        return new FileContent([content]);
     }
 }
 

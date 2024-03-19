@@ -22,6 +22,8 @@ public sealed class KnowledgeService(
     ILLMClient llmClient
 ) : IKnowledgeService
 {
+    private const string CollectionName = "embeddings";
+    
     public async Task<Result> LearnAsync(string information, ResourceType type)
     {
         var resource = await Resource.Create(information, type)
@@ -34,7 +36,7 @@ public sealed class KnowledgeService(
             .TapError(errors => Console.WriteLine(errors));
 
         var upsertResult = await DocumentDto.Create(
-                "embeddings",
+                CollectionName,
                 embeddings.Value.Embeddings,
                 resource.Value.ResourceId
             )
@@ -51,16 +53,19 @@ public sealed class KnowledgeService(
             .Map(embedding => embedding)
             .TapError(errors => Console.WriteLine(errors));
 
-        var searchResult = await VectorDto.Create("embeddings", searchEmbeddings.Value.Embeddings)
+        var searchResult = await VectorDto.Create(CollectionName, searchEmbeddings.Value.Embeddings)
             .Bind(qdrantService.SearchAsync)
             .TapError(errors => Console.WriteLine(errors));
 
-        var resource = await resourceRepository.FindByResourceIdAsync(searchResult.Value.ResourceId)
+        var resourceIds = searchResult.Value.Select(x => x.ResourceId).ToList();
+        
+        var resources = await resourceRepository
+            .FindByResourceIdsAsync(resourceIds)
             .GetValueOrThrow();
-
+        
         var prompt = promptGenerator.GeneratePrompt(
             question,
-            context: resource.Content,
+            context: resources.Select(x => x.Content),
             PromptType.Question);
 
         var answer = await PromptText.Create(prompt.Value)

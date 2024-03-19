@@ -8,5 +8,5 @@ public interface IQdrantService
     Task<Result> CreateCollectionAsync(string name);
     Task<Result> DropCollectionAsync(string name);
     Task<Result> UpsertAsync(DocumentDto document);
-    Task<Result<SearchResult>> SearchAsync(VectorDto vectorDto);
+    Task<Result<List<SearchResult>>> SearchAsync(VectorDto vectorDto);
 }

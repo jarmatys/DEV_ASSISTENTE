@@ -43,18 +43,18 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
             : Result.Failure(QdrantServiceErrors.UpsertFailed.Build());
     }
 
-    public async Task<Result<SearchResult>> SearchAsync(VectorDto vectorDto)
+    public async Task<Result<List<SearchResult>>> SearchAsync(VectorDto vectorDto)
     {
         var response = await client.SearchAsync(
             vectorDto.GetCollectionName(),
             vectorDto.GetVector(),
-            limit: 1
+            limit: 5
         );
 
-        var result = response.FirstOrDefault();
+        var result = response.Select(x => SearchResult.Create(x.Id, x.Score)).ToList();
 
-        return result == null
-            ? Result.Failure<SearchResult>(QdrantServiceErrors.SearchFailed.Build())
-            : SearchResult.Create(result.Id, result.Score);
+        return result.Count == 0
+            ? Result.Failure<List<SearchResult>>(QdrantServiceErrors.SearchFailed.Build())
+            : result;
     }
 }

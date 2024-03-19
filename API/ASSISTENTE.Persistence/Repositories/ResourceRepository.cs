@@ -11,13 +11,14 @@ internal sealed class ResourceRepository(IAssistenteDbContext context)
 {
     private readonly IAssistenteDbContext _context = context;
 
-    public async Task<Maybe<Resource>> FindByResourceIdAsync(Guid resourceId)
+    public async Task<Maybe<List<Resource>>> FindByResourceIdsAsync(List<Guid> resourceIds)
     {
-        var resource = await _context.Resources
-            .FirstOrDefaultAsync(r => r.ResourceId == resourceId);
+        var resources = await _context.Resources
+            .Where(x => resourceIds.Contains(x.ResourceId))
+            .ToListAsync();
         
-        return resource == null 
-            ? Maybe<Resource>.None 
-            : Maybe<Resource>.From(resource);
+        return resources.Count == 0
+            ? Maybe<List<Resource>>.None 
+            : Maybe<List<Resource>>.From(resources);
     }
 }
