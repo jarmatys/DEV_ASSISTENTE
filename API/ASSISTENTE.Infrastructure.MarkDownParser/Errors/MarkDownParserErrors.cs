@@ -9,4 +9,7 @@ internal static class MarkDownParserErrors
     
     public static readonly Error EmptyContent = new(
         "MarkDownParser.EmptyContent", "File content is empty");
+    
+    public static readonly Error OnlyHeadersNotAllowed = new(
+        "MarkDownParser.OnlyHeadersNotAllowed", "Notes with only headers are not allowed");
 }

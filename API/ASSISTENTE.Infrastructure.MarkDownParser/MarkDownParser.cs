@@ -38,7 +38,10 @@ internal sealed class MarkDownParser : IMarkDownParser
             .Select(x => x.Value)
             .ToList();
 
-        return FileContent.Create(elements!)
+        if (elements.All(x => x is Heading))
+            return Result.Failure<FileContent>(MarkDownParserErrors.OnlyHeadersNotAllowed.Build());
+
+        return FileContent.Create(filePath.FileName, elements!)
             .TapError(error => Result.Failure<FileContent>(error));
     }
 
@@ -53,7 +56,7 @@ internal sealed class MarkDownParser : IMarkDownParser
                 var headingContent = heading.GetContent();
 
                 var headingElement = new Heading(headingContent, level) as ElementBase;
-                
+
                 return Result.Success(headingElement);
             }
             case ListBlock list:
@@ -67,7 +70,7 @@ internal sealed class MarkDownParser : IMarkDownParser
             case CodeBlock code:
             {
                 var codeContent = code.GetCode();
-                
+
                 var codeElement = new Code(codeContent) as ElementBase;
 
                 return Result.Success(codeElement);
@@ -77,7 +80,7 @@ internal sealed class MarkDownParser : IMarkDownParser
                 var paragraphContent = paragraph.GetContent();
 
                 var paragraphElement = new Paragraph(paragraphContent) as ElementBase;
-                
+
                 return Result.Success(paragraphElement);
             }
             default:

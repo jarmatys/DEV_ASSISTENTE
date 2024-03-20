@@ -6,23 +6,63 @@ namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
 public sealed class FileContent
 {
+    public string Title { get; set; }
     public IEnumerable<string> TextBlocks { get; }
 
-    private FileContent(IEnumerable<string> textBlocks)
+    private FileContent(string title, IEnumerable<string> textBlocks)
     {
+        Title = title;
         TextBlocks = textBlocks;
     }
 
-    public static Result<FileContent> Create(List<ElementBase> elements)
+    public static Result<FileContent> Create(string title, List<ElementBase> elements)
     {
         if (elements.Count == 0)
             return Result.Failure<FileContent>(FileContentErrors.EmptyContent.Build());
 
-        // TODO: Group by headings and prepare smaller text blocks
-        var content = string.Join("\n", elements.Select(x => x.Content));
+        var blocks = new List<string>();
+        
+        var containsHeadings = elements.Any(x => x is Heading);
+        if (containsHeadings)
+        {
+            var headings = elements.OfType<Heading>().ToList();
+            var previousHeadingLocation = 0;
+            foreach (var heading in headings)
+            {
+                var headingLocation = elements.IndexOf(heading);
+                
+                var take = previousHeadingLocation == 0 
+                    ? headingLocation 
+                    : headingLocation - previousHeadingLocation;
 
-        return new FileContent([content]);
+                var blockElements = elements
+                    .Skip(previousHeadingLocation)
+                    .Take(take);
+
+                blocks.Add(CreateBlock(title, blockElements));
+                
+                previousHeadingLocation = headingLocation;
+            }
+
+            var lastBlockElements = elements.Skip(previousHeadingLocation);
+            
+            blocks.Add(CreateBlock(title, lastBlockElements));
+        }
+        else
+        {
+            blocks.Add(CreateBlock(title, elements));
+        }
+
+        return new FileContent(title, blocks);
     }
+
+    private static string CreateBlock(string fileName, IEnumerable<ElementBase> blocks)
+    {
+        var content = string.Join("\n", blocks.Select(x => x.Content));
+        
+        return $"File name (title): '{fileName}'\n\n{content}";
+    }
+       
 }
 
 public static class FileContentErrors

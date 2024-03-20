@@ -17,6 +17,7 @@ public sealed partial class FileParser
             var textBlocks = FilePath.Create(fileLocation)
                 .Bind(markDownParser.Parse)
                 .Map(fileContent => fileContent.TextBlocks)
+                .TapError(error => Console.WriteLine(error))
                 .GetValueOrDefault();
 
             if (textBlocks != null)
