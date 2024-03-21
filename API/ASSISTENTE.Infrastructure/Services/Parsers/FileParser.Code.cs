@@ -1,28 +1,30 @@
 using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
+using ASSISTENTE.Infrastructure.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;
 
 public sealed partial class FileParser 
 {
-    public Result<IEnumerable<string>> GetCode()
+    public Result<IEnumerable<ResourceText>> GetCode()
     {
         var filePaths = GetPaths(knowledgePathsOption.Repositories);
 
-        var blocks = new List<string>();
+        var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)
         {
             if (!fileLocation.EndsWith(".cs")) continue;
             
-            var codeBlocks = CodeFile.Create(fileLocation)
+            var blocks = CodePath.Create(fileLocation)
                 .Bind(codeParser.Parse)
-                .Map(fileContent => fileContent.Classes)
+                .Map(parsedFile => parsedFile.Classes.Select(content => ResourceText.Create(parsedFile.Title, content)))
+                .TapError(error => Console.WriteLine(error))
                 .GetValueOrDefault();
             
-            if (codeBlocks != null)
-                blocks.AddRange(codeBlocks);
+            if (blocks != null)
+                resourceBlocks.AddRange(blocks);
         }
 
-        return blocks;
+        return resourceBlocks;
     }
 }

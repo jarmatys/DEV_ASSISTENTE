@@ -24,9 +24,10 @@ if (parsedParams.Learn)
     await playground.LearnAsync();
 if (parsedParams.Question != null)
     await playground.AnswerAsync(parsedParams.Question);
-else
+
+if (!parsedParams.IsValid)
     Console.WriteLine("Select an action: --reset, --learn, --question");
-    
+
 Console.WriteLine("\nStopping Playground...");
 
 return;
@@ -41,9 +42,9 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 PlaygroundParams ParseParams(IEnumerable<string> strings)
 {
     var playgroundParams = new PlaygroundParams();
-    
+
     Parser.Default.ParseArguments<PlaygroundParams>(strings)
         .WithParsed(options => playgroundParams = options);
-    
+
     return playgroundParams;
 }

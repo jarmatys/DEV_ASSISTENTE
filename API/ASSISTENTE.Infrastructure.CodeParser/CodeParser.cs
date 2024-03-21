@@ -10,9 +10,9 @@ namespace ASSISTENTE.Infrastructure.CodeParser;
 
 internal sealed class CodeParser : ICodeParser
 {
-    public Result<CodeContent> Parse(CodeFile file)
+    public Result<CodeContent> Parse(CodePath codePath)
     {
-        var syntaxTree = CSharpSyntaxTree.ParseText(file.Content);
+        var syntaxTree = CSharpSyntaxTree.ParseText(codePath.Content);
 
         if (syntaxTree.GetRoot() is not CompilationUnitSyntax root)
             return Result.Failure<CodeContent>(CodeParserErrors.FailedToParseCodeContent.Build());
@@ -26,9 +26,9 @@ internal sealed class CodeParser : ICodeParser
             let parameters = classDeclaration.GetParameters()
             let properties = classDeclaration.GetProperties()
             let methods = classDeclaration.GetMethods()
-            select ClassModel.Create(className, file.FileName, modifiers, namespaces, properties, methods)
+            select ClassModel.Create(className, codePath.FileName, modifiers, namespaces, properties, methods)
         ).ToList();
 
-        return CodeContent.Create(classes);
+        return CodeContent.Create(codePath.FileName, classes);
     }
 }

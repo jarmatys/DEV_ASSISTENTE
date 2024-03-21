@@ -11,6 +11,7 @@ namespace ASSISTENTE.Persistence.Configuration
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Content).IsRequired();
+            builder.Property(e => e.Title).IsRequired();
             
             builder.Property(e => e.Type).IsRequired();
             builder.Property(e => e.Type).HasConversion<string>();

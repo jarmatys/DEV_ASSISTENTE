@@ -5,17 +5,19 @@ namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 
 public sealed class CodeContent
 {
+    public string Title { get; set; }
     public IEnumerable<string> Classes { get; }
 
-    private CodeContent(IEnumerable<string> classes)
+    private CodeContent(string title, IEnumerable<string> classes)
     {
+        Title = title;
         Classes = classes;
     }
     
-    public static Result<CodeContent> Create(IEnumerable<ClassModel> classes)
+    public static Result<CodeContent> Create(string title, IEnumerable<ClassModel> classes)
     {
         var classesContent = classes.Select(classModel => classModel.ToString()).ToList();
         
-        return new CodeContent(classesContent);
+        return new CodeContent(title, classesContent);
     }
 }

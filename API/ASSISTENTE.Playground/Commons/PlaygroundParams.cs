@@ -12,4 +12,6 @@ internal sealed class PlaygroundParams
     
     [Option('l', "learn", Required = false, HelpText = "Learn from a file")]
     public bool Learn { get; set; }
+    
+    public bool IsValid => Reset || Question != null || Learn;
 }

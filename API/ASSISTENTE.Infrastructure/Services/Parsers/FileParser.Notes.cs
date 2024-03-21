@@ -1,29 +1,30 @@
 using ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
+using ASSISTENTE.Infrastructure.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;
 
 public sealed partial class FileParser 
 {
-    public Result<IEnumerable<string>> GetNotes()
+    public Result<IEnumerable<ResourceText>> GetNotes()
     {
         var filePaths = GetPaths(knowledgePathsOption.MarkdownNotes);
 
-        var blocks = new List<string>();
+        var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)
         {
             if (!fileLocation.EndsWith(".md")) continue;
 
-            var textBlocks = FilePath.Create(fileLocation)
+            var blocks = FilePath.Create(fileLocation)
                 .Bind(markDownParser.Parse)
-                .Map(fileContent => fileContent.TextBlocks)
+                .Map(parsedFile => parsedFile.TextBlocks.Select(content => ResourceText.Create(parsedFile.Title, content)))
                 .TapError(error => Console.WriteLine(error))
                 .GetValueOrDefault();
 
-            if (textBlocks != null)
-                blocks.AddRange(textBlocks);
+            if (blocks != null)
+                resourceBlocks.AddRange(blocks);
         }
 
-        return blocks;
+        return resourceBlocks;
     }
 }

@@ -10,6 +10,7 @@ using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
+using ASSISTENTE.Infrastructure.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.Services;
@@ -24,13 +25,13 @@ public sealed class KnowledgeService(
 {
     private const string CollectionName = "embeddings";
     
-    public async Task<Result> LearnAsync(string information, ResourceType type)
+    public async Task<Result> LearnAsync(ResourceText text, ResourceType type)
     {
-        var resource = await Resource.Create(information, type)
+        var resource = await Resource.Create(text.Content, text.Title, type)
             .Bind(resourceRepository.AddAsync)
             .TapError(errors => Console.WriteLine(errors));
         
-        var embeddings = await EmbeddingText.Create(information)
+        var embeddings = await EmbeddingText.Create(text.Content)
             .Bind(embeddingClient.GetAsync)
             .Map(embedding => embedding)
             .TapError(errors => Console.WriteLine(errors));

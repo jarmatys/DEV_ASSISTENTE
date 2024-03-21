@@ -18,13 +18,13 @@ public sealed class Playground(
     {
         var notesLearnResult = await fileParser
             .GetNotes()
-            .Bind(async texts =>
+            .Bind(async resources =>
             {
                 var results = new List<Result>();
                 
-                foreach (var text in texts)
+                foreach (var resource in resources)
                 {
-                    var learnResult = await knowledgeService.LearnAsync(text, ResourceType.Note);
+                    var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Note);
                     
                     results.Add(learnResult);
                 }
@@ -34,13 +34,13 @@ public sealed class Playground(
         
         var codeLearnResult = await fileParser
             .GetCode()
-            .Bind(async texts =>
+            .Bind(async resources =>
             {
                 var results = new List<Result>();
                 
-                foreach (var text in texts)
+                foreach (var resource in resources)
                 {
-                    var learnResult = await knowledgeService.LearnAsync(text, ResourceType.Code);
+                    var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Code);
                     
                     results.Add(learnResult);
                 }

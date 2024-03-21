@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 
-public sealed class CodeFile
+public sealed class CodePath
 {
     private string Path { get; }
     
@@ -11,7 +11,7 @@ public sealed class CodeFile
     public string FileName { get; }
     public string Content { get; }
 
-    private CodeFile(string path, string extension, string fileName, string content)
+    private CodePath(string path, string extension, string fileName, string content)
     {
         Path = path;
         Extension = extension;
@@ -19,23 +19,23 @@ public sealed class CodeFile
         Content = content;
     }
 
-    public static Result<CodeFile> Create(string path)
+    public static Result<CodePath> Create(string path)
     {
         var extension = System.IO.Path.GetExtension(path);
 
         if (extension == string.Empty)
-            return Result.Failure<CodeFile>(FilePathErrors.NotFound.Build());
+            return Result.Failure<CodePath>(FilePathErrors.NotFound.Build());
 
         if (extension != ".cs")
-            return Result.Failure<CodeFile>(FilePathErrors.InvalidFileExtension.Build());
+            return Result.Failure<CodePath>(FilePathErrors.InvalidFileExtension.Build());
 
         var fileName = System.IO.Path.GetFileName(path);
-        var content = System.IO.File.ReadAllText(path);
+        var content = File.ReadAllText(path);
         
-        return new CodeFile(path, extension, fileName, content);
+        return new CodePath(path, extension, fileName, content);
     }
 
-    public static implicit operator string(CodeFile codeFile) => codeFile.Path;
+    public static implicit operator string(CodePath codePath) => codePath.Path;
 }
 
 public static class FilePathErrors
