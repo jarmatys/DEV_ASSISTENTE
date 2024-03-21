@@ -78,8 +78,9 @@ internal sealed class MarkDownParser : IMarkDownParser
             case ParagraphBlock paragraph:
             {
                 var paragraphContent = paragraph.GetContent();
-
-                var paragraphElement = new Paragraph(paragraphContent) as ElementBase;
+                var paragraphUrls = paragraph.GetUrls();
+                
+                var paragraphElement = new Paragraph(paragraphContent, paragraphUrls) as ElementBase;
 
                 return Result.Success(paragraphElement);
             }

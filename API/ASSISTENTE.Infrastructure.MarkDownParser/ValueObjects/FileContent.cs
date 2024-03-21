@@ -58,7 +58,7 @@ public sealed class FileContent
 
     private static string CreateBlock(string fileName, IEnumerable<ElementBase> blocks)
     {
-        var content = string.Join("\n", blocks.Select(x => x.Content));
+        var content = string.Join("\n", blocks.Select(x => x.GetContent()));
         
         return $"File name (title): '{fileName}'\n\n{content}";
     }

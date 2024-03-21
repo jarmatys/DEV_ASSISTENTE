@@ -18,6 +18,19 @@ internal static class MarkDownExtensions
 
         return string.Join(" ", contentsList);
     }
+
+    public static string GetUrls(this LeafBlock leaf)
+    {
+        if (leaf.Inline == null) return string.Empty;
+
+        var urls = leaf.Inline
+            .Descendants()
+            .OfType<LinkInline>()
+            .Select(x => x.Url)
+            .ToList();
+
+        return string.Join(" ", urls);
+    }
     
     public static string GetCode(this LeafBlock leaf)
     {
@@ -35,6 +48,13 @@ internal static class MarkDownExtensions
             .Descendants()
             .OfType<LiteralInline>()
             .Select((item, index) => $"{index + 1}. {item.Content}")
+            .ToList();
+        
+        // TODO: Get urls from numbered list
+        var urls = block
+            .Descendants()
+            .OfType<LinkInline>()
+            .Select(x => x.Url)
             .ToList();
         
         return string.Join(",\n", listContent);
