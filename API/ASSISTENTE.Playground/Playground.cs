@@ -32,21 +32,21 @@ public sealed class Playground(
                 return Result.Combine(results);
             });
         
-        var codeLearnResult = await fileParser
-            .GetCode()
-            .Bind(async resources =>
-            {
-                var results = new List<Result>();
-                
-                foreach (var resource in resources)
-                {
-                    var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Code);
-                    
-                    results.Add(learnResult);
-                }
-
-                return Result.Combine(results);
-            });
+        // var codeLearnResult = await fileParser
+        //     .GetCode()
+        //     .Bind(async resources =>
+        //     {
+        //         var results = new List<Result>();
+        //         
+        //         foreach (var resource in resources)
+        //         {
+        //             var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Code);
+        //             
+        //             results.Add(learnResult);
+        //         }
+        //
+        //         return Result.Combine(results);
+        //     });
     }
 
     public async Task ResetAsync()

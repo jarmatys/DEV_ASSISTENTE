@@ -29,6 +29,7 @@ public sealed class FileContent
             var previousHeadingLocation = 0;
             foreach (var heading in headings)
             {
+                // TODO: remove blocks with only headings
                 var headingLocation = elements.IndexOf(heading);
                 
                 var take = previousHeadingLocation == 0 

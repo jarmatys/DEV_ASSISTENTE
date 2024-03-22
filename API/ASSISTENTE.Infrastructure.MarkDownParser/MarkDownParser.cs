@@ -15,7 +15,8 @@ internal sealed class MarkDownParser : IMarkDownParser
         typeof(HeadingBlock),
         typeof(ListBlock),
         typeof(CodeBlock),
-        typeof(ParagraphBlock)
+        typeof(ParagraphBlock),
+        typeof(FencedCodeBlock)
     ];
 
     public Result<FileContent> Parse(FilePath filePath)
@@ -67,9 +68,17 @@ internal sealed class MarkDownParser : IMarkDownParser
 
                 return Result.Success(listElement);
             }
+            case FencedCodeBlock code:
+            {
+                var codeContent = code.GetCodeBlock();
+
+                var codeElement = new Code(codeContent) as ElementBase;
+
+                return Result.Success(codeElement);
+            }
             case CodeBlock code:
             {
-                var codeContent = code.GetCode();
+                var codeContent = code.GetCodeLine();
 
                 var codeElement = new Code(codeContent) as ElementBase;
 

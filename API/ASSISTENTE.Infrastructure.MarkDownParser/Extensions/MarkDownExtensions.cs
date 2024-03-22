@@ -31,8 +31,8 @@ internal static class MarkDownExtensions
 
         return string.Join(" ", urls);
     }
-    
-    public static string GetCode(this LeafBlock leaf)
+
+    public static string GetCodeLine(this LeafBlock leaf)
     {
         var contentsList = leaf.Lines
             .OfType<StringLine>()
@@ -41,22 +41,57 @@ internal static class MarkDownExtensions
 
         return string.Join("\n", contentsList);
     }
-    
+
+    public static string GetCodeBlock(this LeafBlock leaf)
+    {
+        var contentsList = leaf.Lines
+            .OfType<StringLine>()
+            .Select(x => x.ToString())
+            .ToList();
+        
+        var fencedCodeBlock = leaf as FencedCodeBlock;
+        var programmingLanguage = string.IsNullOrEmpty(fencedCodeBlock?.Info) ? "unknown" : fencedCodeBlock.Info;
+        
+        var content = $"""
+                       ---------------- Start code block ----------------
+                       Programming language: '{programmingLanguage.ToUpper()}'
+                       
+                       {string.Join("\n", contentsList)};
+                       ---------------- End code block ----------------
+                       """;
+
+        return content;
+    }
+
     public static string GetListContent(this ListBlock block)
     {
-        var listContent = block
-            .Descendants()
-            .OfType<LiteralInline>()
-            .Select((item, index) => $"{index + 1}. {item.Content}")
+        var listPosition = block
+            .OfType<ListItemBlock>()
             .ToList();
-        
-        // TODO: Get urls from numbered list
-        var urls = block
-            .Descendants()
-            .OfType<LinkInline>()
-            .Select(x => x.Url)
-            .ToList();
-        
+
+        var counter = 1;
+        var listContent = new List<string>();
+
+        foreach (var position in listPosition)
+        {
+            var paragraphs = position.OfType<ParagraphBlock>().ToList();
+
+            foreach (var paragraph in paragraphs)
+            {
+                var content = paragraph.GetContent();
+                var urls = paragraph.GetUrls();
+
+                var line = $"{counter}. {content}";
+
+                if (!string.IsNullOrEmpty(urls))
+                    line += $" | Links associated with this point: {urls}";
+
+                listContent.Add(line);
+            }
+
+            counter++;
+        }
+
         return string.Join(",\n", listContent);
     }
 }
