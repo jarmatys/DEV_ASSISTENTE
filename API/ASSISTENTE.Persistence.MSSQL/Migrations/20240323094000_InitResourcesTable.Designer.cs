@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASSISTENTE.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(AssistenteDbContext))]
-    [Migration("20240315164748_AddedResourcesTable")]
-    partial class AddedResourcesTable
+    [Migration("20240323094000_InitResourcesTable")]
+    partial class InitResourcesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,8 +52,13 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
                     b.Property<Guid>("ResourceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

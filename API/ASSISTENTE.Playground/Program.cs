@@ -25,9 +25,6 @@ if (parsedParams.Learn)
 if (parsedParams.Question != null)
     await playground.AnswerAsync(parsedParams.Question);
 
-if (!parsedParams.IsValid)
-    Console.WriteLine("Select an action: --reset, --learn, --question");
-
 Console.WriteLine("\nStopping Playground...");
 
 return;

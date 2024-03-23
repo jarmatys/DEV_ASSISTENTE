@@ -6,7 +6,7 @@ namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
 public sealed class FileContent
 {
-    public string Title { get; set; }
+    public string Title { get; }
     public IEnumerable<string> TextBlocks { get; }
 
     private FileContent(string title, IEnumerable<string> textBlocks)
@@ -29,8 +29,9 @@ public sealed class FileContent
             var previousHeadingLocation = 0;
             foreach (var heading in headings)
             {
-                // TODO: remove blocks with only headings
                 var headingLocation = elements.IndexOf(heading);
+                if (headingLocation == 0)
+                    continue;
                 
                 var take = previousHeadingLocation == 0 
                     ? headingLocation 
@@ -38,9 +39,12 @@ public sealed class FileContent
 
                 var blockElements = elements
                     .Skip(previousHeadingLocation)
-                    .Take(take);
+                    .Take(take)
+                    .ToList();
 
-                blocks.Add(CreateBlock(title, blockElements));
+                var containsOnlyHeadings = blockElements.All(x => x is Heading);
+                if(!containsOnlyHeadings)
+                    blocks.Add(CreateBlock(title, blockElements));
                 
                 previousHeadingLocation = headingLocation;
             }

@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Entities.Resources;
+using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Domain.Interfaces;
+using ASSISTENTE.Persistence.MSSQL.Converters;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,8 +42,14 @@ namespace ASSISTENTE.Persistence.MSSQL
 
             base.OnModelCreating(modelBuilder);
         }
-
-
+        
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder
+                .Properties<ResourceType>()
+                .HaveConversion<ResourceTypeConverter>();
+        }
+        
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())

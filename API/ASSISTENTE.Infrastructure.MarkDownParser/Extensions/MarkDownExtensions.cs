@@ -9,11 +9,19 @@ internal static class MarkDownExtensions
     public static string GetContent(this LeafBlock leaf)
     {
         if (leaf.Inline == null) return string.Empty;
-
+        
         var contentsList = leaf.Inline
             .Descendants()
-            .OfType<LiteralInline>()
-            .Select(x => x.Content)
+            .Where(x => x is CodeInline or LiteralInline)
+            .Select(x =>
+            {
+                return x switch
+                {
+                    CodeInline codeInline => $"'{codeInline.Content}'",
+                    LiteralInline literalInline => literalInline.Content.ToString(),
+                    _ => string.Empty
+                };
+            })
             .ToList();
 
         return string.Join(" ", contentsList);
