@@ -17,7 +17,7 @@ public sealed partial class FileParser
             
             var blocks = CodePath.Create(fileLocation)
                 .Bind(codeParser.Parse)
-                .Map(parsedFile => parsedFile.Classes.Select(content => ResourceText.Create(parsedFile.Title, content)))
+                .Map(parsedFile => parsedFile.CodeBlocks.Select(content => ResourceText.Create(parsedFile.Title, content)))
                 .TapError(error => Console.WriteLine(error))
                 .GetValueOrDefault();
             
