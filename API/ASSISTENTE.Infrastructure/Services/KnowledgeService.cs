@@ -49,6 +49,8 @@ public sealed class KnowledgeService(
 
     public async Task<Result<string>> RecallAsync(string question)
     {
+        // TODO: making decision about resource type based on question
+        
         var searchEmbeddings = await EmbeddingText.Create(question)
             .Bind(embeddingClient.GetAsync)
             .Map(embedding => embedding)

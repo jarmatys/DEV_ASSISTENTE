@@ -20,21 +20,21 @@ public sealed class Playground(
 
     public async Task LearnAsync()
     {
-        // var notesLearnResult = await fileParser
-        //     .GetNotes()
-        //     .Bind(async resources =>
-        //     {
-        //         var results = new List<Result>();
-        //         
-        //         foreach (var resource in resources)
-        //         {
-        //             var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Note);
-        //             
-        //             results.Add(learnResult);
-        //         }
-        //
-        //         return Result.Combine(results);
-        //     });
+        var notesLearnResult = await fileParser
+            .GetNotes()
+            .Bind(async resources =>
+            {
+                var results = new List<Result>();
+                
+                foreach (var resource in resources)
+                {
+                    var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Note);
+                    
+                    results.Add(learnResult);
+                }
+        
+                return Result.Combine(results);
+            });
         
         var codeLearnResult = await fileParser
             .GetCode()

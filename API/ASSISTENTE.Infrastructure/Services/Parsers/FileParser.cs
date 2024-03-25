@@ -14,6 +14,11 @@ public sealed partial class FileParser(
     [
         ".obsidian",
         ".git",
+        ".vscode",
+        ".github",
+        "bin",
+        "obj",
+        ".idea"
     ];
 
     private static IEnumerable<string> GetPaths(string rootDirectory)

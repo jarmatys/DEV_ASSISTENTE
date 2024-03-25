@@ -35,6 +35,8 @@ public sealed class MethodModel
         return new MethodModel(name, returnName, body, modifiers, parameter);
     }
     
+    public string Declaration() => $"{ReturnName} {Name}({string.Join(", ", Parameter)})";
+    
     public override string ToString()
     {
         var modifiers = string.Join(" ", Modifiers);

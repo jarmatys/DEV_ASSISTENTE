@@ -1,3 +1,4 @@
+using ASSISTENTE.Infrastructure.CodeParser.Errors;
 using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.CodeParser.Models;
 
@@ -13,19 +14,42 @@ public sealed class CodeContent
         Title = title;
         CodeBlocks = codeBlocks;
     }
-    
+
     public static Result<CodeContent> Create(string title, IEnumerable<ClassModel> classes)
     {
         var blocks = new List<string>();
- 
+
         foreach (var classContent in classes)
         {
-            // TODO: Split content by methods 
-            // TODO: Based on method names in whole Class create "table of contents"
-            
-            // blocks.Add(classContent.ToString());
+            var tableOfContents = classContent.TableOfContents();
+
+            var blocksToAdd = classContent
+                .GetMethods()
+                .Select(method => CreateMethodBlock(title, method, tableOfContents))
+                .ToList();
+
+            if (blocksToAdd.Count != 0)
+            {
+                blocks.AddRange(blocksToAdd);
+            }
+            else
+            {
+                blocks.Add(CreatePropertiesBlock(title, tableOfContents));
+            }
         }
         
-        return new CodeContent(title, blocks);
+        return blocks.Count == 0
+            ? Result.Failure<CodeContent>(CodeParserErrors.EmptyContent.Build(title))
+            : new CodeContent(title, blocks);
+    }
+
+    private static string CreateMethodBlock(string title, string method, string tableOfContents)
+    {
+        return $"# File name: {title}\n\n{tableOfContents}\n\nMethod implementation: \n{method}";
+    }
+
+    private static string CreatePropertiesBlock(string title, string tableOfContents)
+    {
+        return $"# File name: {title}\n\n{tableOfContents}";
     }
 }
