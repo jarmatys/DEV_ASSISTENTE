@@ -32,19 +32,20 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 **TODO:**
 
-- [X] Loading and parsing  `*.md` files - knowledge base
-- [X] Loading and parsing  `*.cs` files - code base
-- [ ] Find open source solution for creating embeddins
-    - [X] Done partially (currently in use OpenAI embedding service)
-- [X] Integration with Qdrant - saving embeddings
+- ✅ Loading and parsing  `*.md` files - knowledge base
+- ✅ Loading and parsing  `*.cs` files - code base
+- ✅ Find open source solution for creating embeddins
+    - ✅ Done partially (currently in use OpenAI embedding  service)
+    - 🔳 Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
+- ✅ Integration with Qdrant - saving embeddings
 
 #### Generating results
 
-- [ ] Generating prompt based on the 'knowledge base' & 'code base'
-    - [X] Generate prompt based on 'knowledge base'
-    - [ ] Generate prompto based on 'code base'
-- [ ] Integration with the OpenAI API
-- [ ] Generating answers or ready code - depending on what the user needs
+- 🔳 Generating prompt based on the 'knowledge base' & 'code base'
+    - ✅ Generate prompt based on 'knowledge base'
+    - 🔳 Generate prompto based on 'code base'
+- ✅ Integration with the OpenAI API
+- 🔳 Generating answers or ready code - depending on what the user needs
 
 ---
 
