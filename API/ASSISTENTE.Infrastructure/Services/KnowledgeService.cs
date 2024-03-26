@@ -3,9 +3,11 @@ using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
+using ASSISTENTE.Infrastructure.Errors;
 using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.LLM.ValueObjects;
+using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.Qdrant;
@@ -20,60 +22,63 @@ public sealed class KnowledgeService(
     IQdrantService qdrantService,
     IPromptGenerator promptGenerator,
     IResourceRepository resourceRepository,
-    ILLMClient llmClient
+    ILLMClient llmClient,
+    ISourceProvider sourceProvider
 ) : IKnowledgeService
 {
     private const string CollectionName = "embeddings";
-    
+
     public async Task<Result> LearnAsync(ResourceText text, ResourceType type)
     {
+        // TODO: Create embeddings collection for each resource type
+
         var resource = await Resource.Create(text.Content, text.Title, type)
             .Bind(resourceRepository.AddAsync)
             .TapError(errors => Console.WriteLine(errors));
-        
+
         var embeddings = await EmbeddingText.Create(text.Content)
             .Bind(embeddingClient.GetAsync)
             .Map(embedding => embedding)
             .TapError(errors => Console.WriteLine(errors));
 
-        var upsertResult = await DocumentDto.Create(
+        return await DocumentDto.Create(
                 CollectionName,
                 embeddings.Value.Embeddings,
                 resource.Value.ResourceId
             )
             .Bind(qdrantService.UpsertAsync)
             .TapError(errors => Console.WriteLine(errors));
-
-        return upsertResult;
     }
 
     public async Task<Result<string>> RecallAsync(string question)
     {
-        // TODO: making decision about resource type based on question
-        
-        var searchEmbeddings = await EmbeddingText.Create(question)
+        var resourceType = await GetQuestionTypeAsync<ResourceType>(question);
+
+        var answer = await EmbeddingText.Create(question)
             .Bind(embeddingClient.GetAsync)
-            .Map(embedding => embedding)
-            .TapError(errors => Console.WriteLine(errors));
-
-        var searchResult = await VectorDto.Create(CollectionName, searchEmbeddings.Value.Embeddings)
+            .Bind(dto => VectorDto.Create(CollectionName, dto.Embeddings))
             .Bind(qdrantService.SearchAsync)
+            .Map(searchResult => searchResult.Select(x => x.ResourceId).ToList())
+            .Map(resourceRepository.FindByResourceIdsAsync)
+            .Ensure(resources => resources.HasValue, KnowledgeServiceErrors.NotFound.Build())
+            .Map(resources => resources.Value.Select(x => x.Content))
+            .Bind(context => promptGenerator.GeneratePrompt(question, context, PromptType.Question))
+            .Bind(PromptText.Create)
+            .Bind(llmClient.GenerateAnswer)
             .TapError(errors => Console.WriteLine(errors));
 
-        var resourceIds = searchResult.Value.Select(x => x.ResourceId).ToList();
-        
-        var resources = await resourceRepository
-            .FindByResourceIdsAsync(resourceIds)
-            .GetValueOrThrow();
-        
-        var prompt = promptGenerator.GeneratePrompt(
-            question,
-            context: resources.Select(x => x.Content),
-            PromptType.Question);
-
-        var answer = await PromptText.Create(prompt.Value)
-            .Bind(llmClient.GenerateAnswer);
-        
         return answer.Value.Text;
+    }
+
+    private async Task<Result<T>> GetQuestionTypeAsync<T>(string question) where T : struct, Enum
+    {
+        var promptText = sourceProvider.Prompt<T>(question);
+
+        var result = await PromptText.Create(promptText)
+            .Bind(llmClient.GenerateAnswer);
+
+        var source = (T)Enum.Parse(typeof(T), result.Value.Text);
+        
+        return Result.Success(source);
     }
 }

@@ -7,5 +7,4 @@ namespace ASSISTENTE.Infrastructure.LLM;
 public interface ILLMClient
 {
     Task<Result<AnswerDto>> GenerateAnswer(PromptText prompt);
-
 }

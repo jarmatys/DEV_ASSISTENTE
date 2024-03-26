@@ -10,6 +10,7 @@ namespace ASSISTENTE.Infrastructure.PromptGenerator
         {
             services.AddScoped<IPromptGenerator, PromptGenerator>();
             services.AddScoped<IPromptFactory, PromptFactory>();
+            services.AddScoped<ISourceProvider, SourceProvider>();
 
             services.AddScoped<IPrompt, QuestionPrompt>();
             
