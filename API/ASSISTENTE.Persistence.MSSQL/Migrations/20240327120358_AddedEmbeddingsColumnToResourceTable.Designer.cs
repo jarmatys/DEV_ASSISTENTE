@@ -4,6 +4,7 @@ using ASSISTENTE.Persistence.MSSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASSISTENTE.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(AssistenteDbContext))]
-    partial class AssistenteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240327120358_AddedEmbeddingsColumnToResourceTable")]
+    partial class AddedEmbeddingsColumnToResourceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

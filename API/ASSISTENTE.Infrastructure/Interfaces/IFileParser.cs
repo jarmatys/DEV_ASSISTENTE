@@ -1,5 +1,4 @@
 using ASSISTENTE.Infrastructure.ValueObjects;
-using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.Interfaces;
 

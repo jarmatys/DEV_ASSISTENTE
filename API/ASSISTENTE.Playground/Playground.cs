@@ -11,11 +11,11 @@ public sealed class Playground(
 {
     public async Task AnswerAsync(string question)
     {
-        Console.WriteLine($"\nQuestion: '{question}'\n");
+        Console.WriteLine($"\nQuestion: '{question}'");
         
         var result = await knowledgeService.RecallAsync(question);
         
-        Console.WriteLine($"\nAnswer: '{result.Value}'\n");
+        Console.WriteLine($"\nAnswer: '{result.Value}'");
     }
 
     public async Task LearnAsync()
@@ -31,6 +31,8 @@ public sealed class Playground(
                     var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Note);
                     
                     results.Add(learnResult);
+
+                    Console.WriteLine($"\nLearned from note: '{resource.Title}'");
                 }
         
                 return Result.Combine(results);
@@ -47,6 +49,8 @@ public sealed class Playground(
                     var learnResult = await knowledgeService.LearnAsync(resource, ResourceType.Code);
                     
                     results.Add(learnResult);
+
+                    Console.WriteLine($"\nLearned from code: '{resource.Title}'");
                 }
         
                 return Result.Combine(results);
@@ -55,7 +59,11 @@ public sealed class Playground(
 
     public async Task ResetAsync()
     {
+        Console.WriteLine("\nResetting the playground...");
+        
         await maintenanceService.ResetAsync();
         await maintenanceService.InitAsync();
+        
+        Console.WriteLine("\nPlayground reset!");
     }
 }

@@ -16,7 +16,7 @@ var parsedParams = ParseParams(args);
 
 if (playground == null) return;
 
-Console.WriteLine("Starting Playground...\n");
+Console.WriteLine("Starting Playground...");
 
 if (parsedParams.Reset)
     await playground.ResetAsync();
@@ -25,7 +25,7 @@ if (parsedParams.Learn)
 if (parsedParams.Question != null)
     await playground.AnswerAsync(parsedParams.Question);
 
-Console.WriteLine("\nStopping Playground...");
+Console.WriteLine("Stopping Playground...");
 
 return;
 
