@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Infrastructure.PromptGenerator
+namespace ASSISTENTE.Infrastructure.PromptGenerator.Interfaces
 {
     public interface ISourceProvider
     {

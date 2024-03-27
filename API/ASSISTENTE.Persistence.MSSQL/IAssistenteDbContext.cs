@@ -1,4 +1,5 @@
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ internal interface IAssistenteDbContext
     #region ENTITIES
 
     DbSet<Resource> Resources { get; set; } 
+    DbSet<Question> Questions { get; set; } 
 
     #endregion
         

@@ -1,5 +1,4 @@
 using ASSISTENTE.Domain.Commons;
-using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Domain.Entities.Resources.Interfaces;
 

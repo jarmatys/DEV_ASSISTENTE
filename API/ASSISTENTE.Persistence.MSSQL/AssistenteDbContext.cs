@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Domain.Interfaces;
@@ -31,6 +32,7 @@ namespace ASSISTENTE.Persistence.MSSQL
         #region ENTITIES
 
         public DbSet<Resource> Resources { get; set; } 
+        public DbSet<Question> Questions { get; set; } 
 
         #endregion
 

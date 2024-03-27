@@ -1,5 +1,3 @@
-using CSharpFunctionalExtensions;
-
 namespace ASSISTENTE.Domain.Commons;
 
 public interface IBaseRepository<TEntity>

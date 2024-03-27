@@ -1,6 +1,5 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Enums;
-using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Domain.Entities.Resources;
 

@@ -1,0 +1,16 @@
+﻿using ASSISTENTE.Domain.Entities.Questions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace ASSISTENTE.Persistence.Configuration
+{
+    public class QuestionConfiguration : IEntityTypeConfiguration<Question>
+    {
+        public void Configure(EntityTypeBuilder<Question> builder)
+        {
+            builder.HasKey(e => e.Id);
+
+            builder.Property(e => e.Text).IsRequired();
+        }
+    }
+}

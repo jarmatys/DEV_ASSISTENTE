@@ -1,3 +1,5 @@
+using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
+
 namespace ASSISTENTE.Infrastructure.PromptGenerator;
 
 public class SourceProvider : ISourceProvider
