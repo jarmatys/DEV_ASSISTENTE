@@ -1,13 +1,15 @@
+using ASSISTENTE.Domain.Entities.Enums;
+using ASSISTENTE.Domain.Entities.Interfaces;
+using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
+using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
-using ASSISTENTE.Domain.Enums;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Errors;
 using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.LLM.ValueObjects;
-using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.Qdrant;
@@ -21,11 +23,12 @@ public sealed class KnowledgeService(
     IQdrantService qdrantService,
     IPromptGenerator promptGenerator,
     IResourceRepository resourceRepository,
+    IQuestionRepository questionRepository,
     ILLMClient llmClient,
     ISourceProvider sourceProvider
 ) : IKnowledgeService
 {
-    private static string CollectionName(ResourceType type) => $"embeddings-{type.ToString()}";
+    private static string CollectionName(string type) => $"embeddings-{type}";
 
     public async Task<Result> LearnAsync(ResourceText text, ResourceType type)
     {
@@ -46,19 +49,29 @@ public sealed class KnowledgeService(
         if (resource.IsFailure)
             return Result.Failure(resource.Error);
         
-        return await DocumentDto.Create(CollectionName(type), embeddings, resource.Value.ResourceId)
+        return await DocumentDto.Create(CollectionName(type.ToString()), embeddings, resource.Value.ResourceId)
             .Bind(qdrantService.UpsertAsync)
             .TapError(errors => Console.WriteLine(errors));
     }
 
     public async Task<Result<string>> RecallAsync(string question)
     {
-        var answer = await GetQuestionTypeAsync<ResourceType>(question)
+        var answer = await GetQuestionTypeAsync<ResourceType, QuestionContext>(question)
             .Map(async resourceType =>
             {
+                // TODO: Implement question creation
+                // var question = Question.Create(question, );
+                //
+                // if (resourceType == QuestionContext.Error)
+                // {
+                //     await questionRepository.AddAsync(question);
+                //     
+                //     return "I'm sorry, I don't understand the question.";
+                // }
+                
                 var llmResult = await EmbeddingText.Create(question)
                     .Bind(embeddingClient.GetAsync)
-                    .Bind(dto => VectorDto.Create(CollectionName(resourceType), dto.Embeddings))
+                    .Bind(dto => VectorDto.Create(CollectionName(resourceType.ToString()), dto.Embeddings))
                     .Bind(qdrantService.SearchAsync)
                     .Map(searchResult => searchResult.Select(x => x.ResourceId).ToList())
                     .Map(resourceRepository.FindByResourceIdsAsync)
@@ -75,15 +88,23 @@ public sealed class KnowledgeService(
         return answer;
     }
 
-    private async Task<Result<T>> GetQuestionTypeAsync<T>(string question) where T : struct, Enum
+    private async Task<Result<TContext>> GetQuestionTypeAsync<TType, TContext>(string question) 
+        where TType : struct, Enum
+        where TContext : struct, Enum
     {
-        var promptText = sourceProvider.Prompt<T>(question);
+        var promptText = sourceProvider.Prompt<TType>(question);
 
         var result = await PromptText.Create(promptText)
             .Bind(llmClient.GenerateAnswer);
 
-        var source = (T)Enum.Parse(typeof(T), result.Value.Text);
-
-        return Result.Success(source);
+        try
+        {
+            var source = (TContext)Enum.Parse(typeof(TContext), result.Value.Text);
+            return Result.Success(source);
+        }
+        catch (Exception)
+        {
+            return Result.Success(default(TContext));
+        }
     }
 }

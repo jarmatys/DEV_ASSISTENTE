@@ -1,4 +1,5 @@
-﻿using ASSISTENTE.Domain.Entities.Resources.Interfaces;
+﻿using ASSISTENTE.Domain.Entities.Interfaces;
+using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL;
 using ASSISTENTE.Persistence.Repositories;
@@ -17,6 +18,8 @@ namespace ASSISTENTE.Persistence
             services.AddMssql(configuration);
             
             services.AddScoped<IResourceRepository, ResourceRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            
             services.AddScoped<IUserResolver, TUserResolver>();
             
             return services;

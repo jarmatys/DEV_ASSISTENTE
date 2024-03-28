@@ -1,6 +1,7 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Persistence.MSSQL;
 using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Persistence;
 
@@ -29,8 +30,10 @@ internal abstract class BaseRepository<TEntity>(IAssistenteDbContext context) : 
         throw new NotImplementedException();
     }
 
-    public Task<Maybe<IEnumerable<TEntity>>> GetAllAsync()
+    public async Task<Maybe<IEnumerable<TEntity>>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await Get().ToListAsync();
     }
+
+    protected abstract IQueryable<TEntity> Get();
 }

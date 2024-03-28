@@ -1,4 +1,4 @@
-using ASSISTENTE.Domain.Enums;
+using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Infrastructure.ValueObjects;
 
 namespace ASSISTENTE.Infrastructure.Interfaces;

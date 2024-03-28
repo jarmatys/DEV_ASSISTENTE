@@ -21,4 +21,10 @@ internal sealed class ResourceRepository(IAssistenteDbContext context)
             ? Maybe<List<Resource>>.None 
             : Maybe<List<Resource>>.From(resources);
     }
+
+    protected override IQueryable<Resource> Get()
+    {
+        return _context.Resources
+            .Include(x => x.Questions);
+    }
 }

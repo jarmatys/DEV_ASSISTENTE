@@ -11,6 +11,7 @@ internal interface IAssistenteDbContext
 
     DbSet<Resource> Resources { get; set; } 
     DbSet<Question> Questions { get; set; } 
+    DbSet<QuestionResource> QuestionResources { get; set; } 
 
     #endregion
         

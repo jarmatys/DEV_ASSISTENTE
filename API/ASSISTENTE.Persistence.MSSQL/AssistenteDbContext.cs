@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Entities.Enums;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
-using ASSISTENTE.Domain.Enums;
+using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL.Converters;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
@@ -33,6 +34,7 @@ namespace ASSISTENTE.Persistence.MSSQL
 
         public DbSet<Resource> Resources { get; set; } 
         public DbSet<Question> Questions { get; set; } 
+        public DbSet<QuestionResource> QuestionResources { get; set; } 
 
         #endregion
 
@@ -50,6 +52,10 @@ namespace ASSISTENTE.Persistence.MSSQL
             configurationBuilder
                 .Properties<ResourceType>()
                 .HaveConversion<ResourceTypeConverter>();
+            
+            configurationBuilder
+                .Properties<QuestionContext>()
+                .HaveConversion<QuestionContextConverter>();
         }
         
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

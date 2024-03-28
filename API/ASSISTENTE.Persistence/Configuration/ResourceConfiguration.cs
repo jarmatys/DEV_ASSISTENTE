@@ -12,8 +12,11 @@ namespace ASSISTENTE.Persistence.Configuration
 
             builder.Property(e => e.Content).IsRequired();
             builder.Property(e => e.Title).IsRequired();
-
             builder.Property(e => e.Type).IsRequired();
+            
+            builder.HasMany(e => e.Questions)
+                .WithOne(e => e.Resource)
+                .HasForeignKey(e => e.ResourceId);
         }
     }
 }
