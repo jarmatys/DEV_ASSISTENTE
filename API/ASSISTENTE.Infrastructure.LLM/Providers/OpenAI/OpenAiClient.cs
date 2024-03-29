@@ -14,7 +14,7 @@ internal sealed class OpenAiClient(IOpenAIService openAiService) : ILLMClient
         var message = Message.Create("user", prompt.Value);
         var completionRequest = new ChatCompletionRequest("gpt-4", message)
         {
-            MaxTokens = 100
+            MaxTokens = 2000
         };
 
         // TODO: Fill role with the correct value

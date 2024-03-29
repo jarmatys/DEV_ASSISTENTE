@@ -4,18 +4,15 @@ using ASSISTENTE.Domain.Entities.Resources;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
 
-public sealed class Question : AuditableEntity // TODO: Prepare repo and use them in RecallAsync method
+public sealed class Question : AuditableEntity
 {
-    private Question()
-    {
-        Resources = new List<QuestionResource>();
-    }
-    
-    private Question(string text, IEnumerable<float> embeddings, IEnumerable<QuestionResource> questionResources)
+    private Question(string text, QuestionContext context)
     {
         Text = text;
-        Embeddings = embeddings;
-        Resources = questionResources.ToList();
+        Context = context;
+        
+        Resources = new List<QuestionResource>();
+        Embeddings = new List<float>();
     }
     
     public string Text { get; private set; }
@@ -28,12 +25,31 @@ public sealed class Question : AuditableEntity // TODO: Prepare repo and use the
     
     # endregion
     
-    public static Result<Question> Create(string text, IEnumerable<float> embeddings, IEnumerable<Resource> resources)
+    public static Result<Question> Create(string text, QuestionContext context)
+    {
+        return new Question(text, context);
+    }
+    
+    public Result AddResource(IEnumerable<Resource> resources)
     {
         var questionResources = resources
-            .Select(r => QuestionResource.Create(r.Id))
-            .Select(r => r.Value);
+            .Select(r => QuestionResource.Create(r.Id));
+
+        foreach (var resource in questionResources)
+        {
+            if (resource.IsFailure)
+                return Result.Failure(resource.Error);
+            
+            Resources.Add(resource.Value);
+        }
         
-        return new Question(text, embeddings, questionResources);
+        return Result.Success();
+    }
+    
+    public Result AddEmbeddings(IEnumerable<float> embeddings)
+    {
+        Embeddings = embeddings.ToList();
+        
+        return Result.Success();
     }
 }
