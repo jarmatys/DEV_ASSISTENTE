@@ -43,9 +43,20 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 - 🔳 Generating prompt based on the 'knowledge base' & 'code base'
     - ✅ Generate prompt based on 'knowledge base'
-    - 🔳 Generate prompto based on 'code base'
+    - 🔳 Generate prompt based on 'code base'
 - ✅ Integration with the OpenAI API
+- 🔳 Add library for translation (prompts and knowledge base)
 - 🔳 Generating answers or ready code - depending on what the user needs
+
+#### Technical tasks
+
+- 🔳 Add usage of MediatR and prepare Command & Queries libraries 
+
+#### Common tasks
+
+- 🔳 Prepare video explainer with simply demo
+- 🔳 Prepare `configuration` section in `Readme`
+- 🔳 Prepare `quick start` section in `Readme`
 
 ---
 
