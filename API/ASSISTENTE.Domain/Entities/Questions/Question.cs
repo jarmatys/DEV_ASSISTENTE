@@ -16,7 +16,7 @@ public sealed class Question : AuditableEntity
     }
     
     public string Text { get; private set; }
-    public QuestionContext  Context { get; private set; }
+    public QuestionContext Context { get; private set; }
     public IEnumerable<float> Embeddings { get; private set; }
     
     # region NAVIGATION PROPERTIES
@@ -51,5 +51,10 @@ public sealed class Question : AuditableEntity
         Embeddings = embeddings.ToList();
         
         return Result.Success();
+    }
+    
+    public string GetContext()
+    {
+        return Context.ToString();
     }
 }

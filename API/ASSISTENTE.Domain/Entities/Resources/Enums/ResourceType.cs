@@ -2,6 +2,6 @@ namespace ASSISTENTE.Domain.Entities.Resources.Enums;
 
 public enum ResourceType
 {
-    Note,
+    Note = 1,
     Code
 }

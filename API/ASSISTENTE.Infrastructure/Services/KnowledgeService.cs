@@ -9,7 +9,6 @@ using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Errors;
 using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.LLM;
-using ASSISTENTE.Infrastructure.LLM.Models;
 using ASSISTENTE.Infrastructure.LLM.ValueObjects;
 using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
@@ -58,38 +57,52 @@ public sealed class KnowledgeService(
     public async Task<Result<string>> RecallAsync(string questionText)
     {
         var answer = await GetContextAsync<ResourceType, QuestionContext>(questionText)
-            .Map(async context =>
+            .Bind(async context =>
             {
                 var question = Question.Create(questionText, context);
-
+                
                 if (context == QuestionContext.Error)
                 {
                     return await question
                         .Map(questionRepository.AddAsync)
-                        .Finally(_ => Result.Failure<AnswerDto>(KnowledgeServiceErrors.ContextNotRecognized.Build()));
+                        .Finally(_ => Result.Failure<Question>(KnowledgeServiceErrors.ContextNotRecognized.Build()));
                 }
-
-                // TODO: think about refactor this peace of code (for more readability)
+                
+                return question;
+                
+            })
+            .Bind(async question =>
+            {
                 var llmResult = await EmbeddingText.Create(questionText)
                     .Bind(embeddingClient.GetAsync)
-                    .Check(dto => question.Map(q => q.AddEmbeddings(dto.Embeddings)))
-                    .Bind(dto => VectorDto.Create(CollectionName(context.ToString()), dto.Embeddings))
+                    .Check(dto => question.AddEmbeddings(dto.Embeddings))
+                    .Bind(dto => VectorDto.Create(CollectionName(question.GetContext()), dto.Embeddings))
                     .Bind(qdrantService.SearchAsync)
-                    .Map(searchResult => searchResult.Select(x => x.ResourceId).ToList())
-                    .Map(resourceRepository.FindByResourceIdsAsync)
-                    .Check(resources => question.Map(q => q.AddResource(resources.Value)))
-                    .Ensure(resources => resources.HasValue, KnowledgeServiceErrors.NotFound.Build())
-                    .Map(resources => resources.Value.Select(x => x.Content))
-                    .Bind(resources => promptGenerator.GeneratePrompt(questionText, resources, PromptType.Question))
-                    .Bind(PromptText.Create)
-                    .Bind(llmClient.GenerateAnswer)
-                    .Check(_ => question.Map(questionRepository.AddAsync))
-                    .TapError(errors => Console.WriteLine(errors));
+                    .Bind(searchResult =>
+                    {
+                        var resourceIds = searchResult.Select(x => x.ResourceId);
 
+                        return resourceRepository
+                            .FindByResourceIdsAsync(resourceIds)
+                            .ToResult(KnowledgeServiceErrors.NotFound.Build());
+                    })
+                    .Check(question.AddResource)
+                    .Bind(resources =>
+                    {
+                        var contextContent = resources.Select(x => x.Content);
+
+                        return promptGenerator
+                            .GeneratePrompt(questionText, contextContent, PromptType.Question);
+                    })
+                    .Check(_ => questionRepository.AddAsync(question))
+                    .Bind(PromptText.Create)
+                    .Bind(llmClient.GenerateAnswer);
+                
                 return llmResult;
-            });
+            })
+            .Map(answer => answer.Text);
         
-        return answer.Value.Value.Text;
+        return answer;
     }
 
     private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question) 

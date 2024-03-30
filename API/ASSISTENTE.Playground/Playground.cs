@@ -13,9 +13,9 @@ public sealed class Playground(
     {
         Console.WriteLine($"\nQuestion: '{question}'");
         
-        var result = await knowledgeService.RecallAsync(question);
-        
-        Console.WriteLine($"\nAnswer: '{result.Value}'");
+        await knowledgeService.RecallAsync(question)
+            .Tap(answer => Console.WriteLine($"\nAnswer: '{answer}'"))
+            .TapError(errors => Console.WriteLine(errors));
     }
 
     public async Task LearnAsync()

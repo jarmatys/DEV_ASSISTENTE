@@ -11,7 +11,7 @@ internal sealed class ResourceRepository(IAssistenteDbContext context)
 {
     private readonly IAssistenteDbContext _context = context;
 
-    public async Task<Maybe<List<Resource>>> FindByResourceIdsAsync(List<Guid> resourceIds)
+    public async Task<Maybe<List<Resource>>> FindByResourceIdsAsync(IEnumerable<Guid> resourceIds)
     {
         var resources = await _context.Resources
             .Where(x => resourceIds.Contains(x.ResourceId))
