@@ -12,6 +12,7 @@ using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.LLM.ValueObjects;
 using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
+using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
 using ASSISTENTE.Infrastructure.ValueObjects;
@@ -91,8 +92,9 @@ public sealed class KnowledgeService(
                     {
                         var contextContent = resources.Select(x => x.Content);
 
-                        return promptGenerator
-                            .GeneratePrompt(questionText, contextContent, PromptType.Question);
+                        return GetPromptType(question.Context)
+                            .Bind(promptType => PromptInput.Create(questionText, contextContent, promptType))
+                            .Bind(promptGenerator.GeneratePrompt);
                     })
                     .Check(_ => questionRepository.AddAsync(question))
                     .Bind(PromptText.Create)
@@ -123,5 +125,15 @@ public sealed class KnowledgeService(
         {
             return Result.Success(default(TContext));
         }
+    }
+    
+    private static Result<PromptType> GetPromptType(QuestionContext context)
+    {
+        return context switch
+        {
+            QuestionContext.Note => PromptType.Question,
+            QuestionContext.Code => PromptType.Code,
+            _ => Result.Failure<PromptType>(KnowledgeServiceErrors.PromptTypeNotExist.Build())
+        };
     }
 }

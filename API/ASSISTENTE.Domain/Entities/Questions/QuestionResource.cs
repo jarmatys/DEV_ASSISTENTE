@@ -1,5 +1,4 @@
 using ASSISTENTE.Domain.Commons;
-using ASSISTENTE.Domain.Entities.Enums;
 using ASSISTENTE.Domain.Entities.Resources;
 
 namespace ASSISTENTE.Domain.Entities.Questions;

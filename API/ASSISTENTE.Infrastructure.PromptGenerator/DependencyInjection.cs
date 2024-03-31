@@ -13,6 +13,7 @@ namespace ASSISTENTE.Infrastructure.PromptGenerator
             services.AddScoped<ISourceProvider, SourceProvider>();
 
             services.AddScoped<IPrompt, QuestionPrompt>();
+            services.AddScoped<IPrompt, CodePrompt>();
             
             return services;
         }

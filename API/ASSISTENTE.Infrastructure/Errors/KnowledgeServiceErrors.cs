@@ -9,4 +9,7 @@ internal static class KnowledgeServiceErrors
     
     public static readonly Error ContextNotRecognized = new(
         "KnowledgeService.ContextNotRecognized", "Context not recognized");
+    
+    public static readonly Error PromptTypeNotExist = new(
+        "KnowledgeService.PromptTypeNotExist", "Prompt type does not exist");
 }
