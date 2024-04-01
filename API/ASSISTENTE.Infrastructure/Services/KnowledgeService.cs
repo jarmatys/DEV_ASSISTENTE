@@ -97,8 +97,9 @@ public sealed class KnowledgeService(
                             .Bind(promptGenerator.GeneratePrompt);
                     })
                     .Check(_ => questionRepository.AddAsync(question))
-                    .Bind(PromptText.Create)
+                    .Bind(Prompt.Create)
                     .Bind(llmClient.GenerateAnswer);
+                    // TODO: Saved answer results into DB
                 
                 return llmResult;
             })
@@ -113,7 +114,7 @@ public sealed class KnowledgeService(
     {
         var promptText = sourceProvider.Prompt<TType>(question);
 
-        var result = await PromptText.Create(promptText)
+        var result = await Prompt.Create(promptText)
             .Bind(llmClient.GenerateAnswer);
 
         try

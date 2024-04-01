@@ -1,5 +1,5 @@
 using ASSISTENTE.Infrastructure.LLM.Errors;
-using ASSISTENTE.Infrastructure.LLM.Models;
+using ASSISTENTE.Infrastructure.LLM.Providers.OpenAI.Enums;
 using ASSISTENTE.Infrastructure.LLM.ValueObjects;
 using CSharpFunctionalExtensions;
 using OpenAI.Net;
@@ -9,25 +9,38 @@ namespace ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
 
 internal sealed class OpenAiClient(IOpenAIService openAiService) : ILLMClient
 {
-    public async Task<Result<AnswerDto>> GenerateAnswer(PromptText prompt)
+    private readonly LLMClient _llmClient = LLMClient.Create("openAi");
+    
+    private const string Gpt4 = "gpt-4";
+    private const string Gpt3 = "gpt-3.5-turbo";
+
+    public async Task<Result<Answer>> GenerateAnswer(Prompt prompt)
     {
-        var message = Message.Create("user", prompt.Value);
-        var completionRequest = new ChatCompletionRequest("gpt-4", message)
+        var message = CreateMessage(Role.User, prompt);
+
+        var completionRequest = new ChatCompletionRequest(Gpt3, message)
         {
-            MaxTokens = 2000
+            MaxTokens = 4096,
         };
 
-        // TODO: Fill role with the correct value
-        
         var response = await openAiService.Chat.Get(completionRequest);
-        
+
         if (!response.IsSuccess)
-            return Result.Failure<AnswerDto>(OpenAiClientErrors.InvalidResult.Build(response.ErrorResponse?.Error.Message!));
+            return Result.Failure<Answer>(OpenAiClientErrors.InvalidResult.Build(response.ErrorResponse?.Error.Message!));
+
+        var result = response.Result;
+        if (result is null)
+            return Result.Failure<Answer>(OpenAiClientErrors.EmptyAnswer.Build());
 
         var answer = response.Result?.Choices.FirstOrDefault()?.Message.Content;
+        var model = response.Result?.Model;
+        var promptTokens = response.Result?.Usage.Prompt_tokens;
+        var completionTokens = response.Result?.Usage.Completion_tokens;
         
-        return answer is null
-            ? Result.Failure<AnswerDto>(OpenAiClientErrors.EmptyAnswer.Build())
-            : Result.Success(AnswerDto.Create(answer));
+        return Audit.Create(model, promptTokens, completionTokens)
+            .Bind(audit => Answer.Create(answer, prompt.Value, _llmClient, audit));
     }
+
+    private static Message CreateMessage(Role role, Prompt prompt) =>
+        Message.Create(role.ToString().ToLower(), prompt.Value);
 }

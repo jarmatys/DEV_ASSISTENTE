@@ -17,7 +17,6 @@ public sealed class FileContent
         if (elements.Count == 0)
             return Result<FileContent>.Fail(FileContentErrors.EmptyContent);
         
-        // TODO: Group by heading level
         var content = string.Join("\n\n", elements.Select(x => x.Content));
         
         return new FileContent(content).ToResult();
