@@ -1,7 +1,6 @@
 using ASSISTENTE.Domain.Commons;
-using ASSISTENTE.Domain.Entities.Questions;
 
-namespace ASSISTENTE.Domain.Entities.Interfaces;
+namespace ASSISTENTE.Domain.Entities.Questions.Interfaces;
 
 public interface IQuestionRepository : IBaseRepository<Question>
 {

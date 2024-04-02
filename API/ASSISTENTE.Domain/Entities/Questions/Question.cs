@@ -1,5 +1,6 @@
 using ASSISTENTE.Domain.Commons;
-using ASSISTENTE.Domain.Entities.Enums;
+using ASSISTENTE.Domain.Entities.Answers;
+using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Resources;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
@@ -21,6 +22,7 @@ public sealed class Question : AuditableEntity
     
     # region NAVIGATION PROPERTIES
     
+    public Answer Answer { get; private set; }
     public ICollection<QuestionResource> Resources { get; private set; }
     
     # endregion
@@ -56,5 +58,12 @@ public sealed class Question : AuditableEntity
     public string GetContext()
     {
         return Context.ToString();
+    }
+    
+    public Result SetAnswer(Answer answer)
+    {
+        Answer = answer;
+        
+        return Result.Success();
     }
 }

@@ -1,4 +1,4 @@
-﻿using ASSISTENTE.Domain.Entities.Interfaces;
+﻿using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL;

@@ -41,9 +41,9 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 #### Generating results
 
-- 🔳 Generating prompt based on the 'knowledge base' & 'code base'
+- ✅ Generating prompt based on the 'knowledge base' & 'code base'
     - ✅ Generate prompt based on 'knowledge base'
-    - 🔳 Generate prompt based on 'code base'
+    - ✅ Generate prompt based on 'code base'
 - ✅ Integration with the OpenAI API
 - 🔳 Add library for translation (prompts and knowledge base)
 - 🔳 Generating answers or ready code - depending on what the user needs

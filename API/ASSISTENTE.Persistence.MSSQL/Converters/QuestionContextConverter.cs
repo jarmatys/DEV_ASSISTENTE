@@ -1,4 +1,4 @@
-using ASSISTENTE.Domain.Entities.Enums;
+using ASSISTENTE.Domain.Entities.Questions.Enums;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASSISTENTE.Persistence.MSSQL.Converters;

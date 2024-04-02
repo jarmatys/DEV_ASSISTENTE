@@ -1,6 +1,6 @@
-using ASSISTENTE.Domain.Entities.Enums;
-using ASSISTENTE.Domain.Entities.Interfaces;
 using ASSISTENTE.Domain.Entities.Questions;
+using ASSISTENTE.Domain.Entities.Questions.Enums;
+using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
@@ -16,6 +16,8 @@ using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
 using ASSISTENTE.Infrastructure.ValueObjects;
+
+using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
 
 namespace ASSISTENTE.Infrastructure.Services;
 
@@ -96,10 +98,23 @@ public sealed class KnowledgeService(
                             .Bind(promptType => PromptInput.Create(questionText, contextContent, promptType))
                             .Bind(promptGenerator.GeneratePrompt);
                     })
-                    .Check(_ => questionRepository.AddAsync(question))
                     .Bind(Prompt.Create)
-                    .Bind(llmClient.GenerateAnswer);
-                    // TODO: Saved answer results into DB
+                    .Bind(prompt =>
+                    {
+                        var answer = llmClient.GenerateAnswer(prompt)
+                            .Check(answer => AnswerEntity.Create(
+                                    answer.Text,
+                                    prompt.Value,
+                                    answer.Client.Name,
+                                    answer.Audit.Model,
+                                    answer.Audit.PromptTokens,
+                                    answer.Audit.CompletionTokens
+                                )
+                                .Check(question.SetAnswer));
+                        
+                        return answer;
+                    })
+                    .Check(_ => questionRepository.AddAsync(question));
                 
                 return llmResult;
             })

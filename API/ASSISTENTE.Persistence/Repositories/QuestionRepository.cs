@@ -1,5 +1,5 @@
-using ASSISTENTE.Domain.Entities.Interfaces;
 using ASSISTENTE.Domain.Entities.Questions;
+using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Persistence.MSSQL;
 using Microsoft.EntityFrameworkCore;
 
