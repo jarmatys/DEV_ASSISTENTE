@@ -8,8 +8,8 @@ public sealed class ResourceText
         Content = content;
     }
     
-    public string Title { get; set; }
-    public string Content { get; set; }
+    public string Title { get; }
+    public string Content { get; }
     
     public static ResourceText Create(string title, string content)
     {
