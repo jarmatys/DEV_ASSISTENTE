@@ -20,13 +20,13 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 ---
 
-### `DRAFT` Roadmap
+### Roadmap
 
 **Phases:**
 
-- First phase of this POC will involve testing via a simple console app.
-- The prepared module will be connect to the API.
-- `NICE TO HAVE` - A visual layer will be added.
+- ✅ I phase (POC) - console app for test purpose `Playground`: [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/tree/master/API/ASSISTENTE.Playground)
+- 🔳 II phase - UI in Blazor + publish application on VPS
+- 🔳 III phase - Improving prompts and logic to generate the most accurate answers
 
 #### Loading user data
 
@@ -36,7 +36,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ Loading and parsing  `*.cs` files - code base
 - ✅ Find open source solution for creating embeddins
     - ✅ Done partially (currently in use OpenAI embedding  service)
-    - 🔳 Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
+    - 🔳 `NICE TO HAVE` Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
 - ✅ Integration with Qdrant - saving embeddings
 
 #### Generating results
@@ -66,13 +66,13 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 ---
 
-### Configuration
+### `WIP` Configuration
 
 TBD
 
 ---
 
-### Quick start
+### `WIP` Quick start
 
 TBD
 
