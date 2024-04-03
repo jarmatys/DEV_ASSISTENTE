@@ -13,6 +13,8 @@ public sealed class Playground(
     {
         Console.WriteLine($"\nQuestion: '{question}'");
         
+        // TODO: Use here MediatR to dispatch a query to get the answer
+        
         await knowledgeService.RecallAsync(question)
             .Tap(answer => Console.WriteLine($"\nAnswer: '{answer}'"))
             .TapError(errors => Console.WriteLine(errors));
@@ -20,6 +22,8 @@ public sealed class Playground(
 
     public async Task LearnAsync()
     {
+        // TODO: Use here MediatR to dispatch a command to learn from the file
+
         var notesLearnResult = await fileParser
             .GetNotes()
             .Bind(async resources =>
