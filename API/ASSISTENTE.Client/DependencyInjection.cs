@@ -1,4 +1,5 @@
-﻿using ASSISTENTE.Domain.Interfaces;
+﻿using ASSISTENTE.Application;
+using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure;
 using ASSISTENTE.Persistence;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ namespace ASSISTENTE.Client
         {
             services.AddInfrastructure(configuration);
             services.AddPersistence<TUserResolver>(configuration);
+            services.AddApplication();
             
             return services;
         }

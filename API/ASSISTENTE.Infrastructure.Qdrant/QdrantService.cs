@@ -19,13 +19,13 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
 
         return Result.Success();
     }
-    
+
     public async Task<Result> DropCollectionAsync(string name)
     {
         var collections = await client.ListCollectionsAsync();
-        
+
         if (!collections.Contains(name)) return Result.Success();
-        
+
         await client.DeleteCollectionAsync(name);
 
         return Result.Success();
@@ -45,16 +45,23 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
 
     public async Task<Result<List<SearchResult>>> SearchAsync(VectorDto vectorDto)
     {
-        var response = await client.SearchAsync(
-            vectorDto.GetCollectionName(),
-            vectorDto.GetVector(),
-            limit: 5
-        );
+        try
+        {
+            var response = await client.SearchAsync(
+                vectorDto.GetCollectionName(),
+                vectorDto.GetVector(),
+                limit: 5
+            );
 
-        var result = response.Select(x => SearchResult.Create(x.Id, x.Score)).ToList();
+            var result = response.Select(x => SearchResult.Create(x.Id, x.Score)).ToList();
 
-        return result.Count == 0
-            ? Result.Failure<List<SearchResult>>(QdrantServiceErrors.SearchFailed.Build())
-            : result;
+            return result.Count == 0
+                ? Result.Failure<List<SearchResult>>(QdrantServiceErrors.SearchFailed.Build())
+                : result;
+        }
+        catch (Exception e)
+        {
+            return Result.Failure<List<SearchResult>>(QdrantServiceErrors.ConnectionFailed.Build(e.Message));
+        }
     }
 }
