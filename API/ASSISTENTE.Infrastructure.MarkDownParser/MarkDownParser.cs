@@ -42,8 +42,7 @@ internal sealed class MarkDownParser : IMarkDownParser
         if (elements.All(x => x is Heading))
             return Result.Failure<FileContent>(MarkDownParserErrors.OnlyHeadersNotAllowed.Build());
 
-        return FileContent.Create(filePath.FileName, elements!)
-            .TapError(error => Result.Failure<FileContent>(error));
+        return FileContent.Create(filePath.FileName, elements);
     }
 
     private static Result<ElementBase> GetElement(IMarkdownObject block)

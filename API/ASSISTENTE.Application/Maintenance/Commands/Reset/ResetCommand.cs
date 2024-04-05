@@ -1,6 +1,7 @@
 ﻿using ASSISTENTE.Infrastructure.Interfaces;
 using CSharpFunctionalExtensions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Application.Maintenance.Commands.Reset
 {
@@ -16,19 +17,17 @@ namespace ASSISTENTE.Application.Maintenance.Commands.Reset
         }
     }
 
-    public class ResetCommandHandler(IMaintenanceService maintenanceService)
+    public class ResetCommandHandler(IMaintenanceService maintenanceService, ILogger<ResetCommandHandler> logger)
         : IRequestHandler<ResetCommand, Result>
     {
         public async Task<Result> Handle(ResetCommand request, CancellationToken cancellationToken)
         {
-            // TODO: Add serilog and use logger instead of Console.WriteLine
-
-            Console.WriteLine("\nResetting the playground...");
+            logger.LogInformation("Resetting the playground...");
 
             var resetResult = await maintenanceService.ResetAsync();
             var initResult = await maintenanceService.InitAsync();
 
-            Console.WriteLine("\nPlayground reset!");
+            logger.LogInformation("Playground reset!");
             
             return Result.Combine(resetResult, initResult);
         }

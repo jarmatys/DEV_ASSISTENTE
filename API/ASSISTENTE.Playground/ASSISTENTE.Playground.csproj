@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Client\ASSISTENTE.Client.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
     </ItemGroup>
 
     <ItemGroup>

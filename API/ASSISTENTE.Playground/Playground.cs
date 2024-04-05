@@ -1,20 +1,22 @@
 using ASSISTENTE.Application.Knowledge.Commands.Learn;
 using ASSISTENTE.Application.Knowledge.Queries.Answer;
 using ASSISTENTE.Application.Maintenance.Commands.Reset;
+using ASSISTENTE.Common.Extensions;
 using CSharpFunctionalExtensions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Client;
 
-public sealed class Playground(ISender mediator)
+public sealed class Playground(ISender mediator, ILogger<Playground> logger)
 {
     public async Task AnswerAsync(string question)
     {
         var result = await mediator.Send(AnswerQuery.Create(question));
 
         result
-            .Tap(response => Console.WriteLine($"\nAnswer: {response.Text}"))
-            .TapError(errors => Console.WriteLine(errors));
+            .Log(response => response.Text, logger)
+            .LogError(logger);
     }
 
     public async Task LearnAsync()
@@ -22,8 +24,8 @@ public sealed class Playground(ISender mediator)
         var result = await mediator.Send(LearnCommand.Create());
 
         result
-            .Tap(() => Console.WriteLine("\nLearning completed!"))
-            .TapError(errors => Console.WriteLine(errors));
+            .Log("Learning completed!", logger)
+            .LogError(logger);
     }
 
     public async Task ResetAsync()
@@ -31,6 +33,6 @@ public sealed class Playground(ISender mediator)
        var result = await mediator.Send(ResetCommand.Create());
 
         result
-            .TapError(errors => Console.WriteLine(errors));
+            .LogError(logger);
     }
 }

@@ -2,6 +2,7 @@
 using ASSISTENTE.Infrastructure.Interfaces;
 using CSharpFunctionalExtensions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Application.Knowledge.Commands.Learn
 {
@@ -19,13 +20,12 @@ namespace ASSISTENTE.Application.Knowledge.Commands.Learn
 
     public class LearnCommandHandler(
         IFileParser fileParser, 
-        IKnowledgeService knowledgeService)
+        IKnowledgeService knowledgeService,
+        ILogger<LearnCommandHandler> logger)
         : IRequestHandler<LearnCommand, Result>
     {
         public async Task<Result> Handle(LearnCommand request, CancellationToken cancellationToken)
         {
-            // TODO: Add serilog and use logger instead of Console.WriteLine
-            
             var notesLearnResult = await fileParser
                 .GetNotes()
                 .Bind(async resources =>
@@ -38,7 +38,7 @@ namespace ASSISTENTE.Application.Knowledge.Commands.Learn
                     
                         results.Add(learnResult);
 
-                        Console.WriteLine($"\nLearned from note: '{resource.Title}'");
+                        logger.LogInformation("Learned from note: '{ResourceTitle}'", resource.Title);
                     }
         
                     return Result.Combine(results);
@@ -56,7 +56,7 @@ namespace ASSISTENTE.Application.Knowledge.Commands.Learn
                     
                         results.Add(learnResult);
 
-                        Console.WriteLine($"\nLearned from code: '{resource.Title}'");
+                        logger.LogInformation("Learned from code: '{ResourceTitle}'", resource.Title);
                     }
         
                     return Result.Combine(results);

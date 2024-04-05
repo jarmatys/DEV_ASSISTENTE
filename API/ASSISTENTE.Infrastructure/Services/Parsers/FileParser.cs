@@ -2,13 +2,15 @@ using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.Options;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;
 
 public sealed partial class FileParser(
     IMarkDownParser markDownParser,
     ICodeParser codeParser,
-    KnowledgePathsOption knowledgePathsOption) : IFileParser
+    KnowledgePathsOption knowledgePathsOption,
+    ILogger<FileParser> logger) : IFileParser
 {
     private static readonly IEnumerable<string> PathsToIgnore =
     [

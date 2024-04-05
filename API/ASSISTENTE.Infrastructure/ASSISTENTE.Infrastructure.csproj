@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.CodeParser\ASSISTENTE.Infrastructure.CodeParser.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.Embeddings\ASSISTENTE.Infrastructure.Embeddings.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM\ASSISTENTE.Infrastructure.LLM.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.MarkDownParser\ASSISTENTE.Infrastructure.MarkDownParser.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.PromptGenerator\ASSISTENTE.Infrastructure.PromptGenerator.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.Qdrant\ASSISTENTE.Infrastructure.Qdrant.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.CodeParser\ASSISTENTE.Infrastructure.CodeParser.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.MarkDownParser\ASSISTENTE.Infrastructure.MarkDownParser.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Embeddings\ASSISTENTE.Infrastructure.Embeddings.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM\ASSISTENTE.Infrastructure.LLM.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.PromptGenerator\ASSISTENTE.Infrastructure.PromptGenerator.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Qdrant\ASSISTENTE.Infrastructure.Qdrant.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj"/>
     </ItemGroup>
 
 </Project>

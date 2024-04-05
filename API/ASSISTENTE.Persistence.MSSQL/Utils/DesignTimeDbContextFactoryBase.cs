@@ -45,7 +45,7 @@ namespace ASSISTENTE.Persistence.MSSQL.Utils
 
             var connectionString = configuration.GetConnectionString(ConnectionStringName);
 
-            return Create(connectionString);
+            return Create(connectionString!);
         }
 
         private TContext Create(string connectionString)

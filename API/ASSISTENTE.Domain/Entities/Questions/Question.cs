@@ -22,7 +22,7 @@ public sealed class Question : AuditableEntity
     
     # region NAVIGATION PROPERTIES
     
-    public Answer Answer { get; private set; }
+    public Answer Answer { get; private set; } = null!;
     public ICollection<QuestionResource> Resources { get; private set; }
     
     # endregion

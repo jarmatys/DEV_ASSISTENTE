@@ -13,11 +13,11 @@ public sealed class QuestionResource : AuditableEntity
     # region NAVIGATION PROPERTIES
     
     public int QuestionId { get; private set; }
-    public Question Question { get; private set; }
-    
+    public Question Question { get; private set; } = null!;
+
     public int ResourceId { get; private set; }
-    public Resource Resource { get; private set; }
-    
+    public Resource Resource { get; private set; } = null!;
+
     # endregion
     
     public static Result<QuestionResource> Create(int resourceId)

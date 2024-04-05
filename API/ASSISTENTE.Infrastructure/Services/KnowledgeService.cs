@@ -36,25 +36,21 @@ public sealed class KnowledgeService(
     public async Task<Result> LearnAsync(ResourceText text, ResourceType type)
     {
         var embeddingResult = await EmbeddingText.Create(text.Content)
-            .Bind(embeddingClient.GetAsync)
-            .Map(embedding => embedding)
-            .TapError(errors => Console.WriteLine(errors));
+            .Bind(embeddingClient.GetAsync);
         
         if (embeddingResult.IsFailure)
             return Result.Failure(embeddingResult.Error);
 
         var embeddings = embeddingResult.Value.Embeddings.ToList();
-        
-        var resource = await Resource.Create(text.Content, text.Title, type, embeddings)
-            .Bind(resourceRepository.AddAsync)
-            .TapError(errors => Console.WriteLine(errors));
 
-        if (resource.IsFailure)
-            return Result.Failure(resource.Error);
-        
-        return await DocumentDto.Create(CollectionName(type.ToString()), embeddings, resource.Value.ResourceId)
-            .Bind(qdrantService.UpsertAsync)
-            .TapError(errors => Console.WriteLine(errors));
+        var resourceResult = await Resource.Create(text.Content, text.Title, type, embeddings)
+            .Bind(resourceRepository.AddAsync);
+
+        if (resourceResult.IsFailure)
+            return Result.Failure(resourceResult.Error);
+
+        return await DocumentDto.Create(CollectionName(type.ToString()), embeddings, resourceResult.Value.ResourceId)
+            .Bind(qdrantService.UpsertAsync);
     }
 
     public async Task<Result<string>> RecallAsync(string questionText)

@@ -1,3 +1,4 @@
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 using ASSISTENTE.Infrastructure.ValueObjects;
 
@@ -17,7 +18,7 @@ public sealed partial class FileParser
             var blocks = CodePath.Create(fileLocation)
                 .Bind(codeParser.Parse)
                 .Map(parsedFile => parsedFile.CodeBlocks.Select(content => ResourceText.Create(parsedFile.Title, content)))
-                .TapError(error => Console.WriteLine(error))
+                .LogError(logger)
                 .GetValueOrDefault();
             
             if (blocks != null)

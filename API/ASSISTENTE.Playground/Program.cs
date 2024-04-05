@@ -3,8 +3,14 @@ using ASSISTENTE.Client.Commons;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ASSISTENTE.Common.Logging;
+using Serilog;
 
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+
 var serviceCollection = new ServiceCollection();
 
 ConfigureServices(serviceCollection, configuration);
@@ -16,7 +22,7 @@ var parsedParams = ParseParams(args);
 
 if (playground == null) return;
 
-Console.WriteLine("Starting Playground...");
+Log.Information("Starting Playground...");
 
 if (parsedParams.Reset)
     await playground.ResetAsync();
@@ -25,15 +31,16 @@ if (parsedParams.Learn)
 if (parsedParams.Question != null)
     await playground.AnswerAsync(parsedParams.Question);
 
-Console.WriteLine("Stopping Playground...");
+Log.Information("Stopping Playground...");
 
 return;
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    services.AddAssistenteClient<UserResolver>(configuration);
-
-    services.AddTransient<Playground>();
+    services
+        .AddAssistenteClient<UserResolver>(configuration)
+        .AddLogging(configuration)
+        .AddTransient<Playground>();
 }
 
 PlaygroundParams ParseParams(IEnumerable<string> strings)
