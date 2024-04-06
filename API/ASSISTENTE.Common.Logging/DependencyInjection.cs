@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-using ILogger = Microsoft.Extensions.Logging.ILogger;
-
 namespace ASSISTENTE.Common.Logging;
 
 public static class DependencyInjection
@@ -45,8 +43,6 @@ public static class DependencyInjection
             loggingBuilder.ClearProviders();
             loggingBuilder.AddSerilog();
         });
-        
-        // TODO: Fix logging to Seq
         
         return services;
     }

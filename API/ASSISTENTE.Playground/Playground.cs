@@ -2,7 +2,6 @@ using ASSISTENTE.Application.Knowledge.Commands.Learn;
 using ASSISTENTE.Application.Knowledge.Queries.Answer;
 using ASSISTENTE.Application.Maintenance.Commands.Reset;
 using ASSISTENTE.Common.Extensions;
-using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

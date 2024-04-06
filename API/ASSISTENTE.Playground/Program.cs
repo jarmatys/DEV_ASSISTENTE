@@ -33,6 +33,8 @@ if (parsedParams.Question != null)
 
 Log.Information("Stopping Playground...");
 
+Log.CloseAndFlush();
+
 return;
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
