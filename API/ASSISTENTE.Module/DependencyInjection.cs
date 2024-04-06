@@ -5,11 +5,11 @@ using ASSISTENTE.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ASSISTENTE.Client
+namespace ASSISTENTE.Module
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddAssistenteClient<TUserResolver>(
+        public static IServiceCollection AddAssistenteModule<TUserResolver>(
             this IServiceCollection services, 
             IConfiguration configuration)
         where TUserResolver : class, IUserResolver

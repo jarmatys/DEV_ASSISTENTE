@@ -20,7 +20,7 @@ jobs:
       run: dotnet restore ./API
 
     - name: 📂 Create new nuget package
-      run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=${{ github.ref_name }} /p:Version=${{ github.ref_name }} ./API/ASSISTENTE.Client/ASSISTENTE.Client.csproj
+      run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=${{ github.ref_name }} /p:Version=${{ github.ref_name }} ./API/ASSISTENTE.Module/ASSISTENTE.Module.csproj
       continue-on-error: false
 
     - name: 🚀 Push new nuget package

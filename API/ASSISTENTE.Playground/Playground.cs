@@ -5,7 +5,7 @@ using ASSISTENTE.Common.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace ASSISTENTE.Client;
+namespace ASSISTENTE.Playground;
 
 public sealed class Playground(ISender mediator, ILogger<Playground> logger)
 {

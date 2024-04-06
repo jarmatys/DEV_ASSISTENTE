@@ -1,9 +1,10 @@
-﻿using ASSISTENTE.Client;
-using ASSISTENTE.Client.Commons;
+﻿using ASSISTENTE.Module;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Playground;
+using ASSISTENTE.Playground.Commons;
 using Serilog;
 
 var configuration = new ConfigurationBuilder()
@@ -40,7 +41,7 @@ return;
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
     services
-        .AddAssistenteClient<UserResolver>(configuration)
+        .AddAssistenteModule<UserResolver>(configuration)
         .AddLogging(configuration)
         .AddTransient<Playground>();
 }

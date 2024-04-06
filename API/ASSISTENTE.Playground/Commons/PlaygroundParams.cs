@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace ASSISTENTE.Client.Commons;
+namespace ASSISTENTE.Playground.Commons;
 
 internal sealed class PlaygroundParams
 {
