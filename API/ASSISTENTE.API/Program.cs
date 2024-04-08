@@ -21,8 +21,8 @@ else
 
 app.UseCors();
 
-app.MapGet("/api/answare", () => "Hello World!")
-    .WithName("GetWeatherForecast")
+app.MapGet("/api/answer", () => "Hello World!")
+    .WithName("GetAnswer")
     .WithOpenApi()
     .RequireCors(CorsConst.AllowAll);
 

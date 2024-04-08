@@ -1,0 +1,27 @@
+﻿@page "/answer"
+
+@inject HttpClient Http
+
+<PageTitle>Ask question</PageTitle>
+
+@if (answer == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    @answer
+}
+
+@code {
+
+    private string? answer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        answer = await Http.GetStringAsync("/api/answer");
+    }
+
+}
