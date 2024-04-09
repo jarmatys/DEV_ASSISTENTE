@@ -4,15 +4,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommon();
 builder.AddCors();
+builder.AddEndpoints();
 
 var app = builder.Build();
 
 app.UseCommon();
 app.UseCors();
-
-app.MapGet("/api/answer", () => "Hello World!")
-    .WithName("GetAnswer")
-    .WithOpenApi()
-    .RequireCors(CorsConst.AllowAll);
+app.UseEndpoints();
 
 app.Run();

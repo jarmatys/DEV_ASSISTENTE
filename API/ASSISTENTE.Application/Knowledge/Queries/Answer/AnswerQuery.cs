@@ -29,7 +29,7 @@ namespace ASSISTENTE.Application.Knowledge.Queries.Answer
             logger.LogInformation("Question: '{Question}' is being answered...", query.Question);
             
             return await knowledgeService.RecallAsync(query.Question)
-                .Map(AnswerResponse.Create);
+                .Map(text => new AnswerResponse(text));
         }
     }
 }
