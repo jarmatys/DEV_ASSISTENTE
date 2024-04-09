@@ -1,6 +1,6 @@
 @ASSISTENTE.API_HostAddress = http://localhost:5249
 
-GET {{ASSISTENTE.API_HostAddress}}/weatherforecast/
+GET {{ASSISTENTE.API_HostAddress}}/api/answer/
 Accept: application/json
 
 ###

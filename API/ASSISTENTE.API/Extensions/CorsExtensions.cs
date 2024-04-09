@@ -7,7 +7,7 @@ internal static class CorsConst
 
 internal static class CorsExtensions
 {
-    internal static void AddCors(this WebApplicationBuilder builder)
+    internal static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
         {
@@ -20,10 +20,14 @@ internal static class CorsExtensions
                         .AllowAnyOrigin();
                 });
         });
+
+        return builder;
     }
     
-    internal static void UseCors(this WebApplication app)
+    internal static WebApplication UseCors(this WebApplication app)
     {
         app.UseCors(CorsConst.AllowAll);
+
+        return app;
     }
 }
