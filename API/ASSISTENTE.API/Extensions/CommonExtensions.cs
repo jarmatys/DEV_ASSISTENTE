@@ -6,7 +6,7 @@ internal static class CommonExtensions
     {
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
+        
         return builder;
     }
     
