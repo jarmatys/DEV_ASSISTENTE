@@ -1,7 +1,7 @@
 using ASSISTENTE.API.Services;
 using ASSISTENTE.Module;
 
-namespace ASSISTENTE.API.Extensions;
+namespace ASSISTENTE.API.Extensions.Configurations;
 
 internal static class ModuleExtensions
 {

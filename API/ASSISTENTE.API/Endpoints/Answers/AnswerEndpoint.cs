@@ -1,14 +1,11 @@
-using ASSISTENTE.API.Extensions;
 using ASSISTENTE.Application.Knowledge.Queries.Answer;
 using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer;
-using FastEndpoints;
+using CSharpFunctionalExtensions;
 using MediatR;
-using Microsoft.AspNetCore.Cors;
 
 namespace ASSISTENTE.API.Endpoints.Answers;
 
-[EnableCors(CorsConst.AllowAll)]
-public sealed class AnswerEndpoint(ISender mediator) : Endpoint<AnswerRequest, AnswerResponse>
+public sealed class AnswerEndpoint(ISender mediator) : EndpointBase<AnswerRequest, AnswerResponse>(mediator)
 {
     public override void Configure()
     {
@@ -16,12 +13,6 @@ public sealed class AnswerEndpoint(ISender mediator) : Endpoint<AnswerRequest, A
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(AnswerRequest req, CancellationToken ct)
-    {
-        var result = await mediator.Send(AnswerQuery.Create(req.Question), ct);
-
-        // TODO: Create base logic to handle the result
-        
-        await SendAsync(new AnswerResponse("Hello World!"), cancellation: ct);
-    }
+    protected override async Task<Result<AnswerResponse>> HandleResultAsync(AnswerRequest req, CancellationToken ct)
+        => await Mediator.Send(AnswerQuery.Create(req.Question), ct);
 }

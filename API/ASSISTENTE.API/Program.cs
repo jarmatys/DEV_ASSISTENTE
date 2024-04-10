@@ -1,4 +1,5 @@
 using ASSISTENTE.API.Extensions;
+using ASSISTENTE.API.Extensions.Configurations;
 using ASSISTENTE.Common.Logging;
 
 var configuration = new ConfigurationBuilder()

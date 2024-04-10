@@ -1,6 +1,6 @@
 using FastEndpoints;
 
-namespace ASSISTENTE.API.Extensions;
+namespace ASSISTENTE.API.Extensions.Configurations;
 
 internal static class EndpointExtensions
 {
