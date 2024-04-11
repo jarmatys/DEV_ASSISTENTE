@@ -1,27 +1,77 @@
 ﻿@page "/answer"
+@using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer
 
 @inject HttpClient Http
 
 <PageTitle>Ask question</PageTitle>
 
-@if (answer == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    @answer
-}
+<MudGrid>
+    <MudItem xs="12" sm="12">
+        <MudPaper Class="pa-4">
+            <p>Answer</p>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<EditForm Model="@_request" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+    <MudGrid>
+        <MudItem xs="12" sm="12">
+            <MudPaper Class="pa-4 mud-height-full">
+                <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                @if (!_showErrors)
+                {
+                    <MudText Color="Color.Success">Success</MudText>
+                }
+                else
+                {
+                    <MudText Color="@Color.Error">
+                        <ValidationSummary/>
+                    </MudText>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <DataAnnotationsValidator/>
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField @bind-Value="_request.Question" For="@(() => _request.Question)" HelperText="Ask random question" Variant="Variant.Outlined" T="string" Label="Question" Lines="10" Required="true" RequiredError="Question name is required!"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Disabled="@(_isLoading)">Generate answer</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
 @code {
 
-    private string? answer;
+    AnswerRequest _request;
 
-    protected override async Task OnInitializedAsync()
+    bool _isLoading = false;
+    bool _showErrors = false;
+
+    protected override void OnInitialized()
     {
-        answer = await Http.GetStringAsync("/api/answer");
+        _request = new AnswerRequest();
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        _showErrors = false;
+        _isLoading = true;
+
+        // TODO: Call API
+        //answer = await Http.GetStringAsync("/api/answer");
+
+        _isLoading = false;
+
+        StateHasChanged();
+    }
+
+    private void OnInvalidSubmit(EditContext context)
+    {
+        _showErrors = true;
     }
 
 }
