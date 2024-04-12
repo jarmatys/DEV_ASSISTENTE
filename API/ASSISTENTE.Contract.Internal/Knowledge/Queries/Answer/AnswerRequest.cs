@@ -5,6 +5,6 @@ namespace ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer;
 public sealed class AnswerRequest
 {
     [Required]
-    [StringLength(8, ErrorMessage = "Name length can't be more than 8.")]
+    [StringLength(300, ErrorMessage = "Name length can't be more than 300.")]
     public string Question { get; set; } = null!;
 };
