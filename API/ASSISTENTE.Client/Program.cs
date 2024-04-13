@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ASSISTENTE.Client;
+using ASSISTENTE.Client.Brokers;
 using ASSISTENTE.Client.Common.Extensions;
 using MudBlazor.Services;
 
@@ -11,6 +12,8 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var settings = builder.Configuration.GetSettings();
+
+builder.Services.AddBrokers();
 
 builder.Services.AddSingleton(settings);
 

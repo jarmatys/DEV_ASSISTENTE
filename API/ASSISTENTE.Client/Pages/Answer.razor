@@ -1,11 +1,10 @@
 ﻿@page "/answer"
 
-@using System.Text
-@using System.Text.Json
+@using ASSISTENTE.Client.Brokers
 @using ASSISTENTE.Client.Common.Models
 @using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer
 
-@inject HttpClient Http
+@inject IAnswersBroker AnswersBroker
 
 <PageTitle>Ask question</PageTitle>
 
@@ -54,8 +53,8 @@
     AnswerRequest _request = null!;
     AnswerResponse? _response;
 
-    bool _isLoading = false;
-    bool _showErrors = false;
+    bool _isLoading;
+    bool _showErrors;
 
     readonly GeneralError _generalError = new();
     ValidationMessageStore _messageStore = null!;
@@ -75,23 +74,16 @@
         _isLoading = true;
         _response = null;
 
-        // TODO: Create broker to wrap comunication with API
-        var response = await Http.PostAsync("/api/answer", new StringContent(JsonSerializer.Serialize(_request), Encoding.UTF8, "application/json"));
-
-        if (response.IsSuccessStatusCode)
+        var response = await AnswersBroker.GenerateAnswerAsync(_request);
+      
+        if (response.IsSuccess)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            
-            _response = JsonSerializer.Deserialize<AnswerResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            _response = response.Content;
             _request = new AnswerRequest();
         }
         else
         {
-            var content = await response.Content.ReadAsStringAsync();
-
-            var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            
-            foreach (var error in errorResponse!.Errors)
+            foreach (var error in  response.ErrorDetails!.Errors)
             {
                 _messageStore.Add(() => _generalError.Error, error.Value);
             }
