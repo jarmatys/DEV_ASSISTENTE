@@ -7,15 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Contract.Internal\ASSISTENTE.Contract.Internal.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Contract.Internal\ASSISTENTE.Contract.Internal.csproj"/>
+
+        <!--TODO: move interfaces to application layer and create implemenation in infrastructure layer-->
+        <!--TODO: Remove dependency from application to infrastructure-->
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="11.9.0" />
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
-      <PackageReference Include="MediatR" Version="12.2.0" />
+        <PackageReference Include="FluentValidation" Version="11.9.0"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0"/>
+        <PackageReference Include="MediatR" Version="12.2.0"/>
     </ItemGroup>
 
 </Project>
