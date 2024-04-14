@@ -25,7 +25,8 @@
           Request="_request"
           Response="_response"
           SubmitMethod="GenerateAnswerAsync"
-          OnStateUpdated="HandleStateUpdate">
+          OnResponseUpdated="HandleResponseUpdate"
+          OnRequestClear="HandleRequestUpdate">
 
     <FormFields>
         <MudTextField
@@ -44,11 +45,13 @@
 
 @code {
 
-    readonly AnswerRequest _request = new();
+    AnswerRequest _request = new();
     AnswerResponse? _response;
 
     private async Task<HttpResult<AnswerResponse>> GenerateAnswerAsync(AnswerRequest request) =>
         await AnswersBroker.GenerateAnswerAsync(request);
 
-    private void HandleStateUpdate(AnswerResponse? response) => _response = response;
+    private void HandleResponseUpdate(AnswerResponse? response) => _response = response;
+    private void HandleRequestUpdate(AnswerRequest request) => _request = request;
+
 }

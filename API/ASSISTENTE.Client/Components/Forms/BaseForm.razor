@@ -1,7 +1,8 @@
-@typeparam TRequest
-@typeparam TResponse
-
 @using ASSISTENTE.Client.Common.Models
+@using ASSISTENTE.Contract.Internal
+
+@typeparam TRequest where TRequest : IRequest
+@typeparam TResponse
 
 <EditForm TModel="TRequest" EditContext="@_editContext" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
     <MudGrid>
@@ -34,9 +35,10 @@
 
     [Parameter] public required RenderFragment FormFields { get; set; }
 
-    [Parameter] public required Func<TRequest, Task<HttpResult<TResponse>>> SubmitMethod { get; set; } 
-    [Parameter] public required EventCallback<TResponse?> OnStateUpdated { get; set; }
-    
+    [Parameter] public required Func<TRequest, Task<HttpResult<TResponse>>> SubmitMethod { get; set; }
+    [Parameter] public required EventCallback<TResponse?> OnResponseUpdated { get; set; }
+    [Parameter] public required EventCallback<TRequest> OnRequestClear { get; set; }
+
     [Parameter] public required TRequest Request { get; set; }
     [Parameter] public required TResponse? Response { get; set; }
 
@@ -56,28 +58,29 @@
     private async Task ClearResponse()
     {
         Response = default;
-        await OnStateUpdated.InvokeAsync(Response);
+        await OnResponseUpdated.InvokeAsync(Response);
     }
-    
+
     private async Task OnValidSubmit(EditContext context)
     {
         _showErrors = false;
         _isLoading = true;
 
         await ClearResponse();
-            
+
         var response = await SubmitMethod(Request);
 
         if (response.IsSuccess)
         {
             Response = response.Content;
-            Request = Activator.CreateInstance<TRequest>() ?? throw new InvalidOperationException("Failed to create instance of TRequest.");
+            Request.Clear();
 
-            await OnStateUpdated.InvokeAsync(Response);
+            await OnResponseUpdated.InvokeAsync(Response);
+            await OnRequestClear.InvokeAsync(Request);
         }
         else
         {
-            foreach (var error in  response.ErrorDetails!.Errors)
+            foreach (var error in response.ErrorDetails!.Errors)
             {
                 _messageStore.Add(() => _generalError.Error, error.Value);
             }
@@ -86,18 +89,23 @@
 
             _editContext.NotifyValidationStateChanged();
         }
-        
+
         _isLoading = false;
-        
+
+        StateHasChanged();
+
         _messageStore.Clear();
     }
 
     private async Task OnInvalidSubmit(EditContext context)
     {
-        await ClearResponse();
-
         _messageStore.Clear();
         
         _showErrors = true;
+        
+        await ClearResponse();
+
+        StateHasChanged();
     }
+
 }
