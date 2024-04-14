@@ -1,0 +1,11 @@
+@using Markdig
+
+<MudPaper Class="pa-8">
+    @((MarkupString)Preview)
+</MudPaper>
+
+@code {
+    [Parameter] public required string Content { get; set; }
+
+    string Preview => Markdown.ToHtml(Content);
+}

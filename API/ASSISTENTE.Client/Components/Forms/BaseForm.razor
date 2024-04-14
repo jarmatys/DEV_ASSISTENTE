@@ -13,7 +13,12 @@
                     @FormFields
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Disabled="@(_isLoading)">@(_isLoading ? "Generating..." : "Generate answer")</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Color="Color.Secondary"
+                               Disabled="@(_isLoading)">
+                        @(_isLoading ? "Generating..." : "Generate answer")
+                    </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>

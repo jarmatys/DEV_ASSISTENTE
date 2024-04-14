@@ -4,6 +4,7 @@
 @using ASSISTENTE.Client.Common.Models
 @using ASSISTENTE.Client.Components.Forms
 @using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer
+@using ASSISTENTE.Client.Components
 
 @inject IAnswersBroker AnswersBroker
 
@@ -13,9 +14,7 @@
 {
     <MudGrid>
         <MudItem xs="12" sm="12">
-            <MudPaper Class="pa-4">
-                @_response.Text
-            </MudPaper>
+            <MarkdownArea Content="@_response.Text"/>
         </MudItem>
     </MudGrid>
 }
