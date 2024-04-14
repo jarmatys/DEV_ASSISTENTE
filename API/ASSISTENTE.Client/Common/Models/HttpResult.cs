@@ -24,4 +24,19 @@ public sealed class HttpResult<TResponse>
     public static HttpResult<TResponse> Success(TResponse content) => new(content);
     
     public static HttpResult<TResponse> Failure(ErrorResponse errorDetails) => new(errorDetails);
+    
+    public static HttpResult<TResponse> Failure(int statusCode, string errorCode, string errorMessage)
+    {
+        var errorDetails = new ErrorResponse
+        {
+            StatusCode = statusCode,
+            Message = errorMessage,
+            Errors = new Dictionary<string, List<string>>()
+            {
+                { errorCode, [errorMessage] }
+            }
+        };
+        
+        return new HttpResult<TResponse>(errorDetails);
+    }
 }

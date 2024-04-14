@@ -9,27 +9,34 @@ public abstract class BrokerBase(HttpClient httpClient, string relativeUrl)
 {
     protected async Task<HttpResult<TResponse>> PostAsync<TResponse, TRequest>(TRequest request)
     {
-        var response = await httpClient.PostAsJsonAsync(relativeUrl, request);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var successResult = await response.Content.ReadFromJsonAsync<TResponse>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            if (successResult != null)
+            var response = await httpClient.PostAsJsonAsync(relativeUrl, request);
+
+            if (response.IsSuccessStatusCode)
             {
-                return HttpResult<TResponse>.Success(successResult);
+                var successResult = await response.Content.ReadFromJsonAsync<TResponse>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (successResult != null)
+                {
+                    return HttpResult<TResponse>.Success(successResult);
+                }
+            }
+        
+            var errorResult = await response.Content.ReadAsStringAsync();
+
+            var errorResponse = JsonSerializer
+                .Deserialize<ErrorResponse>(errorResult, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (errorResponse != null)
+            {
+                return HttpResult<TResponse>.Failure(errorResponse);
             }
         }
-        
-        var errorResult = await response.Content.ReadAsStringAsync();
-
-        var errorResponse = JsonSerializer
-            .Deserialize<ErrorResponse>(errorResult, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        if (errorResponse != null)
+        catch
         {
-            return HttpResult<TResponse>.Failure(errorResponse);
+            return HttpResult<TResponse>.Failure(503, "InternalError", "API not available.");
         }
         
-        throw new BrokerException("An error occurred while processing the request.");
+        return HttpResult<TResponse>.Failure(502, "BadGateway", "Wrong response from API.");
     }
 }
