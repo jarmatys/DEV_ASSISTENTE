@@ -2,6 +2,7 @@
 
 @using ASSISTENTE.Client.Brokers
 @using ASSISTENTE.Client.Common.Models
+@using ASSISTENTE.Client.Components.Forms
 @using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer
 
 @inject IAnswersBroker AnswersBroker
@@ -19,94 +20,35 @@
     </MudGrid>
 }
 
-<EditForm EditContext="@_editContext" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-    <MudGrid>
-        <MudItem xs="12" sm="12">
-            <DataAnnotationsValidator/>
-            <MudCard>
-                <MudCardContent>
-                    <MudTextField @bind-Value="_request.Question" For="@(() => _request.Question)" HelperText="Ask random question" Variant="Variant.Outlined" T="string" Label="Question" Lines="10" Required="true" RequiredError="Question name is required!"/>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Disabled="@(_isLoading)">@(_isLoading ? "Generating..." : "Generate answer")</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-        @if (_showErrors && !_isLoading)
-        {
-            <MudItem xs="12" sm="12">
-                <MudPaper Class="pa-4 mud-height-full">
-                    <MudText Typo="Typo.subtitle2">Errors</MudText>
-                    <MudText Color="@Color.Error">
-                        <ValidationSummary/>
-                    </MudText>
-                </MudPaper>
-            </MudItem>
-        }
-    </MudGrid>
-</EditForm>
+<BaseForm TRequest="AnswerRequest"
+          TResponse="AnswerResponse"
+          Request="_request"
+          Response="_response"
+          SubmitMethod="GenerateAnswerAsync"
+          OnStateUpdated="HandleStateUpdate">
+
+    <FormFields>
+        <MudTextField
+            @bind-Value="_request.Question"
+            For="@(() => _request.Question)"
+            HelperText="Ask random question"
+            Variant="Variant.Outlined"
+            T="string"
+            Label="Question"
+            Lines="10"
+            Required="true"
+            RequiredError="Question name is required!"/>
+    </FormFields>
+
+</BaseForm>
 
 @code {
 
-    // TODO: Prepare base component to wrap all common logic
-    
-    AnswerRequest _request = null!;
+    readonly AnswerRequest _request = new();
     AnswerResponse? _response;
 
-    bool _isLoading;
-    bool _showErrors;
+    private async Task<HttpResult<AnswerResponse>> GenerateAnswerAsync(AnswerRequest request) =>
+        await AnswersBroker.GenerateAnswerAsync(request);
 
-    readonly GeneralError _generalError = new();
-    ValidationMessageStore _messageStore = null!;
-    EditContext _editContext = null!;
-
-    protected override void OnInitialized()
-    {
-        _request = new AnswerRequest();
-
-        _editContext = new EditContext(_request);
-        _messageStore = new ValidationMessageStore(_editContext);
-    }
-
-    private async Task OnValidSubmit(EditContext context)
-    {
-        _showErrors = false;
-        _isLoading = true;
-        _response = null;
-
-        var response = await AnswersBroker.GenerateAnswerAsync(_request);
-      
-        if (response.IsSuccess)
-        {
-            _response = response.Content;
-            _request = new AnswerRequest();
-        }
-        else
-        {
-            foreach (var error in  response.ErrorDetails!.Errors)
-            {
-                _messageStore.Add(() => _generalError.Error, error.Value);
-            }
-
-            _showErrors = true;
-
-            _editContext.NotifyValidationStateChanged();
-        }
-
-        _isLoading = false;
-
-        StateHasChanged();
-
-        _messageStore.Clear();
-    }
-
-    private void OnInvalidSubmit(EditContext context)
-    {
-        _messageStore.Clear();
-
-        _showErrors = true;
-
-        StateHasChanged();
-    }
-
+    private void HandleStateUpdate(AnswerResponse? response) => _response = response;
 }

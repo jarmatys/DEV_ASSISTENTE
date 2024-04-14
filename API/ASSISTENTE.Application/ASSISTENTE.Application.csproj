@@ -9,8 +9,8 @@
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Contract.Internal\ASSISTENTE.Contract.Internal.csproj"/>
 
-        <!--TODO: move interfaces to application layer and create implemenation in infrastructure layer-->
         <!--TODO: Remove dependency from application to infrastructure-->
+        <!--Move interfaces to application layer and create implemenation in infrastructure layer-->
         <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj"/>
     </ItemGroup>
