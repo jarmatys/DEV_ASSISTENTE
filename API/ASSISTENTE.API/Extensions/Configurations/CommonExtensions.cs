@@ -5,8 +5,7 @@ internal static class CommonExtensions
     internal static WebApplicationBuilder AddCommon(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        
+
         return builder;
     }
     
@@ -14,8 +13,11 @@ internal static class CommonExtensions
     {
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseReDoc(c =>
+            {
+                c.SpecUrl = "/swagger/v1/swagger.json";
+                c.RoutePrefix = "redoc";
+            }); 
         }
         else
         {

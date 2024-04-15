@@ -14,6 +14,15 @@ public abstract class EndpointBase<TReqest, TResponse, TMediatRequest>(ISender m
     where TResponse : notnull
     where TMediatRequest : IRequest<Result<TResponse>>
 {
+    protected void SetupSwagger()
+    {
+        Description(b => b
+            .Accepts<TReqest>("application/json")
+            .Produces<TResponse>(200, "application/json")
+            .Produces<ErrorResponse>(400)
+            .Produces<InternalErrorResponse>(500));
+    }
+    
     public override async Task HandleAsync(TReqest req, CancellationToken ct)
     {
         var mediatRequest = MediatRequest(req, ct);

@@ -8,8 +8,10 @@
 
     <ItemGroup>
         <PackageReference Include="FastEndpoints" Version="5.24.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.24.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="NSwag.AspNetCore" Version="14.0.7" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>

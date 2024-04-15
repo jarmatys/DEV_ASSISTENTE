@@ -4,8 +4,8 @@
     "ASSISTENTE.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "launchUrl": "swagger",
+      "launchBrowser": true,
+      "launchUrl": "redoc",
       "applicationUrl": "http://localhost:5249",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using System.Text.Json;
-using ASSISTENTE.Client.Common.Exceptions;
 using ASSISTENTE.Client.Common.Models;
 
 namespace ASSISTENTE.Client.Brokers;
