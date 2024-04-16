@@ -1,4 +1,6 @@
-namespace ASSISTENTE.Infrastructure.Interfaces;
+using CSharpFunctionalExtensions;
+
+namespace ASSISTENTE.Application.Abstractions.Interfaces;
 
 public interface IMaintenanceService
 {

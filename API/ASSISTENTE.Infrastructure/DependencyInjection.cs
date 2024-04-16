@@ -1,8 +1,8 @@
-﻿using ASSISTENTE.Common.Extensions;
+﻿using ASSISTENTE.Application.Abstractions.Interfaces;
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
-using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.Options;

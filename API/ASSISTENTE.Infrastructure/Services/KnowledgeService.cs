@@ -1,3 +1,5 @@
+using ASSISTENTE.Application.Abstractions.Interfaces;
+using ASSISTENTE.Application.Abstractions.ValueObjects;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
@@ -7,7 +9,6 @@ using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Errors;
-using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.LLM.ValueObjects;
 using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
@@ -15,8 +16,6 @@ using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
-using ASSISTENTE.Infrastructure.ValueObjects;
-
 using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
 
 namespace ASSISTENTE.Infrastructure.Services;

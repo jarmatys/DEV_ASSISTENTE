@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Infrastructure.ValueObjects;
+namespace ASSISTENTE.Application.Abstractions.ValueObjects;
 
 public sealed class ResourceText
 {

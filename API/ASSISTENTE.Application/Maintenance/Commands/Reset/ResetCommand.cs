@@ -1,4 +1,4 @@
-﻿using ASSISTENTE.Infrastructure.Interfaces;
+﻿using ASSISTENTE.Application.Abstractions.Interfaces;
 using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;

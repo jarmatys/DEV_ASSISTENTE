@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\ASSISTENTE.Application.Abstractions\ASSISTENTE.Application.Abstractions.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.CodeParser\ASSISTENTE.Infrastructure.CodeParser.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.MarkDownParser\ASSISTENTE.Infrastructure.MarkDownParser.csproj"/>

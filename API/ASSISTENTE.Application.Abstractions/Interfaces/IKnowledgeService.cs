@@ -1,7 +1,8 @@
+using ASSISTENTE.Application.Abstractions.ValueObjects;
 using ASSISTENTE.Domain.Entities.Resources.Enums;
-using ASSISTENTE.Infrastructure.ValueObjects;
+using CSharpFunctionalExtensions;
 
-namespace ASSISTENTE.Infrastructure.Interfaces;
+namespace ASSISTENTE.Application.Abstractions.Interfaces;
 
 public interface IKnowledgeService
 {

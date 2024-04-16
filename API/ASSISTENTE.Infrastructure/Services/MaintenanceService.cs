@@ -1,5 +1,5 @@
+using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Domain.Entities.Resources.Enums;
-using ASSISTENTE.Infrastructure.Interfaces;
 using ASSISTENTE.Infrastructure.Qdrant;
 
 namespace ASSISTENTE.Infrastructure.Services;
