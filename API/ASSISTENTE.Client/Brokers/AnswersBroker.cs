@@ -1,5 +1,5 @@
 using ASSISTENTE.Client.Common.Models;
-using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer;
+using ASSISTENTE.Contract.Internal.Requests.Knowledge.Queries.Answer;
 
 namespace ASSISTENTE.Client.Brokers;
 

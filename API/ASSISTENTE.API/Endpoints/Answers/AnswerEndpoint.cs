@@ -1,5 +1,5 @@
 using ASSISTENTE.Application.Knowledge.Queries.Answer;
-using ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer;
+using ASSISTENTE.Contract.Internal.Requests.Knowledge.Queries.Answer;
 using MediatR;
 
 namespace ASSISTENTE.API.Endpoints.Answers;

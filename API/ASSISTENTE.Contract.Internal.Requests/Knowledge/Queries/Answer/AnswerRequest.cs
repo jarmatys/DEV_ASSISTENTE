@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ASSISTENTE.Contract.Internal.Knowledge.Queries.Answer;
+namespace ASSISTENTE.Contract.Internal.Requests.Knowledge.Queries.Answer;
 
 public sealed class AnswerRequest : RequestBase
 {

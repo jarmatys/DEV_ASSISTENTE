@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Contract.Internal;
+namespace ASSISTENTE.Contract.Internal.Requests;
 
 public abstract class RequestBase : IRequest
 {
