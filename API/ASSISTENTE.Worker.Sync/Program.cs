@@ -15,7 +15,6 @@ builder.Services.AddMassTransit(config =>
         cfg.ReceiveEndpoint("assistente.GenerateAnswerMessage", c =>
         {
             c.ConfigureConsumer<OnGenerateAnswerMessageConsumer>(ctx);
-            c.PrefetchCount = 1;
         });
     });
 });

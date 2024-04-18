@@ -1,12 +1,12 @@
 using ASSISTENTE.Contract.Internal.Messages.Knowledge;
-using MassTransit;
+using ASSISTENTE.Worker.Sync.Bases;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Worker.Sync.Consumers;
 
-// TODO: prepare base class for consumers
-public sealed class OnGenerateAnswerMessageConsumer : IConsumer<GenerateAnswerMessage> 
+public sealed class OnGenerateAnswerMessageConsumer : ResultConsumerBase<GenerateAnswerMessage>
 {
-    public Task Consume(ConsumeContext<GenerateAnswerMessage> context)
+    protected override Task<Result> ConsumeAsync()
     {
         throw new NotImplementedException();
     }
