@@ -1,3 +1,3 @@
-namespace ASSISTENTE.Worker.Sync.Exceptions;
+namespace ASSISTENTE.Worker.Sync.Common.Exceptions;
 
 public sealed class WorkerException(string message) : Exception($"Consumed failed: {message}");

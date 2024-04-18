@@ -1,5 +1,5 @@
 using ASSISTENTE.Common.Messaging;
-using ASSISTENTE.Worker.Sync.Exceptions;
+using ASSISTENTE.Worker.Sync.Common.Exceptions;
 using CSharpFunctionalExtensions;
 using MassTransit;
 

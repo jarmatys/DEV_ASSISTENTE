@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Client.Common.Settings;
+namespace ASSISTENTE.Common.Settings;
 
 public sealed class SeqSection
 {

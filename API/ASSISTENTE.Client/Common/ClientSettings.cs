@@ -1,4 +1,6 @@
-namespace ASSISTENTE.Client.Common.Settings;
+using ASSISTENTE.Common.Settings;
+
+namespace ASSISTENTE.Client.Common;
 
 public sealed class ClientSettings
 {

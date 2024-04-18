@@ -1,5 +1,4 @@
 using ASSISTENTE.Client.Common.Exceptions;
-using ASSISTENTE.Client.Common.Settings;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace ASSISTENTE.Client.Common.Extensions;
