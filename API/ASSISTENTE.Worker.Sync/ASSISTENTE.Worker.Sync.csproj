@@ -17,4 +17,10 @@
       <ProjectReference Include="..\ASSISTENTE.Contract.Internal.Messages\ASSISTENTE.Contract.Internal.Messages.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

@@ -1,5 +1,5 @@
 using ASSISTENTE.Contract.Internal.Messages.Knowledge;
-using ASSISTENTE.Worker.Sync.Bases;
+using ASSISTENTE.Worker.Sync.Common.Bases;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Worker.Sync.Consumers;

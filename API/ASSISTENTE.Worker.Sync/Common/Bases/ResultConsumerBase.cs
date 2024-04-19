@@ -3,7 +3,7 @@ using ASSISTENTE.Worker.Sync.Common.Exceptions;
 using CSharpFunctionalExtensions;
 using MassTransit;
 
-namespace ASSISTENTE.Worker.Sync.Bases;
+namespace ASSISTENTE.Worker.Sync.Common.Bases;
 
 public abstract class ResultConsumerBase<TMessage> : IConsumer<TMessage>
     where TMessage : class, IMessage
@@ -14,7 +14,7 @@ public abstract class ResultConsumerBase<TMessage> : IConsumer<TMessage>
 
         if (!consumeResult.IsSuccess)
         {
-            throw new WorkerException(consumeResult.Error);
+            throw new ConsumeException(consumeResult.Error);
         }
     }
 
