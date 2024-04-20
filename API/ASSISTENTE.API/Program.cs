@@ -1,4 +1,5 @@
 using ASSISTENTE.API.Extensions.Configurations;
+using ASSISTENTE.API.Hubs;
 using ASSISTENTE.Common.Logging;
 
 var configuration = new ConfigurationBuilder()
@@ -14,10 +15,14 @@ builder.AddCors();
 builder.AddEndpoints();
 builder.AddModules(configuration);
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 app.UseCommon();
 app.UseCors();
 app.UseEndpoints();
+
+app.MapHub<AnswerHub>("answers");
 
 app.Run();

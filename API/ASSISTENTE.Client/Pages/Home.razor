@@ -1,5 +1,43 @@
 ﻿@page "/"
 
+@using Microsoft.AspNetCore.SignalR.Client
+
+@implements IAsyncDisposable
+
 <PageTitle>Home</PageTitle>
 
 <h1>Home page!</h1>
+
+<ul>
+    @foreach (var message in _messages)
+    {
+        <li>@message</li>
+    }
+</ul>
+
+@code
+{
+    private HubConnection? _hubConnection;
+    private readonly List<string> _messages = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5249/answers")
+            .Build();
+
+        _hubConnection.On<string>("ReceiveAnswer", message =>
+        {
+            _messages.Add(message);
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        await _hubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection != null) await _hubConnection.DisposeAsync();
+    }
+}
