@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Internal.Messages\ASSISTENTE.Contract.Internal.Messages.csproj" />
     </ItemGroup>
 
