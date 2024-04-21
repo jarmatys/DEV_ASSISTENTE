@@ -6,7 +6,7 @@ public sealed class AnswerHub : Hub<IAnswerHub>
 {
     public override async Task OnConnectedAsync()
     {
-        await Clients.Client(Context.ConnectionId).ReceiveAnswer($"Connection identifier {Context.ConnectionId}");
+        await Clients.Client(Context.ConnectionId).InitConnection(Context.ConnectionId);
             
         await base.OnConnectedAsync();
     }
@@ -15,4 +15,5 @@ public sealed class AnswerHub : Hub<IAnswerHub>
 public interface IAnswerHub
 {
     Task ReceiveAnswer(string message);
+    Task InitConnection(string connectionId);
 }

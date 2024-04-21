@@ -1,5 +1,5 @@
 using ASSISTENTE.Application.Knowledge.Commands.Learn;
-using ASSISTENTE.Application.Knowledge.Queries.Answer;
+using ASSISTENTE.Application.Knowledge.Queries.GenerateAnswer;
 using ASSISTENTE.Application.Maintenance.Commands.Reset;
 using ASSISTENTE.Common.Extensions;
 using MediatR;
@@ -11,7 +11,7 @@ public sealed class Playground(ISender mediator, ILogger<Playground> logger)
 {
     public async Task AnswerAsync(string question)
     {
-        var result = await mediator.Send(AnswerQuery.Create(question));
+        var result = await mediator.Send(GenerateAnswerQuery.Create(question));
 
         result
             .Log(response => response.Text, logger)

@@ -3,8 +3,8 @@
 @using ASSISTENTE.Client.Brokers
 @using ASSISTENTE.Client.Common.Models
 @using ASSISTENTE.Client.Components.Forms
-@using ASSISTENTE.Contract.Internal.Requests.Knowledge.Queries.Answer
 @using ASSISTENTE.Client.Components
+@using ASSISTENTE.Contract.Internal.Requests.Knowledge.Queries.GenerateAnswer
 
 @inject IAnswersBroker AnswersBroker
 
@@ -19,8 +19,8 @@
     </MudGrid>
 }
 
-<BaseForm TRequest="AnswerRequest"
-          TResponse="AnswerResponse"
+<BaseForm TRequest="GenerateAnswerRequest"
+          TResponse="GenerateAnswerResponse"
           Request="_request"
           Response="_response"
           SubmitMethod="GenerateAnswerAsync"
@@ -44,13 +44,13 @@
 
 @code {
 
-    AnswerRequest _request = new();
-    AnswerResponse? _response;
+    GenerateAnswerRequest _request = new();
+    GenerateAnswerResponse? _response;
 
-    private async Task<HttpResult<AnswerResponse>> GenerateAnswerAsync(AnswerRequest request) =>
+    private async Task<HttpResult<GenerateAnswerResponse>> GenerateAnswerAsync(GenerateAnswerRequest request) =>
         await AnswersBroker.GenerateAnswerAsync(request);
 
-    private void HandleResponseUpdate(AnswerResponse? response) => _response = response;
-    private void HandleRequestUpdate(AnswerRequest request) => _request = request;
+    private void HandleResponseUpdate(GenerateAnswerResponse? response) => _response = response;
+    private void HandleRequestUpdate(GenerateAnswerRequest request) => _request = request;
 
 }

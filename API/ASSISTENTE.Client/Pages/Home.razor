@@ -18,14 +18,15 @@
 @code
 {
     private HubConnection? _hubConnection;
-    private readonly List<string> _messages = new();
+    private readonly List<string> _messages = [];
+    private string _connectionId = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5249/answers")
             .Build();
-
+        
         _hubConnection.On<string>("ReceiveAnswer", message =>
         {
             _messages.Add(message);
@@ -33,11 +34,15 @@
             InvokeAsync(StateHasChanged);
         });
 
+        _hubConnection.On<string>("InitConnection", connectionId => _connectionId = connectionId);
+        
         await _hubConnection.StartAsync();
     }
 
     public async ValueTask DisposeAsync()
     {
         if (_hubConnection != null) await _hubConnection.DisposeAsync();
+
+        Console.WriteLine($"Init connection: {_connectionId}");
     }
 }
