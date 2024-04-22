@@ -54,28 +54,16 @@ public sealed class KnowledgeService(
 
     public async Task<Result<string>> RecallAsync(string questionText)
     {
-        var answer = await GetContextAsync<ResourceType, QuestionContext>(questionText)
-            .Bind(async context =>
-            {
-                var question = Question.Create(questionText, context);
-                
-                if (context == QuestionContext.Error)
-                {
-                    return await question
-                        .Map(questionRepository.AddAsync)
-                        .Finally(_ => Result.Failure<Question>(KnowledgeServiceErrors.ContextNotRecognized.Build()));
-                }
-                
-                return question;
-                
-            })
+        // TODO: TODO: RecallAsync will be an aggregator of all methods and will be generate answer synchronous 
+        // TODO: split this method into smaller methods
+        var answer = await ResolveQuestionContext(questionText) // Step 1 & 2
             .Bind(async question =>
             {
-                var llmResult = await EmbeddingText.Create(questionText)
+                var llmResult = await EmbeddingText.Create(questionText) // 3. Create embedding
                     .Bind(embeddingClient.GetAsync)
                     .Check(dto => question.AddEmbeddings(dto.Embeddings))
                     .Bind(dto => VectorDto.Create(CollectionName(question.GetContext()), dto.Embeddings))
-                    .Bind(qdrantService.SearchAsync)
+                    .Bind(qdrantService.SearchAsync) // 4. Search for resources
                     .Bind(searchResult =>
                     {
                         var resourceIds = searchResult.Select(x => x.ResourceId);
@@ -84,19 +72,19 @@ public sealed class KnowledgeService(
                             .FindByResourceIdsAsync(resourceIds)
                             .ToResult(KnowledgeServiceErrors.NotFound.Build());
                     })
-                    .Check(question.AddResource)
+                    .Check(question.AddResource) // 5. Save selected resources to question (save in DB for audit purpose)
                     .Bind(resources =>
                     {
                         var contextContent = resources.Select(x => x.Content);
 
-                        return GetPromptType(question.Context)
+                        return GetPromptType(question.Context) // 6. Generate prompt
                             .Bind(promptType => PromptInput.Create(questionText, contextContent, promptType))
                             .Bind(promptGenerator.GeneratePrompt);
                     })
                     .Bind(Prompt.Create)
                     .Bind(prompt =>
                     {
-                        var answer = llmClient.GenerateAnswer(prompt)
+                        var answer = llmClient.GenerateAnswer(prompt) // 7. Generate answer
                             .Check(answer => AnswerEntity.Create(
                                     answer.Text,
                                     prompt.Value,
@@ -105,11 +93,11 @@ public sealed class KnowledgeService(
                                     answer.Audit.PromptTokens,
                                     answer.Audit.CompletionTokens
                                 )
-                                .Check(question.SetAnswer));
+                                .Check(question.SetAnswer)); // 8. Save answer to question (save in DB for audit purpose)
                         
                         return answer;
                     })
-                    .Check(_ => questionRepository.AddAsync(question));
+                    .Check(_ => questionRepository.UpdateAsync(question)); // 9. Commit DB transation
                 
                 return llmResult;
             })
@@ -118,6 +106,25 @@ public sealed class KnowledgeService(
         return answer;
     }
 
+    public async Task<Result<Question>> ResolveQuestionContext(string questionText)
+    {
+        return await GetContextAsync<ResourceType, QuestionContext>(questionText) // 1. Detect context
+            .Bind(async context =>
+            {
+                var question = Question.Create(questionText, context); // 2. Init question (save in DB for audit purpose)
+
+                if (context == QuestionContext.Error)
+                {
+                    return await question
+                        .Map(questionRepository.AddAsync)
+                        .Finally(_ => Result.Failure<Question>(KnowledgeServiceErrors.ContextNotRecognized.Build()));
+                }
+
+                return question;
+            })
+            .Check(questionRepository.AddAsync);
+    }
+    
     private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question) 
         where TType : struct, Enum
         where TContext : struct, Enum

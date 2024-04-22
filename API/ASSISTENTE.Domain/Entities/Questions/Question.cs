@@ -30,6 +30,8 @@ public sealed class Question : AuditableEntity
     public static Result<Question> Create(string text, QuestionContext context)
     {
         return new Question(text, context);
+        
+        // TODO: Raise domain event
     }
     
     public Result AddResource(IEnumerable<Resource> resources)

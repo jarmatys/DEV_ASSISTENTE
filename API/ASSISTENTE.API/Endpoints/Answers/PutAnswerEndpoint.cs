@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ASSISTENTE.API.Endpoints.Answers;
 
-public sealed class PutAnswerEndpoint(ISender mediator) : Endpoint<UpdateAnswerRequest, UpdateAnswerResponse> 
+public sealed class PutAnswerEndpoint(ISender mediator) : Endpoint<UpdateAnswerRequest> 
 {
     public override void Configure()
     {

@@ -15,9 +15,11 @@ internal abstract class BaseRepository<TEntity>(IAssistenteDbContext context) : 
         return Result.Success(entity);
     }
 
-    public Task<Result<TEntity>> UpdateAsync(TEntity entity)
+    public async Task<Result<TEntity>> UpdateAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        context.Set<TEntity>().Update(entity);
+        await context.SaveChangesAsync();
+        return Result.Success(entity);
     }
 
     public Task<Result<TEntity>> RemoveAsync(TEntity entity)
