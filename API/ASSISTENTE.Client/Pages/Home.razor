@@ -34,7 +34,12 @@
             InvokeAsync(StateHasChanged);
         });
 
-        _hubConnection.On<string>("InitConnection", connectionId => _connectionId = connectionId);
+        _hubConnection.On<string>("InitConnection", connectionId =>
+        {
+            _connectionId = connectionId;
+
+            Console.WriteLine(connectionId);
+        });
         
         await _hubConnection.StartAsync();
     }

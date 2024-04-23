@@ -15,6 +15,8 @@ builder.AddCors();
 builder.AddEndpoints();
 builder.AddModules(configuration);
 
+// TODO: Add exception handler middleware
+
 builder.Services.AddSignalR();
 
 var app = builder.Build();

@@ -1,10 +1,11 @@
+using ASSISTENTE.API.Hubs;
 using ASSISTENTE.Contract.Internal.Requests.Knowledge.Commands.UpdateAnswer;
 using FastEndpoints;
-using MediatR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ASSISTENTE.API.Endpoints.Answers;
 
-public sealed class PutAnswerEndpoint(ISender mediator) : Endpoint<UpdateAnswerRequest> 
+public sealed class PutAnswerEndpoint(IHubContext<AnswerHub, IAnswerHub> hubContext) : Endpoint<UpdateAnswerRequest> 
 {
     public override void Configure()
     {
@@ -14,7 +15,10 @@ public sealed class PutAnswerEndpoint(ISender mediator) : Endpoint<UpdateAnswerR
 
     public override async Task HandleAsync(UpdateAnswerRequest req, CancellationToken ct)
     {
-        // TODO: Implement endpoint reciving updates and sends to answers to proper hub connection
-        // await SendAsync(result, cancellation: ct);
+        // TODO: add request validation
+        
+        await hubContext.Clients.Client(req.ConnectionId).ReceiveAnswer("Your message here");
+        
+        await SendOkAsync(ct);
     }
 }
