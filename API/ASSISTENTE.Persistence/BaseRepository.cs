@@ -1,4 +1,5 @@
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Commons.Interfaces;
 using ASSISTENTE.Persistence.MSSQL;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;

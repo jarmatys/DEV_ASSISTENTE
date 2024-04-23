@@ -6,6 +6,10 @@ namespace ASSISTENTE.Domain.Entities.Resources;
 
 public sealed class Resource : AuditableEntity
 {
+    private Resource()
+    {
+    }
+    
     private Resource(Guid resourceId, string content, string title, ResourceType type, IEnumerable<float> embeddings)
     {
         ResourceId = resourceId;
@@ -18,14 +22,14 @@ public sealed class Resource : AuditableEntity
     }
     
     public Guid ResourceId { get; private set; }
-    public string Content { get; private set; }
-    public string Title { get; private set; }
+    public string Content { get; private set; } = null!;
+    public string Title { get; private set; } = null!;
     public ResourceType Type { get; private set; }
-    public IEnumerable<float> Embeddings { get; private set; }
+    public IEnumerable<float> Embeddings { get; private set; } = null!;
 
     #region NAVIGATION PROPERTIES
 
-    public ICollection<QuestionResource> Questions { get; private set; }
+    public ICollection<QuestionResource> Questions { get; private set; } = null!;
 
     #endregion
     

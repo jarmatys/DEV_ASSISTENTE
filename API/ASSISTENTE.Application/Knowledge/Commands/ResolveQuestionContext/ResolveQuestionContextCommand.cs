@@ -36,7 +36,7 @@ namespace ASSISTENTE.Application.Knowledge.Commands.ResolveQuestionContext
                 request.Question
             );
             
-            return await knowledgeService.ResolveQuestionContext(request.Question!);
+            return await knowledgeService.ResolveQuestionContext(request.Question!, request.ConnectionId);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Domain.Commons;
+namespace ASSISTENTE.Domain.Commons.Interfaces;
 
 public interface IBaseRepository<TEntity>
 {

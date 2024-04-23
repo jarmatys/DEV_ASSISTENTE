@@ -47,7 +47,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ Integration with the OpenAI API
 - ✅ Add usage of MediatR and prepare Command & Queries libraries 
 - ✅ Generating answers or ready code (in console app) - depending on what the user needs
-- 🔳 Add UI in Blazor
+- ✅ Add UI in Blazor
     - 🔳 Upload sample notes and code from `DEV_ASSISTENTE` repository for demo purpose
     - 🔳 Generating answers asynchronously (RabbitMQ + SignalR)
     - 🔳 Display resources list

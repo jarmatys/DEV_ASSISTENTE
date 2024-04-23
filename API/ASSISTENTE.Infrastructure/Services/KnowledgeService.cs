@@ -53,11 +53,11 @@ public sealed class KnowledgeService(
             .Bind(qdrantService.UpsertAsync);
     }
 
-    public async Task<Result<string>> RecallAsync(string questionText)
+    public async Task<Result<string>> RecallAsync(string questionText, string? connectionId)
     {
         // TODO: TODO: RecallAsync will be an aggregator of all methods and will be generate answer synchronous 
         // TODO: split this method into smaller methods
-        var answer = await ResolveQuestionContext(questionText) // Step 1 & 2
+        var answer = await ResolveQuestionContext(questionText, connectionId) // Step 1 & 2
             .Bind(async question =>
             {
                 var llmResult = await EmbeddingText.Create(questionText) // 3. Create embedding
@@ -107,12 +107,12 @@ public sealed class KnowledgeService(
         return answer;
     }
 
-    public async Task<Result<Question>> ResolveQuestionContext(string questionText)
+    public async Task<Result<Question>> ResolveQuestionContext(string questionText, string? connectionId)
     {
         return await GetContextAsync<ResourceType, QuestionContext>(questionText) // 1. Detect context
             .Bind(async context =>
             {
-                var question = Question.Create(questionText, context); // 2. Init question (save in DB for audit purpose)
+                var question = Question.Create(questionText, connectionId, context); // 2. Init question (save in DB for audit purpose)
 
                 if (context == QuestionContext.Error)
                 {

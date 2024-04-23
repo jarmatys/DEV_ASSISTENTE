@@ -28,7 +28,7 @@ namespace ASSISTENTE.Application.Knowledge.Queries.GenerateAnswer
         {
             logger.LogInformation("Question: '{Question}' is being answered...", query.Question);
             
-            return await knowledgeService.RecallAsync(query.Question)
+            return await knowledgeService.RecallAsync(query.Question, connectionId: null)
                 .Map(text => new GenerateAnswerResponse(text));
         }
     }

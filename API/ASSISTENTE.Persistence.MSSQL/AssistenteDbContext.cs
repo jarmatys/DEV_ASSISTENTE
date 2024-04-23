@@ -9,6 +9,7 @@ using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Persistence.MSSQL.Converters;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 namespace ASSISTENTE.Persistence.MSSQL
 {
@@ -16,6 +17,7 @@ namespace ASSISTENTE.Persistence.MSSQL
     {
         private readonly IUserResolver? _userResolver;
         private readonly ISystemTimeProvider? _systemTimeProvider;
+        private readonly IPublisher? _publisher; 
 
         public AssistenteDbContext(DbContextOptions<AssistenteDbContext> options) : base(options)
         {
@@ -24,11 +26,13 @@ namespace ASSISTENTE.Persistence.MSSQL
         public AssistenteDbContext(
             DbContextOptions<AssistenteDbContext> options, 
             IUserResolver userResolver,
-            ISystemTimeProvider systemTimeProvider) 
+            ISystemTimeProvider systemTimeProvider,
+            IPublisher publisher) 
             : base(options)
         {
             _userResolver = userResolver ?? throw new ArgumentNullException(nameof(userResolver));
             _systemTimeProvider = systemTimeProvider ?? throw new ArgumentNullException(nameof(systemTimeProvider));
+            _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
         }
 
         #region ENTITIES
@@ -60,7 +64,7 @@ namespace ASSISTENTE.Persistence.MSSQL
                 .HaveConversion<QuestionContextConverter>();
         }
         
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
@@ -74,23 +78,35 @@ namespace ASSISTENTE.Persistence.MSSQL
                         entry.Entity.ModifiedBy = _userResolver!.GetUserEmail();
                         entry.Entity.Modified = _systemTimeProvider!.Now();
                         break;
-                    case EntityState.Deleted:
-                        entry.State = EntityState.Deleted;
-                        break;
-                    case EntityState.Detached:
-                        entry.State = EntityState.Detached;
-                        break;
-                    case EntityState.Unchanged:
-                        entry.State = EntityState.Unchanged;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(entry.State), entry.State, "Unknown state");
                 }
             }
 
-            return base.SaveChangesAsync(cancellationToken);
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            await PublishEventsAsync(); // TODO: add in-memory outbox (outbox pattern)
+            
+            return result;
         }
 
+        private async Task PublishEventsAsync()
+        {
+            var domainEvents = ChangeTracker
+                .Entries<Entity>()
+                .Select(entry => entry.Entity)
+                .SelectMany(entity =>
+                {
+                    var events = entity.GetEvents();
+                    entity.ClearEvents();
+                    return events;
+                })
+                .ToList();
+
+            foreach (var domainEvent in domainEvents)
+            {
+                await _publisher!.Publish(domainEvent);
+            }
+        }
+        
         public new DbSet<TEntity> Set<TEntity>() where TEntity : AuditableEntity
         {
             return base.Set<TEntity>();

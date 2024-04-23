@@ -1,4 +1,5 @@
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Commons.Interfaces;
 
 namespace ASSISTENTE.Domain.Entities.Resources.Interfaces;
 
