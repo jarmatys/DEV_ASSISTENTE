@@ -6,7 +6,7 @@ using ASSISTENTE.Domain.Entities.Resources;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
 
-public sealed class Question : AuditableEntity
+public sealed class Question : AuditableEntity<Guid>
 {
     private Question()
     {
@@ -14,6 +14,8 @@ public sealed class Question : AuditableEntity
 
     private Question(string text, string? connectionId, QuestionContext context)
     {
+        Id = Guid.NewGuid();
+        
         Text = text;
         Context = context;
 

@@ -1,5 +1,7 @@
 using System.Reflection;
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Worker.Sync.Common;
 using ASSISTENTE.Worker.Sync.Common.Extensions;
 
 var configuration = new ConfigurationBuilder()
@@ -7,7 +9,7 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var workerSettings = configuration.GetSettings();
+var workerSettings = configuration.GetSettings<WorkerSettings>();
 
 var builder = WebApplication
     .CreateBuilder(args)

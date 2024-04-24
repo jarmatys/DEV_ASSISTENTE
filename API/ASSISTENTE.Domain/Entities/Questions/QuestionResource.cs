@@ -3,24 +3,24 @@ using ASSISTENTE.Domain.Entities.Resources;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
 
-public sealed class QuestionResource : AuditableEntity
+public sealed class QuestionResource : AuditableEntity<int>
 {
-    private QuestionResource(int resourceId)
+    private QuestionResource(Guid resourceId)
     {
         ResourceId = resourceId;
     }
     
     # region NAVIGATION PROPERTIES
     
-    public int QuestionId { get; private set; }
+    public Guid QuestionId { get; private set; }
     public Question Question { get; private set; } = null!;
 
-    public int ResourceId { get; private set; }
+    public Guid ResourceId { get; private set; }
     public Resource Resource { get; private set; } = null!;
 
     # endregion
     
-    public static Result<QuestionResource> Create(int resourceId)
+    public static Result<QuestionResource> Create(Guid resourceId)
     {
         return new QuestionResource(resourceId);
     }

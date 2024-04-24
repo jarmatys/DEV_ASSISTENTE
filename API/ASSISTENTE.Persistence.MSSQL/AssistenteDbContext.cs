@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Commons.Interfaces;
 using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Enums;
@@ -66,7 +67,7 @@ namespace ASSISTENTE.Persistence.MSSQL
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
             {
                 switch (entry.State)
                 {
@@ -91,7 +92,7 @@ namespace ASSISTENTE.Persistence.MSSQL
         private async Task PublishEventsAsync()
         {
             var domainEvents = ChangeTracker
-                .Entries<Entity>()
+                .Entries<IEntity>()
                 .Select(entry => entry.Entity)
                 .SelectMany(entity =>
                 {
@@ -107,7 +108,7 @@ namespace ASSISTENTE.Persistence.MSSQL
             }
         }
         
-        public new DbSet<TEntity> Set<TEntity>() where TEntity : AuditableEntity
+        public new DbSet<TEntity> Set<TEntity>() where TEntity : class, IEntity
         {
             return base.Set<TEntity>();
         }

@@ -1,8 +1,8 @@
 using ASSISTENTE.Common.Settings;
 
-namespace ASSISTENTE.Worker.Sync.Common;
+namespace ASSISTENTE.Module;
 
-public sealed class WorkerSettings
+public sealed class ModuleSettings
 {
     public required RabbitSection Rabbit { get; init; }
 }

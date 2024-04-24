@@ -3,7 +3,7 @@ using ASSISTENTE.Domain.Entities.Questions;
 
 namespace ASSISTENTE.Domain.Entities.Answers;
 
-public sealed class Answer : AuditableEntity
+public sealed class Answer : AuditableEntity<int>
 {
     private Answer()
     {
@@ -30,7 +30,7 @@ public sealed class Answer : AuditableEntity
 
     # region NAVIGATION PROPERTIES
 
-    public int QuestionId { get; private set; }
+    public Guid QuestionId { get; private set; }
     public Question Question { get; private set; } = null!;
 
     # endregion

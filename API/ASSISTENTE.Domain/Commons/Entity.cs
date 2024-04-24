@@ -2,8 +2,10 @@ using ASSISTENTE.Domain.Commons.Interfaces;
 
 namespace ASSISTENTE.Domain.Commons;
 
-public abstract class Entity : IEntity
+public abstract class Entity<TIdentifier> : IEntity
 {
+    public TIdentifier Id { get; set; }
+    
     private readonly List<IDomainEvents> _domainEvents = [];
 
     public IReadOnlyList<IDomainEvents> GetEvents()

@@ -14,7 +14,7 @@ internal sealed class ResourceRepository(IAssistenteDbContext context)
     public async Task<Maybe<List<Resource>>> FindByResourceIdsAsync(IEnumerable<Guid> resourceIds)
     {
         var resources = await _context.Resources
-            .Where(x => resourceIds.Contains(x.ResourceId))
+            .Where(x => resourceIds.ToList().Contains(x.Id))
             .ToListAsync();
         
         return resources.Count == 0

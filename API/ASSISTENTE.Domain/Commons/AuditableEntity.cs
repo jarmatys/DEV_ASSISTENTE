@@ -1,9 +1,9 @@
-﻿namespace ASSISTENTE.Domain.Commons
+﻿using ASSISTENTE.Domain.Commons.Interfaces;
+
+namespace ASSISTENTE.Domain.Commons
 {
-    public abstract class AuditableEntity : Entity
+    public abstract class AuditableEntity<TIndentifier> : Entity<TIndentifier>, IAuditableEntity
     {
-        public int Id { get; set; }
-        
         public string? CreatedBy { get; set; }
         public DateTime Created { get; set; }
         public string? ModifiedBy { get; set; }

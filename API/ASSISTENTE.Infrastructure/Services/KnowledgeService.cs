@@ -49,7 +49,7 @@ public sealed class KnowledgeService(
         if (resourceResult.IsFailure)
             return Result.Failure(resourceResult.Error);
 
-        return await DocumentDto.Create(CollectionName(type.ToString()), embeddings, resourceResult.Value.ResourceId)
+        return await DocumentDto.Create(CollectionName(type.ToString()), embeddings, resourceResult.Value.Id)
             .Bind(qdrantService.UpsertAsync);
     }
 

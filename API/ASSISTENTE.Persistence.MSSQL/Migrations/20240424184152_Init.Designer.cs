@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASSISTENTE.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(AssistenteDbContext))]
-    [Migration("20240402114614_AddedAnswerTable")]
-    partial class AddedAnswerTable
+    [Migration("20240424184152_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,8 +63,8 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
                     b.Property<int>("PromptTokens")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -80,11 +80,9 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
 
             modelBuilder.Entity("ASSISTENTE.Domain.Entities.Questions.Question", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Context")
                         .IsRequired()
@@ -135,11 +133,11 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ResourceId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -152,11 +150,9 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
 
             modelBuilder.Entity("ASSISTENTE.Domain.Entities.Resources.Resource", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -177,9 +173,6 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ResourceId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()

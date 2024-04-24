@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ASSISTENTE.Persistence;
 
 internal abstract class BaseRepository<TEntity>(IAssistenteDbContext context) : IBaseRepository<TEntity>
-    where TEntity : AuditableEntity
+    where TEntity : class, IEntity
 {
     public async Task<Result<TEntity>> AddAsync(TEntity entity)
     {
