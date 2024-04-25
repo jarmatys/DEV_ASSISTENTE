@@ -1,18 +1,15 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources.Enums;
+using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Resources;
 
-public sealed class Resource : AuditableEntity<Guid>
+public sealed class Resource : AuditableEntity<ResourceId>
 {
-    private Resource()
-    {
-    }
-    
     private Resource(string content, string title, ResourceType type, IEnumerable<float> embeddings)
     {
-        Id = Guid.NewGuid();
+        Id = new ResourceId(Guid.NewGuid());
         
         Content = content;
         Title = title;
@@ -22,14 +19,14 @@ public sealed class Resource : AuditableEntity<Guid>
         Questions = new List<QuestionResource>();
     }
     
-    public string Content { get; private set; } = null!;
-    public string Title { get; private set; } = null!;
+    public string Content { get; private set; }
+    public string Title { get; private set; }
     public ResourceType Type { get; private set; }
-    public IEnumerable<float> Embeddings { get; private set; } = null!;
+    public IEnumerable<float> Embeddings { get; private set; }
 
     #region NAVIGATION PROPERTIES
 
-    public ICollection<QuestionResource> Questions { get; private set; } = null!;
+    public ICollection<QuestionResource> Questions { get; private set; }
 
     #endregion
     

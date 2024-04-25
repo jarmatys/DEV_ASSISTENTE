@@ -3,20 +3,18 @@ using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Questions.Events;
 using ASSISTENTE.Domain.Entities.Resources;
+using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
 
-public sealed class Question : AuditableEntity<Guid>
+public sealed class Question : AuditableEntity<QuestionId>
 {
-    private Question()
-    {
-    }
-
     private Question(string text, string? connectionId, QuestionContext context)
     {
-        Id = Guid.NewGuid();
+        Id = new QuestionId(Guid.NewGuid());
         
         Text = text;
+        ConnectionId = connectionId;
         Context = context;
 
         Resources = new List<QuestionResource>();
@@ -25,14 +23,15 @@ public sealed class Question : AuditableEntity<Guid>
         RaiseEvent(new QuestionCreatedEvent(Id, connectionId));
     }
 
-    public string Text { get; private set; } = null!;
+    public string Text { get; private set; }
+    public string? ConnectionId { get; private set; }
     public QuestionContext Context { get; private set; }
-    public IEnumerable<float> Embeddings { get; private set; } = null!;
+    public IEnumerable<float> Embeddings { get; private set; }
 
     # region NAVIGATION PROPERTIES
 
     public Answer Answer { get; private set; } = null!;
-    public ICollection<QuestionResource> Resources { get; private set; } = null!;
+    public ICollection<QuestionResource> Resources { get; private set; }
 
     # endregion
 

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Commons.Interfaces;
 using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.Questions;
@@ -7,7 +6,10 @@ using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Domain.Interfaces;
+using ASSISTENTE.Language.Identifiers;
 using ASSISTENTE.Persistence.MSSQL.Converters;
+using ASSISTENTE.Persistence.MSSQL.Converters.Identifiers;
+using ASSISTENTE.Persistence.MSSQL.Extensions;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
@@ -51,9 +53,11 @@ namespace ASSISTENTE.Persistence.MSSQL
 
             modelBuilder.SeedData();
 
+            modelBuilder.ConfigureStrongyTypeIdentifiers();
+
             base.OnModelCreating(modelBuilder);
         }
-        
+
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder
@@ -63,6 +67,23 @@ namespace ASSISTENTE.Persistence.MSSQL
             configurationBuilder
                 .Properties<QuestionContext>()
                 .HaveConversion<QuestionContextConverter>();
+            
+            // TODO: Prepare extension method for strongy identifiers configuration
+            configurationBuilder
+                .Properties<ResourceId>()
+                .HaveConversion<ResourceIdConverter>();
+            
+            configurationBuilder
+                .Properties<AnswerId>()
+                .HaveConversion<AnswerIdConverter>();
+            
+            configurationBuilder
+                .Properties<QuestionId>()
+                .HaveConversion<QuestionIdConverter>();
+            
+            configurationBuilder
+                .Properties<QuestionResourceId>()
+                .HaveConversion<QuestionResourceIdConverter>();
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

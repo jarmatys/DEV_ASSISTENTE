@@ -6,7 +6,6 @@ namespace ASSISTENTE.Persistence.MSSQL.Seeds
     {
         public static void SeedData(this ModelBuilder modelBuilder)
         {
-
         }
     }
 }

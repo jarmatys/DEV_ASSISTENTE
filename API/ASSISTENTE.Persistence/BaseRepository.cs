@@ -1,13 +1,14 @@
-using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Commons.Interfaces;
+using ASSISTENTE.Language;
 using ASSISTENTE.Persistence.MSSQL;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Persistence;
 
-internal abstract class BaseRepository<TEntity>(IAssistenteDbContext context) : IBaseRepository<TEntity>
+internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContext context) : IBaseRepository<TEntity, TIdentifier>
     where TEntity : class, IEntity
+    where TIdentifier : class, IIdentifier
 {
     public async Task<Result<TEntity>> AddAsync(TEntity entity)
     {
@@ -28,7 +29,7 @@ internal abstract class BaseRepository<TEntity>(IAssistenteDbContext context) : 
         throw new NotImplementedException();
     }
 
-    public Task<Maybe<TEntity>> GetByIdAsync(int id)
+    public Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id)
     {
         throw new NotImplementedException();
     }

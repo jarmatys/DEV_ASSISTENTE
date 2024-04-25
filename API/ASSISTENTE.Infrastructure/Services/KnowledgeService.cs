@@ -16,7 +16,7 @@ using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
-
+using ASSISTENTE.Language.Identifiers;
 using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
 
 namespace ASSISTENTE.Infrastructure.Services;
@@ -67,7 +67,7 @@ public sealed class KnowledgeService(
                     .Bind(qdrantService.SearchAsync) // 4. Search for resources
                     .Bind(searchResult =>
                     {
-                        var resourceIds = searchResult.Select(x => x.ResourceId);
+                        var resourceIds = searchResult.Select(x => new ResourceId(x.ResourceId));
 
                         return resourceRepository
                             .FindByResourceIdsAsync(resourceIds)

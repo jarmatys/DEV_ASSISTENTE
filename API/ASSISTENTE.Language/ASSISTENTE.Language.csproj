@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Language\ASSISTENTE.Language.csproj" />
-    </ItemGroup>
-
 </Project>

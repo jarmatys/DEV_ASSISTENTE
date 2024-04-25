@@ -1,26 +1,27 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Entities.Resources;
+using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
 
-public sealed class QuestionResource : AuditableEntity<int>
+public sealed class QuestionResource : AuditableEntity<QuestionResourceId>
 {
-    private QuestionResource(Guid resourceId)
+    private QuestionResource(ResourceId resourceId)
     {
         ResourceId = resourceId;
     }
     
     # region NAVIGATION PROPERTIES
     
-    public Guid QuestionId { get; private set; }
+    public QuestionId QuestionId { get; private set; } = null!;
     public Question Question { get; private set; } = null!;
 
-    public Guid ResourceId { get; private set; }
+    public ResourceId ResourceId { get; private set; }
     public Resource Resource { get; private set; } = null!;
 
     # endregion
     
-    public static Result<QuestionResource> Create(Guid resourceId)
+    public static Result<QuestionResource> Create(ResourceId resourceId)
     {
         return new QuestionResource(resourceId);
     }
