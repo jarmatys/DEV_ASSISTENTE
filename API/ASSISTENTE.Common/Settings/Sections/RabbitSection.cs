@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Common.Settings;
+namespace ASSISTENTE.Common.Settings.Sections;
 
 public sealed class RabbitSection
 {

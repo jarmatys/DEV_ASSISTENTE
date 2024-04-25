@@ -57,23 +57,17 @@ public sealed class KnowledgeService(
     {
         // TODO: TODO: RecallAsync will be an aggregator of all methods and will be generate answer synchronous 
         // TODO: split this method into smaller methods
+        
+        // STEPS:
+        // 1. Create question (save in DB for audit purpose) - connectionId + questionText
+        // 2. Resolve question context 
+        // 3. Find resources and save for audit purpose
+        // 4. Generate prompt and answer + save for audit purpose
+        
         var answer = await ResolveQuestionContext(questionText, connectionId) // Step 1 & 2
             .Bind(async question =>
             {
-                var llmResult = await EmbeddingText.Create(questionText) // 3. Create embedding
-                    .Bind(embeddingClient.GetAsync)
-                    .Check(dto => question.AddEmbeddings(dto.Embeddings))
-                    .Bind(dto => VectorDto.Create(CollectionName(question.GetContext()), dto.Embeddings))
-                    .Bind(qdrantService.SearchAsync) // 4. Search for resources
-                    .Bind(searchResult =>
-                    {
-                        var resourceIds = searchResult.Select(x => new ResourceId(x.ResourceId));
-
-                        return resourceRepository
-                            .FindByResourceIdsAsync(resourceIds)
-                            .ToResult(KnowledgeServiceErrors.NotFound.Build());
-                    })
-                    .Check(question.AddResource) // 5. Save selected resources to question (save in DB for audit purpose)
+                var llmResult = await FindResources(question) // Step 3 & 4 & 5
                     .Bind(resources =>
                     {
                         var contextContent = resources.Select(x => x.Content);
@@ -109,6 +103,7 @@ public sealed class KnowledgeService(
 
     public async Task<Result<Question>> ResolveQuestionContext(string questionText, string? connectionId)
     {
+        // TODO: Detect context should be moved to a separate method and consumer
         return await GetContextAsync<ResourceType, QuestionContext>(questionText) // 1. Detect context
             .Bind(async context =>
             {
@@ -124,6 +119,24 @@ public sealed class KnowledgeService(
                 return question;
             })
             .Check(questionRepository.AddAsync);
+    }
+
+    public async Task<Result<List<Resource>>> FindResources(Question question)
+    {
+        return await EmbeddingText.Create(question.Text) // 3. Create embedding
+            .Bind(embeddingClient.GetAsync)
+            .Check(dto => question.AddEmbeddings(dto.Embeddings))
+            .Bind(dto => VectorDto.Create(CollectionName(question.GetContext()), dto.Embeddings))
+            .Bind(qdrantService.SearchAsync) // 4. Search for resources
+            .Bind(searchResult =>
+            {
+                var resourceIds = searchResult.Select(x => new ResourceId(x.ResourceId));
+
+                return resourceRepository
+                    .FindByResourceIdsAsync(resourceIds)
+                    .ToResult(KnowledgeServiceErrors.NotFound.Build());
+            })
+            .Check(question.AddResource); // 5. Save selected resources to question (save in DB for audit purpose)
     }
     
     private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question) 

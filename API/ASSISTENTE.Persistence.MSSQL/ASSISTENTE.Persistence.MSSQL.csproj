@@ -20,7 +20,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
-        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

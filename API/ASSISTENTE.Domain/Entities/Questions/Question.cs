@@ -52,6 +52,8 @@ public sealed class Question : AuditableEntity<QuestionId>
 
             Resources.Add(resource.Value);
         }
+        
+        RaiseEvent(new ResourcesAttachedEvent(Id));
 
         return Result.Success();
     }

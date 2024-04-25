@@ -11,14 +11,14 @@ public static class SettingsExtensions
 
         if (settings == null)
         {
-            throw new SettingsException($"Missing {typeof(TSettings)} settings.");
+            throw new MissingSettingsException($"Missing {typeof(TSettings)} settings.");
         }
 
         foreach (var property in typeof(TSettings).GetProperties())
         {
             if (property.GetValue(settings) == null)
             {
-                throw new SettingsException($"Missing required section: '{property.Name}' in 'appsettings.json'");
+                throw new MissingSettingsException($"Missing required section: '{property.Name}' in 'appsettings.json'");
             }
         }
 

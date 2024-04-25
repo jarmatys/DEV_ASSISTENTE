@@ -1,7 +1,5 @@
 ﻿using ASSISTENTE.Application;
-using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Domain.Interfaces;
-using ASSISTENTE.EventHandlers;
 using ASSISTENTE.Infrastructure;
 using ASSISTENTE.Persistence;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +14,9 @@ namespace ASSISTENTE.Module
             IConfiguration configuration)
         where TUserResolver : class, IUserResolver
         {
-            var moduleSettings = configuration.GetSettings<ModuleSettings>();
-
             services.AddInfrastructure(configuration);
             services.AddPersistence<TUserResolver>(configuration);
             services.AddApplication();
-            services.AddEvents(moduleSettings.Rabbit);
                 
             return services;
         }

@@ -1,6 +1,7 @@
 using System.Reflection;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Worker.Sync.Common;
 using ASSISTENTE.Worker.Sync.Common.Extensions;
 
@@ -9,12 +10,13 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var workerSettings = configuration.GetSettings<WorkerSettings>();
+var settings = configuration.GetSettings<AssistenteSettings>();
 
 var builder = WebApplication
     .CreateBuilder(args)
-    .AddQueue(workerSettings.Rabbit, Assembly.GetExecutingAssembly())
-    .AddLogging(configuration);
+    .AddQueue(settings.Rabbit, Assembly.GetExecutingAssembly())
+    .AddLogging(configuration)
+    .AddModules(configuration);
 
 var app = builder.Build();
 

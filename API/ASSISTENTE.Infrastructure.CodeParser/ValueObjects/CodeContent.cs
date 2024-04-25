@@ -1,6 +1,6 @@
 using ASSISTENTE.Infrastructure.CodeParser.Errors;
-using CSharpFunctionalExtensions;
 using ASSISTENTE.Infrastructure.CodeParser.Models;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 

@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj" />
+      <PackageReference Include="Microsoft.CodeAnalysis" Version="4.9.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis" Version="4.9.2" />
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
     
 </Project>

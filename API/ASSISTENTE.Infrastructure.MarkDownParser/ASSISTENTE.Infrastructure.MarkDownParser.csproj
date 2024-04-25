@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj" />
+      <PackageReference Include="Markdig" Version="0.35.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Markdig" Version="0.35.0" />
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
 </Project>

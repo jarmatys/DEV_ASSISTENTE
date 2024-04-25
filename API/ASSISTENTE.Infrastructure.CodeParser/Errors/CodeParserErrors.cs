@@ -1,4 +1,5 @@
 using ASSISTENTE.Common.Results;
+
 namespace ASSISTENTE.Infrastructure.CodeParser.Errors;
 
 internal static class CodeParserErrors

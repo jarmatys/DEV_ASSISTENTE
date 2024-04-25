@@ -29,8 +29,16 @@ internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContex
         throw new NotImplementedException();
     }
 
-    public Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id)
+    public async Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id)
     {
+        // var entity = await context.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
+        //
+        // return entity == null 
+        //     ? Maybe<TEntity>.None 
+        //     : Maybe<TEntity>.From(entity);
+        
+        // TODO: Fixed search by id
+        
         throw new NotImplementedException();
     }
 

@@ -1,4 +1,5 @@
-using CSharpFunctionalExtensions;using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
+using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.CodeParser;
 

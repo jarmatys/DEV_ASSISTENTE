@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure.Common\ASSISTENTE.Infrastructure.Common.csproj" />
+        <PackageReference Include="OpenAI.Net.Client" Version="1.0.21" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="OpenAI.Net.Client" Version="1.0.21" />
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
     
 </Project>

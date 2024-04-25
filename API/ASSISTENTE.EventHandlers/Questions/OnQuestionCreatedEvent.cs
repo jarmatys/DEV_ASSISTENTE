@@ -10,7 +10,7 @@ public sealed class OnQuestionCreatedEvent(IPublishEndpoint publishEndpoint)
 {
     public Task Handle(QuestionCreatedEvent notification, CancellationToken cancellationToken)
     {
-        publishEndpoint.Publish(new GenerateAnswerMessage(
+        publishEndpoint.Publish(new FindResourcesMessage(
             notification.QuestionId,
             notification.ConnectionId
         ), cancellationToken);

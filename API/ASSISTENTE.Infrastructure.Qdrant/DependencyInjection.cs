@@ -1,4 +1,4 @@
-﻿using ASSISTENTE.Infrastructure.Common.Exceptions;
+﻿using ASSISTENTE.Common.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Qdrant.Client;

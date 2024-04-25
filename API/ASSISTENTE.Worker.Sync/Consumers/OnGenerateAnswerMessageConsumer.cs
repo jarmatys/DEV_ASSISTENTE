@@ -1,13 +1,13 @@
+using ASSISTENTE.Application.Knowledge.Commands.FindResources;
 using ASSISTENTE.Contract.Internal.Messages.Knowledge;
 using ASSISTENTE.Worker.Sync.Common.Bases;
 using CSharpFunctionalExtensions;
+using MediatR;
 
 namespace ASSISTENTE.Worker.Sync.Consumers;
 
-public sealed class OnGenerateAnswerMessageConsumer : ResultConsumerBase<GenerateAnswerMessage>
-{
-    protected override Task<Result> ConsumeAsync()
-    {
-        throw new NotImplementedException();
-    }
-}
+// public sealed class OnGenerateAnswerMessageConsumer (ISender mediator) 
+//     : ResultConsumerBase<GenerateAnswerMessage, ...>(mediator)
+// {
+//     
+// }
