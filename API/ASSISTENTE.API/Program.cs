@@ -1,7 +1,6 @@
 using ASSISTENTE.API.Extensions.Configurations;
 using ASSISTENTE.API.Hubs;
 using ASSISTENTE.Common.Logging;
-using ASSISTENTE.Publisher;
 using ASSISTENTE.Publisher.Rabbit;
 
 var configuration = new ConfigurationBuilder()
