@@ -17,8 +17,8 @@ public sealed class Question : AuditableEntity<QuestionId>
         ConnectionId = connectionId;
         Context = context;
 
+        Embeddings = null;
         Resources = new List<QuestionResource>();
-        Embeddings = new List<float>();
 
         RaiseEvent(new QuestionCreatedEvent(Id, connectionId));
     }
@@ -26,12 +26,12 @@ public sealed class Question : AuditableEntity<QuestionId>
     public string Text { get; private set; }
     public string? ConnectionId { get; private set; }
     public QuestionContext Context { get; private set; }
-    public IEnumerable<float> Embeddings { get; private set; }
+    public List<float>? Embeddings { get; private set; }
 
     # region NAVIGATION PROPERTIES
 
     public Answer Answer { get; private set; } = null!;
-    public ICollection<QuestionResource> Resources { get; private set; }
+    public ICollection<QuestionResource> Resources { get; private set; } 
 
     # endregion
 

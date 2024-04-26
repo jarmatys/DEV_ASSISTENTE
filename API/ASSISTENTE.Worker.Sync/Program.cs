@@ -2,7 +2,6 @@ using System.Reflection;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
 using ASSISTENTE.Common.Settings;
-using ASSISTENTE.Worker.Sync.Common;
 using ASSISTENTE.Worker.Sync.Common.Extensions;
 
 var configuration = new ConfigurationBuilder()

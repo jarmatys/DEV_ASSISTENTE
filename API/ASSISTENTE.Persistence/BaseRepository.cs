@@ -4,10 +4,12 @@ using ASSISTENTE.Persistence.MSSQL;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
+using DomainCommons = ASSISTENTE.Domain.Commons;
+
 namespace ASSISTENTE.Persistence;
 
 internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContext context) : IBaseRepository<TEntity, TIdentifier>
-    where TEntity : class, IEntity
+    where TEntity : DomainCommons.Entity<TIdentifier>
     where TIdentifier : class, IIdentifier
 {
     public async Task<Result<TEntity>> AddAsync(TEntity entity)
@@ -31,15 +33,11 @@ internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContex
 
     public async Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id)
     {
-        // var entity = await context.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
-        //
-        // return entity == null 
-        //     ? Maybe<TEntity>.None 
-        //     : Maybe<TEntity>.From(entity);
+        var entity = await Get().SingleOrDefaultAsync(e => e.Id == id);
         
-        // TODO: Fixed search by id
-        
-        throw new NotImplementedException();
+        return entity == null 
+            ? Maybe<TEntity>.None 
+            : Maybe<TEntity>.From(entity);
     }
 
     public async Task<Maybe<IEnumerable<TEntity>>> GetAllAsync()

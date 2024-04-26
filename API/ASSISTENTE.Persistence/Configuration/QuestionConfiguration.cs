@@ -12,7 +12,6 @@ namespace ASSISTENTE.Persistence.Configuration
 
             builder.Property(e => e.Text).IsRequired();
             builder.Property(e => e.Context).IsRequired();
-            builder.Property(e => e.Embeddings).IsRequired();
 
             builder.HasMany(e => e.Resources)
                 .WithOne(e => e.Question)

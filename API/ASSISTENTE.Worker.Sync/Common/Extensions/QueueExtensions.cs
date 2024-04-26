@@ -1,5 +1,4 @@
 using System.Reflection;
-using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Common.Settings.Sections;
 using MassTransit;
 
