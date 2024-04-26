@@ -1,16 +1,17 @@
 using System.Reflection;
-using ASSISTENTE.Common.Settings.Sections;
+using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.Settings;
 using MassTransit;
 
 namespace ASSISTENTE.Worker.Sync.Common.Extensions;
 
 internal static class QueueExtensions
 {
-    public static WebApplicationBuilder AddQueue(
-        this WebApplicationBuilder builder, 
-        RabbitSection rabbitSettings, 
-        Assembly assembly)
+    public static WebApplicationBuilder AddQueue(this WebApplicationBuilder builder, IConfiguration configuration)
     {
+        var settings = configuration.GetSettings<AssistenteSettings>();
+        
+        var assembly = Assembly.GetExecutingAssembly();
         var consumerTypes = GetConsumers(assembly);
 
         builder.Services.AddMassTransit(config =>
@@ -22,8 +23,18 @@ internal static class QueueExtensions
 
             config.UsingRabbitMq((ctx, cfg) =>
             {
-                cfg.Host(rabbitSettings.Url);
-                cfg.ReceiveEndpoint(rabbitSettings.Name, c =>
+                cfg.Host(settings.Rabbit.Url, h =>
+                {
+                    h.ConfigureBatchPublish(bcfg =>
+                    {
+                        bcfg.Enabled = true;
+                        bcfg.MessageLimit = 100;
+                        bcfg.SizeLimit = 10000;
+                        bcfg.Timeout = TimeSpan.FromMilliseconds(30);
+                    });
+                });
+                
+                cfg.ReceiveEndpoint(settings.Rabbit.Name, c =>
                 {
                     foreach (var type in consumerTypes)
                     {

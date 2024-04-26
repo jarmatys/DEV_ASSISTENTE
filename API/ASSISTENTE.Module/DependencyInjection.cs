@@ -1,5 +1,6 @@
 ﻿using ASSISTENTE.Application;
 using ASSISTENTE.Domain.Interfaces;
+using ASSISTENTE.EventHandlers;
 using ASSISTENTE.Infrastructure;
 using ASSISTENTE.Persistence;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ namespace ASSISTENTE.Module
             services.AddInfrastructure(configuration);
             services.AddPersistence<TUserResolver>(configuration);
             services.AddApplication();
+            services.AddEvents();
                 
             return services;
         }

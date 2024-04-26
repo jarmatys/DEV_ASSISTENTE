@@ -136,7 +136,8 @@ public sealed class KnowledgeService(
                     .FindByResourceIdsAsync(resourceIds)
                     .ToResult(KnowledgeServiceErrors.NotFound.Build());
             })
-            .Check(question.AddResource); // 5. Save selected resources to question (save in DB for audit purpose)
+            .Check(question.AddResource) // 5. Save selected resources to question (save in DB for audit purpose)
+            .Check(_ => questionRepository.UpdateAsync(question)); 
     }
     
     private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question) 

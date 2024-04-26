@@ -1,16 +1,13 @@
 using ASSISTENTE.API.Extensions.Configurations;
 using ASSISTENTE.API.Hubs;
-using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
-using ASSISTENTE.Common.Settings;
-using ASSISTENTE.EventHandlers;
+using ASSISTENTE.Publisher;
+using ASSISTENTE.Publisher.Rabbit;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
     .Build();
-
-var settings = configuration.GetSettings<AssistenteSettings>();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +16,10 @@ builder.AddLogging(configuration);
 builder.AddCors();
 builder.AddEndpoints();
 builder.AddModules(configuration);
-builder.Services.AddEvents(settings.Rabbit);
-
+builder.Services.AddRabbitPublisher(configuration);
+builder.Services.AddSignalR();
 
 // TODO: Add exception handler middleware
-
-builder.Services.AddSignalR();
 
 var app = builder.Build();
 

@@ -13,6 +13,7 @@ using ASSISTENTE.Persistence.MSSQL.Extensions;
 using ASSISTENTE.Persistence.MSSQL.Seeds;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Persistence.MSSQL
 {
@@ -20,8 +21,9 @@ namespace ASSISTENTE.Persistence.MSSQL
     {
         private readonly IUserResolver? _userResolver;
         private readonly ISystemTimeProvider? _systemTimeProvider;
-        private readonly IPublisher? _publisher; 
-
+        private readonly IPublisher? _publisher;
+        private readonly ILogger<AssistenteDbContext>? _logger;
+        
         public AssistenteDbContext(DbContextOptions<AssistenteDbContext> options) : base(options)
         {
         }
@@ -30,12 +32,14 @@ namespace ASSISTENTE.Persistence.MSSQL
             DbContextOptions<AssistenteDbContext> options, 
             IUserResolver userResolver,
             ISystemTimeProvider systemTimeProvider,
-            IPublisher publisher) 
+            IPublisher publisher,
+            ILogger<AssistenteDbContext> logger) 
             : base(options)
         {
             _userResolver = userResolver ?? throw new ArgumentNullException(nameof(userResolver));
             _systemTimeProvider = systemTimeProvider ?? throw new ArgumentNullException(nameof(systemTimeProvider));
             _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #region ENTITIES
@@ -122,9 +126,11 @@ namespace ASSISTENTE.Persistence.MSSQL
                     return events;
                 })
                 .ToList();
-
+            
             foreach (var domainEvent in domainEvents)
             {
+                _logger!.LogInformation("Publishing domain event: {EventName}", domainEvent.GetType().Name);
+                
                 await _publisher!.Publish(domainEvent);
             }
         }

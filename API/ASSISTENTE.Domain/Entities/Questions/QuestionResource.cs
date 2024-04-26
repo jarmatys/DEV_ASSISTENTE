@@ -6,6 +6,10 @@ namespace ASSISTENTE.Domain.Entities.Questions;
 
 public sealed class QuestionResource : AuditableEntity<QuestionResourceId>
 {
+    public QuestionResource()
+    {
+    }
+    
     private QuestionResource(ResourceId resourceId)
     {
         ResourceId = resourceId;
@@ -16,7 +20,7 @@ public sealed class QuestionResource : AuditableEntity<QuestionResourceId>
     public QuestionId QuestionId { get; private set; } = null!;
     public Question Question { get; private set; } = null!;
 
-    public ResourceId ResourceId { get; private set; }
+    public ResourceId ResourceId { get; private set; } = null!;
     public Resource Resource { get; private set; } = null!;
 
     # endregion

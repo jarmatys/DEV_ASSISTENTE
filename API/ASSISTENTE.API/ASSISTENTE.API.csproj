@@ -24,8 +24,8 @@
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Internal.Requests\ASSISTENTE.Contract.Internal.Requests.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.EventHandlers\ASSISTENTE.EventHandlers.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Publisher.Rabbit\ASSISTENTE.Publisher.Rabbit.csproj" />
     </ItemGroup>
 
 </Project>

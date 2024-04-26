@@ -38,7 +38,7 @@ namespace ASSISTENTE.Application.Knowledge.Commands.FindResources
                 .Bind(async question =>
                 {
                     logger.LogInformation(
-                        "2 | (ConnectionId: ({ConnectionId}) - '{Question}' search for resources...",
+                        "2 | ConnectionId: ({ConnectionId}) - '{Question}' searching for resources...",
                         question.ConnectionId,
                         question.Text
                     );

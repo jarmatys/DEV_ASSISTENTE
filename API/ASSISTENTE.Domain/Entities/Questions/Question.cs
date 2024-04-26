@@ -9,10 +9,15 @@ namespace ASSISTENTE.Domain.Entities.Questions;
 
 public sealed class Question : AuditableEntity<QuestionId>
 {
+    private Question()
+    {
+        Resources = new List<QuestionResource>();
+    }
+
     private Question(string text, string? connectionId, QuestionContext context)
     {
         Id = new QuestionId(Guid.NewGuid());
-        
+
         Text = text;
         ConnectionId = connectionId;
         Context = context;
@@ -23,7 +28,7 @@ public sealed class Question : AuditableEntity<QuestionId>
         RaiseEvent(new QuestionCreatedEvent(Id, connectionId));
     }
 
-    public string Text { get; private set; }
+    public string Text { get; private set; } = null!;
     public string? ConnectionId { get; private set; }
     public QuestionContext Context { get; private set; }
     public List<float>? Embeddings { get; private set; }
@@ -31,7 +36,7 @@ public sealed class Question : AuditableEntity<QuestionId>
     # region NAVIGATION PROPERTIES
 
     public Answer Answer { get; private set; } = null!;
-    public ICollection<QuestionResource> Resources { get; private set; } 
+    public ICollection<QuestionResource> Resources { get; private set; }
 
     # endregion
 
@@ -52,7 +57,7 @@ public sealed class Question : AuditableEntity<QuestionId>
 
             Resources.Add(resource.Value);
         }
-        
+
         RaiseEvent(new ResourcesAttachedEvent(Id));
 
         return Result.Success();
