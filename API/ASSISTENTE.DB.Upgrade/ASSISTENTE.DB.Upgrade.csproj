@@ -7,14 +7,15 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net8.0</BinPath>
+        </PropertyGroup>
+        <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
+    </Target>
+    
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Persistence.MSSQL\ASSISTENTE.Persistence.MSSQL.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
     
 </Project>

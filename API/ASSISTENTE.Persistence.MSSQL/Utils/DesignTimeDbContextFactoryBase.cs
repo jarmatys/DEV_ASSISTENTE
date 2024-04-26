@@ -8,22 +8,16 @@ namespace ASSISTENTE.Persistence.MSSQL.Utils
     {
         private const string ConnectionStringName = "AssistenteDatabase";
         private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
-        private const string ConnectionStringHolder = "ASSISTENTE.DB.Upgrade";
 
         public TContext CreateDbContext(string[]? args)
         {
-            string basePath;
+            var basePath = Directory.GetCurrentDirectory();
+            var environmentName = Environment.GetEnvironmentVariable(AspNetCoreEnvironment);
 
             if (args is { Length: > 0 })
             {
                 basePath = args[0];
             }
-            else
-            {
-                basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}" + ConnectionStringHolder, Path.DirectorySeparatorChar);
-            }
-
-            var environmentName = Environment.GetEnvironmentVariable(AspNetCoreEnvironment);
 
             return Create(basePath, environmentName);
         }

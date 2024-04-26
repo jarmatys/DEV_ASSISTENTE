@@ -7,6 +7,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net8.0</BinPath>
+        </PropertyGroup>
+        <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
+    </Target>
+    
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
@@ -19,9 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="Examples\test-file.md">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

@@ -7,6 +7,13 @@
         <InvariantGlobalization>false</InvariantGlobalization>
     </PropertyGroup>
 
+    <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net8.0</BinPath>
+        </PropertyGroup>
+        <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
+    </Target>
+    
     <ItemGroup>
         <PackageReference Include="MassTransit" Version="8.2.1" />
         <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
@@ -17,12 +24,6 @@
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Internal.Messages\ASSISTENTE.Contract.Internal.Messages.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
 </Project>

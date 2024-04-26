@@ -12,10 +12,8 @@ namespace ASSISTENTE.DB.Upgrade
                 Console.WriteLine("Starting database upgrade...");
 
                 var dbContextFactory = new AssistenteDbContextFactory();
-
-                var basePath = Directory.GetCurrentDirectory();
-
-                var context = dbContextFactory.CreateDbContext([basePath]);
+                
+                var context = dbContextFactory.CreateDbContext(args);
 
                 context.Database.Migrate();
 
