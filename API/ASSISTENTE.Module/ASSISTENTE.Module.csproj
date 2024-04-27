@@ -35,6 +35,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Application\ASSISTENTE.Application.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Client.Internal\ASSISTENTE.Client.Internal.csproj" />
       <ProjectReference Include="..\ASSISTENTE.EventHandlers\ASSISTENTE.EventHandlers.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj" />

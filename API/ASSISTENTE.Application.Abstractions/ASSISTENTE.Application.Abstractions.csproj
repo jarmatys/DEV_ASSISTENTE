@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj"/>
     </ItemGroup>
 
 </Project>

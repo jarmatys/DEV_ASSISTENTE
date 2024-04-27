@@ -17,7 +17,7 @@ public sealed class PutQuestionEndpoint(IHubContext<AnswerHub, IAnswerHub> hubCo
     {
         // TODO: add request validation
         
-        await hubContext.Clients.Client(req.ConnectionId).ReceiveAnswer("Your message here");
+        await hubContext.Clients.Client(req.ConnectionId).ReceiveAnswer($"Status updated to {req.Progress.ToString()}");
         
         await SendOkAsync(ct);
     }

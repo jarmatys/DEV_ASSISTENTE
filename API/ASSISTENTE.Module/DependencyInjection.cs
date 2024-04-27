@@ -1,4 +1,5 @@
 ﻿using ASSISTENTE.Application;
+using ASSISTENTE.Client.Internal;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.EventHandlers;
 using ASSISTENTE.Infrastructure;
@@ -19,6 +20,7 @@ namespace ASSISTENTE.Module
             services.AddPersistence<TUserResolver>(configuration);
             services.AddApplication();
             services.AddEvents();
+            services.AddInternalClient(configuration);
                 
             return services;
         }
