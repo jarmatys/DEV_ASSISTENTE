@@ -15,6 +15,7 @@ internal sealed class QuestionRepository(IAssistenteDbContext context)
     {
         return _context.Questions
             .Include(x => x.Answer)
-            .Include(x => x.Resources);
+            .Include(x => x.Resources)
+            .ThenInclude(x => x.Resource);
     }
 }

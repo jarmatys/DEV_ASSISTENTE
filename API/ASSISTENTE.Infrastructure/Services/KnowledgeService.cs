@@ -37,7 +37,7 @@ public sealed class KnowledgeService(
     {
         var embeddingResult = await EmbeddingText.Create(text.Content)
             .Bind(embeddingClient.GetAsync);
-        
+
         if (embeddingResult.IsFailure)
             return Result.Failure(embeddingResult.Error);
 
@@ -55,49 +55,19 @@ public sealed class KnowledgeService(
 
     public async Task<Result<string>> RecallAsync(string questionText, string? connectionId)
     {
-        // TODO: TODO: RecallAsync will be an aggregator of all methods and will be generate answer synchronous 
-        // TODO: split this method into smaller methods
-        
         // STEPS:
         // 1. Create question (save in DB for audit purpose) - connectionId + questionText
         // 2. Resolve question context 
         // 3. Find resources and save for audit purpose
         // 4. Generate prompt and answer + save for audit purpose
-        
+
         var answer = await ResolveQuestionContext(questionText, connectionId) // Step 1 & 2
             .Bind(async question =>
             {
-                var llmResult = await FindResources(question) // Step 3 & 4 & 5
-                    .Bind(resources =>
-                    {
-                        var contextContent = resources.Select(x => x.Content);
+                return await FindResources(question) // Step 3 & 4 & 5
+                    .Bind(_ => GenerateAnswer(question)); // Step 6 & 7 & 8 & 9
+            });
 
-                        return GetPromptType(question.Context) // 6. Generate prompt
-                            .Bind(promptType => PromptInput.Create(questionText, contextContent, promptType))
-                            .Bind(promptGenerator.GeneratePrompt);
-                    })
-                    .Bind(Prompt.Create)
-                    .Bind(prompt =>
-                    {
-                        var answer = llmClient.GenerateAnswer(prompt) // 7. Generate answer
-                            .Check(answer => AnswerEntity.Create(
-                                    answer.Text,
-                                    prompt.Value,
-                                    answer.Client.Name,
-                                    answer.Audit.Model,
-                                    answer.Audit.PromptTokens,
-                                    answer.Audit.CompletionTokens
-                                )
-                                .Check(question.SetAnswer)); // 8. Save answer to question (save in DB for audit purpose)
-                        
-                        return answer;
-                    })
-                    .Check(_ => questionRepository.UpdateAsync(question)); // 9. Commit DB transation
-                
-                return llmResult;
-            })
-            .Map(answer => answer.Text);
-        
         return answer;
     }
 
@@ -107,7 +77,9 @@ public sealed class KnowledgeService(
         return await GetContextAsync<ResourceType, QuestionContext>(questionText) // 1. Detect context
             .Bind(async context =>
             {
-                var question = Question.Create(questionText, connectionId, context); // 2. Init question (save in DB for audit purpose)
+                var question =
+                    Question.Create(questionText, connectionId,
+                        context); // 2. Init question (save in DB for audit purpose)
 
                 if (context == QuestionContext.Error)
                 {
@@ -137,10 +109,37 @@ public sealed class KnowledgeService(
                     .ToResult(KnowledgeServiceErrors.NotFound.Build());
             })
             .Check(question.AddResource) // 5. Save selected resources to question (save in DB for audit purpose)
-            .Check(_ => questionRepository.UpdateAsync(question)); 
+            .Check(_ => questionRepository.UpdateAsync(question));
     }
-    
-    private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question) 
+
+    public async Task<Result<string>> GenerateAnswer(Question question)
+    {
+        var contextContent = question.Resources.Select(x => x.Resource).Select(x => x.Content);
+
+        return await GetPromptType(question.Context) // 6. Generate prompt
+            .Bind(promptType => PromptInput.Create(question.Text, contextContent, promptType))
+            .Bind(promptGenerator.GeneratePrompt)
+            .Bind(Prompt.Create)
+            .Bind(prompt =>
+            {
+                var answer = llmClient.GenerateAnswer(prompt) // 7. Generate answer
+                    .Check(answer => AnswerEntity.Create(
+                            answer.Text,
+                            prompt.Value,
+                            answer.Client.Name,
+                            answer.Audit.Model,
+                            answer.Audit.PromptTokens,
+                            answer.Audit.CompletionTokens
+                        )
+                        .Check(question.SetAnswer)); // 8. Save answer to question (save in DB for audit purpose)
+
+                return answer;
+            })
+            .Check(_ => questionRepository.UpdateAsync(question)) // 9. Commit DB transation
+            .Map(answer => answer.Text);
+    }   
+
+    private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question)
         where TType : struct, Enum
         where TContext : struct, Enum
     {
@@ -159,7 +158,7 @@ public sealed class KnowledgeService(
             return Result.Success(default(TContext));
         }
     }
-    
+
     private static Result<PromptType> GetPromptType(QuestionContext context)
     {
         return context switch

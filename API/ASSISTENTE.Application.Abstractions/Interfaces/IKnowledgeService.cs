@@ -10,6 +10,8 @@ public interface IKnowledgeService
 {
     public Task<Result> LearnAsync(ResourceText text, ResourceType type);
     public Task<Result<string>> RecallAsync(string questionText, string? connectionId);
+    
     public Task<Result<Question>> ResolveQuestionContext(string questionText, string? connectionId);
     public Task<Result<List<Resource>>> FindResources(Question question);
+    public Task<Result<string>> GenerateAnswer(Question question);
 }
