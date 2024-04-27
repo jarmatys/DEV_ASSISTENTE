@@ -1,4 +1,4 @@
-using ASSISTENTE.Contract.Internal.Messages.Knowledge;
+using ASSISTENTE.Contract.Messages.Internal.Knowledge;
 using ASSISTENTE.Domain.Entities.Questions.Events;
 using MassTransit;
 using MediatR;

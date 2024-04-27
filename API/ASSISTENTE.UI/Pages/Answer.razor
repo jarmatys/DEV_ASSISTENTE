@@ -1,0 +1,56 @@
+﻿@page "/answer"
+
+@using ASSISTENTE.UI.Brokers
+@using ASSISTENTE.UI.Common.Models
+@using ASSISTENTE.UI.Components.Forms
+@using ASSISTENTE.UI.Components
+@using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GenerateAnswer
+
+@inject IAnswersBroker AnswersBroker
+
+<PageTitle>Ask question</PageTitle>
+
+@if (_response != null)
+{
+    <MudGrid>
+        <MudItem xs="12" sm="12">
+            <MarkdownArea Content="@_response.Text"/>
+        </MudItem>
+    </MudGrid>
+}
+
+<BaseForm TRequest="GenerateAnswerRequest"
+          TResponse="GenerateAnswerResponse"
+          Request="_request"
+          Response="_response"
+          SubmitMethod="GenerateAnswerAsync"
+          OnResponseUpdated="HandleResponseUpdate"
+          OnRequestClear="HandleRequestUpdate">
+
+    <FormFields>
+        <MudTextField
+            @bind-Value="_request.Question"
+            For="@(() => _request.Question)"
+            HelperText="Ask random question"
+            Variant="Variant.Outlined"
+            T="string"
+            Label="Question"
+            Lines="10"
+            Required="true"
+            RequiredError="Question name is required!"/>
+    </FormFields>
+
+</BaseForm>
+
+@code {
+
+    GenerateAnswerRequest _request = new();
+    GenerateAnswerResponse? _response;
+
+    private async Task<HttpResult<GenerateAnswerResponse>> GenerateAnswerAsync(GenerateAnswerRequest request) =>
+        await AnswersBroker.GenerateAnswerAsync(request);
+
+    private void HandleResponseUpdate(GenerateAnswerResponse? response) => _response = response;
+    private void HandleRequestUpdate(GenerateAnswerRequest request) => _request = request;
+
+}

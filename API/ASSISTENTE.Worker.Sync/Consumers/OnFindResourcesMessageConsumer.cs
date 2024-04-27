@@ -1,5 +1,5 @@
 using ASSISTENTE.Application.Knowledge.Commands.FindResources;
-using ASSISTENTE.Contract.Internal.Messages.Knowledge;
+using ASSISTENTE.Contract.Messages.Internal.Knowledge;
 using ASSISTENTE.Worker.Sync.Common.Bases;
 using MediatR;
 

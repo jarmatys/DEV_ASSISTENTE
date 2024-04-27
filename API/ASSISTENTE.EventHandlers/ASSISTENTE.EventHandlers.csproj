@@ -9,7 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
-        <ProjectReference Include="..\ASSISTENTE.Contract.Internal.Messages\ASSISTENTE.Contract.Internal.Messages.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Contract.Messages.Internal\ASSISTENTE.Contract.Messages.Internal.csproj" />
     </ItemGroup>
 
     <ItemGroup>

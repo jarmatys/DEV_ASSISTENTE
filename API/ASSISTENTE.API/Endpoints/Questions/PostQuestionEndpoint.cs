@@ -1,5 +1,5 @@
 using ASSISTENTE.Application.Knowledge.Commands.ResolveQuestionContext;
-using ASSISTENTE.Contract.Internal.Requests.Knowledge.Commands.ResolveQuestionContext;
+using ASSISTENTE.Contract.Requests.Internal.Knowledge.Commands.ResolveQuestionContext;
 using MediatR;
 
 namespace ASSISTENTE.API.Endpoints.Questions;

@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Application.Abstractions\ASSISTENTE.Application.Abstractions.csproj" />
-        <ProjectReference Include="..\ASSISTENTE.Contract.Internal.Requests\ASSISTENTE.Contract.Internal.Requests.csproj" />
     </ItemGroup>
 
     <ItemGroup>

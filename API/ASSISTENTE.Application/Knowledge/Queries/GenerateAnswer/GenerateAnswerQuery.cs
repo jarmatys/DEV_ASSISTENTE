@@ -1,5 +1,5 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Contract.Internal.Requests.Knowledge.Queries.GenerateAnswer;
+using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GenerateAnswer;
 using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
