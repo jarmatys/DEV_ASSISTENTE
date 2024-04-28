@@ -53,7 +53,7 @@ public sealed class KnowledgeService(
             .Bind(qdrantService.UpsertAsync);
     }
 
-    public async Task<Result<string>> RecallAsync(string questionText, string? connectionId)
+    public async Task<Result<string>> AnswerAsync(string questionText)
     {
         // STEPS:
         // 1. Create question (save in DB for audit purpose) - connectionId + questionText
@@ -61,40 +61,32 @@ public sealed class KnowledgeService(
         // 3. Find resources and save for audit purpose
         // 4. Generate prompt and answer + save for audit purpose
 
-        var answer = await ResolveQuestionContext(questionText, connectionId) // Step 1 & 2
+        return await InitQuestion(questionText, connectionId: null) // Step 1 
             .Bind(async question =>
             {
-                return await FindResources(question) // Step 3 & 4 & 5
-                    .Bind(_ => GenerateAnswer(question)); // Step 6 & 7 & 8 & 9
+                return await ResolveContext(question) // Step 2
+                    .Bind(async () => await FindResources(question)) // Step 3 & 4 & 5
+                    .Bind(async () => await GenerateAnswer(question)); // Step 6 & 7 & 8 & 9
             });
-
-        return answer;
     }
 
-    public async Task<Result<Question>> ResolveQuestionContext(string questionText, string? connectionId)
+    public async Task<Result<Question>> InitQuestion(string questionText, string? connectionId)
     {
-        // TODO: Detect context should be moved to a separate method and consumer
-        return await GetContextAsync<ResourceType, QuestionContext>(questionText) // 1. Detect context
-            .Bind(async context =>
-            {
-                var question =
-                    Question.Create(questionText, connectionId,
-                        context); // 2. Init question (save in DB for audit purpose)
-
-                if (context == QuestionContext.Error)
-                {
-                    return await question
-                        .Map(questionRepository.AddAsync)
-                        .Finally(_ => Result.Failure<Question>(KnowledgeServiceErrors.ContextNotRecognized.Build()));
-                }
-
-                return question;
-            })
+        return await Question.Create(questionText, connectionId) // 2. Init question (save in DB for audit purpose)
             .Check(questionRepository.AddAsync);
     }
 
-    public async Task<Result<List<Resource>>> FindResources(Question question)
+    public async Task<Result> ResolveContext(Question question)
     {
+        return await GetContextAsync<ResourceType, QuestionContext>(question.Text) // 1. Detect context
+            .Check(question.SetContext)
+            .Check(_ => questionRepository.UpdateAsync(question));
+    }
+
+    public async Task<Result> FindResources(Question question)
+    {
+        // TODO: verify context (shound't be Error) | domain validation in question.GetContext()
+
         return await EmbeddingText.Create(question.Text) // 3. Create embedding
             .Bind(embeddingClient.GetAsync)
             .Check(dto => question.AddEmbeddings(dto.Embeddings))
@@ -116,7 +108,9 @@ public sealed class KnowledgeService(
     {
         var contextContent = question.Resources.Select(x => x.Resource).Select(x => x.Content);
 
-        return await GetPromptType(question.Context) // 6. Generate prompt
+        // TODO: verify context (shound't be Error) | domain validation in question.GetContext()
+        
+        return await GetPromptType(question.Context.Value) // 6. Generate prompt
             .Bind(promptType => PromptInput.Create(question.Text, contextContent, promptType))
             .Bind(promptGenerator.GeneratePrompt)
             .Bind(Prompt.Create)
@@ -137,7 +131,7 @@ public sealed class KnowledgeService(
             })
             .Check(_ => questionRepository.UpdateAsync(question)) // 9. Commit DB transation
             .Map(answer => answer.Text);
-    }   
+    }
 
     private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question)
         where TType : struct, Enum

@@ -14,23 +14,23 @@ public sealed class Question : AuditableEntity<QuestionId>
         Resources = new List<QuestionResource>();
     }
 
-    private Question(string text, string? connectionId, QuestionContext context)
+    private Question(string text, string? connectionId)
     {
         Id = new QuestionId(Guid.NewGuid());
 
         Text = text;
         ConnectionId = connectionId;
-        Context = context;
-
+        
+        Context = null;
         Embeddings = null;
         Resources = new List<QuestionResource>();
 
-        RaiseEvent(new QuestionCreatedEvent(Id, connectionId));
+        RaiseEvent(new QuestionCreatedEvent(Id));
     }
 
     public string Text { get; private set; } = null!;
     public string? ConnectionId { get; private set; }
-    public QuestionContext Context { get; private set; }
+    public QuestionContext? Context { get; private set; }
     public List<float>? Embeddings { get; private set; }
 
     # region NAVIGATION PROPERTIES
@@ -40,9 +40,9 @@ public sealed class Question : AuditableEntity<QuestionId>
 
     # endregion
 
-    public static Result<Question> Create(string text, string? connectionId, QuestionContext context)
+    public static Result<Question> Create(string text, string? connectionId)
     {
-        return new Question(text, connectionId, context);
+        return new Question(text, connectionId);
     }
 
     public Result AddResource(IEnumerable<Resource> resources)
@@ -69,16 +69,32 @@ public sealed class Question : AuditableEntity<QuestionId>
 
         return Result.Success();
     }
-
+    
     public string GetContext()
     {
+        // TODO: Add domain validation
         return Context.ToString();
     }
 
+    public Result SetContext(QuestionContext context)
+    {
+        Context = context;
+
+        RaiseEvent(new ContextResolvedEvent(Id));
+        
+        return Result.Success();
+    }
+    
     public Result SetAnswer(Answer answer)
     {
         Answer = answer;
 
         return Result.Success();
+    }
+    
+    
+    public string GetAnswer()
+    {
+        return Answer.Text;
     }
 }

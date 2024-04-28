@@ -1,4 +1,4 @@
-using ASSISTENTE.Contract.Requests.Internal.Knowledge.Commands.UpdateQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Application.Abstractions.Clients;

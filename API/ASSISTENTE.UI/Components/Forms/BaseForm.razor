@@ -1,8 +1,7 @@
 @using ASSISTENTE.UI.Common.Models
-@using ASSISTENTE.Contract.Requests.Internal
+@using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
 
-@typeparam TRequest where TRequest : IRequest
-@typeparam TResponse
+@typeparam TRequest where TRequest : PostRequestBase
 
 <EditForm TModel="TRequest" EditContext="@_editContext" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
     <MudGrid>
@@ -40,12 +39,10 @@
 
     [Parameter] public required RenderFragment FormFields { get; set; }
 
-    [Parameter] public required Func<TRequest, Task<HttpResult<TResponse>>> SubmitMethod { get; set; }
-    [Parameter] public required EventCallback<TResponse?> OnResponseUpdated { get; set; }
+    [Parameter] public required Func<TRequest, Task<HttpResult>> SubmitMethod { get; set; }
     [Parameter] public required EventCallback<TRequest> OnRequestClear { get; set; }
 
     [Parameter] public required TRequest Request { get; set; }
-    [Parameter] public required TResponse? Response { get; set; }
 
     bool _isLoading;
     bool _showErrors;
@@ -60,27 +57,17 @@
         _messageStore = new ValidationMessageStore(_editContext);
     }
 
-    private async Task ClearResponse()
-    {
-        Response = default;
-        await OnResponseUpdated.InvokeAsync(Response);
-    }
-
     private async Task OnValidSubmit(EditContext context)
     {
         _showErrors = false;
         _isLoading = true;
-
-        await ClearResponse();
-
+        
         var response = await SubmitMethod(Request);
 
         if (response.IsSuccess)
         {
-            Response = response.Content;
             Request.Clear();
 
-            await OnResponseUpdated.InvokeAsync(Response);
             await OnRequestClear.InvokeAsync(Request);
         }
         else
@@ -102,14 +89,12 @@
         _messageStore.Clear();
     }
 
-    private async Task OnInvalidSubmit(EditContext context)
+    private void OnInvalidSubmit(EditContext context)
     {
         _messageStore.Clear();
         
         _showErrors = true;
         
-        await ClearResponse();
-
         StateHasChanged();
     }
 

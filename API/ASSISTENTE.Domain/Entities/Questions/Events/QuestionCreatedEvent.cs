@@ -3,4 +3,4 @@ using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Questions.Events;
 
-public sealed record QuestionCreatedEvent(QuestionId QuestionId, string? ConnectionId) : IDomainEvents;
+public sealed record QuestionCreatedEvent(QuestionId QuestionId) : IDomainEvents;

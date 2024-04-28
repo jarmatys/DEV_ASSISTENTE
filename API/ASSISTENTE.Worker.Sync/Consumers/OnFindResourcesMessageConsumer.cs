@@ -1,4 +1,4 @@
-using ASSISTENTE.Application.Knowledge.Commands.FindResources;
+using ASSISTENTE.Application.Questions.Commands.FindResources;
 using ASSISTENTE.Contract.Messages.Internal.Knowledge;
 using ASSISTENTE.Worker.Sync.Common.Bases;
 using MediatR;

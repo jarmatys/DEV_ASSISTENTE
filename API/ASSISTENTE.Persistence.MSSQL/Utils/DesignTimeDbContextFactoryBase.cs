@@ -46,7 +46,7 @@ namespace ASSISTENTE.Persistence.MSSQL.Utils
         {
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new ArgumentException($"Connection string '{ConnectionStringName}' is null or empty.", nameof(connectionString));
+                Console.WriteLine($"Connection string '{ConnectionStringName}' is null or empty.");
             }
             
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();

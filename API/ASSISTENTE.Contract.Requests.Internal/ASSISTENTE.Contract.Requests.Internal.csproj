@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Language\ASSISTENTE.Language.csproj" />
+    </ItemGroup>
+
 </Project>

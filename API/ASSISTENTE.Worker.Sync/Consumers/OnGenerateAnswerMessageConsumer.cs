@@ -1,4 +1,4 @@
-using ASSISTENTE.Application.Knowledge.Commands.GenerateAnswer;
+using ASSISTENTE.Application.Questions.Commands.GenerateAnswer;
 using ASSISTENTE.Contract.Messages.Internal.Knowledge;
 using ASSISTENTE.Worker.Sync.Common.Bases;
 using MediatR;

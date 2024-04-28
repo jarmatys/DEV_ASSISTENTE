@@ -1,11 +1,11 @@
-using ASSISTENTE.Application.Knowledge.Commands.ResolveQuestionContext;
-using ASSISTENTE.Contract.Requests.Internal.Knowledge.Commands.ResolveQuestionContext;
+using ASSISTENTE.Application.Questions.Commands.CreateQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion;
 using MediatR;
 
 namespace ASSISTENTE.API.Endpoints.Questions;
 
 public sealed class PostQuestionEndpoint(ISender mediator)
-    : EndpointBase<ResolveQuestionContextRequest, ResolveQuestionContextCommand>(mediator)
+    : EndpointBase<CreateQuestionRequest, CreateQuestionCommand>(mediator)
 {
     public override void Configure()
     {
@@ -14,6 +14,6 @@ public sealed class PostQuestionEndpoint(ISender mediator)
         SetupSwagger();
     }
 
-    protected override ResolveQuestionContextCommand MediatRequest(ResolveQuestionContextRequest req, CancellationToken ct)
-        => ResolveQuestionContextCommand.Create(req);
+    protected override CreateQuestionCommand MediatRequest(CreateQuestionRequest req, CancellationToken ct)
+        => CreateQuestionCommand.Create(req);
 }

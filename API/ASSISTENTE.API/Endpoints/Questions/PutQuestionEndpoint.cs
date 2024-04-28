@@ -1,5 +1,5 @@
 using ASSISTENTE.API.Hubs;
-using ASSISTENTE.Contract.Requests.Internal.Knowledge.Commands.UpdateQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
 using FastEndpoints;
 using Microsoft.AspNetCore.SignalR;
 

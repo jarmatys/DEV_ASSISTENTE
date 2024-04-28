@@ -26,4 +26,8 @@
       <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="ASSISTENTE.Worker.Sync\bin\Debug\net8.0\appsettings.json" />
+    </ItemGroup>
+
 </Project>

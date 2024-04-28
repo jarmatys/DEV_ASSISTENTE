@@ -1,33 +1,33 @@
 namespace ASSISTENTE.UI.Common.Models;
 
-public sealed class HttpResult<TResponse>
+public class HttpResult
 {
-    private HttpResult(TResponse content)
+    protected HttpResult()
     {
-        Content = content;
         IsSuccess = true;
     }
 
-    private HttpResult(ErrorResponse errorDetails)
+    protected HttpResult(ErrorResponse errorDetails)
     {
         ErrorDetails = errorDetails;
         IsSuccess = false;
     }
-    
-    public TResponse? Content { get; }
+
     public ErrorResponse? ErrorDetails { get; }
-    
+
     public bool IsSuccess { get; }
-    
+
     public bool IsFailure => !IsSuccess;
-    
-    public static HttpResult<TResponse> Success(TResponse content) => new(content);
-    
-    public static HttpResult<TResponse> Failure(ErrorResponse errorDetails) => new(errorDetails);
-    
-    public static HttpResult<TResponse> Failure(int statusCode, string errorCode, string errorMessage)
-    {
-        var errorDetails = new ErrorResponse
+
+    public static HttpResult Success() => new();
+
+    public static HttpResult Failure(ErrorResponse errorResponse) => new(errorResponse);
+
+    public static HttpResult Failure(int statusCode, string errorCode, string errorMessage) 
+        => new(CreateErrorResponse(statusCode, errorCode, errorMessage));
+
+    protected static ErrorResponse CreateErrorResponse(int statusCode, string errorCode, string errorMessage)
+        => new()
         {
             StatusCode = statusCode,
             Message = errorMessage,
@@ -36,7 +36,25 @@ public sealed class HttpResult<TResponse>
                 { errorCode, [errorMessage] }
             }
         };
-        
-        return new HttpResult<TResponse>(errorDetails);
+}
+
+public sealed class HttpResult<TResponse> : HttpResult
+{
+    private HttpResult(TResponse content)
+    {
+        Content = content;
     }
+
+    private HttpResult(ErrorResponse errorDetails) : base(errorDetails)
+    {
+    }
+
+    public TResponse? Content { get; }
+
+    public static HttpResult<TResponse> Success(TResponse content) => new(content);
+
+    public new static HttpResult<TResponse> Failure(int statusCode, string errorCode, string errorMessage)
+        => new(CreateErrorResponse(statusCode, errorCode, errorMessage));
+
+    public new static HttpResult<TResponse> Failure(ErrorResponse errorDetails) => new(errorDetails);
 }

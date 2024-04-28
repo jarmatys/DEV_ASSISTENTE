@@ -1,5 +1,4 @@
 using ASSISTENTE.Application.Knowledge.Commands.Learn;
-using ASSISTENTE.Application.Knowledge.Queries.GenerateAnswer;
 using ASSISTENTE.Application.Maintenance.Commands.Reset;
 using ASSISTENTE.Common.Extensions;
 using MediatR;
@@ -11,11 +10,13 @@ public sealed class Playground(ISender mediator, ILogger<Playground> logger)
 {
     public async Task AnswerAsync(string question)
     {
-        var result = await mediator.Send(GenerateAnswerQuery.Create(question));
-
-        result
-            .Log(response => response.Text, logger)
-            .LogError(logger);
+        // TODO: Implement command to generate answer synchronisly
+        
+        // var result = await mediator.Send(GetAnswerQuery.Create(question));
+        //
+        // result
+        //     .Log(response => response.Text, logger)
+        //     .LogError(logger);
     }
 
     public async Task LearnAsync()

@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 using ASSISTENTE.Application.Abstractions.Clients;
-using ASSISTENTE.Contract.Requests.Internal.Knowledge.Commands.UpdateQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Client.Internal;

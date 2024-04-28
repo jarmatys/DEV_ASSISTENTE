@@ -1,56 +1,106 @@
 ﻿@page "/answer"
+@implements IAsyncDisposable
 
-@using ASSISTENTE.UI.Brokers
+@using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion
+@using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer
+@using ASSISTENTE.UI.Brokers.Implementations
 @using ASSISTENTE.UI.Common.Models
 @using ASSISTENTE.UI.Components.Forms
-@using ASSISTENTE.UI.Components
-@using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GenerateAnswer
+@using Microsoft.AspNetCore.SignalR.Client
 
 @inject IAnswersBroker AnswersBroker
+@inject IQuestionsBroker QuestionsBroker
 
 <PageTitle>Ask question</PageTitle>
 
-@if (_response != null)
+<ul>
+    @foreach (var message in _messages)
+    {
+    <li>@message</li>
+    }
+</ul>
+
+@* @if (_response != null) *@
+@* { *@
+@*     <MudGrid> *@
+@*         <MudItem xs="12" sm="12"> *@
+@*             <MarkdownArea Content="@_response.Text"/> *@
+@*         </MudItem> *@
+@*     </MudGrid> *@
+@* } *@
+
+@if (_connectionInitialization)
 {
-    <MudGrid>
-        <MudItem xs="12" sm="12">
-            <MarkdownArea Content="@_response.Text"/>
-        </MudItem>
-    </MudGrid>
+    <p>Initialization connection - please wait...</p>
+}
+else
+{
+    <BaseForm TRequest="CreateQuestionRequest"
+              Request="_request"
+              SubmitMethod="CreateQuestionAsync"
+              OnRequestClear="HandleRequestUpdate">
+
+        <FormFields>
+            <MudTextField
+                @bind-Value="_request.Question"
+                For="@(() => _request.Question)"
+                HelperText="Ask random question"
+                Variant="Variant.Outlined"
+                T="string"
+                Label="Question"
+                Lines="10"
+                Required="true"
+                RequiredError="Question name is required!"/>
+        </FormFields>
+    </BaseForm>
 }
 
-<BaseForm TRequest="GenerateAnswerRequest"
-          TResponse="GenerateAnswerResponse"
-          Request="_request"
-          Response="_response"
-          SubmitMethod="GenerateAnswerAsync"
-          OnResponseUpdated="HandleResponseUpdate"
-          OnRequestClear="HandleRequestUpdate">
-
-    <FormFields>
-        <MudTextField
-            @bind-Value="_request.Question"
-            For="@(() => _request.Question)"
-            HelperText="Ask random question"
-            Variant="Variant.Outlined"
-            T="string"
-            Label="Question"
-            Lines="10"
-            Required="true"
-            RequiredError="Question name is required!"/>
-    </FormFields>
-
-</BaseForm>
 
 @code {
 
-    GenerateAnswerRequest _request = new();
-    GenerateAnswerResponse? _response;
+    private bool _connectionInitialization = true;
+    
+    private HubConnection? _hubConnection;
+    private readonly List<string> _messages = [];
+    
+    CreateQuestionRequest _request = new();
 
-    private async Task<HttpResult<GenerateAnswerResponse>> GenerateAnswerAsync(GenerateAnswerRequest request) =>
-        await AnswersBroker.GenerateAnswerAsync(request);
+    private async Task<HttpResult> CreateQuestionAsync(CreateQuestionRequest request) =>
+        await QuestionsBroker.CreateQuestionAsync(request);
 
-    private void HandleResponseUpdate(GenerateAnswerResponse? response) => _response = response;
-    private void HandleRequestUpdate(GenerateAnswerRequest request) => _request = request;
+    private void HandleRequestUpdate(CreateQuestionRequest request) => _request = request;
 
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5249/answers")
+            .Build();
+        
+        _hubConnection.On<string>("ReceiveAnswer", message =>
+        {
+            _messages.Add(message);
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<string>("InitConnection", connectionId =>
+        {
+            _request.ConnectionId = connectionId;
+            
+            Console.WriteLine($"Init connection: {_request.ConnectionId}");
+            
+            _connectionInitialization = false;
+            
+            InvokeAsync(StateHasChanged);
+        });
+        
+        await _hubConnection.StartAsync();
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection != null) await _hubConnection.DisposeAsync();
+
+        Console.WriteLine($"Close connection: {_request.ConnectionId}");
+    }
 }

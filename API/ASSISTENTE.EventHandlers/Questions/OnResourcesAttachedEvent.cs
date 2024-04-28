@@ -10,9 +10,7 @@ public sealed class OnResourcesAttachedEvent(IPublishEndpoint publishEndpoint)
 {
     public Task Handle(ResourcesAttachedEvent notification, CancellationToken cancellationToken)
     {
-        publishEndpoint.Publish(new GenerateAnswerMessage(
-            notification.QuestionId
-        ), cancellationToken);
+        publishEndpoint.Publish(new GenerateAnswerMessage(notification.QuestionId), cancellationToken);
 
         return Task.CompletedTask;
     }

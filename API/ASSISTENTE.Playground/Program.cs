@@ -40,6 +40,7 @@ return;
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
+    // TODO: Register dummy IPublisher
     services
         .AddAssistenteModule<UserResolver>(configuration)
         .AddLogging(configuration)
