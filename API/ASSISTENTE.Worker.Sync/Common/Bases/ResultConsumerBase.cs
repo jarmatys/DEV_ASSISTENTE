@@ -6,19 +6,38 @@ using MediatR;
 
 namespace ASSISTENTE.Worker.Sync.Common.Bases;
 
-public abstract class ResultConsumerBase<TMessage, TMediatRequest>(ISender mediator) : IConsumer<TMessage>
+public abstract class ResultConsumerBase<TMessage, TMediatRequest>(
+    ILogger logger,
+    ISender mediator) : IConsumer<TMessage>
     where TMessage : class, IMessage
     where TMediatRequest : IRequest<Result>
 {
     public async Task Consume(ConsumeContext<TMessage> context)
     {
+        AddTrace(context, "CONSUME_START");
+
         var mediatRequest = MediatRequest(context.Message);
 
         await mediator.Send(mediatRequest)
-            .Tap(() => Task.CompletedTask) // TODO: log success
-            .TapError(errorMessage => throw new ConsumeException(errorMessage)); // TODO: Log error
+            .Tap(() => AddTrace(context, "CONSUME_SUCCESS"))
+            .TapError(errorMessage =>
+            {
+                AddTrace(context, "CONSUME_FAILED");
+
+                throw new ConsumeException(errorMessage);
+            });
     }
-    
+
     protected abstract TMediatRequest MediatRequest(TMessage message);
 
+    private void AddTrace(ConsumeContext<TMessage> context, string state)
+    {
+        logger.LogTrace(
+            "{MessageId}|{State}|{MessageType}|{@Payload}",
+            context.MessageId,
+            state,
+            typeof(TMessage).Name,
+            context.Message
+        );
+    }
 }
