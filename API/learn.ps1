@@ -16,11 +16,8 @@ if($b) {
     cp appsettings.json ASSISTENTE.Playground/bin/Release/net8.0
 }
 
-cd 'ASSISTENTE.Playground/bin/Release/net8.0' 
-
 Write-Host "Reseting knowledge base" -ForegroundColor Green
-./ASSISTENTE.Playground.exe -r
+& 'ASSISTENTE.Playground/bin/Release/net8.0/ASSISTENTE.Playground.exe' -r
 
-Write-Host "Starting learing from scratch" -ForegroundColor Green
-./ASSISTENTE.Playground.exe -l
-
+Write-Host "Starting learning from scratch" -ForegroundColor Green
+& 'ASSISTENTE.Playground/bin/Release/net8.0/ASSISTENTE.Playground.exe' -l

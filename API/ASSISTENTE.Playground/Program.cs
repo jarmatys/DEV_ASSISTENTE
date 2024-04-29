@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ASSISTENTE.Common.Logging;
 using ASSISTENTE.Playground;
 using ASSISTENTE.Playground.Commons;
+using MassTransit;
 using Serilog;
 
 var configuration = new ConfigurationBuilder()
@@ -46,11 +47,12 @@ return;
 
 static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    // TODO: Register dummy IPublisher
     services
         .AddAssistenteModule<UserResolver>(configuration)
         .AddLogging(configuration)
         .AddTransient<Playground>();
+
+    services.AddScoped<IPublishEndpoint, DummyPublishEndpoint>();
 }
 
 PlaygroundParams ParseParams(IEnumerable<string> strings)
