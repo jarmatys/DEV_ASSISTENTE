@@ -1,9 +1,9 @@
-﻿using ASSISTENTE.Application.Abstractions;
-using ASSISTENTE.Application.Abstractions.Clients;
+﻿using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Application.Bases;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
+using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -30,32 +30,15 @@ namespace ASSISTENTE.Application.Questions.Commands.FindResources
         IKnowledgeService knowledgeService,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger<FindResourcesCommandHandler> logger)
-        : IRequestHandler<FindResourcesCommand, Result>
+        ILogger<FindResourcesCommandHandler> logger) : QuestionCommandBase<FindResourcesCommand>(logger, clientInternal)
     {
-        public async Task<Result> Handle(FindResourcesCommand request, CancellationToken cancellationToken)
-        {
-            // TODO: Extract command base class
-            return await questionRepository.GetByIdAsync(request.QuestionId)
-                .ToResult(RepositoryErrors<Question>.NotFound.Build())
-                .Bind(async question =>
-                {
-                    return await UpdateStatus(question.ConnectionId!, QuestionProgress.Started) // TODO: call if connectionId is null
-                        .Bind(async () =>
-                        {
-                            logger.LogInformation(
-                                "3 | ConnectionId: ({ConnectionId}) - '{Question}' searching for resources...",
-                                question.ConnectionId,
-                                question.Text
-                            );
+        protected override async Task<Result> HandleAsync(Question question)
+            => await knowledgeService.FindResources(question);
 
-                            return await knowledgeService.FindResources(question);
-                        })
-                        .Bind(async () => await UpdateStatus(question.ConnectionId!, QuestionProgress.ResourcesFound));
-                });
-        }
+        protected override async Task<Maybe<Question>> GetQuestionAsync(FindResourcesCommand request)
+            => await questionRepository.GetByIdAsync(request.QuestionId);
 
-        private async Task<Result> UpdateStatus(string connectionId, QuestionProgress progress)
-            => await clientInternal.UpdateQuestionAsync(UpdateQuestionRequest.Create(connectionId, progress));
+        protected override QuestionProgress InitialProgress => QuestionProgress.SearchingForResources;
+        protected override QuestionProgress FinalProgress => QuestionProgress.ResourcesFound;
     }
 }

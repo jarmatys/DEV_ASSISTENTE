@@ -1,9 +1,9 @@
-﻿using ASSISTENTE.Application.Abstractions;
-using ASSISTENTE.Application.Abstractions.Clients;
+﻿using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Application.Bases;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
+using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -25,36 +25,20 @@ namespace ASSISTENTE.Application.Questions.Commands.GenerateAnswer
             return new GenerateAnswerCommand(questionId);
         }
     }
-
+    
     public class GenerateAnswerCommandHandler(
         IKnowledgeService knowledgeService,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger<GenerateAnswerCommandHandler> logger)
-        : IRequestHandler<GenerateAnswerCommand, Result>
+        ILogger<GenerateAnswerCommandHandler> logger) : QuestionCommandBase<GenerateAnswerCommand>(logger, clientInternal)
     {
-        public async Task<Result> Handle(GenerateAnswerCommand request, CancellationToken cancellationToken)
-        {
-            return await questionRepository.GetByIdAsync(request.QuestionId)
-                .ToResult(RepositoryErrors<Question>.NotFound.Build())
-                .Bind(async question =>
-                {
-                    return await UpdateStatus(question.ConnectionId!, QuestionProgress.Answering)
-                        .Bind(async () =>
-                        {
-                            logger.LogInformation(
-                                "4 | ConnectionId: ({ConnectionId}) - '{Question}' answering question...",
-                                question.ConnectionId,
-                                question.Text
-                            );
+        protected override async Task<Result> HandleAsync(Question question)
+            => await knowledgeService.GenerateAnswer(question);
 
-                            return await knowledgeService.GenerateAnswer(question);
-                        })
-                        .Bind(async _ => await UpdateStatus(question.ConnectionId!, QuestionProgress.Answered));
-                });
-        }
+        protected override async Task<Maybe<Question>> GetQuestionAsync(GenerateAnswerCommand request)
+            => await questionRepository.GetByIdAsync(request.QuestionId);
 
-        private async Task<Result> UpdateStatus(string connectionId, QuestionProgress progress)
-            => await clientInternal.UpdateQuestionAsync(UpdateQuestionRequest.Create(connectionId, progress));
+        protected override QuestionProgress InitialProgress => QuestionProgress.Answering;
+        protected override QuestionProgress FinalProgress => QuestionProgress.Answered;
     }
 }

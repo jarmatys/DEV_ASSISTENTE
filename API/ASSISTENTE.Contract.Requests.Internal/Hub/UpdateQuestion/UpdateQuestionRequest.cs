@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
+using ASSISTENTE.Language.Enums;
 
 namespace ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
 

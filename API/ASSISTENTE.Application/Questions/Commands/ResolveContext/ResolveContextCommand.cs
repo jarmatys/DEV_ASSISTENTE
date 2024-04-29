@@ -1,9 +1,9 @@
-﻿using ASSISTENTE.Application.Abstractions;
-using ASSISTENTE.Application.Abstractions.Clients;
+﻿using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Application.Bases;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
+using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -25,36 +25,20 @@ namespace ASSISTENTE.Application.Questions.Commands.ResolveContext
             return new ResolveContextCommand(questionId);
         }
     }
-
+    
     public class ResolveQuestionCommandHandler(
         IKnowledgeService knowledgeService,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger<ResolveQuestionCommandHandler> logger)
-        : IRequestHandler<ResolveContextCommand, Result>
+        ILogger<ResolveQuestionCommandHandler> logger) : QuestionCommandBase<ResolveContextCommand>(logger, clientInternal)
     {
-        public async Task<Result> Handle(ResolveContextCommand request, CancellationToken cancellationToken)
-        {
-            return await questionRepository.GetByIdAsync(request.QuestionId)
-                .ToResult(RepositoryErrors<Question>.NotFound.Build())
-                .Bind(async question =>
-                {
-                    return await UpdateStatus(question.ConnectionId!, QuestionProgress.ResolvingContext)
-                        .Bind(async () =>
-                        {
-                            logger.LogInformation(
-                                "2 | (ConnectionId: {ConnectionId}) - '{Question}' resolving question context...",
-                                question.ConnectionId,
-                                question.Text
-                            );
+        protected override async Task<Result> HandleAsync(Question question)
+            => await knowledgeService.ResolveContext(question);
 
-                            return await knowledgeService.ResolveContext(question);
-                        })
-                        .Bind(async () => await UpdateStatus(question.ConnectionId!, QuestionProgress.ContextResolved));
-                });
-        }
-        
-        private async Task<Result> UpdateStatus(string connectionId, QuestionProgress progress)
-            => await clientInternal.UpdateQuestionAsync(UpdateQuestionRequest.Create(connectionId, progress));
+        protected override async Task<Maybe<Question>> GetQuestionAsync(ResolveContextCommand request)
+            => await questionRepository.GetByIdAsync(request.QuestionId);
+
+        protected override QuestionProgress InitialProgress => QuestionProgress.ResolvingContext;
+        protected override QuestionProgress FinalProgress => QuestionProgress.ContextResolved;
     }
 }
