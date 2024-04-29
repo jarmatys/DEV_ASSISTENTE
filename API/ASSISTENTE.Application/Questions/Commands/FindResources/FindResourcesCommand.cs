@@ -2,6 +2,7 @@
 using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
@@ -34,11 +35,12 @@ namespace ASSISTENTE.Application.Questions.Commands.FindResources
     {
         public async Task<Result> Handle(FindResourcesCommand request, CancellationToken cancellationToken)
         {
+            // TODO: Extract command base class
             return await questionRepository.GetByIdAsync(request.QuestionId)
-                .ToResult(RepositoryErrors.NotFound.Build())
+                .ToResult(RepositoryErrors<Question>.NotFound.Build())
                 .Bind(async question =>
                 {
-                    return await UpdateStatus(question.ConnectionId!, QuestionProgress.Started)
+                    return await UpdateStatus(question.ConnectionId!, QuestionProgress.Started) // TODO: call if connectionId is null
                         .Bind(async () =>
                         {
                             logger.LogInformation(

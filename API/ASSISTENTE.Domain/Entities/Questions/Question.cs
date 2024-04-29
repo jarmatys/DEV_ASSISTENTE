@@ -1,6 +1,7 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.Questions.Enums;
+using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Domain.Entities.Questions.Events;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Language.Identifiers;
@@ -20,7 +21,7 @@ public sealed class Question : AuditableEntity<QuestionId>
 
         Text = text;
         ConnectionId = connectionId;
-        
+
         Context = null;
         Embeddings = null;
         Resources = new List<QuestionResource>();
@@ -35,7 +36,7 @@ public sealed class Question : AuditableEntity<QuestionId>
 
     # region NAVIGATION PROPERTIES
 
-    public Answer Answer { get; private set; } = null!;
+    public Answer? Answer { get; private set; }
     public ICollection<QuestionResource> Resources { get; private set; }
 
     # endregion
@@ -69,32 +70,32 @@ public sealed class Question : AuditableEntity<QuestionId>
 
         return Result.Success();
     }
-    
-    public string GetContext()
-    {
-        // TODO: Add domain validation
-        return Context.ToString();
-    }
 
-    public Result SetContext(QuestionContext context)
+    public Result AddContext(QuestionContext context)
     {
         Context = context;
 
         RaiseEvent(new ContextResolvedEvent(Id));
-        
+
         return Result.Success();
     }
-    
-    public Result SetAnswer(Answer answer)
+
+    public Result AddAnswer(Answer answer)
     {
         Answer = answer;
 
         return Result.Success();
     }
-    
-    
-    public string GetAnswer()
+
+    public Result<string> GetContext()
     {
-        return Answer.Text;
+        return Context is not null 
+            ? Context.ToString()!
+            : Result.Failure<string>(QuestionErrors.ContextNotProvided.Build());
+    }
+
+    public Result<string> GetAnswer()
+    {
+        return Answer?.Text ?? Result.Failure<string>(QuestionErrors.AnswerNotExist.Build());
     }
 }

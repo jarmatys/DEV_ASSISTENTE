@@ -79,18 +79,20 @@ public sealed class KnowledgeService(
     public async Task<Result> ResolveContext(Question question)
     {
         return await GetContextAsync<ResourceType, QuestionContext>(question.Text) // 1. Detect context
-            .Check(question.SetContext)
+            .Check(question.AddContext)
             .Check(_ => questionRepository.UpdateAsync(question));
     }
 
     public async Task<Result> FindResources(Question question)
     {
-        // TODO: verify context (shound't be Error) | domain validation in question.GetContext()
-
         return await EmbeddingText.Create(question.Text) // 3. Create embedding
             .Bind(embeddingClient.GetAsync)
             .Check(dto => question.AddEmbeddings(dto.Embeddings))
-            .Bind(dto => VectorDto.Create(CollectionName(question.GetContext()), dto.Embeddings))
+            .Bind(dto =>
+            {
+                return question.GetContext()
+                    .Bind(context => VectorDto.Create(CollectionName(context), dto.Embeddings));
+            })
             .Bind(qdrantService.SearchAsync) // 4. Search for resources
             .Bind(searchResult =>
             {
@@ -107,30 +109,33 @@ public sealed class KnowledgeService(
     public async Task<Result<string>> GenerateAnswer(Question question)
     {
         var contextContent = question.Resources.Select(x => x.Resource).Select(x => x.Content);
-
-        // TODO: verify context (shound't be Error) | domain validation in question.GetContext()
         
-        return await GetPromptType(question.Context.Value) // 6. Generate prompt
-            .Bind(promptType => PromptInput.Create(question.Text, contextContent, promptType))
-            .Bind(promptGenerator.GeneratePrompt)
-            .Bind(Prompt.Create)
-            .Bind(prompt =>
+        return await question.GetContext()
+            .Bind(context =>
             {
-                var answer = llmClient.GenerateAnswer(prompt) // 7. Generate answer
-                    .Check(answer => AnswerEntity.Create(
-                            answer.Text,
-                            prompt.Value,
-                            answer.Client.Name,
-                            answer.Audit.Model,
-                            answer.Audit.PromptTokens,
-                            answer.Audit.CompletionTokens
-                        )
-                        .Check(question.SetAnswer)); // 8. Save answer to question (save in DB for audit purpose)
+                return GetPromptType(context) // 6. Generate prompt
+                    .Bind(promptType => PromptInput.Create(question.Text, contextContent, promptType))
+                    .Bind(promptGenerator.GeneratePrompt)
+                    .Bind(Prompt.Create)
+                    .Bind(prompt =>
+                    {
+                        var answer = llmClient.GenerateAnswer(prompt) // 7. Generate answer
+                            .Check(answer => AnswerEntity.Create(
+                                    answer.Text,
+                                    prompt.Value,
+                                    answer.Client.Name,
+                                    answer.Audit.Model,
+                                    answer.Audit.PromptTokens,
+                                    answer.Audit.CompletionTokens
+                                )
+                                .Check(question
+                                    .AddAnswer)); // 8. Save answer to question (save in DB for audit purpose)
 
-                return answer;
-            })
-            .Check(_ => questionRepository.UpdateAsync(question)) // 9. Commit DB transation
-            .Map(answer => answer.Text);
+                        return answer;
+                    })
+                    .Check(_ => questionRepository.UpdateAsync(question)) // 9. Commit DB transation
+                    .Map(answer => answer.Text);
+            });
     }
 
     private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question)
@@ -153,8 +158,10 @@ public sealed class KnowledgeService(
         }
     }
 
-    private static Result<PromptType> GetPromptType(QuestionContext context)
+    private static Result<PromptType> GetPromptType(string contextText)
     {
+        var context = Enum.Parse<QuestionContext>(contextText);
+        
         return context switch
         {
             QuestionContext.Note => PromptType.Question,

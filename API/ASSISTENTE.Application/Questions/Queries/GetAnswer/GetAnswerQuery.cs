@@ -1,5 +1,6 @@
 ﻿using ASSISTENTE.Application.Abstractions;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer;
+using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
@@ -28,8 +29,9 @@ namespace ASSISTENTE.Application.Questions.Queries.GetAnswer
         public async Task<Result<GetAnswerResponse>> Handle(GetAnswerQuery query, CancellationToken cancellationToken)
         {
             return await questionRepository.GetByIdAsync(query.QuestionId)
-                .ToResult(RepositoryErrors.NotFound.Build())
-                .Map(question => new GetAnswerResponse(question.GetAnswer()));
+                .ToResult(RepositoryErrors<Question>.NotFound.Build())
+                .Bind(question => question.GetAnswer())
+                .Map(answerText => new GetAnswerResponse(answerText));
         }
     }
 }

@@ -2,6 +2,7 @@
 using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
@@ -35,7 +36,7 @@ namespace ASSISTENTE.Application.Questions.Commands.ResolveContext
         public async Task<Result> Handle(ResolveContextCommand request, CancellationToken cancellationToken)
         {
             return await questionRepository.GetByIdAsync(request.QuestionId)
-                .ToResult(RepositoryErrors.NotFound.Build())
+                .ToResult(RepositoryErrors<Question>.NotFound.Build())
                 .Bind(async question =>
                 {
                     return await UpdateStatus(question.ConnectionId!, QuestionProgress.ResolvingContext)
