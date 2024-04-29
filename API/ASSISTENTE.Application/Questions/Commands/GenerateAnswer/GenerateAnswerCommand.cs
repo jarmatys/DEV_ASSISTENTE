@@ -27,13 +27,13 @@ namespace ASSISTENTE.Application.Questions.Commands.GenerateAnswer
     }
     
     public class GenerateAnswerCommandHandler(
-        IKnowledgeService knowledgeService,
+        IQuestionOrchestrator questionOrchestrator,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
         ILogger<GenerateAnswerCommandHandler> logger) : QuestionCommandBase<GenerateAnswerCommand>(logger, clientInternal)
     {
         protected override async Task<Result> HandleAsync(Question question)
-            => await knowledgeService.GenerateAnswer(question);
+            => await questionOrchestrator.GenerateAnswer(question);
 
         protected override async Task<Maybe<Question>> GetQuestionAsync(GenerateAnswerCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);

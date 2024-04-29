@@ -1,3 +1,4 @@
+using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Knowledge.Commands.Learn;
 using ASSISTENTE.Application.Maintenance.Commands.Reset;
 using ASSISTENTE.Common.Extensions;
@@ -6,17 +7,18 @@ using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Playground;
 
-public sealed class Playground(ISender mediator, ILogger<Playground> logger)
+public sealed class Playground(
+    IKnowledgeService knowledgeService, 
+    ISender mediator,
+    ILogger<Playground> logger)
 {
     public async Task AnswerAsync(string question)
     {
-        // TODO: Implement command to generate answer synchronisly
+        var answerResult = await knowledgeService.AnswerAsync(question);
         
-        // var result = await mediator.Send(GetAnswerQuery.Create(question));
-        //
-        // result
-        //     .Log(response => response.Text, logger)
-        //     .LogError(logger);
+        answerResult
+            .Log(text => text, logger)
+            .LogError(logger);
     }
 
     public async Task LearnAsync()

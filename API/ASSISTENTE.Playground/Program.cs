@@ -23,6 +23,12 @@ var parsedParams = ParseParams(args);
 
 if (playground == null) return;
 
+if (!parsedParams.IsValid)
+{
+    Log.Error(PlaygroundParams.NotValidMessage);
+    return;
+}
+
 Log.Information("Starting Playground...");
 
 if (parsedParams.Reset)

@@ -27,13 +27,13 @@ namespace ASSISTENTE.Application.Questions.Commands.ResolveContext
     }
     
     public class ResolveQuestionCommandHandler(
-        IKnowledgeService knowledgeService,
+        IQuestionOrchestrator questionOrchestrator,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
         ILogger<ResolveQuestionCommandHandler> logger) : QuestionCommandBase<ResolveContextCommand>(logger, clientInternal)
     {
         protected override async Task<Result> HandleAsync(Question question)
-            => await knowledgeService.ResolveContext(question);
+            => await questionOrchestrator.ResolveContext(question);
 
         protected override async Task<Maybe<Question>> GetQuestionAsync(ResolveContextCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);

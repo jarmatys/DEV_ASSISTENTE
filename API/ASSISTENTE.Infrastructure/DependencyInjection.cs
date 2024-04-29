@@ -29,6 +29,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddLLM(configuration);
 
             services.AddScoped<IKnowledgeService, KnowledgeService>();
+            services.AddScoped<IQuestionOrchestrator, QuestionOrchestrator>();
             services.AddScoped<IFileParser, FileParser>();
             services.AddScoped<IMaintenanceService, MaintenanceService>();
             services.AddScoped<ISystemTimeProvider, SystemTimeProvider>();

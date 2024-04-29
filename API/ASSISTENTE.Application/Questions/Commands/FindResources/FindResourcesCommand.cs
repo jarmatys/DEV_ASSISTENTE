@@ -27,13 +27,13 @@ namespace ASSISTENTE.Application.Questions.Commands.FindResources
     }
 
     public class FindResourcesCommandHandler(
-        IKnowledgeService knowledgeService,
+        IQuestionOrchestrator questionOrchestrator,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
         ILogger<FindResourcesCommandHandler> logger) : QuestionCommandBase<FindResourcesCommand>(logger, clientInternal)
     {
         protected override async Task<Result> HandleAsync(Question question)
-            => await knowledgeService.FindResources(question);
+            => await questionOrchestrator.FindResources(question);
 
         protected override async Task<Maybe<Question>> GetQuestionAsync(FindResourcesCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);

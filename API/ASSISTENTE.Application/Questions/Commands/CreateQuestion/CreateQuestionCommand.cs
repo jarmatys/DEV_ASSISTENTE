@@ -25,7 +25,7 @@ namespace ASSISTENTE.Application.Questions.Commands.CreateQuestion
     }
 
     public class CreateQuestionCommandHandler(
-        IKnowledgeService knowledgeService,
+        IQuestionOrchestrator questionOrchestrator,
         ILogger<CreateQuestionCommandHandler> logger)
         : IRequestHandler<CreateQuestionCommand, Result>
     {
@@ -39,7 +39,7 @@ namespace ASSISTENTE.Application.Questions.Commands.CreateQuestion
                 QuestionProgress.Init.ToString()
             );
             
-            return await knowledgeService.InitQuestion(request.Question!, request.ConnectionId);
+            return await questionOrchestrator.InitQuestion(request.Question!, request.ConnectionId);
         }
     }
 }
