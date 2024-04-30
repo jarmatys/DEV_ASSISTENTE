@@ -1,3 +1,4 @@
+using ASSISTENTE.Language.Enums;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ASSISTENTE.API.Hubs;
@@ -14,6 +15,6 @@ public sealed class AnswerHub : Hub<IAnswerHub>
 
 public interface IAnswerHub
 {
-    Task ReceiveAnswer(string message);
+    Task ReceiveProgress(QuestionProgress progress);
     Task InitConnection(string connectionId);
 }

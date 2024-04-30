@@ -1,6 +1,6 @@
 using ASSISTENTE.Application.Abstractions;
 using ASSISTENTE.Application.Abstractions.Clients;
-using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Language.Enums;
 using CSharpFunctionalExtensions;
@@ -20,20 +20,19 @@ public abstract class QuestionCommandBase<TCommand>(
             .ToResult(RepositoryErrors<Question>.NotFound.Build())
             .Bind(async question =>
             {
-                return await UpdateStatus(question, InitialProgress)
+                return await UpdateProgress(question, InitialProgress)
                     .Bind(async () =>
                     {
                         logger.LogInformation(
-                            "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}' {Action}...",
+                            "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}'",
                             InitialProgress,
                             question.ConnectionId,
-                            question.Text,
-                            InitialProgress.ToString()
+                            question.Text
                         );
 
                         return await HandleAsync(question);
                     })
-                    .Bind(async () => await UpdateStatus(question, FinalProgress));
+                    .Bind(async () => await UpdateProgress(question, FinalProgress));
             });
     }
 
@@ -43,10 +42,11 @@ public abstract class QuestionCommandBase<TCommand>(
     protected abstract QuestionProgress InitialProgress { get; }
     protected abstract QuestionProgress FinalProgress { get; }
 
-    private async Task<Result> UpdateStatus(Question question, QuestionProgress progress)
+    private async Task<Result> UpdateProgress(Question question, QuestionProgress progress)
     {
         if (question.ConnectionId is null) return Result.Success();
 
-        return await clientInternal.UpdateQuestionAsync(UpdateQuestionRequest.Create(question.ConnectionId, progress));
+        return await clientInternal
+            .UpdateQuestionProgressAsync(UpdateQuestionProgressRequest.Create(question.ConnectionId, progress));
     }
 }

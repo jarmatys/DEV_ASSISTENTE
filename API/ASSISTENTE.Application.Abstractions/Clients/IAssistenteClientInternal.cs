@@ -1,9 +1,9 @@
-using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Application.Abstractions.Clients;
 
 public interface IAssistenteClientInternal
 {
-    public Task<Result> UpdateQuestionAsync(UpdateQuestionRequest request);
+    public Task<Result> UpdateQuestionProgressAsync(UpdateQuestionProgressRequest request);
 }

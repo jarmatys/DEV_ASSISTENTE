@@ -2,10 +2,13 @@
 @implements IAsyncDisposable
 
 @using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion
+@using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer
+@using ASSISTENTE.Language.Enums
 @using ASSISTENTE.UI.Brokers.Implementations
 @using ASSISTENTE.UI.Common.Models
 @using ASSISTENTE.UI.Components.Forms
 @using Microsoft.AspNetCore.SignalR.Client
+@using ASSISTENTE.UI.Components
 
 @inject IAnswersBroker AnswersBroker
 @inject IQuestionsBroker QuestionsBroker
@@ -13,20 +16,20 @@
 <PageTitle>Ask question</PageTitle>
 
 <ul>
-    @foreach (var message in _messages)
+    @foreach (var message in _questionProgresses)
     {
-    <li>@message</li>
+    <li>@message.ToString()</li>
     }
 </ul>
 
-@* @if (_response != null) *@
-@* { *@
-@*     <MudGrid> *@
-@*         <MudItem xs="12" sm="12"> *@
-@*             <MarkdownArea Content="@_response.Text"/> *@
-@*         </MudItem> *@
-@*     </MudGrid> *@
-@* } *@
+@if (_response != null)
+{
+    <MudGrid>
+        <MudItem xs="12" sm="12">
+            <MarkdownArea Content="@_response.Text"/>
+        </MudItem>
+    </MudGrid>
+}
 
 @if (_connectionInitialization)
 {
@@ -60,9 +63,10 @@ else
     private bool _connectionInitialization = true;
     
     private HubConnection? _hubConnection;
-    private readonly List<string> _messages = [];
+    private readonly List<QuestionProgress> _questionProgresses = [];
     
     CreateQuestionRequest _request = new();
+    GetAnswerResponse? _response;
 
     private async Task<HttpResult> CreateQuestionAsync(CreateQuestionRequest request) =>
         await QuestionsBroker.CreateQuestionAsync(request);
@@ -75,19 +79,16 @@ else
             .WithUrl("http://localhost:5249/answers")
             .Build();
         
-        _hubConnection.On<string>("ReceiveAnswer", message =>
+        _hubConnection.On<QuestionProgress>("ReceiveProgress", async questionProgress =>
         {
-            _messages.Add(message);
-
-            InvokeAsync(StateHasChanged);
+            _questionProgresses.Add(questionProgress);
+            
+            await InvokeAsync(StateHasChanged);
         });
 
         _hubConnection.On<string>("InitConnection", connectionId =>
         {
             _request.ConnectionId = connectionId;
-            
-            Console.WriteLine($"Init connection: {_request.ConnectionId}");
-            
             _connectionInitialization = false;
             
             InvokeAsync(StateHasChanged);

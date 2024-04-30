@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
 using ASSISTENTE.Language.Enums;
 
-namespace ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestion;
+namespace ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 
-public sealed class UpdateQuestionRequest : PutRequestBase
+public sealed class UpdateQuestionProgressRequest : PutRequestBase
 {
     [Required] public string ConnectionId { get; set; } = null!;
 
@@ -15,9 +15,9 @@ public sealed class UpdateQuestionRequest : PutRequestBase
         ConnectionId = string.Empty;
     }
 
-    public static UpdateQuestionRequest Create(string connectionId, QuestionProgress progress)
+    public static UpdateQuestionProgressRequest Create(string connectionId, QuestionProgress progress)
     {
-        return new UpdateQuestionRequest
+        return new UpdateQuestionProgressRequest
         {
             ConnectionId = connectionId,
             Progress = progress
