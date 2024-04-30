@@ -17,7 +17,7 @@ public abstract class BrokerBase(HttpClient httpClient, string relativeUrl)
     {
         try
         {
-            var response = await httpClient.GetAsync($"{relativeUrl}{request.QueryString()}");
+            var response = await httpClient.GetAsync($"{relativeUrl}?{request.QueryString()}");
 
             if (response.IsSuccessStatusCode)
             {

@@ -26,6 +26,6 @@ app.UseCommon();
 app.UseCors();
 app.UseEndpoints();
 
-app.MapHub<AnswerHub>("answers");
+app.MapHub<QuestionHub>("answers");
 
 app.Run();

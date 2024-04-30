@@ -6,9 +6,9 @@ namespace ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 
 public sealed class UpdateQuestionProgressRequest : PutRequestBase
 {
-    [Required] public string ConnectionId { get; set; } = null!;
+    [Required] public required string ConnectionId { get; set; }
 
-    [Required] public QuestionProgress Progress { get; set; }
+    [Required] public required QuestionProgress Progress { get; set; }
 
     public override void Clear()
     {

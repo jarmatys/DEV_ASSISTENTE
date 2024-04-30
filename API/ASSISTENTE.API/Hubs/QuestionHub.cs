@@ -1,9 +1,10 @@
 using ASSISTENTE.Language.Enums;
+using ASSISTENTE.Language.Identifiers;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ASSISTENTE.API.Hubs;
 
-public sealed class AnswerHub : Hub<IAnswerHub>
+public sealed class QuestionHub : Hub<IQuestionHub>
 {
     public override async Task OnConnectedAsync()
     {
@@ -13,8 +14,9 @@ public sealed class AnswerHub : Hub<IAnswerHub>
     }
 }
 
-public interface IAnswerHub
+public interface IQuestionHub
 {
-    Task ReceiveProgress(QuestionProgress progress);
     Task InitConnection(string connectionId);
+    Task ReceiveProgress(QuestionProgress progress);
+    Task NotifyReadiness(QuestionId questionId);
 }

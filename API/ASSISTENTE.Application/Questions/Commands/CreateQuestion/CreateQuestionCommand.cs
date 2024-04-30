@@ -32,11 +32,10 @@ namespace ASSISTENTE.Application.Questions.Commands.CreateQuestion
         public async Task<Result> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation(
-                "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}' {Action}...",
+                "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}'",
                 QuestionProgress.Init,
                 request.ConnectionId,
-                request.Question,
-                QuestionProgress.Init.ToString()
+                request.Question
             );
             
             return await questionOrchestrator.InitQuestion(request.Question!, request.ConnectionId);

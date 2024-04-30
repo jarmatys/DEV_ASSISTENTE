@@ -4,6 +4,7 @@
 @using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion
 @using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer
 @using ASSISTENTE.Language.Enums
+@using ASSISTENTE.Language.Identifiers
 @using ASSISTENTE.UI.Brokers.Implementations
 @using ASSISTENTE.UI.Common.Models
 @using ASSISTENTE.UI.Components.Forms
@@ -79,19 +80,31 @@ else
             .WithUrl("http://localhost:5249/answers")
             .Build();
         
-        _hubConnection.On<QuestionProgress>("ReceiveProgress", async questionProgress =>
-        {
-            _questionProgresses.Add(questionProgress);
-            
-            await InvokeAsync(StateHasChanged);
-        });
-
         _hubConnection.On<string>("InitConnection", connectionId =>
         {
             _request.ConnectionId = connectionId;
             _connectionInitialization = false;
             
             InvokeAsync(StateHasChanged);
+        });
+        
+        _hubConnection.On<QuestionProgress>("ReceiveProgress", questionProgress =>
+        {
+            _questionProgresses.Add(questionProgress);
+            
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<QuestionId>("NotifyReadiness", async questionId =>
+        {
+            var response = await AnswersBroker.GetAnswerAsync(GetAnswerRequest.Create(questionId));
+
+            if (response.IsSuccess)
+            {
+                _response = response.Content;
+            }
+            
+            await InvokeAsync(StateHasChanged);
         });
         
         await _hubConnection.StartAsync();

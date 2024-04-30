@@ -5,8 +5,9 @@ using MediatR;
 
 namespace ASSISTENTE.Worker.Sync.Consumers;
 
-public sealed class OnGenerateAnswerMessageConsumer(ILogger<OnGenerateAnswerMessageConsumer> logger, ISender mediator)
-    : ResultConsumerBase<GenerateAnswerMessage, GenerateAnswerCommand>(logger, mediator)
+public sealed class OnGenerateAnswerMessageConsumer(
+    ILogger<OnGenerateAnswerMessageConsumer> logger, 
+    ISender mediator) : ResultConsumerBase<GenerateAnswerMessage, GenerateAnswerCommand>(logger, mediator)
 {
     protected override GenerateAnswerCommand MediatRequest(GenerateAnswerMessage message)
         => GenerateAnswerCommand.Create(message.QuestionId);

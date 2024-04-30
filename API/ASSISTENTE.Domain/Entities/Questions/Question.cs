@@ -84,6 +84,8 @@ public sealed class Question : AuditableEntity<QuestionId>
     {
         Answer = answer;
 
+        RaiseEvent(new AnswerAttachedEvent(Id));
+        
         return Result.Success();
     }
 

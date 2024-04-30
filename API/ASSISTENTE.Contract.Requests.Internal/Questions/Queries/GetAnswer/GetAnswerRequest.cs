@@ -6,7 +6,7 @@ namespace ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer;
 
 public sealed class GetAnswerRequest : GetRequestBase
 {
-    [Required] public QuestionId QuestionId { get; set; } = null!;
+    [Required] public required Guid QuestionId { get; set; } // TODO: Implement endpoint binder to use strongy typed identifiers
     
     public static GetAnswerRequest Create(QuestionId questionId)
     {
