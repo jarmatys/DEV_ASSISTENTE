@@ -1,0 +1,34 @@
+@using ASSISTENTE.Language.Enums
+
+<MudGrid Spacing="2" Justify="Justify.Center">
+    <MudItem xs="9" Class="d-flex align-center justify-center mud-width-full">
+        <MudProgressLinear Color="Color.Tertiary"
+                           Value="@Value"
+                           Rounded="true"
+                           Size="Size.Large"/>
+    </MudItem>
+    <MudItem xs="3" Class="d-flex align-center justify-center mud-width-full">
+        <MudChip Icon="@Icons.Material.Outlined.Downloading"
+                 Label="true"
+                 Color="Color.Success"
+                 Size="Size.Small">
+            @CurrentProgress.ToString()
+        </MudChip>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter] public required List<QuestionProgress> Progress { get; set; }
+
+    private QuestionProgress CurrentProgress => Progress.Any()
+        ? Progress.Last()
+        : QuestionProgress.Init;
+
+    private static readonly List<QuestionProgress> ExludedStates = [QuestionProgress.Init, QuestionProgress.Ready];
+    
+    private readonly double _progressItems = Enum.GetNames(typeof(QuestionProgress)).Length - ExludedStates.Count;
+
+    private double Value => Progress.Count / _progressItems * 100;
+
+}

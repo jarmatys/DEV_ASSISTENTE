@@ -15,8 +15,8 @@
                     <MudButton ButtonType="ButtonType.Submit"
                                Variant="Variant.Filled"
                                Color="Color.Secondary"
-                               Disabled="@(_isLoading)">
-                        @(_isLoading ? "Generating..." : "Generate answer")
+                               Disabled="@(_isLoading || IsDisabled)">
+                        @((_isLoading || IsDisabled) ? "Generating..." : "Generate answer")
                     </MudButton>
                 </MudCardActions>
             </MudCard>
@@ -41,8 +41,10 @@
 
     [Parameter] public required Func<TRequest, Task<HttpResult>> SubmitMethod { get; set; }
     [Parameter] public required EventCallback<TRequest> OnRequestClear { get; set; }
+    [Parameter] public required EventCallback OnSubmit { get; set; }
 
     [Parameter] public required TRequest Request { get; set; }
+    [Parameter] public required bool IsDisabled { get; set; }
 
     bool _isLoading;
     bool _showErrors;
@@ -59,6 +61,8 @@
 
     private async Task OnValidSubmit(EditContext context)
     {
+        await OnSubmit.InvokeAsync();
+        
         _showErrors = false;
         _isLoading = true;
         

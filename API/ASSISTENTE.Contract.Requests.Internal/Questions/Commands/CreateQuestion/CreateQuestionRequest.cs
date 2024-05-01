@@ -14,6 +14,5 @@ public sealed class CreateQuestionRequest : PostRequestBase
     public override void Clear()
     {
         Question = string.Empty;
-        ConnectionId = string.Empty;
     }
 };

@@ -8,20 +8,19 @@
 @using ASSISTENTE.UI.Brokers.Implementations
 @using ASSISTENTE.UI.Common.Models
 @using ASSISTENTE.UI.Components.Forms
-@using Microsoft.AspNetCore.SignalR.Client
 @using ASSISTENTE.UI.Components
+@using ASSISTENTE.UI.Components.ProgressBars
+@using Microsoft.AspNetCore.SignalR.Client
 
 @inject IAnswersBroker AnswersBroker
 @inject IQuestionsBroker QuestionsBroker
 
 <PageTitle>Ask question</PageTitle>
 
-<ul>
-    @foreach (var message in _questionProgresses)
-    {
-    <li>@message.ToString()</li>
-    }
-</ul>
+@if (_inProgress)
+{
+    <QuestionProgressBar Progress="_questionProgresses"/>
+}
 
 @if (_response != null)
 {
@@ -40,8 +39,10 @@ else
 {
     <BaseForm TRequest="CreateQuestionRequest"
               Request="_request"
+              IsDisabled="_inProgress"
               SubmitMethod="CreateQuestionAsync"
-              OnRequestClear="HandleRequestUpdate">
+              OnRequestClear="HandleRequestUpdate"
+              OnSubmit="HandleOnSubmit">
 
         <FormFields>
             <MudTextField
@@ -53,6 +54,7 @@ else
                 Label="Question"
                 Lines="10"
                 Required="true"
+                Disabled="@_inProgress"
                 RequiredError="Question name is required!"/>
         </FormFields>
     </BaseForm>
@@ -61,11 +63,12 @@ else
 
 @code {
 
+    private bool _inProgress;
     private bool _connectionInitialization = true;
-    
+
     private HubConnection? _hubConnection;
     private readonly List<QuestionProgress> _questionProgresses = [];
-    
+
     CreateQuestionRequest _request = new();
     GetAnswerResponse? _response;
 
@@ -73,25 +76,31 @@ else
         await QuestionsBroker.CreateQuestionAsync(request);
 
     private void HandleRequestUpdate(CreateQuestionRequest request) => _request = request;
+    private void HandleOnSubmit()
+    {
+        _questionProgresses.Clear();
+        _response = null;
+        _inProgress = true;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5249/answers")
             .Build();
-        
+
         _hubConnection.On<string>("InitConnection", connectionId =>
         {
             _request.ConnectionId = connectionId;
             _connectionInitialization = false;
-            
+
             InvokeAsync(StateHasChanged);
         });
-        
+
         _hubConnection.On<QuestionProgress>("ReceiveProgress", questionProgress =>
         {
             _questionProgresses.Add(questionProgress);
-            
+
             InvokeAsync(StateHasChanged);
         });
 
@@ -104,16 +113,17 @@ else
                 _response = response.Content;
             }
             
+            _inProgress = false;
+
             await InvokeAsync(StateHasChanged);
         });
-        
+
         await _hubConnection.StartAsync();
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         if (_hubConnection != null) await _hubConnection.DisposeAsync();
-
-        Console.WriteLine($"Close connection: {_request.ConnectionId}");
     }
+
 }
