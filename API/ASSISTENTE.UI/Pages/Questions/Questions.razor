@@ -1,0 +1,38 @@
+﻿@page "/questions"
+@using ASSISTENTE.UI.Brokers.Implementations
+
+@inject IQuestionsBroker QuestionsBroker
+
+<PageTitle>Questions</PageTitle>
+
+<MudSimpleTable Dense="true" Hover="true" Bordered="@false" Striped="@false" Style="overflow-x: auto;">
+    <thead>
+    <tr>
+        @foreach (var h in _headings)
+        {
+            <th>@h</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var row in _rows)
+    {
+        <tr>
+            @foreach (var x in row.Split())
+            {
+                <td>@x</td>
+            }
+        </tr>
+    }
+    </tbody>
+</MudSimpleTable>
+
+
+@code {
+    readonly string[] _headings = ["ID", "Name", "Email", "Gender", "IP Address"];
+
+    readonly string[] _rows =
+    [
+        "1 Krishna kpartner0@usatoday.com Male 28.25.250.202"
+    ];
+}

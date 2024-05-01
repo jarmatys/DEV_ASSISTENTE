@@ -5,18 +5,18 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar>
-        <MudContainer MaxWidth="MaxWidth.Medium">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
-            ASSISTENTE.DEV
-        </MudContainer>
+    <MudAppBar Elevation="1" Dense="true">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/jarmatys/DEV_ASSISTENTE" Target="_blank" />
     </MudAppBar>
-
-    <MudDrawer @bind-Open="@_drawerOpen">
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked" Elevation="1" Variant="@DrawerVariant.Responsive">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">ASSISTENTE.DEV</MudText>
+        </MudDrawerHeader>
         <NavMenu/>
     </MudDrawer>
-
-    <MudMainContent>
+    <MudMainContent Class="pt-16 px-16">
         <MudContainer MaxWidth="MaxWidth.Medium" Class="pt-3">
             @Body
         </MudContainer>
@@ -25,7 +25,7 @@
 
 @code {
 
-    bool _drawerOpen = false;
+    bool _drawerOpen = true;
 
     void DrawerToggle()
     {
