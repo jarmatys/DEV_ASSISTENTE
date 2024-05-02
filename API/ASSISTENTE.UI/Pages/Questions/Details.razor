@@ -1,0 +1,36 @@
+﻿@page "/questions/{QuestionId:guid}"
+
+@using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion
+@using ASSISTENTE.UI.Brokers.Implementations
+
+@inject IQuestionsBroker QuestionsBroker
+@inject ISnackbar Snackbar
+
+<PageTitle>Question details</PageTitle>
+
+@if (_response is not null)
+{
+    <h1>@_response.Text</h1>
+}
+
+@code {
+
+    [Parameter] public Guid QuestionId { get; set; }
+
+    private GetQuestionResponse? _response;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await QuestionsBroker.GetQuestionAsync(GetQuestionRequest.Create(QuestionId));
+    
+        if (response.IsSuccess)
+        {
+            _response = response.Content;
+        }
+        else
+        {
+            Snackbar.Add("Error during loading question details...", Severity.Error);
+        }
+    }
+    
+}

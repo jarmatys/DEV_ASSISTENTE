@@ -4,8 +4,8 @@ using MediatR;
 
 namespace ASSISTENTE.API.Endpoints.Questions;
 
-public sealed class PostQuestionEndpoint(ISender mediator)
-    : EndpointBase<CreateQuestionRequest, CreateQuestionCommand>(mediator)
+public sealed class PostQuestionCommandEndpoint(ISender mediator)
+    : CommandEndpointBase<CreateQuestionRequest, CreateQuestionCommand>(mediator)
 {
     public override void Configure()
     {
@@ -14,6 +14,6 @@ public sealed class PostQuestionEndpoint(ISender mediator)
         SetupSwagger();
     }
 
-    protected override CreateQuestionCommand MediatRequest(CreateQuestionRequest req, CancellationToken ct)
+    protected override CreateQuestionCommand MediatRequest(CreateQuestionRequest req) 
         => CreateQuestionCommand.Create(req);
 }

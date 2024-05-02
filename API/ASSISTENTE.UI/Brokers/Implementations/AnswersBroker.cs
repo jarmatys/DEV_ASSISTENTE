@@ -1,4 +1,5 @@
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer;
+using ASSISTENTE.Language.Identifiers;
 using ASSISTENTE.UI.Common.Models;
 
 namespace ASSISTENTE.UI.Brokers.Implementations;
@@ -12,6 +13,6 @@ public sealed class AnswersBroker(HttpClient httpClient) : BrokerBase(httpClient
 {
     public async Task<HttpResult<GetAnswerResponse>> GetAnswerAsync(GetAnswerRequest request)
     {
-        return await GetAsync<GetAnswerResponse, GetAnswerRequest>(request);
+        return await GetDetailsAsync<GetAnswerResponse, QuestionId>(request.QuestionId);
     }
 }

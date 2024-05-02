@@ -16,7 +16,7 @@ namespace ASSISTENTE.Application.Questions.Queries.GetQuestions
         }
     }
     
-    public class GetAnswerQueryHandler(IQuestionRepository questionRepository) 
+    public class GetQuestionsQueryHandler(IQuestionRepository questionRepository) 
         : IRequestHandler<GetQuestionsQuery, Result<GetQuestionsResponse>>
     {
         public async Task<Result<GetQuestionsResponse>> Handle(GetQuestionsQuery query, CancellationToken cancellationToken)

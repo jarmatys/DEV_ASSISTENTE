@@ -5,7 +5,7 @@ using MediatR;
 namespace ASSISTENTE.API.Endpoints.Questions;
 
 public sealed class GetQuestionsEndpoint(ISender mediator)
-    : EndpointBase<GetQuestionsRequest, GetQuestionsResponse, GetQuestionsQuery>(mediator)
+    : QueryEndpointBase<GetQuestionsRequest, GetQuestionsResponse, GetQuestionsQuery>(mediator)
 {
     public override void Configure()
     {
@@ -14,6 +14,6 @@ public sealed class GetQuestionsEndpoint(ISender mediator)
         SetupSwagger();
     }
 
-    protected override GetQuestionsQuery MediatRequest(GetQuestionsRequest req, CancellationToken ct)
+    protected override GetQuestionsQuery MediatRequest(GetQuestionsRequest req) 
         => GetQuestionsQuery.Create(req);
 }

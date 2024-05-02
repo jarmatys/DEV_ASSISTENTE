@@ -7,6 +7,7 @@ internal static class EndpointExtensions
 {
     internal static WebApplicationBuilder AddEndpoints(this WebApplicationBuilder builder)
     {
+        // TODO: fix swagger (issue with two get methods)
         builder.Services
             .AddFastEndpoints()
             .AddSwaggerDocument(options =>

@@ -10,6 +10,8 @@ namespace ASSISTENTE.Domain.Entities.Questions;
 
 public sealed class Question : AuditableEntity<QuestionId>
 {
+    // TODO: Added STATE property + machine state to handle transitions between states
+    
     private Question()
     {
         Resources = new List<QuestionResource>();
