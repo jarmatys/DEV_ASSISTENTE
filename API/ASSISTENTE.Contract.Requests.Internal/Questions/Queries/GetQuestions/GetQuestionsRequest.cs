@@ -1,8 +1,8 @@
-using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
+using ASSISTENTE.Contract.Requests.Internal.Common;
 
 namespace ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions;
 
-public sealed class GetQuestionsRequest : GetRequestBase
+public sealed class GetQuestionsRequest : PaginationRequestBase
 {
     public static GetQuestionsRequest Create()
     {

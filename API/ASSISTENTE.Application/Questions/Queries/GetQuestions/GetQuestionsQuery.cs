@@ -1,5 +1,6 @@
 ﻿using ASSISTENTE.Application.Abstractions;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions;
+using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions.Models;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using CSharpFunctionalExtensions;
@@ -22,7 +23,8 @@ namespace ASSISTENTE.Application.Questions.Queries.GetQuestions
         {
             return await questionRepository.GetAllAsync()
                 .ToResult(RepositoryErrors<Question>.NotFound.Build())
-                .Map(questions => new GetQuestionsResponse(""));
+                .Map(questions => questions.Select(q => new QuestionDto(q.Id, q.Text)).ToList())
+                .Map(questionDtos => new GetQuestionsResponse(questionDtos));
         }
     }
 }

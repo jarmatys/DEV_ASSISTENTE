@@ -1,38 +1,62 @@
 ﻿@page "/questions"
+
+@using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions
+@using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions.Models
 @using ASSISTENTE.UI.Brokers.Implementations
 
 @inject IQuestionsBroker QuestionsBroker
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
 
 <PageTitle>Questions</PageTitle>
 
-<MudSimpleTable Dense="true" Hover="true" Bordered="@false" Striped="@false" Style="overflow-x: auto;">
-    <thead>
-    <tr>
-        @foreach (var h in _headings)
-        {
-            <th>@h</th>
-        }
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var row in _rows)
-    {
-        <tr>
-            @foreach (var x in row.Split())
-            {
-                <td>@x</td>
-            }
-        </tr>
-    }
-    </tbody>
-</MudSimpleTable>
+<MudTable Dense="true"
+          Items="@_questions"
+          Hover="true"
+          Breakpoint="Breakpoint.Sm"
+          Loading="_isLoading"
+          LoadingProgressColor="Color.Info">
 
+    <HeaderContent>
+        <MudTh>Question text</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Question text">@context.Text</MudTd>
+        <MudTd>
+            <MudButton Variant="Variant.Filled"
+                       StartIcon="@Icons.Material.Filled.Search"
+                       Color="Color.Info"
+                       Size="Size.Small"
+                       OnClick="() => Redirect(context.QuestionId)">
+                Details
+            </MudButton>
+        </MudTd>
+    </RowTemplate>
+
+</MudTable>
 
 @code {
-    readonly string[] _headings = ["ID", "Name", "Email", "Gender", "IP Address"];
 
-    readonly string[] _rows =
-    [
-        "1 Krishna kpartner0@usatoday.com Male 28.25.250.202"
-    ];
+    private List<QuestionDto> _questions = [];
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await QuestionsBroker.GetQuestionsAsync(GetQuestionsRequest.Create());
+
+        if (response.IsSuccess)
+        {
+            _questions = response.Content!.Questions;
+        }
+        else
+        {
+            Snackbar.Add("Error during loading questions to table...", Severity.Error);
+        }
+
+        _isLoading = false;
+    }
+
+    private void Redirect(Guid questionId) => NavigationManager.NavigateTo($"/questions/{questionId}");
+
 }
