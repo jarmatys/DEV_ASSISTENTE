@@ -1,6 +1,6 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Entities.Questions;
-using ASSISTENTE.Domain.Entities.Resources.Enums;
+using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Resources;

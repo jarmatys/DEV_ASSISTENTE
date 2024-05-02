@@ -1,5 +1,6 @@
 ﻿using ASSISTENTE.Application.Abstractions;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion;
+using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion.Models;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Language.Identifiers;
@@ -31,7 +32,19 @@ namespace ASSISTENTE.Application.Questions.Queries.GetQuestion
         {
             return await questionRepository.GetByIdAsync(query.QuestionId)
                 .ToResult(RepositoryErrors<Question>.NotFound.Build())
-                .Map(question => new GetQuestionResponse(question.Text));
+                .Map(question =>
+                {
+                    var resources = question
+                        .Resources
+                        .Select(r => new ResourceDto(r.Resource.Id, r.Resource.Content))
+                        .ToList();
+                    
+                    return new GetQuestionResponse(
+                        question.Text, 
+                        question.Answer!.Text, 
+                        question.Context!.Value, 
+                        resources);
+                });
         }
     }
 }

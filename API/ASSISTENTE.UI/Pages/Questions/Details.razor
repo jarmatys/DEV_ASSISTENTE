@@ -2,6 +2,7 @@
 
 @using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion
 @using ASSISTENTE.UI.Brokers.Implementations
+@using ASSISTENTE.UI.Components
 
 @inject IQuestionsBroker QuestionsBroker
 @inject ISnackbar Snackbar
@@ -10,7 +11,42 @@
 
 @if (_response is not null)
 {
-    <h1>@_response.Text</h1>
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" sm="12">
+            <h2 class="mb-2">Question <MudChip Color="Color.Success">@_response.Context</MudChip></h2>
+            @_response.Text
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" sm="12">
+            <h2 class="mb-2">Answer</h2>
+            <MarkdownArea Content="@_response.Answer"/>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" sm="12">
+            <h2 class="mb-2">Resources used</h2>
+            <MudSimpleTable Hover="true" Dense="true">
+                <thead>
+                <tr>
+                    <th>Identifier</th>
+                    <th>Content</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var resource in _response.Resources)
+                {
+                    <tr>
+                        <td>@resource.ResourceId</td>
+                        <td>@resource.Content</td>
+                    </tr>
+                }
+                </tbody>
+            </MudSimpleTable>
+        </MudItem>
+    </MudGrid>
 }
 
 @code {
@@ -18,11 +54,11 @@
     [Parameter] public Guid QuestionId { get; set; }
 
     private GetQuestionResponse? _response;
-    
+
     protected override async Task OnInitializedAsync()
     {
         var response = await QuestionsBroker.GetQuestionAsync(GetQuestionRequest.Create(QuestionId));
-    
+
         if (response.IsSuccess)
         {
             _response = response.Content;
@@ -32,5 +68,5 @@
             Snackbar.Add("Error during loading question details...", Severity.Error);
         }
     }
-    
+
 }

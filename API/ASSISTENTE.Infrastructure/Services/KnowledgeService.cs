@@ -1,12 +1,12 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Abstractions.ValueObjects;
 using ASSISTENTE.Domain.Entities.Resources;
-using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
+using ASSISTENTE.Language.Enums;
 
 namespace ASSISTENTE.Infrastructure.Services;
 

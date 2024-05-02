@@ -1,6 +1,4 @@
-using ASSISTENTE.Domain.Entities.Resources.Enums;
-
-namespace ASSISTENTE.Domain.Entities.Questions.Enums;
+namespace ASSISTENTE.Language.Enums;
 
 public enum QuestionContext
 {

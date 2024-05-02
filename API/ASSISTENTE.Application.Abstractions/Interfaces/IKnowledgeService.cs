@@ -1,5 +1,5 @@
 using ASSISTENTE.Application.Abstractions.ValueObjects;
-using ASSISTENTE.Domain.Entities.Resources.Enums;
+using ASSISTENTE.Language.Enums;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Application.Abstractions.Interfaces;

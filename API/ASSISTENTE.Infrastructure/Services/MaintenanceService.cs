@@ -1,6 +1,6 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Infrastructure.Qdrant;
+using ASSISTENTE.Language.Enums;
 
 namespace ASSISTENTE.Infrastructure.Services;
 

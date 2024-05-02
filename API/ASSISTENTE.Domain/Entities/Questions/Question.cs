@@ -1,9 +1,9 @@
 using ASSISTENTE.Domain.Commons;
 using ASSISTENTE.Domain.Entities.Answers;
-using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Domain.Entities.Questions.Events;
 using ASSISTENTE.Domain.Entities.Resources;
+using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Questions;

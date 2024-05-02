@@ -1,8 +1,6 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Domain.Entities.Questions;
-using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
-using ASSISTENTE.Domain.Entities.Resources.Enums;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
@@ -14,6 +12,7 @@ using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
+using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
 

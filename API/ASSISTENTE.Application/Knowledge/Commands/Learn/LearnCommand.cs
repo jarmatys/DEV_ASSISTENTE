@@ -1,5 +1,5 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Domain.Entities.Resources.Enums;
+using ASSISTENTE.Language.Enums;
 using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
