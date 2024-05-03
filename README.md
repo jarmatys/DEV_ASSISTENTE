@@ -50,8 +50,8 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ Add UI in Blazor
     - ✅ Upload sample notes and code from `DEV_ASSISTENTE` repository for demo purpose
     - ✅ Generating answers asynchronously (RabbitMQ + SignalR)
-    - 🔳 Display resources list
-    - 🔳 Display asked questions with answers list
+    - ✅ Display resources list
+    - ✅ Display asked questions with answers list
 - 🔳 Configure VPS to host all environment
 
 #### Nice to have

@@ -10,7 +10,7 @@ public interface IQuestionsBroker
 {
     Task<HttpResult> CreateQuestionAsync(CreateQuestionRequest request);
     Task<HttpResult<GetQuestionsResponse>> GetQuestionsAsync(GetQuestionsRequest request);
-    Task<HttpResult<GetQuestionResponse>> GetQuestionAsync(GetQuestionRequest questionId);
+    Task<HttpResult<GetQuestionResponse>> GetQuestionAsync(GetQuestionRequest request);
 }
 
 public sealed class QuestionsBroker(HttpClient httpClient) : BrokerBase(httpClient, "api/questions"), IQuestionsBroker

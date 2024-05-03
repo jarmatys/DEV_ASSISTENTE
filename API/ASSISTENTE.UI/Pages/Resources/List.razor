@@ -1,0 +1,66 @@
+﻿@page "/resources"
+
+@using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GetResources
+@using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GetResources.Models
+@using ASSISTENTE.UI.Brokers.Implementations
+
+@inject IResourcesBroker ResourcesBroker
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+
+<PageTitle>Questions</PageTitle>
+
+<MudTable Dense="true"
+          Items="@_resources"
+          Hover="true"
+          Breakpoint="Breakpoint.Sm"
+          Loading="_isLoading"
+          LoadingProgressColor="Color.Info">
+
+    <HeaderContent>
+        <MudTh>Title</MudTh>
+        <MudTh>Type</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Type">
+            <MudChip Size="Size.Small" Color="Color.Success">@context.Type</MudChip>
+        </MudTd>
+        <MudTd>
+            <MudButton Variant="Variant.Filled"
+                       StartIcon="@Icons.Material.Filled.Search"
+                       Color="Color.Info"
+                       Size="Size.Small"
+                       OnClick="() => Redirect(context.ResourceId)">
+                Details
+            </MudButton>
+        </MudTd>
+    </RowTemplate>
+
+</MudTable>
+
+@code {
+
+    private List<ResourceDto> _resources = [];
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await ResourcesBroker.GetResourcesAsync(GetResourcesRequest.Create());
+
+        if (response.IsSuccess)
+        {
+            _resources = response.Content!.Resources;
+        }
+        else
+        {
+            Snackbar.Add("Error during loading resources to table...", Severity.Error);
+        }
+
+        _isLoading = false;
+    }
+
+    private void Redirect(Guid resourceId) => NavigationManager.NavigateTo($"/resources/{resourceId}");
+
+}

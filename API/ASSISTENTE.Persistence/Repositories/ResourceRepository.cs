@@ -26,6 +26,7 @@ internal sealed class ResourceRepository(IAssistenteDbContext context)
     protected override IQueryable<Resource> Get()
     {
         return _context.Resources
-            .Include(x => x.Questions);
+            .Include(x => x.Questions)
+            .ThenInclude(x => x.Question);
     }
 }

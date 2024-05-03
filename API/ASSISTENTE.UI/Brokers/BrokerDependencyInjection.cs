@@ -8,6 +8,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IAnswersBroker, AnswersBroker>();
         services.AddScoped<IQuestionsBroker, QuestionsBroker>();
+        services.AddScoped<IResourcesBroker, ResourcesBroker>();
 
         return services;
     }

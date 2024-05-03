@@ -1,37 +1,37 @@
-﻿@page "/questions/{QuestionId:guid}"
+﻿@page "/resources/{ResourceId:guid}"
 
-@using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion
+@using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GetResource
 @using ASSISTENTE.UI.Brokers.Implementations
 @using ASSISTENTE.UI.Components
 
-@inject IQuestionsBroker QuestionsBroker
+@inject IResourcesBroker ResourcesBroker
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 
-<PageTitle>Question details</PageTitle>
+<PageTitle>Resource details</PageTitle>
 
 @if (_response is not null)
 {
     <MudGrid Class="mb-3">
         <MudItem xs="12" sm="12">
             <h2 class="mb-2">
-                Question
-                <MudChip Size="Size.Small" Color="Color.Success">@_response.Context</MudChip>
+                Resource
+                <MudChip Size="Size.Small" Color="Color.Success">@_response.Type</MudChip>
             </h2>
-            @_response.Text
+            @_response.Title
         </MudItem>
     </MudGrid>
 
     <MudGrid Class="mb-3">
         <MudItem xs="12" sm="12">
-            <h2 class="mb-2">Answer</h2>
-            <MarkdownArea Content="@_response.Answer"/>
+            <h2 class="mb-2">Content</h2>
+            <MarkdownArea Content="@_response.Content"/>
         </MudItem>
     </MudGrid>
 
     <MudGrid Class="mb-3">
         <MudItem xs="12" sm="12">
-            <h2 class="mb-2">Resources used</h2>
+            <h2 class="mb-2">Used in questions:</h2>
             <MudSimpleTable Hover="true" Dense="true">
                 <thead>
                 <tr>
@@ -40,19 +40,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if (_response.Resources.Any())
+                @if (_response.Questions.Any())
                 {
-                    foreach (var resource in _response.Resources)
+                    foreach (var question in _response.Questions)
                     {
                         <tr>
-                            <td>@resource.Title</td>
+                            <td>@question.Text</td>
                             <td>
                                 <MudButton Variant="Variant.Filled"
                                            StartIcon="@Icons.Material.Filled.Search"
                                            Color="Color.Info"
                                            Size="Size.Small"
-                                           OnClick="() => Redirect(resource.ResourceId)">
-                                    Resource
+                                           OnClick="() => Redirect(question.QuestionId)">
+                                    Question
                                 </MudButton>
                             </td>
                         </tr>
@@ -61,7 +61,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="2">No resources found...</td>
+                        <td colspan="2">No questions found...</td>
                     </tr>
                 }
                 </tbody>
@@ -72,13 +72,13 @@
 
 @code {
 
-    [Parameter] public Guid QuestionId { get; set; }
+    [Parameter] public Guid ResourceId { get; set; }
 
-    private GetQuestionResponse? _response;
+    private GetResourceResponse? _response;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await QuestionsBroker.GetQuestionAsync(GetQuestionRequest.Create(QuestionId));
+        var response = await ResourcesBroker.GetResourceAsync(GetResourceRequest.Create(ResourceId));
 
         if (response.IsSuccess)
         {
@@ -86,10 +86,9 @@
         }
         else
         {
-            Snackbar.Add("Error during loading question details...", Severity.Error);
+            Snackbar.Add("Error during loading resource details...", Severity.Error);
         }
     }
 
-    private void Redirect(Guid resourceId) => NavigationManager.NavigateTo($"/resources/{resourceId}");
-
+    private void Redirect(Guid questionId) => NavigationManager.NavigateTo($"/questions/{questionId}");
 }

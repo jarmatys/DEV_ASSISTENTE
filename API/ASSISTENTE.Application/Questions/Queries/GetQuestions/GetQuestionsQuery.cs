@@ -21,6 +21,7 @@ namespace ASSISTENTE.Application.Questions.Queries.GetQuestions
     {
         public async Task<Result<GetQuestionsResponse>> Handle(GetQuestionsQuery query, CancellationToken cancellationToken)
         {
+            // TODO: Implement pagination
             return await questionRepository.GetAllAsync()
                 .ToResult(RepositoryErrors<Question>.NotFound.Build())
                 .Map(questions => questions.Select(q => new QuestionDto(q.Id, q.Text)).ToList())

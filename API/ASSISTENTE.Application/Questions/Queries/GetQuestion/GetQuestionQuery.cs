@@ -36,7 +36,7 @@ namespace ASSISTENTE.Application.Questions.Queries.GetQuestion
                 {
                     var resources = question
                         .Resources
-                        .Select(r => new ResourceDto(r.Resource.Id, r.Resource.Content))
+                        .Select(r => new ResourceDto(r.Resource.Id, r.Resource.Title))
                         .ToList();
                     
                     return new GetQuestionResponse(
