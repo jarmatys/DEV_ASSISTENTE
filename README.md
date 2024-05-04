@@ -60,20 +60,63 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 #### Common tasks
 
-- 🔳 Prepare video explainer with simply demo
-- 🔳 Prepare `configuration` section in `Readme`
+- ✅ Prepare `configuration` section in `Readme`
 - 🔳 Prepare `quick start` section in `Readme`
-
----
-
-### `WIP` Configuration
-
-TBD
+- 🔳 Prepare video explainer with simply demo
 
 ---
 
 ### `WIP` Quick start
 
 TBD
+
+---
+### Configuration
+
+Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
+
+```json
+{
+  "ConnectionStrings": {
+    "AssistenteDatabase": "<DATABASE_CONNECTION_STRING>"
+  },
+  "OpenAI": {
+    "ApiKey": "<API_KEY>"
+  },
+  "Qdrant": {
+    "Host": "localhost"
+  },
+  "Rabbit": {
+    "Name": "ASSISTENTE.Worker.Sync",
+    "Url": "amqp://guest:guest@localhost:5672"
+  },
+  "InternalApi": {
+    "Url": "http://localhost:5249"
+  },
+  "KnowledgePaths": {
+    "MarkdownNotes": "<PATH_TO_MARKDOWN_NOTES_ROOT>",
+    "Repositories": "<PATH_TO_REPOSITORY_ROOT>"
+  },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithProcessId", "WithThreadId" ],
+    "WriteTo": [
+      { "Name": "Console" },
+      {
+        "Name": "Seq",
+        "Args": {
+          "serverUrl": "http://localhost:5341"
+        }
+      }
+    ]
+  }
+}
+```
 
 ---
