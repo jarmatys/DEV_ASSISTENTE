@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  assistente-db-upgrade:
+    container_name: assistente-db-upgrade
+    build:
+      args:
+        - ASSEMBLY_NAME=ASSISTENTE.DB.Upgrade
+        - PROJECT_PATH=ASSISTENTE.DB.Upgrade
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__AssistenteDatabase=Server=localhost,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;
+    networks:
+      - localhost-network
+
+networks:
+  localhost-network:
+    external: true

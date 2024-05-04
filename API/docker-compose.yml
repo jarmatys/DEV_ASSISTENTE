@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+  assistente-ui:
+    container_name: assistente-ui
+    restart: unless-stopped
+    build:
+      args:
+        - ASSEMBLY_NAME=ASSISTENTE.UI
+        - PROJECT_PATH=ASSISTENTE.UI
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - server_data:/app/TOKENS
+      - /c/temp-keys:/root/.aspnet/DataProtection-Keys
+    ports:
+      - 1000:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - localhost-network
+  
+  assistente-api:
+    container_name: assistente-api
+    restart: unless-stopped
+    build:
+      args:
+        - ASSEMBLY_NAME=ASSISTENTE.API
+        - PROJECT_PATH=ASSISTENTE.API
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1001:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__AssistenteDatabase=Server=localhost,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;
+    networks:
+      - localhost-network
+
+  assistente-worker-sync:
+    container_name: assistente-worker-sync
+    restart: unless-stopped
+    build:
+      args:
+        - ASSEMBLY_NAME=ASSISTENTE.Worker.Sync
+        - PROJECT_PATH=ASSISTENTE.Worker.Sync
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1002:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__AssistenteDatabase=Server=localhost,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;
+    networks:
+      - localhost-network
+networks:
+  localhost-network:
+    external: true
+
+volumes:
+  server_data:
