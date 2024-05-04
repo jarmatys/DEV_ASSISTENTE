@@ -61,15 +61,31 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 #### Common tasks
 
 - ✅ Prepare `configuration` section in `Readme`
-- 🔳 Prepare `quick start` section in `Readme`
+- ✅ Prepare `quick start` section in `Readme`
 - 🔳 Prepare video explainer with simply demo
 
 ---
 
-### `WIP` Quick start
+### Quick start
 
-TBD
+Prerequisites: `.NET 8` + `Docker` 
 
+1. Run services on your local machine:
+    - `REQUIRED` Messages broker: `RabbitMq` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.rabbit.yml)
+    - `REQUIRED` Vector database: `Qdrant` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.qdrant.yml)
+    - `OPTIONAL` Logs and traces: `Seq` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.seq.yml)
+2. Setup MSSQL database - can be hosted in docker - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.mssql.yml)
+
+3. Fill out the settings file (`appsettings.json`) from [CONFIGURATION](###Configuration) section
+
+4. Run `upgrade-database.ps1` script to create/migrate database - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/upgrade-database.ps1)
+
+5. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json`.
+
+6. Voila! Currently you can start application from Rider/Visual Studio, required applications to run:
+    - `ASSISTENTE.Worker.Sync`
+    - `ASSISTENTE.API`
+    - `ASSISTENTE.UI`
 ---
 ### Configuration
 
@@ -94,8 +110,8 @@ Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/
     "Url": "http://localhost:5249"
   },
   "KnowledgePaths": {
-    "MarkdownNotes": "<PATH_TO_MARKDOWN_NOTES_ROOT>",
-    "Repositories": "<PATH_TO_REPOSITORY_ROOT>"
+    "MarkdownNotes": "<ROOT_PATH_TO_MARKDOWN_NOTES>",
+    "Repositories": "<ROOT_PATH_TO_REPOSITORY>"
   },
   "Serilog": {
     "MinimumLevel": {
