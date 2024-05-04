@@ -76,11 +76,11 @@ Prerequisites: `.NET 8` + `Docker`
     - `OPTIONAL` Logs and traces: `Seq` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.seq.yml)
 2. Setup MSSQL database - can be hosted in docker - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.mssql.yml)
 
-3. Fill out the settings file (`appsettings.json`) from [CONFIGURATION](###Configuration) section
+3. Fill out the settings file (`appsettings.json`) from [CONFIGURATION](#Configuration) section
 
 4. Run `upgrade-database.ps1` script to create/migrate database - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/upgrade-database.ps1)
 
-5. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json`.
+5. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json` (node: `KnowledgePaths`).
 
 6. Voila! Currently you can start application from Rider/Visual Studio, required applications to run:
     - `ASSISTENTE.Worker.Sync`
