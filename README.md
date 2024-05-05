@@ -82,14 +82,16 @@ Prerequisites: `.NET 8` + `Docker`
 
 5. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json` (node: `KnowledgePaths`).
 
-6. Voila! Currently you can start application from Rider/Visual Studio, required applications to run:
+6. Voila! Currently you can start application:
+  - From Rider/Visual Studio, required applications to run:
     - `ASSISTENTE.Worker.Sync`
     - `ASSISTENTE.API`
     - `ASSISTENTE.UI`
+  - In docker - run `start-local-enviroment.ps1` script
 ---
 ### Configuration
 
-Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
+1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
 
 ```json
 {
@@ -135,4 +137,17 @@ Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/
 }
 ```
 
+2. Fill out the `.env` file - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/.env)
+
+```
+COMPOSE_PROJECT_NAME=assistente
+
+ConnectionStrings_AssistenteDatabase=<DATABASE_CONNECTION_STRING>
+OpenAI_ApiKey=<API_KEY>
+Qdrant_Host='localhost'
+Rabbit_Name='ASSISTENTE.Worker.Sync'
+Rabbit_Url='amqp://guest:guest@rabbitmq:5672'
+InternalApi_Url='http://assistente-api:8080'
+KnowledgePaths_MarkdownNotes=<ROOT_PATH_TO_MARKDOWN_NOTES>
+KnowledgePaths_Repositories=<ROOT_PATH_TO_REPOSITORY>
 ---

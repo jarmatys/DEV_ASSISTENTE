@@ -19,6 +19,7 @@ ENV RUN_ASSEMBLY_FILENAME="${ASSEMBLY_NAME}.dll"
 
 WORKDIR /app
 COPY --from=build /app/publish .
+COPY appsettings.json /app 
 
 EXPOSE 80
 EXPOSE 443

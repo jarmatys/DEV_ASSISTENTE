@@ -8,21 +8,14 @@ internal static class CommonExtensions
 
         return builder;
     }
-    
+
     internal static WebApplication UseCommon(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
+        app.UseReDoc(c =>
         {
-            app.UseReDoc(c =>
-            {
-                c.SpecUrl = "/swagger/v1/swagger.json";
-                c.RoutePrefix = "redoc";
-            }); 
-        }
-        else
-        {
-            app.UseHttpsRedirection();
-        }
+            c.SpecUrl = "/swagger/v1/swagger.json";
+            c.RoutePrefix = "redoc";
+        });
 
         return app;
     }
