@@ -2,17 +2,16 @@ using ASSISTENTE.API.Hubs;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using FastEndpoints;
 using Microsoft.AspNetCore.SignalR;
+using YamlDotNet.Core.Tokens;
 
 namespace ASSISTENTE.API.Endpoints.Questions;
 
-public sealed class PutQuestionProgressEndpoint(IHubContext<QuestionHub, IQuestionHub> hubContext) : Endpoint<UpdateQuestionProgressRequest> 
+public sealed class PutQuestionProgressEndpoint(IHubContext<QuestionHub, IQuestionHub> hubContext) 
+    : Endpoint<UpdateQuestionProgressRequest> 
 {
     public override void Configure()
     {
         Put("questions/progress");
-        
-        // TODO: add request validation
-        // Validator<MyValidator>();
     }
 
     public override async Task HandleAsync(UpdateQuestionProgressRequest req, CancellationToken ct)

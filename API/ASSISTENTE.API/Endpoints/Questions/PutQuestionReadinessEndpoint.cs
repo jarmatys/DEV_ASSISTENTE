@@ -5,14 +5,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace ASSISTENTE.API.Endpoints.Questions;
 
-public sealed class PutQuestionReadinessEndpoint(IHubContext<QuestionHub, IQuestionHub> hubContext) : Endpoint<NotifyQuestionReadinessRequest> 
+public sealed class PutQuestionReadinessEndpoint(IHubContext<QuestionHub, IQuestionHub> hubContext) 
+    : Endpoint<NotifyQuestionReadinessRequest> 
 {
     public override void Configure()
     {
         Put("questions/readiness");
-                
-        // TODO: add request validation
-        // Validator<MyValidator>();
     }
 
     public override async Task HandleAsync(NotifyQuestionReadinessRequest req, CancellationToken ct)

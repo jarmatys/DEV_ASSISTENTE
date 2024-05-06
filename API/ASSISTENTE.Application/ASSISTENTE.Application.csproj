@@ -8,12 +8,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Application.Abstractions\ASSISTENTE.Application.Abstractions.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Application.Middlewares\ASSISTENTE.Application.Middlewares.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="12.2.0"/>
         <PackageReference Include="FluentValidation" Version="11.9.0"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0"/>
-        <PackageReference Include="MediatR" Version="12.2.0"/>
     </ItemGroup>
-
+    
 </Project>

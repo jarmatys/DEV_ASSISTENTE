@@ -1,6 +1,6 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Application.Knowledge.Commands.Learn;
-using ASSISTENTE.Application.Maintenance.Commands.Reset;
+using ASSISTENTE.Application.Handlers.Knowledge.Commands;
+using ASSISTENTE.Application.Handlers.Maintenance.Commands;
 using ASSISTENTE.Common.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;

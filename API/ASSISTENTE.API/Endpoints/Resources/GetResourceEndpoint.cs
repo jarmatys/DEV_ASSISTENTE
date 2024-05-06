@@ -1,4 +1,4 @@
-using ASSISTENTE.Application.Knowledge.Queries.GetResource;
+using ASSISTENTE.Application.Handlers.Knowledge.Queries;
 using ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GetResource;
 using MediatR;
 

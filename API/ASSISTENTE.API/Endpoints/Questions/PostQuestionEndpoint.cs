@@ -1,4 +1,4 @@
-using ASSISTENTE.Application.Questions.Commands.CreateQuestion;
+using ASSISTENTE.Application.Handlers.Questions.Commands;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion;
 using MediatR;
 

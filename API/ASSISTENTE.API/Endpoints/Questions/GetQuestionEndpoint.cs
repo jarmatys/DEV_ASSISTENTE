@@ -1,4 +1,4 @@
-using ASSISTENTE.Application.Questions.Queries.GetQuestion;
+using ASSISTENTE.Application.Handlers.Questions.Queries;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion;
 using MediatR;
 
@@ -11,6 +11,7 @@ public sealed class GetQuestionEndpoint(ISender mediator)
     {
         Get("questions/{@Id}", x => new { Id = x.QuestionId });
         SetupSwagger();
+        
         Summary(x =>
         {
             x.RequestParam(r => r.QuestionId, "Question identifier");
