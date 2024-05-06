@@ -9,8 +9,7 @@ public sealed class PostQuestionCommandEndpoint(ISender mediator)
 {
     public override void Configure()
     {
-        Post("/api/questions");
-        AllowAnonymous();
+        Post("questions");
         SetupSwagger();
     }
 

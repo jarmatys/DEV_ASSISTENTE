@@ -9,8 +9,7 @@ public sealed class GetAnswerEndpoint(ISender mediator)
 {
     public override void Configure()
     {
-        Get("/api/answers/{@Id}", x => new { Id = x.QuestionId });
-        AllowAnonymous();
+        Get("answers/{@Id}", x => new { Id = x.QuestionId });
         SetupSwagger();
     }
 

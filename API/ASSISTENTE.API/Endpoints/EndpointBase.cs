@@ -17,10 +17,13 @@ public abstract class QueryEndpointBase<TReqest, TResponse, TMediatRequest>(ISen
 {
     protected void SetupSwagger()
     {
+        var name = GetType().Name;
+        
         Description(configuration =>
         {
             configuration
-                //.WithName("Get by identifier")
+                .WithName(name)
+                .Accepts<TReqest>()
                 .Produces<TResponse>(200, "application/json")
                 .Produces<ErrorResponse>(400)
                 .Produces<InternalErrorResponse>(500);
@@ -53,8 +56,10 @@ public abstract class CommandEndpointBase<TReqest, TMediatRequest>(ISender media
 {
     protected void SetupSwagger()
     {
+        var name = GetType().Name;
+
         Description(b => b
-            //.WithName("Get by identifier")
+            .WithName(name)
             .Accepts<TReqest>("application/json")
             .Produces(200)
             .Produces<ErrorResponse>(400)

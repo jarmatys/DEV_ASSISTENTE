@@ -9,8 +9,7 @@ public sealed class PutQuestionReadinessEndpoint(IHubContext<QuestionHub, IQuest
 {
     public override void Configure()
     {
-        Put("/api/questions/readiness");
-        AllowAnonymous();
+        Put("questions/readiness");
                 
         // TODO: add request validation
         // Validator<MyValidator>();

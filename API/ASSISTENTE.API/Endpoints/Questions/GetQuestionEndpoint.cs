@@ -9,9 +9,12 @@ public sealed class GetQuestionEndpoint(ISender mediator)
 {
     public override void Configure()
     {
-        Get("/api/questions/{@Id}", x => new { Id = x.QuestionId });
-        AllowAnonymous();
+        Get("questions/{@Id}", x => new { Id = x.QuestionId });
         SetupSwagger();
+        Summary(x =>
+        {
+            x.RequestParam(r => r.QuestionId, "Question identifier");
+        });
     }
     
     protected override GetQuestionQuery MediatRequest(GetQuestionRequest req)

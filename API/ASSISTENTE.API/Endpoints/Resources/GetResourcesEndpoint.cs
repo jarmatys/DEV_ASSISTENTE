@@ -9,8 +9,7 @@ public sealed class GetResourcesEndpoint(ISender mediator)
 {
     public override void Configure()
     {
-        Get("/api/resources");
-        AllowAnonymous();
+        Get("resources");
         SetupSwagger();
     }
 

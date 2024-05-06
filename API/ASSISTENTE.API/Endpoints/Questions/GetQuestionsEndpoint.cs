@@ -9,8 +9,7 @@ public sealed class GetQuestionsEndpoint(ISender mediator)
 {
     public override void Configure()
     {
-        Get("/api/questions");
-        AllowAnonymous();
+        Get("questions");
         SetupSwagger();
     }
 

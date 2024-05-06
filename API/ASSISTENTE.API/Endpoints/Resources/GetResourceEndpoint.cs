@@ -9,9 +9,13 @@ public sealed class GetResourceEndpoint(ISender mediator)
 {
     public override void Configure()
     {
-        Get("/api/resources/{@Id}", x => new { Id = x.ResourceId });
-        AllowAnonymous();
+        Get("resources/{@Id}", x => new { Id = x.ResourceId });
         SetupSwagger();
+        
+        Summary(x =>
+        {
+            x.RequestParam(r => r.ResourceId, "Resource identifier");
+        });
     }
     
     protected override GetResourceQuery MediatRequest(GetResourceRequest req)

@@ -9,8 +9,7 @@ public sealed class PutQuestionProgressEndpoint(IHubContext<QuestionHub, IQuesti
 {
     public override void Configure()
     {
-        Put("/api/questions/progress");
-        AllowAnonymous();
+        Put("questions/progress");
         
         // TODO: add request validation
         // Validator<MyValidator>();
