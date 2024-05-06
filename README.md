@@ -27,8 +27,9 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 **Phases:**
 
 - ✅ I phase (POC) - console app for test purpose `Playground`: [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/tree/master/API/ASSISTENTE.Playground)
-- 🔳 II phase - UI in Blazor + publish application on VPS
-- 🔳 III phase - Improving prompts and logic to generate the most accurate answers
+- ✅ II phase - UI in Blazor 
+- 🔳 III phase - Improve prompts and logic to generate the most accurate answers
+- 🔳 IV phase - Create auth logic (with requests limitation) + publish application on VPS
 
 #### Loading user data
 
