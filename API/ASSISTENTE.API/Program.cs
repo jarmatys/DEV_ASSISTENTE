@@ -18,8 +18,6 @@ builder.AddModules(configuration);
 builder.Services.AddRabbitPublisher(configuration);
 builder.Services.AddSignalR();
 
-// TODO: Add exception handler middleware
-
 var app = builder.Build();
 
 app.UseCommon();

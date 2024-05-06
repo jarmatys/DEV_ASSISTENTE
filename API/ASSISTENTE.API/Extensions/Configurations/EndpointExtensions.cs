@@ -36,7 +36,8 @@ internal static class EndpointExtensions
                     endpointDefinition.AllowAnonymous();
                 };
             })
-            .UseSwaggerGen();
+            .UseSwaggerGen()
+            .UseDefaultExceptionHandler();
 
         return app;
     }
