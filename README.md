@@ -8,7 +8,7 @@
 
 ---
 
-![banner](assets/banner.png)
+![banner](https://raw.githubusercontent.com/jarmatys/DEV_ASSISTENTE/master/ASSETS/banner.png)
 
 ---
 
@@ -18,7 +18,7 @@ Introducing `assistente.dev` – your ultimate assistant for developers. It's yo
 
 Simply paste your query and watch as `assistente.dev` draws from your notes, bookmarks, and code bases to provide the perfect solution. With `assistente.dev`, say goodbye to wasted time and hello to seamless development. Get started and unlock your productivity potential! 🚀
 
-![assistente-preview](assets/assistente-preview.gif)
+![assistente-preview](https://raw.githubusercontent.com/jarmatys/DEV_ASSISTENTE/master/ASSETS/assistente-preview.gif)
 
 ---
 
