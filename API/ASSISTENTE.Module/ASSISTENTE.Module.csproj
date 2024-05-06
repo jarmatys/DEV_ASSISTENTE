@@ -14,7 +14,8 @@
         <Title>$(AssemblyName)</Title>
         <Authors>Jarosław Armatys</Authors>
         <Copyright>Copyright (c) 2024 $(Authors)</Copyright>
-        <Description>A</Description>
+        <Description>ASSISTENTE.DEV - Your Coding Companion</Description>
+        <PackageIcon>logo.png</PackageIcon>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <IncludeSymbols>true</IncludeSymbols>
         <PackageId>$(AssemblyName)</PackageId>
@@ -29,6 +30,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Include="..\..\ASSETS\logo.png" Pack="true" PackagePath="\"/>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
         <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
     </ItemGroup>
