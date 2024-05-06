@@ -8,7 +8,7 @@
 
 ---
 
-![banner](.github/workflows/assets/banner.png)
+![banner](assets/banner.png)
 
 ---
 
@@ -18,7 +18,7 @@ Introducing `assistente.dev` – your ultimate assistant for developers. It's yo
 
 Simply paste your query and watch as `assistente.dev` draws from your notes, bookmarks, and code bases to provide the perfect solution. With `assistente.dev`, say goodbye to wasted time and hello to seamless development. Get started and unlock your productivity potential! 🚀
 
-![assistente-preview](.github/workflows/assets/assistente-preview.gif)
+![assistente-preview](assets/assistente-preview.gif)
 
 ---
 
@@ -144,12 +144,11 @@ Prerequisites: `.NET 8` + `Docker`
 ```
 COMPOSE_PROJECT_NAME=assistente
 
-ConnectionStrings_AssistenteDatabase=<DATABASE_CONNECTION_STRING>
-OpenAI_ApiKey=<API_KEY>
+ConnectionStrings_AssistenteDatabase='<DATABASE_CONNECTION_STRING>'
+OpenAI_ApiKey='<API_KEY>'
 Qdrant_Host='localhost'
 Rabbit_Name='ASSISTENTE.Worker.Sync'
 Rabbit_Url='amqp://guest:guest@rabbitmq:5672'
 InternalApi_Url='http://assistente-api:8080'
 KnowledgePaths_MarkdownNotes=<ROOT_PATH_TO_MARKDOWN_NOTES>
 KnowledgePaths_Repositories=<ROOT_PATH_TO_REPOSITORY>
----
