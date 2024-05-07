@@ -6,7 +6,6 @@ using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
-using ASSISTENTE.Persistence.MSSQL.Converters;
 using ASSISTENTE.Persistence.MSSQL.Converters.Identifiers;
 using ASSISTENTE.Persistence.MSSQL.Extensions;
 using ASSISTENTE.Persistence.MSSQL.Seeds;

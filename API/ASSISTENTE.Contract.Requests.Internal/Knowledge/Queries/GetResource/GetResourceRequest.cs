@@ -6,8 +6,8 @@ namespace ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GetResource;
 
 public sealed class GetResourceRequest : GetRequestBase
 {
-    [Required] public required Guid ResourceId { get; set; } // TODO: Implement endpoint binder to use strongy typed identifiers
-    
+    [Required] public required ResourceId ResourceId { get; set; }
+
     public static GetResourceRequest Create(ResourceId resourceId)
     {
         return new GetResourceRequest

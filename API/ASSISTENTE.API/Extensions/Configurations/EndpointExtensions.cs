@@ -1,3 +1,5 @@
+using ASSISTENTE.API.Parsers;
+using ASSISTENTE.Language.Identifiers;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 
@@ -28,6 +30,8 @@ internal static class EndpointExtensions
         app
             .UseFastEndpoints(c =>
             {
+                c.RegisterIdentifierParsers();
+
                 c.Endpoints.RoutePrefix = "api";
                 c.Endpoints.ShortNames = true;
 
@@ -40,5 +44,13 @@ internal static class EndpointExtensions
             .UseDefaultExceptionHandler();
 
         return app;
+    }
+
+    private static void RegisterIdentifierParsers(this Config c)
+    {
+        c.Binding.ValueParserFor<QuestionId>(IdentifierParsers.GuidParser<QuestionId>);
+        c.Binding.ValueParserFor<ResourceId>(IdentifierParsers.GuidParser<ResourceId>);
+        c.Binding.ValueParserFor<AnswerId>(IdentifierParsers.NumberParser<AnswerId>);
+        c.Binding.ValueParserFor<QuestionResourceId>(IdentifierParsers.NumberParser<QuestionResourceId>);
     }
 }

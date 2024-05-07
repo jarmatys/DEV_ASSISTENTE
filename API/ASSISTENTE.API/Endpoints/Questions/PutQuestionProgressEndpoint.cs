@@ -2,7 +2,6 @@ using ASSISTENTE.API.Hubs;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using FastEndpoints;
 using Microsoft.AspNetCore.SignalR;
-using YamlDotNet.Core.Tokens;
 
 namespace ASSISTENTE.API.Endpoints.Questions;
 
