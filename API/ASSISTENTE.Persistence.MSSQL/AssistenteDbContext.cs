@@ -63,18 +63,13 @@ namespace ASSISTENTE.Persistence.MSSQL
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
-            configurationBuilder
-                .Properties<ResourceType>()
-                .HaveConversion<ResourceTypeConverter>();
+            configurationBuilder.ConfigureEnum<ResourceType>();
+            configurationBuilder.ConfigureEnum<QuestionContext>();
             
-            configurationBuilder
-                .Properties<QuestionContext>()
-                .HaveConversion<QuestionContextConverter>();
-            
-            configurationBuilder.ConfigureIdentifier<ResourceId, ResourceIdConverter, Guid>();
-            configurationBuilder.ConfigureIdentifier<QuestionId, QuestionIdConverter, Guid>();
-            configurationBuilder.ConfigureIdentifier<AnswerId, AnswerIdConverter, int>();
-            configurationBuilder.ConfigureIdentifier<QuestionResourceId, QuestionResourceIdConverter, int>();
+            configurationBuilder.ConfigureGuidIdentifier<ResourceId, ResourceIdConverter>();
+            configurationBuilder.ConfigureGuidIdentifier<QuestionId, QuestionIdConverter>();
+            configurationBuilder.ConfigureNumberIdentifier<AnswerId, AnswerIdConverter>();
+            configurationBuilder.ConfigureNumberIdentifier<QuestionResourceId, QuestionResourceIdConverter>();
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

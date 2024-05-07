@@ -22,9 +22,18 @@ internal static class IdentifiersExtensions
         }
     }
     
-    public static void ConfigureIdentifier<TIdentifier, TConverter, TType>(this ModelConfigurationBuilder configurationBuilder)
+    public static void ConfigureGuidIdentifier<TIdentifier, TConverter>(this ModelConfigurationBuilder configurationBuilder)
         where TIdentifier : IIdentifier
-        where TConverter : ValueConverter<TIdentifier, TType>
+        where TConverter : ValueConverter<TIdentifier, Guid>
+    {
+        configurationBuilder
+            .Properties<TIdentifier>()
+            .HaveConversion<TConverter>();
+    }
+    
+    public static void ConfigureNumberIdentifier<TIdentifier, TConverter>(this ModelConfigurationBuilder configurationBuilder)
+        where TIdentifier : IIdentifier
+        where TConverter : ValueConverter<TIdentifier, int>
     {
         configurationBuilder
             .Properties<TIdentifier>()

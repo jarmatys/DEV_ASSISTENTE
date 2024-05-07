@@ -1,11 +1,16 @@
 @ASSISTENTE.API_HostAddress = http://localhost:5249
 
-POST {{ASSISTENTE.API_HostAddress}}/api/answer/
+POST {{ASSISTENTE.API_HostAddress}}/api/questions/
 Content-Type: application/json
 Accept: application/json
 
 {
-  "question": "How to configure VPS?"
+  "question": "How to configure VPS?",
+  "connectionId": "XD-1234"
 }
+
+###
+
+GET {{ASSISTENTE.API_HostAddress}}/api/questions/5b6cef00-dfc5-4c9b-958e-04526ae22e6c
 
 ###
