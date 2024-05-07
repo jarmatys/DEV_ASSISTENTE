@@ -35,14 +35,14 @@
         </MudTd>
     </RowTemplate>
     <PagerContent>
-        @* TODO: Get total count from API *@
-        <MudPagination SelectedChanged="PageChanged" Count="20" Class="pa-4"/>
+        <MudPagination SelectedChanged="PageChanged" Count="@_pages" Class="pa-4"/>
     </PagerContent>
     
 </MudTable>
 
 @code {
 
+    private int _pages = 0;
     private const int Elements = 10;
 
     private List<QuestionDto> _questions = [];
@@ -50,7 +50,24 @@
     
     protected override async Task OnInitializedAsync()
     {
+        await SetPagesCount();
         await GetRecords(page: 1);
+    }
+    
+    private async Task SetPagesCount()
+    {
+        var response = await QuestionsBroker.GetQuestionsCountAsync();
+
+        if (response.IsSuccess)
+        {
+            var count = response.Content!.Count;
+
+            _pages = count / Elements + 1;
+        }
+        else
+        {
+            Snackbar.Add("Error during loading records count...", Severity.Error);
+        }
     }
 
     private async Task GetRecords(int page)

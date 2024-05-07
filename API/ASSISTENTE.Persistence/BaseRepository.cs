@@ -54,5 +54,10 @@ internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContex
             .ToListAsync();
     }
 
+    public async Task<Result<int>> CountAsync()
+    {
+        return await Get().AsNoTracking().CountAsync();
+    }
+
     protected abstract IQueryable<TEntity> Get();
 }

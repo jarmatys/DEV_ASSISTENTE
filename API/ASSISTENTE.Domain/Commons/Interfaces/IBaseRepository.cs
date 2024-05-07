@@ -12,4 +12,5 @@ public interface IBaseRepository<TEntity, in TIdentifier>
     Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id);
     Task<Maybe<IEnumerable<TEntity>>> GetAllAsync();
     Task<Maybe<IEnumerable<TEntity>>> PaginateAsync(int page, int elements);
+    Task<Result<int>> CountAsync();
 }

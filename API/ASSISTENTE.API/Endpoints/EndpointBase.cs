@@ -50,6 +50,44 @@ public abstract class QueryEndpointBase<TReqest, TResponse, TMediatRequest>(ISen
 }
 
 [EnableCors(CorsConst.AllowAll)]
+public abstract class QueryEndpointBase<TResponse, TMediatRequest>(ISender mediator) : EndpointWithoutRequest<TResponse>
+    where TResponse : notnull
+    where TMediatRequest : IRequest<Result<TResponse>>
+{
+    protected void SetupSwagger()
+    {
+        var name = GetType().Name;
+        
+        Description(configuration =>
+        {
+            configuration
+                .WithName(name)
+                .Produces<TResponse>(200, "application/json")
+                .Produces<ErrorResponse>(400)
+                .Produces<InternalErrorResponse>(500);
+        });
+    }
+
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+        var mediatRequest = MediatRequest();
+
+        await mediator.Send(mediatRequest, ct)
+            .Tap(async result => await SendAsync(result, cancellation: ct))
+            .TapError(async errorMessage =>
+            {
+                var error = Error.Parse(errorMessage);
+
+                AddError(new ValidationFailure(error.Type, error.Description));
+
+                await SendErrorsAsync(cancellation: ct);
+            });
+    }
+
+    protected abstract TMediatRequest MediatRequest();
+}
+
+[EnableCors(CorsConst.AllowAll)]
 public abstract class CommandEndpointBase<TReqest, TMediatRequest>(ISender mediator) : Endpoint<TReqest>
     where TReqest : notnull
     where TMediatRequest : IRequest<Result>

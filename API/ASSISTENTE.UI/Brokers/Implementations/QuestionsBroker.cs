@@ -1,6 +1,7 @@
 using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions;
+using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestionsCount;
 using ASSISTENTE.Language.Identifiers;
 using ASSISTENTE.UI.Common.Models;
 
@@ -11,6 +12,7 @@ public interface IQuestionsBroker
     Task<HttpResult> CreateQuestionAsync(CreateQuestionRequest request);
     Task<HttpResult<GetQuestionsResponse>> GetQuestionsAsync(GetQuestionsRequest request);
     Task<HttpResult<GetQuestionResponse>> GetQuestionAsync(GetQuestionRequest request);
+    Task<HttpResult<GetQuestionsCountResponse>> GetQuestionsCountAsync();
 }
 
 public sealed class QuestionsBroker(HttpClient httpClient) : BrokerBase(httpClient, "api/questions"), IQuestionsBroker
@@ -23,4 +25,7 @@ public sealed class QuestionsBroker(HttpClient httpClient) : BrokerBase(httpClie
 
     public async Task<HttpResult<GetQuestionResponse>> GetQuestionAsync(GetQuestionRequest request)
         => await GetDetailsAsync<GetQuestionResponse, QuestionId>(request.QuestionId);
+
+    public async Task<HttpResult<GetQuestionsCountResponse>> GetQuestionsCountAsync()
+        => await GetAsync<GetQuestionsCountResponse>("count");
 }

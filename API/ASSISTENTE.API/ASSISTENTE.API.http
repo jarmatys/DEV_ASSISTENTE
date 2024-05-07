@@ -14,3 +14,11 @@ Accept: application/json
 GET {{ASSISTENTE.API_HostAddress}}/api/questions/5b6cef00-dfc5-4c9b-958e-04526ae22e6c
 
 ###
+
+GET {{ASSISTENTE.API_HostAddress}}/api/questions/count
+
+###
+
+GET {{ASSISTENTE.API_HostAddress}}/api/resources/count
+
+###
