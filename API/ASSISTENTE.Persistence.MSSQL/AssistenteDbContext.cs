@@ -56,7 +56,7 @@ namespace ASSISTENTE.Persistence.MSSQL
 
             modelBuilder.SeedData();
 
-            modelBuilder.ConfigureStrongyTypeIdentifiers();
+            modelBuilder.ConfigureStrongyIdentifiers();
 
             base.OnModelCreating(modelBuilder);
         }
@@ -71,22 +71,10 @@ namespace ASSISTENTE.Persistence.MSSQL
                 .Properties<QuestionContext>()
                 .HaveConversion<QuestionContextConverter>();
             
-            // TODO: Prepare extension method for strongy identifiers configuration
-            configurationBuilder
-                .Properties<ResourceId>()
-                .HaveConversion<ResourceIdConverter>();
-            
-            configurationBuilder
-                .Properties<AnswerId>()
-                .HaveConversion<AnswerIdConverter>();
-            
-            configurationBuilder
-                .Properties<QuestionId>()
-                .HaveConversion<QuestionIdConverter>();
-            
-            configurationBuilder
-                .Properties<QuestionResourceId>()
-                .HaveConversion<QuestionResourceIdConverter>();
+            configurationBuilder.ConfigureIdentifier<ResourceId, ResourceIdConverter, Guid>();
+            configurationBuilder.ConfigureIdentifier<QuestionId, QuestionIdConverter, Guid>();
+            configurationBuilder.ConfigureIdentifier<AnswerId, AnswerIdConverter, int>();
+            configurationBuilder.ConfigureIdentifier<QuestionResourceId, QuestionResourceIdConverter, int>();
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
