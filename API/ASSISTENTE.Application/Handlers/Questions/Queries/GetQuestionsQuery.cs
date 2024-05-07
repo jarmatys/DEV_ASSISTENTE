@@ -16,8 +16,8 @@ namespace ASSISTENTE.Application.Handlers.Questions.Queries
             Elements = request.Elements;
         }
         
-        public int? Page { get;}
-        public int? Elements { get; }
+        public int Page { get;}
+        public int Elements { get; }
 
         public static GetQuestionsQuery Create(GetQuestionsRequest request)
         {
@@ -32,8 +32,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Queries
             GetQuestionsQuery query,
             CancellationToken cancellationToken)
         {
-            // TODO: Implement pagination
-            return await questionRepository.GetAllAsync()
+            return await questionRepository.PaginateAsync(query.Page, query.Elements)
                 .ToResult(RepositoryErrors<Question>.NotFound.Build())
                 .Map(questions => questions.Select(q => new QuestionDto(q.Id, q.Text)).ToList())
                 .Map(questionDtos => new GetQuestionsResponse(questionDtos));

@@ -10,9 +10,18 @@ namespace ASSISTENTE.Application.Handlers.Knowledge.Queries
 {
     public sealed class GetResourcesQuery : IRequest<Result<GetResourcesResponse>>
     {
+        private GetResourcesQuery(GetResourcesRequest request)
+        {
+            Page = request.Page;
+            Elements = request.Elements;
+        }
+        
+        public int Page { get;}
+        public int Elements { get; }
+        
         public static GetResourcesQuery Create(GetResourcesRequest request)
         {
-            return new GetResourcesQuery();
+            return new GetResourcesQuery(request);
         }
     }
     
@@ -21,8 +30,7 @@ namespace ASSISTENTE.Application.Handlers.Knowledge.Queries
     {
         public async Task<Result<GetResourcesResponse>> Handle(GetResourcesQuery query, CancellationToken cancellationToken)
         {
-            // TODO: Implement pagination
-            return await resourceRepository.GetAllAsync()
+            return await resourceRepository.PaginateAsync(query.Page, query.Elements)
                 .ToResult(RepositoryErrors<Resource>.NotFound.Build())
                 .Map(resources => resources.Select(q => new ResourceDto(q.Id, q.Title, q.Type)).ToList())
                 .Map(resourceDtos => new GetResourcesResponse(resourceDtos));

@@ -11,4 +11,5 @@ public interface IBaseRepository<TEntity, in TIdentifier>
     Task<Result<TEntity>> RemoveAsync(TEntity entity);
     Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id);
     Task<Maybe<IEnumerable<TEntity>>> GetAllAsync();
+    Task<Maybe<IEnumerable<TEntity>>> PaginateAsync(int page, int elements);
 }

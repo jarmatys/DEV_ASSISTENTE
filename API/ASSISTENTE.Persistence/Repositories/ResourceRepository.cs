@@ -27,6 +27,7 @@ internal sealed class ResourceRepository(IAssistenteDbContext context)
     {
         return _context.Resources
             .Include(x => x.Questions)
-            .ThenInclude(x => x.Question);
+            .ThenInclude(x => x.Question)
+            .OrderByDescending(x => x.Created);
     }
 }

@@ -14,6 +14,6 @@ public sealed class GetResourcesRequestValidator : Validator<GetResourcesRequest
         
         RuleFor(x => x.Elements)
             .NotEmpty()
-            .WithMessage("'Page' parameter is is required!");
+            .WithMessage("'Elements' parameter is is required!");
     }
 }

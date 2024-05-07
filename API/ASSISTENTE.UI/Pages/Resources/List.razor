@@ -15,6 +15,7 @@
           Hover="true"
           Breakpoint="Breakpoint.Sm"
           Loading="_isLoading"
+          RowsPerPage="@Elements"
           LoadingProgressColor="Color.Info">
 
     <HeaderContent>
@@ -37,17 +38,30 @@
             </MudButton>
         </MudTd>
     </RowTemplate>
-
+    <PagerContent>
+        @* TODO: Get total count from API *@
+        <MudPagination SelectedChanged="PageChanged" Count="20" Class="pa-4"/>
+    </PagerContent>
+    
 </MudTable>
 
 @code {
+    
+    private const int Elements = 10;
 
     private List<ResourceDto> _resources = [];
     private bool _isLoading = true;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await ResourcesBroker.GetResourcesAsync(GetResourcesRequest.Create());
+        await GetRecords(page: 1);
+    }
+
+    private async Task GetRecords(int page)
+    {
+        _isLoading = true;
+
+        var response = await ResourcesBroker.GetResourcesAsync(GetResourcesRequest.Create(page, Elements));
 
         if (response.IsSuccess)
         {
@@ -60,6 +74,8 @@
 
         _isLoading = false;
     }
+
+    private async Task PageChanged(int page) => await GetRecords(page);
 
     private void Redirect(Guid resourceId) => NavigationManager.NavigateTo($"/resources/{resourceId}");
 
