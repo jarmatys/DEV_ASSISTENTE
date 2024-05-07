@@ -22,6 +22,12 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 ---
 
+### Answer generation flow:
+
+![answer-generation-flow](https://raw.githubusercontent.com/jarmatys/DEV_ASSISTENTE/master/ASSETS/answer-generation-flow.png)
+
+---
+
 ### Roadmap
 
 **Phases:**
