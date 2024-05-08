@@ -37,7 +37,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
+          build-args: 
             ASSEMBLY_NAME: ASSISTENTE.API
             PROJECT_PATH: ASSISTENTE.API
       
