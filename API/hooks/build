@@ -1,3 +1,8 @@
 #!/bin/bash
 
+echo $PROJECT_PATH
+echo $ASSEMBLY_NAME
+echo $DOCKERFILE_PATH
+echo $IMAGE_NAME
+
 docker image build --build-arg PROJECT_PATH=$PROJECT_PATH --build-arg ASSEMBLY_NAME=$ASSEMBLY_NAME -f $DOCKERFILE_PATH -t $IMAGE_NAME .
