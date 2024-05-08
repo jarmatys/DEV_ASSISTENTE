@@ -37,9 +37,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: 
-            ASSEMBLY_NAME: ASSISTENTE.API
-            PROJECT_PATH: ASSISTENTE.API
+          build-args: |
+            ASSEMBLY_NAME=ASSISTENTE.API
+            PROJECT_PATH=ASSISTENTE.API
       
       
       - name: Generate artifact attestation
