@@ -13,6 +13,7 @@ jobs:
       packages: write
       contents: read
       attestations: write
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -42,8 +43,8 @@ jobs:
             ASSEMBLY_NAME=ASSISTENTE.API
             PROJECT_PATH=ASSISTENTE.API
       
-      
       - name: Generate artifact attestation
+        id: attest
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: armatysme/assistente-api
