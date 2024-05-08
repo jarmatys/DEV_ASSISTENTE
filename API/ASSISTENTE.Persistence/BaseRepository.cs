@@ -42,12 +42,12 @@ internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContex
 
     public async Task<Maybe<IEnumerable<TEntity>>> GetAllAsync()
     {
-        return await Get().AsNoTracking().ToListAsync();
+        return await List().AsNoTracking().ToListAsync();
     }
 
     public async Task<Maybe<IEnumerable<TEntity>>> PaginateAsync(int page, int elements)
     {
-        return await Get()
+        return await List()
             .AsNoTracking()
             .Skip((page - 1) * elements)
             .Take(elements)
@@ -56,8 +56,9 @@ internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContex
 
     public async Task<Result<int>> CountAsync()
     {
-        return await Get().AsNoTracking().CountAsync();
+        return await List().AsNoTracking().CountAsync();
     }
 
     protected abstract IQueryable<TEntity> Get();
+    protected abstract IQueryable<TEntity> List();
 }

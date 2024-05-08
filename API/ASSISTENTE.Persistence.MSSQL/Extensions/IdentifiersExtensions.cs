@@ -23,7 +23,7 @@ internal static class IdentifiersExtensions
     }
     
     public static void ConfigureGuidIdentifier<TIdentifier, TConverter>(this ModelConfigurationBuilder configurationBuilder)
-        where TIdentifier : IIdentifier
+        where TIdentifier : IdentifierBase<Guid>
         where TConverter : ValueConverter<TIdentifier, Guid>
     {
         configurationBuilder
@@ -32,7 +32,7 @@ internal static class IdentifiersExtensions
     }
     
     public static void ConfigureNumberIdentifier<TIdentifier, TConverter>(this ModelConfigurationBuilder configurationBuilder)
-        where TIdentifier : IIdentifier
+        where TIdentifier : IdentifierBase<int>
         where TConverter : ValueConverter<TIdentifier, int>
     {
         configurationBuilder
