@@ -13,12 +13,12 @@ jobs:
       packages: write
       contents: read
       attestations: write
-   env:
-      REGISTRY: index.docker.io
-      IMAGE_NAMESPACE: armatysme
-      IMAGE_NAME: assistente-api 
-      ASSEMBLY_NAME: ASSISTENTE.API 
-      PROJECT_PATH: ASSISTENTE.API 
+    env:
+        REGISTRY: index.docker.io
+        IMAGE_NAMESPACE: armatysme
+        IMAGE_NAME: assistente-api 
+        ASSEMBLY_NAME: ASSISTENTE.API 
+        PROJECT_PATH: ASSISTENTE.API 
 
     steps:
       - name: Check out the repo
