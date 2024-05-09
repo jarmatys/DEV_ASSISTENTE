@@ -2,7 +2,7 @@ name: ASSISTENTE - PUBLISH NEW CONTAINERS TO HUB.DOCKER.COM
 
 on:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   build_and_push_api:
