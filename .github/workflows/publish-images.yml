@@ -56,4 +56,159 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: false
+
+  build_and_push_db_upgrade:
+    name: 🐳 Push 'ASSISTENTE DB UPGRADE' image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+      attestations: write
+    env:
+        REGISTRY: index.docker.io
+        IMAGE_NAMESPACE: armatysme
+        IMAGE_NAME: assistente-db-upgrade
+        ASSEMBLY_NAME: ASSISTENTE.DB.Upgrade 
+        PROJECT_PATH: ASSISTENTE.DB.Upgrade
+
+    steps:
+      - name: ➡️ Check out the repo
+        uses: actions/checkout@v4
+
+      - name: 🗝️ Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 📂 Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
+
+      - name: ⚙️ Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./API
+          file: ./API/Docker/API/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ASSEMBLY_NAME=${{ env.ASSEMBLY_NAME }}
+            PROJECT_PATH=${{ env.PROJECT_PATH }}
       
+      - name: 🔗 Generate artifact attestation
+        id: attest
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: false     
+
+  build_and_push_worker_sync:
+    name: 🐳 Push 'ASSISTENTE WORKER SYNC' image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+      attestations: write
+    env:
+        REGISTRY: index.docker.io
+        IMAGE_NAMESPACE: armatysme
+        IMAGE_NAME: assistente-worker-sync
+        ASSEMBLY_NAME: ASSISTENTE.Worker.Sync
+        PROJECT_PATH: ASSISTENTE.Worker.Sync
+
+    steps:
+      - name: ➡️ Check out the repo
+        uses: actions/checkout@v4
+
+      - name: 🗝️ Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 📂 Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
+
+      - name: ⚙️ Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./API
+          file: ./API/Docker/API/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ASSEMBLY_NAME=${{ env.ASSEMBLY_NAME }}
+            PROJECT_PATH=${{ env.PROJECT_PATH }}
+      
+      - name: 🔗 Generate artifact attestation
+        id: attest
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: false     
+
+  build_and_push_ui:
+    name: 🐳 Push 'ASSISTENTE UI' image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
+      attestations: write
+    env:
+        REGISTRY: index.docker.io
+        IMAGE_NAMESPACE: armatysme
+        IMAGE_NAME: assistente-ui
+        ASSEMBLY_NAME: ASSISTENTE.UI
+        PROJECT_PATH: ASSISTENTE.UI
+
+    steps:
+      - name: ➡️ Check out the repo
+        uses: actions/checkout@v4
+
+      - name: 🗝️ Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 📂 Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
+
+      - name: ⚙️ Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./API
+          file: ./API/Docker/Blazor/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ASSEMBLY_NAME=${{ env.ASSEMBLY_NAME }}
+            PROJECT_PATH=${{ env.PROJECT_PATH }}
+      
+      - name: 🔗 Generate artifact attestation
+        id: attest
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: false     
