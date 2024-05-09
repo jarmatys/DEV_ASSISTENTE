@@ -46,8 +46,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            ASSEMBLY_NAME={{ env.ASSEMBLY_NAME }}
-            PROJECT_PATH={{ env.PROJECT_PATH }}
+            ASSEMBLY_NAME=${{ env.ASSEMBLY_NAME }}
+            PROJECT_PATH=${{ env.PROJECT_PATH }}
       
       - name: Generate artifact attestation
         id: attest
