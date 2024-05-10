@@ -1,0 +1,125 @@
+version: "3"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: assistente-mssql
+    hostname: assistente-mssql
+    restart: unless-stopped
+    ports:
+      - 1000:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123
+    volumes:
+      - assistente-mssql:/var/opt/mssql
+
+  # postgres:
+  #   image: postgres:14.1-alpine
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #   ports:
+  #     - 5432:5432
+  #   volumes: 
+  #     - assistente-postgres:/var/lib/postgresql/data
+
+  qdrant:
+    image: qdrant/qdrant
+    container_name: assistente-qdrant
+    hostname: qdrant
+    restart: unless-stopped
+    volumes:
+      - assistente-qdrant:/qdrant/storage
+
+  rabbitmq:
+    image: rabbitmq:3.7.7-management
+    container_name: assistente-rabbitmq
+    hostname: assistente-rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=user
+      - RABBITMQ_DEFAULT_VHOST=/
+    volumes:
+      - assistente-rabbitmq:/var/lib/rabbitmq
+
+  seq:
+    image: datalust/seq:latest
+    container_name: assistente-seq
+    hostname: assistente-seq
+    restart: unless-stopped
+    ports:
+      - 1001:80
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - assistente-seq:/data
+
+  ui:
+    image: armatysme/assistente-ui:latest
+    container_name: ui
+    hostname: assistente-ui
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - 1002:80
+    # TODO: Mount appsettings.json
+  
+  db-upgrade:
+    image: armatysme/assistente-db-upgrade:latest
+    container_name: db-upgrade
+    depends_on:
+      - mssql
+    environment:
+      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+
+  api:
+    image: armatysme/assistente-api:latest
+    container_name: api
+    hostname: assistente-api
+    restart: unless-stopped
+    depends_on:
+      - worker-sync
+    environment:
+      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Qdrant__Host=${Qdrant_Host}
+      - Rabbit__Name=${Rabbit_Name}
+      - Rabbit__Url=${Rabbit_Url}
+      - InternalApi__Url=${InternalApi_Url}
+      - KnowledgePaths__MarkdownNotes=${KnowledgePaths_MarkdownNotes}
+      - KnowledgePaths__Repositories=${KnowledgePaths_Repositories}
+
+  worker-sync:
+    image: armatysme/assistente-worker-sync:latest
+    container_name: worker-sync
+    hostname: assistente-worker-sync
+    restart: unless-stopped
+    depends_on:
+      - mssql
+      - rabbitmq
+      - qdrant
+    environment:
+      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Qdrant__Host=${Qdrant_Host}
+      - Rabbit__Name=${Rabbit_Name}
+      - Rabbit__Url=${Rabbit_Url}
+      - InternalApi__Url=${InternalApi_Url}
+      - KnowledgePaths__MarkdownNotes=${KnowledgePaths_MarkdownNotes}
+      - KnowledgePaths__Repositories=${KnowledgePaths_Repositories}
+
+volumes:
+  assistente-postgres:
+    driver: local
+  assistente-mssql:
+    driver: local
+  assistente-qdrant:
+    driver: local
+  assistente-rabbitmq:
+    driver: local
+  assistente-seq:
+    driver: local
