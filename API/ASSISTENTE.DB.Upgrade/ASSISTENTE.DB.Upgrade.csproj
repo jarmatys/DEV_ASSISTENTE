@@ -13,9 +13,18 @@
         </PropertyGroup>
         <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
     </Target>
-    
+
     <ItemGroup>
-        <ProjectReference Include="..\ASSISTENTE.Persistence.MSSQL\ASSISTENTE.Persistence.MSSQL.csproj" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.5" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="MSSQL-Migrations.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
     
 </Project>

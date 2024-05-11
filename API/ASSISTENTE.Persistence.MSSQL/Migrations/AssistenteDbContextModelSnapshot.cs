@@ -217,8 +217,7 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
 
             modelBuilder.Entity("ASSISTENTE.Domain.Entities.Questions.Question", b =>
                 {
-                    b.Navigation("Answer")
-                        .IsRequired();
+                    b.Navigation("Answer");
 
                     b.Navigation("Resources");
                 });

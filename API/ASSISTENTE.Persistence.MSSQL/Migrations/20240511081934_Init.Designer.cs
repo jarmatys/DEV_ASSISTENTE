@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASSISTENTE.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(AssistenteDbContext))]
-    [Migration("20240428111059_Init")]
+    [Migration("20240511081934_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -220,8 +220,7 @@ namespace ASSISTENTE.Persistence.MSSQL.Migrations
 
             modelBuilder.Entity("ASSISTENTE.Domain.Entities.Questions.Question", b =>
                 {
-                    b.Navigation("Answer")
-                        .IsRequired();
+                    b.Navigation("Answer");
 
                     b.Navigation("Resources");
                 });
