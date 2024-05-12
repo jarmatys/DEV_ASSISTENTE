@@ -1,7 +1,7 @@
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Language.Identifiers;
-using ASSISTENTE.Persistence.MSSQL;
+using ASSISTENTE.Persistence.Configuration;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 

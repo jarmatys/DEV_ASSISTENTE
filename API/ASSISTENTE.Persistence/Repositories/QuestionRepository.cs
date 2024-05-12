@@ -1,7 +1,7 @@
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Language.Identifiers;
-using ASSISTENTE.Persistence.MSSQL;
+using ASSISTENTE.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Persistence.Repositories;

@@ -4,9 +4,9 @@ using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASSISTENTE.Persistence.MSSQL;
+namespace ASSISTENTE.Persistence.Configuration;
 
-internal interface IAssistenteDbContext
+public  interface IAssistenteDbContext
 {
     #region ENTITIES
 

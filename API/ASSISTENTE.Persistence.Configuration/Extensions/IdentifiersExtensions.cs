@@ -1,10 +1,10 @@
 using ASSISTENTE.Language;
-using ASSISTENTE.Persistence.MSSQL.Exceptions;
+using ASSISTENTE.Persistence.Configuration.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ASSISTENTE.Persistence.MSSQL.Extensions;
+namespace ASSISTENTE.Persistence.Configuration.Extensions;
 
 internal static class IdentifiersExtensions
 {

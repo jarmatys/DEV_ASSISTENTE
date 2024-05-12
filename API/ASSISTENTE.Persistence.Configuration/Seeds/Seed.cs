@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ASSISTENTE.Persistence.MSSQL.Seeds
+namespace ASSISTENTE.Persistence.Configuration.Seeds
 {
     public static class Seed
     {

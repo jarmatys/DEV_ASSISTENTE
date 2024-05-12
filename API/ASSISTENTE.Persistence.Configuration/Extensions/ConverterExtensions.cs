@@ -1,7 +1,7 @@
-using ASSISTENTE.Persistence.MSSQL.Converters;
+using ASSISTENTE.Persistence.Configuration.Converters;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASSISTENTE.Persistence.MSSQL.Extensions;
+namespace ASSISTENTE.Persistence.Configuration.Extensions;
 
 internal static class ConverterExtensions
 {

@@ -1,6 +1,6 @@
 using ASSISTENTE.Domain.Commons.Interfaces;
 using ASSISTENTE.Language;
-using ASSISTENTE.Persistence.MSSQL;
+using ASSISTENTE.Persistence.Configuration;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 

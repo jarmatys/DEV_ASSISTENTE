@@ -65,6 +65,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
     - ✅ Generating answers asynchronously (RabbitMQ + SignalR)
     - ✅ Display resources list
     - ✅ Display asked questions with answers list
+- 🔳 Switch from MSSQL to PostgreSQL
 - 🔳 Configure VPS to host all environment
 
 #### Nice to have
@@ -103,6 +104,18 @@ Prerequisites: `.NET 8` + `Docker`
   - In docker - run `start-local-enviroment.ps1` script
 ---
 ### Configuration
+
+### Example connection strings
+
+#### MSSQL
+
+`Server=localhost,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;`
+
+#### POSTGRESQL
+
+`User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=assistente_db;`
+
+### Instruction
 
 1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
 

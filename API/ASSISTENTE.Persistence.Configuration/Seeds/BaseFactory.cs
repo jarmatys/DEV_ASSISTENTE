@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ASSISTENTE.Persistence.MSSQL.Seeds;
+namespace ASSISTENTE.Persistence.Configuration.Seeds;
 
 public abstract class BaseFactory
 {

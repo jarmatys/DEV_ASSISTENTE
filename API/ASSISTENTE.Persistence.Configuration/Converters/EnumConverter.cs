@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ASSISTENTE.Persistence.MSSQL.Converters;
+namespace ASSISTENTE.Persistence.Configuration.Converters;
 
 internal sealed class EnumConverter<TEnum>()
     : ValueConverter<TEnum, string>(

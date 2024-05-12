@@ -6,16 +6,16 @@ using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
-using ASSISTENTE.Persistence.MSSQL.Converters.Identifiers;
-using ASSISTENTE.Persistence.MSSQL.Extensions;
-using ASSISTENTE.Persistence.MSSQL.Seeds;
-using Microsoft.EntityFrameworkCore;
+using ASSISTENTE.Persistence.Configuration.Converters.Identifiers;
+using ASSISTENTE.Persistence.Configuration.Extensions;
+using ASSISTENTE.Persistence.Configuration.Seeds;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ASSISTENTE.Persistence.MSSQL
+namespace ASSISTENTE.Persistence.Configuration
 {
-    internal class AssistenteDbContext : DbContext, IAssistenteDbContext
+    public class AssistenteDbContext : DbContext, IAssistenteDbContext
     {
         private readonly IUserResolver? _userResolver;
         private readonly ISystemTimeProvider? _systemTimeProvider;
@@ -48,7 +48,7 @@ namespace ASSISTENTE.Persistence.MSSQL
         public DbSet<Answer> Answers { get; set; } 
 
         #endregion
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

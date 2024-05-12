@@ -1,29 +1,18 @@
 version: "3"
 
 services:
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: assistente-mssql
-    hostname: assistente-mssql
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: assistente-postgres
+    hostname: assistente-postgres
     restart: unless-stopped
-    ports:
-      - 1000:1433
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Password123
-    volumes:
-      - assistente-mssql:/var/opt/mssql
-
-  # postgres:
-  #   image: postgres:14.1-alpine
-  #   restart: unless-stopped
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #   ports:
-  #     - 5432:5432
-  #   volumes: 
-  #     - assistente-postgres:/var/lib/postgresql/data
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes: 
+      - assistente-postgres:/var/lib/postgresql/data
 
   qdrant:
     image: qdrant/qdrant
@@ -72,7 +61,7 @@ services:
     image: armatysme/assistente-db-upgrade:latest
     container_name: db-upgrade
     depends_on:
-      - mssql
+      - postgres
     environment:
       - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
 
@@ -99,7 +88,7 @@ services:
     hostname: assistente-worker-sync
     restart: unless-stopped
     depends_on:
-      - mssql
+      - postgres
       - rabbitmq
       - qdrant
     environment:
@@ -115,8 +104,8 @@ services:
 volumes:
   assistente-postgres:
     driver: local
-  assistente-mssql:
-    driver: local
+  # assistente-mssql:
+  #   driver: local
   assistente-qdrant:
     driver: local
   assistente-rabbitmq:
