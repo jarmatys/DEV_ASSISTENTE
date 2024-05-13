@@ -9,5 +9,5 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4"/>
     </ItemGroup>
-    
+
 </Project>

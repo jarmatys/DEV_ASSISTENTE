@@ -18,8 +18,6 @@ namespace ASSISTENTE.Persistence.Configuration
         {
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
 
-            // TODO: Add DB switcher
-            // optionsBuilder.UseSqlServer();
             optionsBuilder.UseNpgsql();
 
             return CreateNewInstance(optionsBuilder.Options);

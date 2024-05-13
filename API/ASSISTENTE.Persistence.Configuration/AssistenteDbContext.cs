@@ -6,6 +6,7 @@ using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
+using ASSISTENTE.Persistence.Configuration.Converters;
 using ASSISTENTE.Persistence.Configuration.Converters.Identifiers;
 using ASSISTENTE.Persistence.Configuration.Extensions;
 using ASSISTENTE.Persistence.Configuration.Seeds;
@@ -64,6 +65,10 @@ namespace ASSISTENTE.Persistence.Configuration
         {
             configurationBuilder.ConfigureEnum<ResourceType>();
             configurationBuilder.ConfigureEnum<QuestionContext>();
+            
+            configurationBuilder
+                .Properties<DateTime>()
+                .HaveConversion<DateTimeConverter>();
             
             configurationBuilder.ConfigureGuidIdentifier<ResourceId, ResourceIdConverter>();
             configurationBuilder.ConfigureGuidIdentifier<QuestionId, QuestionIdConverter>();
