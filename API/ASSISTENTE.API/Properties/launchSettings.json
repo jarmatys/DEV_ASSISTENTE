@@ -6,7 +6,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "redoc",
-      "applicationUrl": "http://localhost:5249",
+      "applicationUrl": "http://localhost:1009",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

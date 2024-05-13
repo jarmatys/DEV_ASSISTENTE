@@ -65,7 +65,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
     - ✅ Generating answers asynchronously (RabbitMQ + SignalR)
     - ✅ Display resources list
     - ✅ Display asked questions with answers list
-- 🔳 Switch from MSSQL to PostgreSQL
+- ✅ Switch from MSSQL to PostgreSQL
 - 🔳 Configure VPS to host all environment
 
 #### Nice to have
@@ -109,70 +109,14 @@ Prerequisites: `.NET 8` + `Docker`
 
 #### MSSQL
 
-`Server=localhost,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;`
+`Server=assistente-mssql,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;`
 
 #### POSTGRESQL
 
-`User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=assistente_db;`
+`User ID=postgres;Password=postgres;Host=assistente-postgres;Port=5432;Database=assistente_db;`
 
 ### Instruction
 
 1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
 
-```json
-{
-  "ConnectionStrings": {
-    "AssistenteDatabase": "<DATABASE_CONNECTION_STRING>"
-  },
-  "OpenAI": {
-    "ApiKey": "<API_KEY>"
-  },
-  "Qdrant": {
-    "Host": "localhost"
-  },
-  "Rabbit": {
-    "Name": "ASSISTENTE.Worker.Sync",
-    "Url": "amqp://guest:guest@localhost:5672"
-  },
-  "InternalApi": {
-    "Url": "http://localhost:5249"
-  },
-  "KnowledgePaths": {
-    "MarkdownNotes": "<ROOT_PATH_TO_MARKDOWN_NOTES>",
-    "Repositories": "<ROOT_PATH_TO_REPOSITORY>"
-  },
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Information",
-      "Override": {
-        "Microsoft": "Warning",
-        "System": "Warning"
-      }
-    },
-    "Enrich": [ "FromLogContext", "WithMachineName", "WithProcessId", "WithThreadId" ],
-    "WriteTo": [
-      { "Name": "Console" },
-      {
-        "Name": "Seq",
-        "Args": {
-          "serverUrl": "http://localhost:5341"
-        }
-      }
-    ]
-  }
-}
-```
-
 2. Fill out the `.env` file - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/.env)
-
-```
-COMPOSE_PROJECT_NAME=assistente
-
-ConnectionStrings_AssistenteDatabase='<DATABASE_CONNECTION_STRING>'
-OpenAI_ApiKey='<API_KEY>'
-Qdrant_Host='localhost'
-Rabbit_Name='ASSISTENTE.Worker.Sync'
-Rabbit_Url='amqp://guest:guest@rabbitmq:5672'
-InternalApi_Url='http://assistente-api:8080'
-KnowledgePaths_MarkdownNotes=<ROOT_PATH_TO_MARKDOWN_NOTES>
-KnowledgePaths_Repositories=<ROOT_PATH_TO_REPOSITORY>

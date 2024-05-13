@@ -1,0 +1,11 @@
+{
+  "Settings": {
+    "Version": "1.0.0",
+    "ApiUrl": "http://assistente-api:8080",
+    "HubUrl": "http://assistente-api:8080",
+    "Seq": {
+      "Url": "http://assistente-seq:1007",
+      "ApiKey": "SeqApiKey"
+    }
+  }
+}

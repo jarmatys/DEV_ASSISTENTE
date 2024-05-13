@@ -8,7 +8,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 5432:5432
+      - 1000:5432
     volumes: 
       - assistente-postgres:/var/lib/postgresql/data
 
@@ -18,7 +18,7 @@ services:
     hostname: assistente-pgadmin
     restart: unless-stopped
     ports:
-      - 5050:80
+      - 1001:80
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@assistente.dev
       - PGADMIN_DEFAULT_PASSWORD=admin
@@ -29,8 +29,8 @@ services:
     hostname: qdrant
     restart: unless-stopped
     ports:
-      - 6333:6333
-      - 6334:6334
+      - 1002:6333
+      - 1003:6334
     volumes:
       - assistente-qdrant:/qdrant/storage
 
@@ -40,8 +40,8 @@ services:
     hostname: assistente-rabbitmq
     restart: unless-stopped
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 1004:5672
+      - 1005:15672
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -55,8 +55,8 @@ services:
     hostname: assistente-seq
     restart: unless-stopped
     ports:
-      - 5341:80
-      - 5342:5341
+      - 1006:80
+      - 1007:5341
     environment:
       - ACCEPT_EULA=Y
     volumes:
@@ -70,8 +70,18 @@ services:
     depends_on:
       - api
     ports:
-      - 1002:80
+      - 1008:80
     # TODO: Mount appsettings.json
+    
+    environment:
+      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Qdrant__Host=${Qdrant_Host}
+      - Rabbit__Name=${Rabbit_Name}
+      - Rabbit__Url=${Rabbit_Url}
+      - InternalApi__Url=${InternalApi_Url}
+      - KnowledgePaths__MarkdownNotes=${KnowledgePaths_MarkdownNotes}
+      - KnowledgePaths__Repositories=${KnowledgePaths_Repositories}
   
   db-upgrade:
     image: armatysme/assistente-db-upgrade:latest
@@ -88,6 +98,8 @@ services:
     restart: unless-stopped
     depends_on:
       - worker-sync
+    ports:
+      - 1009:8080
     environment:
       - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
@@ -107,6 +119,8 @@ services:
       - postgres
       - rabbitmq
       - qdrant
+    ports:
+      - 1010:8080
     environment:
       - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
@@ -120,8 +134,6 @@ services:
 volumes:
   assistente-postgres:
     driver: local
-  # assistente-mssql:
-  #   driver: local
   assistente-qdrant:
     driver: local
   assistente-rabbitmq:

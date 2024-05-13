@@ -15,6 +15,7 @@
 
 @inject IAnswersBroker AnswersBroker
 @inject IQuestionsBroker QuestionsBroker
+@inject HubConnection HubConnection
 
 <PageTitle>Ask question</PageTitle>
 
@@ -67,7 +68,6 @@ else
     private bool _inProgress;
     private bool _connectionInitialization = true;
 
-    private HubConnection? _hubConnection;
     private readonly List<QuestionProgress> _questionProgresses = [];
 
     CreateQuestionRequest _request = new();
@@ -86,11 +86,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5249/answers")
-            .Build();
-
-        _hubConnection.On<string>("InitConnection", connectionId =>
+        HubConnection.On<string>("InitConnection", connectionId =>
         {
             _request.ConnectionId = connectionId;
             _connectionInitialization = false;
@@ -98,14 +94,14 @@ else
             InvokeAsync(StateHasChanged);
         });
 
-        _hubConnection.On<QuestionProgress>("ReceiveProgress", questionProgress =>
+        HubConnection.On<QuestionProgress>("ReceiveProgress", questionProgress =>
         {
             _questionProgresses.Add(questionProgress);
 
             InvokeAsync(StateHasChanged);
         });
 
-        _hubConnection.On<QuestionId>("NotifyReadiness", async questionId =>
+        HubConnection.On<QuestionId>("NotifyReadiness", async questionId =>
         {
             var response = await AnswersBroker.GetAnswerAsync(GetAnswerRequest.Create(questionId));
 
@@ -119,12 +115,12 @@ else
             await InvokeAsync(StateHasChanged);
         });
 
-        await _hubConnection.StartAsync();
+        await HubConnection.StartAsync();
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (_hubConnection != null) await _hubConnection.DisposeAsync();
+        if (HubConnection != null) await HubConnection.DisposeAsync();
     }
 
 }

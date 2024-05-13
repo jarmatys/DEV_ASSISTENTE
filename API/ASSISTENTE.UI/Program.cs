@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ASSISTENTE.UI;
 using ASSISTENTE.UI.Brokers;
 using ASSISTENTE.UI.Common.Extensions;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -31,6 +32,10 @@ builder.Services.AddMudServices(config =>
 });
 
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(settings.ApiUrl) });
+
+builder.Services.AddScoped(_ => new HubConnectionBuilder()
+    .WithUrl($"{settings.HubUrl}/answers")
+    .Build());
 
 await builder
     .Build()

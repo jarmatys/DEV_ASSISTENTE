@@ -1,5 +1,6 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
@@ -21,12 +22,14 @@ namespace ASSISTENTE.Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            var settings = configuration.GetSettings<AssistenteSettings>();
+            
             services.AddMarkDownParser();
             services.AddCodeParser();
-            services.AddEmbeddings(configuration);
-            services.AddQdrant(configuration);
+            services.AddEmbeddings(settings.OpenAi);
+            services.AddQdrant(settings.Qdrant);
             services.AddPromptGenerator();
-            services.AddLLM(configuration);
+            services.AddLLM(settings.OpenAi);
 
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IQuestionOrchestrator, QuestionOrchestrator>();

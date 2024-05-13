@@ -1,4 +1,5 @@
 ﻿using ASSISTENTE.Common.Exceptions;
+using ASSISTENTE.Common.Settings.Sections;
 using ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,15 +9,13 @@ namespace ASSISTENTE.Infrastructure.Embeddings
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddEmbeddings(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddEmbeddings(this IServiceCollection services, OpenAiSection configuration)
         {
             services.AddScoped<IEmbeddingClient, OpenAiClient>();
             
-            var openAiApiKey = configuration["OpenAI:ApiKey"] ?? throw new MissingSettingsException("OpenAI:ApiKey");
-            
             services.AddOpenAIServices(options =>
             {
-                options.ApiKey = openAiApiKey;
+                options.ApiKey = configuration.ApiKey;
             });
             
             return services;
