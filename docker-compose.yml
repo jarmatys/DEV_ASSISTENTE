@@ -80,8 +80,6 @@ services:
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
-      - KnowledgePaths__MarkdownNotes=${KnowledgePaths_MarkdownNotes}
-      - KnowledgePaths__Repositories=${KnowledgePaths_Repositories}
   
   db-upgrade:
     image: armatysme/assistente-db-upgrade:latest
@@ -107,8 +105,6 @@ services:
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
-      - KnowledgePaths__MarkdownNotes=${KnowledgePaths_MarkdownNotes}
-      - KnowledgePaths__Repositories=${KnowledgePaths_Repositories}
 
   worker-sync:
     image: armatysme/assistente-worker-sync:latest
@@ -128,8 +124,6 @@ services:
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
-      - KnowledgePaths__MarkdownNotes=${KnowledgePaths_MarkdownNotes}
-      - KnowledgePaths__Repositories=${KnowledgePaths_Repositories}
 
 volumes:
   assistente-postgres:

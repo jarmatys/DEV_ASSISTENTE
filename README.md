@@ -79,44 +79,20 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - 🔳 Prepare video explainer with simply demo
 
 ---
+### Configuration
+
+1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
+
+2. Fill out the `.env` file - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/.env)
 
 ### Quick start
 
 Prerequisites: `.NET 8` + `Docker` 
 
-1. Run services on your local machine:
-    - `REQUIRED` Messages broker: `RabbitMq` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.rabbit.yml)
-    - `REQUIRED` Vector database: `Qdrant` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.qdrant.yml)
-    - `OPTIONAL` Logs and traces: `Seq` - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.seq.yml)
-2. Setup MSSQL database - can be hosted in docker - [EXAMPLE CONFIGURATION](https://github.com/jarmatys/DOCFULL/blob/main/LOCAL/docker-compose.mssql.yml)
+1. Fill out the settings file (`appsettings.json`) and (`.env`) from [CONFIGURATION](#Configuration) section
 
-3. Fill out the settings file (`appsettings.json`) from [CONFIGURATION](#Configuration) section
+2. Run `start-enviroment.ps1` script
 
-4. Run `upgrade-database.ps1` script to create/migrate database - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/upgrade-database.ps1)
+3. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json` (node: `KnowledgePaths`).
 
-5. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json` (node: `KnowledgePaths`).
-
-6. Voila! Currently you can start application:
-  - From Rider/Visual Studio, required applications to run:
-    - `ASSISTENTE.Worker.Sync`
-    - `ASSISTENTE.API`
-    - `ASSISTENTE.UI`
-  - In docker - run `start-local-enviroment.ps1` script
----
-### Configuration
-
-### Example connection strings
-
-#### MSSQL
-
-`Server=assistente-mssql,1433;Database=Assistente_db;User Id=sa;Password=Password123;TrustServerCertificate=true;`
-
-#### POSTGRESQL
-
-`User ID=postgres;Password=postgres;Host=assistente-postgres;Port=5432;Database=assistente_db;`
-
-### Instruction
-
-1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
-
-2. Fill out the `.env` file - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/.env)
+4. Voila! Currently you can go to `https://localhost:1008`
