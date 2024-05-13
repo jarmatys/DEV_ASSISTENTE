@@ -41,7 +41,7 @@
 
     [Parameter] public required Func<TRequest, Task<HttpResult>> SubmitMethod { get; set; }
     [Parameter] public required EventCallback<TRequest> OnRequestClear { get; set; }
-    [Parameter] public required EventCallback OnSubmit { get; set; }
+    [Parameter] public required EventCallback OnSuccessSubmit { get; set; }
 
     [Parameter] public required TRequest Request { get; set; }
     [Parameter] public required bool IsDisabled { get; set; }
@@ -61,8 +61,6 @@
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await OnSubmit.InvokeAsync();
-        
         _showErrors = false;
         _isLoading = true;
         
@@ -70,6 +68,8 @@
 
         if (response.IsSuccess)
         {
+            await OnSuccessSubmit.InvokeAsync();
+
             Request.Clear();
 
             await OnRequestClear.InvokeAsync(Request);

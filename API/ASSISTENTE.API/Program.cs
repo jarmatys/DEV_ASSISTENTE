@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddCommon();
 builder.AddLogging(configuration);
 builder.AddCors();
+builder.AddLimiter();
 builder.AddEndpoints();
 builder.AddModules(configuration);
 builder.Services.AddRabbitPublisher(configuration);
@@ -22,6 +23,7 @@ var app = builder.Build();
 
 app.UseCommon();
 app.UseCors();
+app.UseRateLimiter();
 app.UseEndpoints();
 
 app.MapHub<QuestionHub>("answers");

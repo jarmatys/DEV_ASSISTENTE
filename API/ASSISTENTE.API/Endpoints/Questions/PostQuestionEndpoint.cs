@@ -11,6 +11,7 @@ public sealed class PostQuestionCommandEndpoint(ISender mediator)
     {
         Post("questions");
         SetupSwagger();
+        Options(x => x.RequireRateLimiting("limiterPolicy"));
     }
 
     protected override CreateQuestionCommand MediatRequest(CreateQuestionRequest req) 
