@@ -82,8 +82,14 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 ### Configuration
 
 1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
+    
+    - `OpenAI_ApiKey` - `<API_KEY>`
+    - `KnowledgePaths_MarkdownNotes` - `<PATH_TO_MARKDOWN_NOTES_ROOT>`
+    - `KnowledgePaths_Repositories` - `<PATH_TO_REPOSITORIES_ROOT>`
 
 2. Fill out the `.env` file - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/.env)
+
+    - `OpenAI_ApiKey` - `<API_KEY>`
 
 ### Quick start
 
