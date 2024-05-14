@@ -70,16 +70,10 @@ services:
     depends_on:
       - api
     ports:
-      - 1008:80
-    # TODO: Mount appsettings.json
-    
-    environment:
-      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
-      - OpenAI__ApiKey=${OpenAI_ApiKey}
-      - Qdrant__Host=${Qdrant_Host}
-      - Rabbit__Name=${Rabbit_Name}
-      - Rabbit__Url=${Rabbit_Url}
-      - InternalApi__Url=${InternalApi_Url}
+      - 1008:8080
+    volumes:
+      - ./blazor.json:/var/www/web/appsettings.json
+
   
   db-upgrade:
     image: armatysme/assistente-db-upgrade:latest

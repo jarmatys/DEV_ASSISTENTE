@@ -18,4 +18,4 @@ ARG ASSEMBLY_NAME
 WORKDIR /var/www/web
 COPY --from=build "/src/${ASSEMBLY_NAME}/output/wwwroot" .
 COPY "Docker/Blazor/nginx.conf" "/etc/nginx/nginx.conf"
-EXPOSE 80
+EXPOSE 8080
