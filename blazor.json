@@ -1,10 +1,10 @@
 {
   "Settings": {
     "Version": "1.0.0",
-    "ApiUrl": "http://assistente-api:8080",
-    "HubUrl": "http://assistente-api:8080",
+    "ApiUrl": "http://localhost:1009",
+    "HubUrl": "http://localhost:1009",
     "Seq": {
-      "Url": "http://assistente-seq:1007",
+      "Url": "http://localhost:1007",
       "ApiKey": "SeqApiKey"
     }
   }
