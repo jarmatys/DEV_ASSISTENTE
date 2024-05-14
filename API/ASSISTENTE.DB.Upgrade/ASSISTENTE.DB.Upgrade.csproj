@@ -11,7 +11,7 @@
         <PropertyGroup>
             <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net8.0</BinPath>
         </PropertyGroup>
-        <Copy SourceFiles="../../appsettings.json" DestinationFolder="$(BinPath)" />
+        <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
     </Target>
 
     <ItemGroup>
