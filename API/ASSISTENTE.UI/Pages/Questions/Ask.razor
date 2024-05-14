@@ -77,6 +77,7 @@ else
         await QuestionsBroker.CreateQuestionAsync(request);
 
     private void HandleRequestUpdate(CreateQuestionRequest request) => _request = request;
+
     private void HandleOnSubmit()
     {
         _questionProgresses.Clear();
@@ -109,7 +110,7 @@ else
             {
                 _response = response.Content;
             }
-            
+
             _inProgress = false;
 
             await InvokeAsync(StateHasChanged);
@@ -120,7 +121,9 @@ else
 
     public async ValueTask DisposeAsync()
     {
-        if (HubConnection != null) await HubConnection.DisposeAsync();
+        if (HubConnection == null) return;
+
+        await HubConnection.StopAsync();
     }
 
 }
