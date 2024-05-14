@@ -96,6 +96,7 @@ services:
       - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
+      - Qdrant__Port=${Qdrant_Port}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -115,6 +116,7 @@ services:
       - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
+      - Qdrant__Port=${Qdrant_Port}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
