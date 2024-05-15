@@ -1,16 +1,19 @@
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Worker.Sync.Common.Extensions;
 
-var configuration = new ConfigurationBuilder()
+var settings = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
-    .Build();
+    .Build()
+    .GetSettings<AssistenteSettings>();
 
 var builder = WebApplication
     .CreateBuilder(args)
-    .AddQueue(configuration)
-    .AddLogging(configuration)
-    .AddModules(configuration);
+    .AddQueue(settings.Rabbit)
+    .AddLogging(settings.Seq)
+    .AddModules(settings);
 
 var app = builder.Build();
 
@@ -19,4 +22,4 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.Run();
+await app.RunAsync();

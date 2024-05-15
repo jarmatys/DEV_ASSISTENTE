@@ -1,7 +1,5 @@
 ﻿using ASSISTENTE.Application.Abstractions.Clients;
-using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Settings;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Client.Internal
@@ -10,10 +8,8 @@ namespace ASSISTENTE.Client.Internal
     {
         public static IServiceCollection AddInternalClient(
             this IServiceCollection services,
-            IConfiguration configuration)
+            AssistenteSettings settings)
         {
-            var settings = configuration.GetSettings<AssistenteSettings>();
-
             services.AddScoped(_ => new HttpClient
             {
                 BaseAddress = new Uri(settings.InternalApi.Url)

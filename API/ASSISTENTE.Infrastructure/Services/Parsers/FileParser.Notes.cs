@@ -8,7 +8,7 @@ public sealed partial class FileParser
 {
     public Result<IEnumerable<ResourceText>> GetNotes()
     {
-        var filePaths = GetPaths(knowledgePathsOption.MarkdownNotes);
+        var filePaths = GetPaths(knowledgePaths.MarkdownNotes);
 
         var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)

@@ -1,6 +1,4 @@
-﻿using ASSISTENTE.Common.Exceptions;
-using ASSISTENTE.Common.Settings.Sections;
-using Microsoft.Extensions.Configuration;
+﻿using ASSISTENTE.Common.Settings.Sections;
 using Microsoft.Extensions.DependencyInjection;
 using Qdrant.Client;
 

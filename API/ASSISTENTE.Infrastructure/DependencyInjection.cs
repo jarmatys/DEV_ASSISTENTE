@@ -1,17 +1,15 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Settings;
+using ASSISTENTE.Common.Settings.Sections;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.MarkDownParser;
-using ASSISTENTE.Infrastructure.Options;
 using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Services;
 using ASSISTENTE.Infrastructure.Services.Parsers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Infrastructure
@@ -20,10 +18,8 @@ namespace ASSISTENTE.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services,
-            IConfiguration configuration)
+            AssistenteSettings settings)
         {
-            var settings = configuration.GetSettings<AssistenteSettings>();
-            
             services.AddMarkDownParser();
             services.AddCodeParser();
             services.AddEmbeddings(settings.OpenAi);
@@ -37,8 +33,8 @@ namespace ASSISTENTE.Infrastructure
             services.AddScoped<IMaintenanceService, MaintenanceService>();
             services.AddScoped<ISystemTimeProvider, SystemTimeProvider>();
 
-            services.AddOption<KnowledgePathsOption>(configuration, "KnowledgePaths");
-
+            services.AddScoped<KnowledgePathsSection>(_ => settings.KnowledgePaths);
+            
             return services;
         }
     }

@@ -1,22 +1,25 @@
 using ASSISTENTE.API.Extensions.Configurations;
 using ASSISTENTE.API.Hubs;
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Publisher.Rabbit;
 
-var configuration = new ConfigurationBuilder()
+var settings = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
-    .Build();
+    .Build()
+    .GetSettings<AssistenteSettings>();
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommon();
-builder.AddLogging(configuration);
+builder.AddLogging(settings.Seq);
 builder.AddCors();
 builder.AddLimiter();
 builder.AddEndpoints();
-builder.AddModules(configuration);
-builder.Services.AddRabbitPublisher(configuration);
+builder.AddModules(settings);
+builder.Services.AddRabbitPublisher(settings.Rabbit);
 builder.Services.AddSignalR();
 
 var app = builder.Build();

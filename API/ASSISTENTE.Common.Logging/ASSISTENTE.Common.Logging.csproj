@@ -13,4 +13,8 @@
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
+    </ItemGroup>
+
 </Project>

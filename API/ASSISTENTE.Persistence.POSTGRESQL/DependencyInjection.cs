@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using ASSISTENTE.Common.Settings.Sections;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Persistence.POSTGRESQL
@@ -8,12 +8,10 @@ namespace ASSISTENTE.Persistence.POSTGRESQL
     {
         public static IServiceCollection AddPostreSql<TContext>(
             this IServiceCollection services,
-            IConfiguration configuration)
+            DatabaseSection database)
             where TContext : DbContext
         {
-            var connectionString = configuration.GetConnectionString("AssistenteDatabase");
-
-            services.AddDbContext<TContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<TContext>(options => options.UseNpgsql(database.ConnectionString));
 
             return services;
         }

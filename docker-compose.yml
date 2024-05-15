@@ -59,6 +59,7 @@ services:
       - 1007:5341
     environment:
       - ACCEPT_EULA=Y
+      - API_KEY=${Seq_ApiKey}
     volumes:
       - assistente-seq:/data
 
@@ -73,7 +74,6 @@ services:
       - 1008:8080
     volumes:
       - ./blazor.json:/var/www/web/appsettings.json
-
   
   db-upgrade:
     image: armatysme/assistente-db-upgrade:latest
@@ -81,7 +81,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+      - Database__ConnectionString=${Database_ConnectionString}
 
   api:
     image: armatysme/assistente-api:latest
@@ -93,8 +93,10 @@ services:
     ports:
       - 1009:8080
     environment:
-      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+      - Database__ConnectionString=${Database_ConnectionString}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Seq_Url=${Seq_Url}
+      - Seq_ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__Port=${Qdrant_Port}
       - Rabbit__Name=${Rabbit_Name}
@@ -113,8 +115,10 @@ services:
     ports:
       - 1010:8080
     environment:
-      - ConnectionStrings__AssistenteDatabase=${ConnectionStrings_AssistenteDatabase}
+      - Database__ConnectionString=${Database_ConnectionString}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Seq_Url=${Seq_Url}
+      - Seq_ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__Port=${Qdrant_Port}
       - Rabbit__Name=${Rabbit_Name}

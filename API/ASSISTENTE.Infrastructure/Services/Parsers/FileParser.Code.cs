@@ -8,7 +8,7 @@ public sealed partial class FileParser
 {
     public Result<IEnumerable<ResourceText>> GetCode()
     {
-        var filePaths = GetPaths(knowledgePathsOption.Repositories);
+        var filePaths = GetPaths(knowledgePaths.Repositories);
 
         var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)

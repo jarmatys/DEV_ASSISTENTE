@@ -1,7 +1,5 @@
-﻿using ASSISTENTE.Common.Exceptions;
-using ASSISTENTE.Common.Settings.Sections;
+﻿using ASSISTENTE.Common.Settings.Sections;
 using ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI.Net;
 
