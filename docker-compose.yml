@@ -1,5 +1,6 @@
 services:
   postgres:
+    profiles: ["setup"]
     image: postgres:14.1-alpine
     container_name: assistente-postgres
     hostname: assistente-postgres
@@ -13,6 +14,7 @@ services:
       - assistente-postgres:/var/lib/postgresql/data
 
   pgadmin:
+    profiles: ["setup"]
     image: dpage/pgadmin4
     container_name: assistente-pgadmin
     hostname: assistente-pgadmin
@@ -22,8 +24,11 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@assistente.dev
       - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - assistente-pg-admin:/var/lib/pgadmin
 
   qdrant:
+    profiles: ["setup"]
     image: qdrant/qdrant
     container_name: assistente-qdrant
     hostname: qdrant
@@ -35,6 +40,7 @@ services:
       - assistente-qdrant:/qdrant/storage
 
   rabbitmq:
+    profiles: ["setup"]
     image: rabbitmq:3.7.7-management
     container_name: assistente-rabbitmq
     hostname: assistente-rabbitmq
@@ -50,6 +56,7 @@ services:
       - assistente-rabbitmq:/var/lib/rabbitmq
 
   seq:
+    profiles: ["setup"]
     image: datalust/seq:latest
     container_name: assistente-seq
     hostname: assistente-seq
@@ -64,6 +71,7 @@ services:
       - assistente-seq:/data
 
   ui:
+    profiles: ["app"]
     image: armatysme/assistente-ui:latest
     container_name: ui
     hostname: assistente-ui
@@ -76,14 +84,14 @@ services:
       - ./blazor.json:/var/www/web/appsettings.json
   
   db-upgrade:
+    profiles: ["database"]
     image: armatysme/assistente-db-upgrade:latest
     container_name: db-upgrade
-    depends_on:
-      - postgres
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
 
   api:
+    profiles: ["app"]
     image: armatysme/assistente-api:latest
     container_name: api
     hostname: assistente-api
@@ -104,14 +112,11 @@ services:
       - InternalApi__Url=${InternalApi_Url}
 
   worker-sync:
+    profiles: ["app"]
     image: armatysme/assistente-worker-sync:latest
     container_name: worker-sync
     hostname: assistente-worker-sync
     restart: unless-stopped
-    depends_on:
-      - postgres
-      - rabbitmq
-      - qdrant
     ports:
       - 1010:8080
     environment:
@@ -125,8 +130,26 @@ services:
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
 
+  playground:
+    profiles: ["playground"]
+    image: armatysme/assistente-playground:latest
+    container_name: playground
+    entrypoint: ["dotnet", "ASSISTENTE.Playground.dll", "-l"]
+    environment:
+      - Database__ConnectionString=${Database_ConnectionString}
+      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Seq_Url=${Seq_Url}
+      - Seq_ApiKey=${Seq_ApiKey}
+      - Qdrant__Host=${Qdrant_Host}
+      - Qdrant__Port=${Qdrant_Port}
+    volumes:
+      - ./${KnowledgePaths_MarkdownNotes}:/app/Resources/Notes
+      - ./${KnowledgePaths_Repositories}:/app/Resources/Repositories
+
 volumes:
   assistente-postgres:
+    driver: local
+  assistente-pg-admin:
     driver: local
   assistente-qdrant:
     driver: local
