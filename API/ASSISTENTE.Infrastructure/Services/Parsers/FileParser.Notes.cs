@@ -5,17 +5,21 @@ using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;
 
-public sealed partial class FileParser 
+public sealed partial class FileParser
 {
-    private const string NotesPath = "Resources/Notes";
-
+    private readonly string _notesPath = Path.Combine(
+        Directory.GetCurrentDirectory(),
+        "Resources",
+        "Notes"
+    );
+    
     public Result<IEnumerable<ResourceText>> GetNotes()
     {
-        var filePaths = GetPaths(NotesPath)!;
+        var filePaths = GetPaths(_notesPath)!;
 
         if (filePaths.Count == 0)
-            logger.LogWarning("No notes files found in the path '{Path}'. Mount location as volume.", NotesPath);
-        
+            logger.LogWarning("No notes files found in the path '{Path}'. Mount location as volume.", _notesPath);
+
         var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)
         {

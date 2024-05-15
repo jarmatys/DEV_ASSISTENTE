@@ -7,14 +7,18 @@ namespace ASSISTENTE.Infrastructure.Services.Parsers;
 
 public sealed partial class FileParser
 {
-    private const string RepositoriesPath = "Resources/Repositories";
-
+    private readonly string _repositoriesPath = Path.Combine(
+        Directory.GetCurrentDirectory(),
+        "Resources",
+        "Repositories"
+    );
+    
     public Result<IEnumerable<ResourceText>> GetCode()
     {
-        var filePaths = GetPaths(RepositoriesPath)!;
+        var filePaths = GetPaths(_repositoriesPath)!;
 
         if (filePaths.Count == 0)
-            logger.LogWarning("No code files found in the path '{Path}'. Mount location as volume.", RepositoriesPath);
+            logger.LogWarning("No code files found in the path '{Path}'. Mount location as volume.", _repositoriesPath);
         
         var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)
