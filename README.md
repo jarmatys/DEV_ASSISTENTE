@@ -91,12 +91,14 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 ### Quick start
 
-Prerequisites: `.NET 8` + `Docker` 
+Prerequisites: `Docker` 
 
 1. Fill out the settings file (`appsettings.json`) and (`.env`) from [CONFIGURATION](#Configuration) section
 
-2. Run `start-enviroment.ps1` script
-
-3. Run `learn.ps1` script to initialize and learn notes & codes from locations provided in `appsettings.json` (node: `KnowledgePaths`).
+2. Run `start-enviroment.ps1` script with parameters:
+    - Firstly with `-s` - to start required services
+    - Secondly with `-d` - to upgrade and migrate database
+    - Thirdly with `-a` - to start assistente application
+    - Fourthly with `-p` - to learn assistente
 
 4. Voila! Currently you can go to `https://localhost:1008`
