@@ -24,7 +24,7 @@ services:
 
   ui:
     profiles: ["app"]
-    image: armatysme/assistente-ui:latest
+    image: armatysme/assistente-ui:${Version}
     container_name: ui
     hostname: assistente-ui
     restart: unless-stopped
@@ -37,14 +37,14 @@ services:
   
   db-upgrade:
     profiles: ["database"]
-    image: armatysme/assistente-db-upgrade:latest
+    image: armatysme/assistente-db-upgrade:${Version}
     container_name: db-upgrade
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
 
   api:
     profiles: ["app"]
-    image: armatysme/assistente-api:latest
+    image: armatysme/assistente-api:${Version}
     container_name: api
     hostname: assistente-api
     restart: unless-stopped
@@ -65,7 +65,7 @@ services:
 
   worker-sync:
     profiles: ["app"]
-    image: armatysme/assistente-worker-sync:latest
+    image: armatysme/assistente-worker-sync:${Version}
     container_name: worker-sync
     hostname: assistente-worker-sync
     restart: always
@@ -82,7 +82,7 @@ services:
 
   playground:
     profiles: ["playground"]
-    image: armatysme/assistente-playground:latest
+    image: armatysme/assistente-playground:${Version}
     container_name: playground
     entrypoint: ["dotnet", "ASSISTENTE.Playground.dll", "-l"]
     environment:
