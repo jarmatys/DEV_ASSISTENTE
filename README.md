@@ -1,10 +1,11 @@
 # 🤖 ASSISTENTE.DEV - Your Coding Companion
 
- 🔗 QUICK LINKS: [Website](https://assistente.dev) | [Nuget](https://www.nuget.org/packages/ASSISTENTE/#readme-body-tab)
+ 🔗 QUICK LINKS: [APP Demo](https://app.assistente.dev) 🆕 | [Website](https://assistente.dev) | [Nuget](https://www.nuget.org/packages/ASSISTENTE/#readme-body-tab)
 
 ---
 
-🐳 DOCKER IMAGES: [UI](https://hub.docker.com/repository/docker/armatysme/assistente-ui/general) | [API](https://hub.docker.com/repository/docker/armatysme/assistente-api/general) | [WORKER](https://hub.docker.com/repository/docker/armatysme/assistente-worker-sync/general) | [DB UPGRADER](https://hub.docker.com/repository/docker/armatysme/assistente-db-upgrade/general)
+🐳 DOCKER IMAGES: [UI](https://hub.docker.com/repository/docker/armatysme/assistente-ui/general) | [API](https://hub.docker.com/repository/docker/armatysme/assistente-api/general) | [WORKER](https://hub.docker.com/repository/docker/armatysme/assistente-worker-sync/general) | [DB UPGRADER](https://hub.docker.com/repository/docker/armatysme/assistente-db-upgrade/general) |
+ [PLAYGROUND](https://hub.docker.com/repository/docker/armatysme/assistente-playground/general)
 
 ---
 
@@ -38,8 +39,9 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 - ✅ I phase (POC) - console app for test purpose `Playground`: [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/tree/master/API/ASSISTENTE.Playground)
 - ✅ II phase - UI in Blazor 
-- 🔳 III phase - Improve prompts and logic to generate the most accurate answers
-- 🔳 IV phase - Create auth logic (with requests limitation) + publish application on VPS
+- ✅ III phase - Request limitation (throttling) + publish application on VPS - [URL](https://app.assistente.dev)
+- 🔳 IV phase - Improve prompts and logic to generate the most accurate answers
+
 
 #### Loading user data
 
@@ -66,7 +68,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
     - ✅ Display resources list
     - ✅ Display asked questions with answers list
 - ✅ Switch from MSSQL to PostgreSQL
-- 🔳 Configure VPS to host all environment
+- ✅ Configure VPS to host all environment
 
 #### Nice to have
 
