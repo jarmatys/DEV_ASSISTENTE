@@ -96,13 +96,7 @@ services:
       - ./${KnowledgePaths_Repositories}:/app/Resources/Repositories
 
 volumes:
-  assistente-postgres:
-    driver: local
-  assistente-pg-admin:
-    driver: local
   assistente-qdrant:
-    driver: local
-  assistente-rabbitmq:
     driver: local
   assistente-seq:
     driver: local
