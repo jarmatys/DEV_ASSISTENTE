@@ -9,7 +9,6 @@ namespace ASSISTENTE.Infrastructure.Services.Parsers;
 public sealed partial class FileParser(
     IMarkDownParser markDownParser,
     ICodeParser codeParser,
-    KnowledgePathsSection knowledgePaths,
     ILogger<FileParser> logger) : IFileParser
 {
     private static readonly IEnumerable<string> PathsToIgnore =
@@ -23,7 +22,7 @@ public sealed partial class FileParser(
         ".idea"
     ];
 
-    private static IEnumerable<string> GetPaths(string rootDirectory)
+    private static List<string> GetPaths(string rootDirectory)
     {
         var paths = new List<string>();
 
@@ -31,7 +30,6 @@ public sealed partial class FileParser(
 
         return paths;
     }
-
 
     private static void GetFilesRecursively(string directory, ICollection<string> paths)
     {

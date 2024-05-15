@@ -24,18 +24,10 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Examples\test-file.md">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <Compile Remove="Examples\test-file.cs" />
-      <None Include="Examples\test-file.cs">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Examples\test-notes.md">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
+    
+    <Target Name="CreateDirectories" AfterTargets="Build">
+        <MakeDir Directories="$(OutputPath)Resources\Repositories" />
+        <MakeDir Directories="$(OutputPath)Resources\Notes" />
+    </Target>
+    
 </Project>

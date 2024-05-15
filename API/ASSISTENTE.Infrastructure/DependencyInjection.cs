@@ -32,8 +32,6 @@ namespace ASSISTENTE.Infrastructure
             services.AddScoped<IFileParser, FileParser>();
             services.AddScoped<IMaintenanceService, MaintenanceService>();
             services.AddScoped<ISystemTimeProvider, SystemTimeProvider>();
-
-            services.AddScoped<KnowledgePathsSection>(_ => settings.KnowledgePaths);
             
             return services;
         }

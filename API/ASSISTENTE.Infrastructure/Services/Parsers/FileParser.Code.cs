@@ -1,15 +1,21 @@
 using ASSISTENTE.Application.Abstractions.ValueObjects;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;
 
-public sealed partial class FileParser 
+public sealed partial class FileParser
 {
+    private const string RepositoriesPath = "Resources/Repositories";
+
     public Result<IEnumerable<ResourceText>> GetCode()
     {
-        var filePaths = GetPaths(knowledgePaths.Repositories);
+        var filePaths = GetPaths(RepositoriesPath)!;
 
+        if (filePaths.Count == 0)
+            logger.LogWarning("No code files found in the path '{Path}'. Mount location as volume.", RepositoriesPath);
+        
         var resourceBlocks = new List<ResourceText>();
         foreach (var fileLocation in filePaths)
         {
