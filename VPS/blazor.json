@@ -1,0 +1,11 @@
+{
+  "Settings": {
+    "Version": "1.0.0",
+    "ApiUrl": "https://api.assistente.dev",
+    "HubUrl": "https://api.assistente.dev",
+    "Seq": {
+      "Url": "https://seq.assistente.dev",
+      "ApiKey": "SeqApiKey"
+    }
+  }
+}
