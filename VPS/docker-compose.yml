@@ -54,8 +54,8 @@ services:
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
-      - Seq_Url=${Seq_Url}
-      - Seq_ApiKey=${Seq_ApiKey}
+      - Seq__Url=${Seq_Url}
+      - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__Port=${Qdrant_Port}
       - Rabbit__Name=${Rabbit_Name}
@@ -71,8 +71,8 @@ services:
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
-      - Seq_Url=${Seq_Url}
-      - Seq_ApiKey=${Seq_ApiKey}
+      - Seq__Url=${Seq_Url}
+      - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__Port=${Qdrant_Port}
       - Rabbit__Name=${Rabbit_Name}
@@ -87,8 +87,6 @@ services:
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
-      - Seq_Url=${Seq_Url}
-      - Seq_ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__Port=${Qdrant_Port}
     volumes:
