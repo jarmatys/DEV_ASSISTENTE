@@ -122,7 +122,8 @@ else
     public async ValueTask DisposeAsync()
     {
         if (HubConnection == null) return;
-
+        if (HubConnection.State != HubConnectionState.Connected) return;
+        
         await HubConnection.StopAsync();
     }
 
