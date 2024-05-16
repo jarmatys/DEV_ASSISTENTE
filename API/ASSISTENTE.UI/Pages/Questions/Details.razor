@@ -25,7 +25,14 @@
     <MudGrid Class="mb-3">
         <MudItem xs="12" sm="12">
             <h2 class="mb-2">Answer</h2>
-            <MarkdownArea Content="@_response.Answer"/>
+            @if (_response.Answer is not null)
+            {
+                <MarkdownArea Content="@_response.Answer"/>
+            }
+            else
+            {
+                <p>Generation in progress, please wait...</p>
+            }
         </MudItem>
     </MudGrid>
 

@@ -5,7 +5,7 @@ namespace ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion;
 
 public sealed record GetQuestionResponse(
     string Text,
-    string Answer,
+    string? Answer,
     QuestionContext Context,
     List<ResourceDto> Resources
 );

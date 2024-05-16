@@ -41,7 +41,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Queries
                     
                     return new GetQuestionResponse(
                         question.Text, 
-                        question.Answer!.Text, 
+                        question.Answer?.Text, 
                         question.Context!.Value, 
                         resources);
                 });
