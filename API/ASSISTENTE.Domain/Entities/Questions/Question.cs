@@ -75,9 +75,12 @@ public sealed class Question : AuditableEntity<QuestionId>
 
     public Result AddContext(QuestionContext context)
     {
+        if (context == QuestionContext.Error)
+            return Result.Failure(QuestionErrors.WrongContext.Build());
+        
         Context = context;
 
-        RaiseEvent(new ContextResolvedEvent(Id));
+        RaiseEvent(new ContextResolvedEvent(Id, context));
 
         return Result.Success();
     }

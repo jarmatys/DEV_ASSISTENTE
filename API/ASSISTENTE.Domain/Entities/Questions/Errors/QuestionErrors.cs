@@ -7,6 +7,9 @@ public static class QuestionErrors
     public static readonly Error ContextNotProvided = new(
         "Question.ContextNotProvided", "Context not provided.");
     
+    public static readonly Error WrongContext = new(
+        "Question.WrongContext", "Context shoudn't be 'Error' or null.");
+    
     public static readonly Error AnswerNotExist = new(
         "Question.AnswerNotCreated", "Answer for this question not exist.");
 }
