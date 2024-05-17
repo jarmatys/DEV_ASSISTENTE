@@ -32,6 +32,11 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 ![answer-generation-flow](https://raw.githubusercontent.com/jarmatys/DEV_ASSISTENTE/master/ASSETS/answer-generation-flow.png)
 
 ---
+### <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/youtube.svg" width="18" height="16" alt="YouTube" /> Video Explainer
+
+[![Assistente Video Explainer](https://img.youtube.com/vi/5l5J5WqOT2w/0.jpg)](https://www.youtube.com/watch?v=5l5J5WqOT2w)
+
+---
 
 ### Roadmap
 
@@ -41,7 +46,6 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ II phase - UI in Blazor 
 - ✅ III phase - Request limitation (throttling) + publish application on VPS - [URL](https://app.assistente.dev)
 - 🔳 IV phase - Improve prompts and logic to generate the most accurate answers
-
 
 #### Loading user data
 
@@ -78,7 +82,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 
 - ✅ Prepare `configuration` section in `Readme`
 - ✅ Prepare `quick start` section in `Readme`
-- 🔳 Prepare video explainer with simply demo
+- ✅ Prepare video explainer with simply demo
 
 ---
 ### Configuration
