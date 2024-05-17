@@ -116,7 +116,8 @@ else
             await InvokeAsync(StateHasChanged);
         });
 
-        await HubConnection.StartAsync();
+        if (HubConnection.State == HubConnectionState.Disconnected)
+            await HubConnection.StartAsync();
     }
 
     public async ValueTask DisposeAsync()
