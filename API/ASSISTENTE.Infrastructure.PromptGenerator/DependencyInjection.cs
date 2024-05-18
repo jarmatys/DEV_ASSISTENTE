@@ -1,5 +1,5 @@
-﻿using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
-using ASSISTENTE.Infrastructure.PromptGenerator.Prompts;
+﻿using System.Reflection;
+using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator
@@ -10,12 +10,23 @@ namespace ASSISTENTE.Infrastructure.PromptGenerator
         {
             services.AddScoped<IPromptGenerator, PromptGenerator>();
             services.AddScoped<IPromptFactory, PromptFactory>();
-            services.AddScoped<ISourceProvider, SourceProvider>();
+            services.AddScoped<IContextProvider, ContextProvider>();
 
-            services.AddScoped<IPrompt, QuestionPrompt>();
-            services.AddScoped<IPrompt, CodePrompt>();
-            
+            RegisterPrompts(services);
+
             return services;
+        }
+
+        private static void RegisterPrompts(IServiceCollection services)
+        {
+            var promptTypes = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => typeof(IPrompt).IsAssignableFrom(t) && t.IsClass);
+
+            foreach (var type in promptTypes)
+            {
+                services.AddScoped(typeof(IPrompt), type);
+            }
         }
     }
 }

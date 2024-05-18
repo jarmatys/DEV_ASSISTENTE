@@ -11,6 +11,7 @@ internal sealed class OpenAiClient(IOpenAIService openAiService) : ILLMClient
 {
     private readonly LLMClient _llmClient = LLMClient.Create("openAi");
     
+    // TODO: Add new model: https://openai.com/index/hello-gpt-4o/ (gpt-4o)
     private const string Gpt4 = "gpt-4";
     private const string Gpt3 = "gpt-3.5-turbo";
 

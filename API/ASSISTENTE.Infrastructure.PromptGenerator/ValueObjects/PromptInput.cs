@@ -5,14 +5,14 @@ namespace ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 
 public sealed class PromptInput
 {
-    private PromptInput(string question, IEnumerable<string> context, PromptType type)
+    private PromptInput(string prompt, IEnumerable<string> context, PromptType type)
     {
-        Question = question;
+        Prompt = prompt;
         Context = context;
         Type = type;
     }
     
-    public string Question { get; }
+    public string Prompt { get; }
     public IEnumerable<string> Context { get; }
     public PromptType Type { get; }
     

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ASSISTENTE.Domain.Commons.Interfaces;
 using ASSISTENTE.Language;
 using ASSISTENTE.Persistence.Configuration;
@@ -26,9 +27,21 @@ internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContex
         return Result.Success(entity);
     }
 
-    public Task<Result<TEntity>> RemoveAsync(TEntity entity)
+    public async Task<Result> RemoveAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        context.Set<TEntity>().Remove(entity);
+        await context.SaveChangesAsync();
+        return Result.Success();
+    }
+
+    public async Task<Maybe<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var entities = await List()
+            .AsNoTracking()
+            .Where(predicate)
+            .ToListAsync();
+        
+        return Maybe<IEnumerable<TEntity>>.From(entities);
     }
 
     public async Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id)

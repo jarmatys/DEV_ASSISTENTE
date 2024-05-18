@@ -2,7 +2,7 @@ using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator;
 
-public class SourceProvider : ISourceProvider
+public class ContextProvider : IContextProvider
 {
     public string Prompt<T>(string question) where T : struct, Enum
     {

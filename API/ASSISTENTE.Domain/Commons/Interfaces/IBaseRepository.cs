@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ASSISTENTE.Language;
 
 namespace ASSISTENTE.Domain.Commons.Interfaces;
@@ -8,7 +9,8 @@ public interface IBaseRepository<TEntity, in TIdentifier>
 {
     Task<Result<TEntity>> AddAsync(TEntity entity);
     Task<Result<TEntity>> UpdateAsync(TEntity entity);
-    Task<Result<TEntity>> RemoveAsync(TEntity entity);
+    Task<Result> RemoveAsync(TEntity entity);
+    Task<Maybe<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate);
     Task<Maybe<TEntity>> GetByIdAsync(TIdentifier id);
     Task<Maybe<IEnumerable<TEntity>>> GetAllAsync();
     Task<Maybe<IEnumerable<TEntity>>> PaginateAsync(int page, int elements);

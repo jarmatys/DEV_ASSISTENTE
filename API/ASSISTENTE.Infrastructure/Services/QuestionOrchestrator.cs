@@ -14,6 +14,7 @@ using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Models;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
+
 using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
 
 namespace ASSISTENTE.Infrastructure.Services;
@@ -25,20 +26,20 @@ public sealed class QuestionOrchestrator(
     IResourceRepository resourceRepository,
     IQuestionRepository questionRepository,
     ILLMClient llmClient,
-    ISourceProvider sourceProvider
+    IContextProvider contextProvider
 ) : IQuestionOrchestrator
 {
     private static string CollectionName(string type) => $"embeddings-{type}";
-    
+
     public async Task<Result<Question>> InitQuestion(string questionText, string? connectionId)
     {
-        return await Question.Create(questionText, connectionId) // 2. Init question (save in DB for audit purpose)
+        return await Question.Create(questionText, connectionId) // 1. Init question (save in DB for audit purpose)
             .Check(questionRepository.AddAsync);
     }
 
     public async Task<Result> ResolveContext(Question question)
     {
-        return await GetContextAsync<ResourceType, QuestionContext>(question.Text) // 1. Detect context
+        return await DetermineContextAsync<ResourceType, QuestionContext>(question.Text) // 2. Detect context
             .Check(question.AddContext)
             .Check(_ => questionRepository.UpdateAsync(question));
     }
@@ -66,10 +67,35 @@ public sealed class QuestionOrchestrator(
             .Check(_ => questionRepository.UpdateAsync(question));
     }
 
+    public async Task<Result> FindFiles(Question question)
+    {
+        var answareText = await question.GetContext()
+            .Bind(GetResourceType)
+            .Map(async resourceType => await resourceRepository
+                .GetFileNames(resourceType)
+                .ToResult(KnowledgeServiceErrors.NotFound.Build())
+            )
+            .Bind(fileNames => PromptInput.Create(question.Text, fileNames, PromptType.Files))
+            .Bind(promptGenerator.GeneratePrompt)
+            .Bind(Prompt.Create)
+            .Bind(async prompt =>
+            {
+                var answer = await llmClient.GenerateAnswer(prompt);
+                
+                // TODO: Validate answer
+                // TODO: Save selected files (save in DB for audit purpose)
+                
+                return answer;
+            })
+            .Map(answer => answer.Text);
+
+        return Result.Success();
+    }
+
     public async Task<Result<string>> GenerateAnswer(Question question)
     {
         var contextContent = question.Resources.Select(x => x.Resource).Select(x => x.Content);
-        
+
         return await question.GetContext()
             .Bind(context =>
             {
@@ -88,25 +114,28 @@ public sealed class QuestionOrchestrator(
                                     answer.Audit.PromptTokens,
                                     answer.Audit.CompletionTokens
                                 )
-                                .Check(question
-                                    .AddAnswer)); // 8. Save answer to question (save in DB for audit purpose)
+                                .Check(question.AddAnswer));
+                        // 8. Save answer to question (save in DB for audit purpose)
 
                         return answer;
                     })
-                    .Check(_ => questionRepository.UpdateAsync(question)) // 9. Commit DB transation
+                    .Check(_ => questionRepository.UpdateAsync(question))
                     .Map(answer => answer.Text);
             });
     }
 
-    private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question)
+    private async Task<Result<TContext>> DetermineContextAsync<TType, TContext>(string question)
         where TType : struct, Enum
         where TContext : struct, Enum
     {
-        var promptText = sourceProvider.Prompt<TType>(question);
+        var promptText = contextProvider.Prompt<TType>(question);
 
         var result = await Prompt.Create(promptText)
             .Bind(llmClient.GenerateAnswer);
-
+        
+        if (result.IsFailure)
+            return Result.Failure<TContext>(result.Error);
+        
         try
         {
             var source = (TContext)Enum.Parse(typeof(TContext), result.Value.Text);
@@ -121,12 +150,24 @@ public sealed class QuestionOrchestrator(
     private static Result<PromptType> GetPromptType(string contextText)
     {
         var context = Enum.Parse<QuestionContext>(contextText);
-        
+
         return context switch
         {
             QuestionContext.Note => PromptType.Question,
             QuestionContext.Code => PromptType.Code,
             _ => Result.Failure<PromptType>(KnowledgeServiceErrors.PromptTypeNotExist.Build())
+        };
+    }
+
+    private static Result<ResourceType> GetResourceType(string contextText)
+    {
+        var context = Enum.Parse<QuestionContext>(contextText);
+
+        return context switch
+        {
+            QuestionContext.Note => ResourceType.Note,
+            QuestionContext.Code => ResourceType.Code,
+            _ => Result.Failure<ResourceType>(KnowledgeServiceErrors.ResourceTypeNotExist.Build())
         };
     }
 }
