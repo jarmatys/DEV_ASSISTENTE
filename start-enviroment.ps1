@@ -7,7 +7,7 @@ param (
 
 if ($d)
 {
-    docker compose -f .\docker-compose.yml --profile database up -d
+    docker compose -f .\docker-compose.yml --profile database up
 }
 elseif ($s)
 {
@@ -19,5 +19,9 @@ elseif ($a)
 }
 elseif ($p)
 {
-    docker compose -f .\docker-compose.yml --profile playground up -d
+    docker compose -f .\docker-compose.yml --profile playground up
+}
+else
+{
+    Write-Host "Please provide a profile to start the enviroment: -s, -d, -p, -a (setup, database, playground, app)"
 }
