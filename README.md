@@ -73,10 +73,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
     - ✅ Display asked questions with answers list
 - ✅ Switch from MSSQL to PostgreSQL
 - ✅ Configure VPS to host all environment
-
-#### Nice to have
-
-- 🔳 Add library for translation (prompts and knowledge base)
+- 🔳 Add support for separated scenario for code generation
 
 #### Common tasks
 
