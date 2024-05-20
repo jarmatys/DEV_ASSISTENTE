@@ -15,6 +15,10 @@ namespace ASSISTENTE.Persistence.Configuration
             builder.HasMany(e => e.Resources)
                 .WithOne(e => e.Question)
                 .HasForeignKey(e => e.QuestionId);
+            
+            builder.HasMany(e => e.Files)
+                .WithOne(e => e.Question)
+                .HasForeignKey(e => e.QuestionId);
         }
     }
 }

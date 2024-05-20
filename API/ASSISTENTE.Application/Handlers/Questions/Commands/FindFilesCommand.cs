@@ -38,7 +38,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         protected override async Task<Maybe<Question>> GetQuestionAsync(FindFilesCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);
 
-        protected override QuestionProgress InitialProgress => QuestionProgress.SearchingForResources;
-        protected override QuestionProgress FinalProgress => QuestionProgress.ResourcesFound;
+        protected override QuestionProgress InitialProgress => QuestionProgress.SearchingForFiles;
+        protected override QuestionProgress FinalProgress => QuestionProgress.FilesFound;
     }
 }

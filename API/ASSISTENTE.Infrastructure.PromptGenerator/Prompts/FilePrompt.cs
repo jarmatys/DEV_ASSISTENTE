@@ -33,6 +33,10 @@ internal class FilePrompt : IPrompt
                       
                       Answer:
                       FilePrompt.cs
+                      
+                      --------------------------
+                      
+                      IMPORTANT: Return only selected file names without other information.
                       """;
 
         return prompt;

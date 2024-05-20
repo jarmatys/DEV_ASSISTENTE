@@ -15,6 +15,7 @@ public sealed class Question : AuditableEntity<QuestionId>
     private Question()
     {
         Resources = new List<QuestionResource>();
+        Files = new List<QuestionFile>();
     }
 
     private Question(string text, string? connectionId)
@@ -27,6 +28,7 @@ public sealed class Question : AuditableEntity<QuestionId>
         Context = null;
         Embeddings = null;
         Resources = new List<QuestionResource>();
+        Files = new List<QuestionFile>();
 
         RaiseEvent(new QuestionCreatedEvent(Id));
     }
@@ -40,6 +42,7 @@ public sealed class Question : AuditableEntity<QuestionId>
 
     public Answer? Answer { get; private set; }
     public ICollection<QuestionResource> Resources { get; private set; }
+    public ICollection<QuestionFile> Files { get; private set; }
 
     # endregion
 
@@ -48,7 +51,7 @@ public sealed class Question : AuditableEntity<QuestionId>
         return new Question(text, connectionId);
     }
 
-    public Result AddResource(IEnumerable<Resource> resources)
+    public Result AddResources(IEnumerable<Resource> resources)
     {
         var questionResources = resources
             .Select(r => QuestionResource.Create(r.Id));
@@ -66,6 +69,15 @@ public sealed class Question : AuditableEntity<QuestionId>
         return Result.Success();
     }
 
+    public Result AddFiles(QuestionFile file)
+    {
+        Files.Add(file);
+
+        RaiseEvent(new FilesAttachedEvent(Id));
+        
+        return Result.Success();
+    }
+    
     public Result AddEmbeddings(IEnumerable<float> embeddings)
     {
         Embeddings = embeddings.ToList();

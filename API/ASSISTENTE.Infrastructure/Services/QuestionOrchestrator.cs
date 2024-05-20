@@ -63,13 +63,13 @@ public sealed class QuestionOrchestrator(
                     .FindByResourceIdsAsync(resourceIds)
                     .ToResult(KnowledgeServiceErrors.NotFound.Build());
             })
-            .Check(question.AddResource) // 5. Save selected resources to question (save in DB for audit purpose)
+            .Check(question.AddResources) // 5. Save selected resources to question (save in DB for audit purpose)
             .Check(_ => questionRepository.UpdateAsync(question));
     }
 
     public async Task<Result> FindFiles(Question question)
     {
-        var answareText = await question.GetContext()
+        return await question.GetContext()
             .Bind(GetResourceType)
             .Map(async resourceType => await resourceRepository
                 .GetFileNames(resourceType)
@@ -80,16 +80,14 @@ public sealed class QuestionOrchestrator(
             .Bind(Prompt.Create)
             .Bind(async prompt =>
             {
-                var answer = await llmClient.GenerateAnswer(prompt);
-                
-                // TODO: Validate answer
-                // TODO: Save selected files (save in DB for audit purpose)
+                var answer = await llmClient.GenerateAnswer(prompt)
+                    .Check(answer => QuestionFile.Create(answer.Text) // TODO: Validate answer
+                        .Check(question.AddFiles));
                 
                 return answer;
             })
+            .Check(_ => questionRepository.UpdateAsync(question))
             .Map(answer => answer.Text);
-
-        return Result.Success();
     }
 
     public async Task<Result<string>> GenerateAnswer(Question question)

@@ -46,6 +46,7 @@ namespace ASSISTENTE.Persistence.Configuration
         public DbSet<Resource> Resources { get; set; } 
         public DbSet<Question> Questions { get; set; } 
         public DbSet<QuestionResource> QuestionResources { get; set; } 
+        public DbSet<QuestionFile> QuestionFiles { get; set; } 
         public DbSet<Answer> Answers { get; set; } 
 
         #endregion
@@ -70,10 +71,12 @@ namespace ASSISTENTE.Persistence.Configuration
                 .Properties<DateTime>()
                 .HaveConversion<DateTimeConverter>();
             
+            // TODO: Prepare generic configuration for all entities
             configurationBuilder.ConfigureGuidIdentifier<ResourceId, ResourceIdConverter>();
             configurationBuilder.ConfigureGuidIdentifier<QuestionId, QuestionIdConverter>();
             configurationBuilder.ConfigureNumberIdentifier<AnswerId, AnswerIdConverter>();
             configurationBuilder.ConfigureNumberIdentifier<QuestionResourceId, QuestionResourceIdConverter>();
+            configurationBuilder.ConfigureNumberIdentifier<QuestionFileId, QuestionFileIdConverter>();
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
