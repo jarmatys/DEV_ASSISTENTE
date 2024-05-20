@@ -73,7 +73,8 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
     - ✅ Display asked questions with answers list
 - ✅ Switch from MSSQL to PostgreSQL
 - ✅ Configure VPS to host all environment
-- 🔳 Add support for separated scenario for code generation
+- 🔳 Add support for separated scenario for `CODE` generation
+    - ✅ Added table `QuestionFiles` to save information about select files based on question
 
 #### Common tasks
 
