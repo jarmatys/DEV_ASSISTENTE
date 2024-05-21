@@ -13,6 +13,6 @@ internal class PromptFactory(IEnumerable<IPrompt> prompts) : IPromptFactory
         
         return prompt == null 
             ? Result.Failure<string>(PromptFactoryErrors.PromptTypeNotSupported.Build()) 
-            : Result.Success(prompt.Generate(input.Prompt, input.Context));
+            : Result.Success(prompt.Generate(input.Question, input.Context));
     }
 }

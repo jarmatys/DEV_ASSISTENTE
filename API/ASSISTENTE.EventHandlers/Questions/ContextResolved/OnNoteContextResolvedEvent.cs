@@ -12,7 +12,7 @@ public sealed class OnNoteContextResolvedEvent(IPublishEndpoint publishEndpoint)
     public Task Handle(ContextResolvedEvent notification, CancellationToken ct)
     {
         return notification.Context == QuestionContext.Note 
-            ? publishEndpoint.Publish(new FindResourcesMessage(notification.QuestionId), ct) 
+            ? publishEndpoint.Publish(new CreateEmbeddingsMessage(notification.QuestionId), ct) 
             : Task.CompletedTask;
     }
 }

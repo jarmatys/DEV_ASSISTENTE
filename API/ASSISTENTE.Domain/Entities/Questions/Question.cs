@@ -82,6 +82,8 @@ public sealed class Question : AuditableEntity<QuestionId>
     {
         Embeddings = embeddings.ToList();
 
+        RaiseEvent(new EmbeddingsCreatedEvent(Id));
+
         return Result.Success();
     }
 
@@ -112,9 +114,34 @@ public sealed class Question : AuditableEntity<QuestionId>
             ? Context.ToString()!
             : Result.Failure<string>(QuestionErrors.ContextNotProvided.Build());
     }
+    
+    public Result<List<float>> GetEmbeddings()
+    {
+        return Embeddings ?? Result.Failure<List<float>>(QuestionErrors.EmbeddingsNotCreated.Build());
+    }
 
     public Result<string> GetAnswer()
     {
         return Answer?.Text ?? Result.Failure<string>(QuestionErrors.AnswerNotExist.Build());
+    }
+
+    public Result<string> BuildEmbeddableText()
+    {
+        var fileNames = Files.Select(x => x.Text);
+        
+        return Context switch
+        {
+            QuestionContext.Note => Text,
+            QuestionContext.Code => $"{Text} | {string.Join(", ", fileNames)}",
+            QuestionContext.Error => Result.Failure<string>(QuestionErrors.WrongContext.Build()),
+            _ => Result.Failure<string>(QuestionErrors.ContextNotProvided.Build())
+        };
+    }
+    
+    public Result<string> BuildContext()
+    {
+        var resourcesContent = Resources.Select(x => x.Resource).Select(x => x.Content);
+
+        return string.Join(Environment.NewLine, resourcesContent);
     }
 }
