@@ -18,7 +18,8 @@ internal class CodePrompt : IPrompt
                       
                       -----------------------------
 
-                      Based on the code fragments below, prepare solution proposals, answer them as best as you can and truthfully.
+                      Based on the code fragments below, prepare solution proposals, answer them as best as you can and truthfully. 
+                      In solution show ready code fragments that can be used to solve the requirement.
 
                       ### code fragments
                       {context}
