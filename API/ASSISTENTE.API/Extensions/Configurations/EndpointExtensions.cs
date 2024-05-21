@@ -48,9 +48,11 @@ internal static class EndpointExtensions
 
     private static void RegisterIdentifierParsers(this Config c)
     {
+        // TODO: Preare generic parsers for all identifiers
         c.Binding.ValueParserFor<QuestionId>(IdentifierParsers.GuidParser<QuestionId>);
         c.Binding.ValueParserFor<ResourceId>(IdentifierParsers.GuidParser<ResourceId>);
         c.Binding.ValueParserFor<AnswerId>(IdentifierParsers.NumberParser<AnswerId>);
         c.Binding.ValueParserFor<QuestionResourceId>(IdentifierParsers.NumberParser<QuestionResourceId>);
+        c.Binding.ValueParserFor<QuestionFileId>(IdentifierParsers.NumberParser<QuestionFileId>);
     }
 }

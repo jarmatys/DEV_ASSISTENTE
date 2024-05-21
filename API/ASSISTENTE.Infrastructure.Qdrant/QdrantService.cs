@@ -56,7 +56,7 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
             var result = response.Select(x => SearchResult.Create(x.Id, x.Score)).ToList();
 
             return result.Count == 0
-                ? Result.Failure<List<SearchResult>>(QdrantServiceErrors.SearchFailed.Build())
+                ? Result.Failure<List<SearchResult>>(QdrantServiceErrors.MissingResources.Build())
                 : result;
         }
         catch (Exception e)

@@ -5,10 +5,10 @@ using MediatR;
 
 namespace ASSISTENTE.EventHandlers.Questions;
 
-public sealed class OnContextResolvedEvent(IPublishEndpoint publishEndpoint)
-    : INotificationHandler<ContextResolvedEvent>
+public sealed class OnEmbeddingsCreatedEvent(IPublishEndpoint publishEndpoint)
+    : INotificationHandler<EmbeddingsCreatedEvent>
 {
-    public Task Handle(ContextResolvedEvent notification, CancellationToken cancellationToken)
+    public Task Handle(EmbeddingsCreatedEvent notification, CancellationToken cancellationToken)
     {
         publishEndpoint.Publish(new FindResourcesMessage(notification.QuestionId), cancellationToken);
 

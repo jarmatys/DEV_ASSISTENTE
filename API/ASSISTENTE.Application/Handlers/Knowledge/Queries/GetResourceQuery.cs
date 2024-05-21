@@ -16,7 +16,6 @@ namespace ASSISTENTE.Application.Handlers.Knowledge.Queries
             ResourceId = request.ResourceId;
         }
         
-        
         public ResourceId ResourceId { get; }
         
         public static GetResourceQuery Create(GetResourceRequest request)

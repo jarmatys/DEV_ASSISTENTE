@@ -6,7 +6,7 @@ namespace ASSISTENTE.Domain.Entities.Questions;
 
 public sealed class QuestionResource : AuditableEntity<QuestionResourceId>
 {
-    public QuestionResource()
+    private QuestionResource()
     {
     }
     

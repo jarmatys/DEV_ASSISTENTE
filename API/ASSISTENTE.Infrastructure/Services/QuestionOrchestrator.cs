@@ -25,56 +25,86 @@ public sealed class QuestionOrchestrator(
     IResourceRepository resourceRepository,
     IQuestionRepository questionRepository,
     ILLMClient llmClient,
-    ISourceProvider sourceProvider
+    IContextProvider contextProvider
 ) : IQuestionOrchestrator
 {
     private static string CollectionName(string type) => $"embeddings-{type}";
-    
+
     public async Task<Result<Question>> InitQuestion(string questionText, string? connectionId)
     {
-        return await Question.Create(questionText, connectionId) // 2. Init question (save in DB for audit purpose)
+        return await Question.Create(questionText, connectionId) // 1. Init question (save in DB for audit purpose)
             .Check(questionRepository.AddAsync);
     }
 
     public async Task<Result> ResolveContext(Question question)
     {
-        return await GetContextAsync<ResourceType, QuestionContext>(question.Text) // 1. Detect context
+        return await DetermineContextAsync<ResourceType, QuestionContext>(question.Text) // 2. Detect context
             .Check(question.AddContext)
             .Check(_ => questionRepository.UpdateAsync(question));
     }
-
-    public async Task<Result> FindResources(Question question)
+    
+    public async Task<Result> FindFiles(Question question)
     {
-        return await EmbeddingText.Create(question.Text) // 3. Create embedding
+        return await question.GetContext()
+            .Bind(GetResourceType)
+            .Map(async resourceType => await resourceRepository
+                .GetFileNames(resourceType)
+                .ToResult(KnowledgeServiceErrors.NotFound.Build())
+            )
+            .Map(fileNames => string.Join(Environment.NewLine, fileNames))
+            .Bind(promptContext => PromptInput.Create(question.Text, promptContext, PromptType.Files))
+            .Bind(promptGenerator.GeneratePrompt)
+            .Bind(Prompt.Create)
+            .Bind(async prompt =>
+            {
+                var answer = await llmClient.GenerateAnswer(prompt)
+                    .Check(answer => QuestionFile.Create(answer.Text)
+                        .Check(question.AddFiles));
+
+                return answer;
+            })
+            .Check(_ => questionRepository.UpdateAsync(question))
+            .Map(answer => answer.Text);
+    }
+    
+    public async Task<Result> CreateEmbedding(Question question)
+    {
+        return await question.BuildEmbeddableText()
+            .Bind(EmbeddingText.Create) // 3. Create embedding
             .Bind(embeddingClient.GetAsync)
             .Check(dto => question.AddEmbeddings(dto.Embeddings))
-            .Bind(dto =>
-            {
-                return question.GetContext()
-                    .Bind(context => VectorDto.Create(CollectionName(context), dto.Embeddings));
-            })
-            .Bind(qdrantService.SearchAsync) // 4. Search for resources
-            .Bind(searchResult =>
-            {
-                var resourceIds = searchResult.Select(x => new ResourceId(x.ResourceId));
-
-                return resourceRepository
-                    .FindByResourceIdsAsync(resourceIds)
-                    .ToResult(KnowledgeServiceErrors.NotFound.Build());
-            })
-            .Check(question.AddResource) // 5. Save selected resources to question (save in DB for audit purpose)
             .Check(_ => questionRepository.UpdateAsync(question));
+    }
+    
+    public async Task<Result> FindResources(Question question)
+    {
+        return await question.GetContext()
+            .Bind(context =>
+            {
+                return question.GetEmbeddings()
+                    .Bind(embeddings => VectorDto.Create(CollectionName(context), embeddings))
+                    .Bind(qdrantService.SearchAsync) // 4. Search for resources
+                    .Bind(searchResult =>
+                    {
+                        var resourceIds = searchResult.Select(x => new ResourceId(x.ResourceId));
+
+                        return resourceRepository
+                            .FindByResourceIdsAsync(resourceIds)
+                            .ToResult(KnowledgeServiceErrors.NotFound.Build());
+                    })
+                    .Check(question.AddResources) // 5. Save selected resources to question
+                    .Check(_ => questionRepository.UpdateAsync(question));
+            });
     }
 
     public async Task<Result<string>> GenerateAnswer(Question question)
     {
-        var contextContent = question.Resources.Select(x => x.Resource).Select(x => x.Content);
-        
         return await question.GetContext()
-            .Bind(context =>
+            .Bind(GetPromptType)
+            .Bind(promptType =>
             {
-                return GetPromptType(context) // 6. Generate prompt
-                    .Bind(promptType => PromptInput.Create(question.Text, contextContent, promptType))
+                return question.BuildContext()
+                    .Bind(promptContext => PromptInput.Create(question.Text, promptContext, promptType)) // 6. Generate prompt
                     .Bind(promptGenerator.GeneratePrompt)
                     .Bind(Prompt.Create)
                     .Bind(prompt =>
@@ -88,24 +118,26 @@ public sealed class QuestionOrchestrator(
                                     answer.Audit.PromptTokens,
                                     answer.Audit.CompletionTokens
                                 )
-                                .Check(question
-                                    .AddAnswer)); // 8. Save answer to question (save in DB for audit purpose)
+                                .Check(question.AddAnswer)); // 8. Save answer to question 
 
                         return answer;
                     })
-                    .Check(_ => questionRepository.UpdateAsync(question)) // 9. Commit DB transation
+                    .Check(_ => questionRepository.UpdateAsync(question))
                     .Map(answer => answer.Text);
             });
     }
 
-    private async Task<Result<TContext>> GetContextAsync<TType, TContext>(string question)
+    private async Task<Result<TContext>> DetermineContextAsync<TType, TContext>(string question)
         where TType : struct, Enum
         where TContext : struct, Enum
     {
-        var promptText = sourceProvider.Prompt<TType>(question);
+        var promptText = contextProvider.Prompt<TType>(question);
 
         var result = await Prompt.Create(promptText)
             .Bind(llmClient.GenerateAnswer);
+
+        if (result.IsFailure)
+            return Result.Failure<TContext>(result.Error);
 
         try
         {
@@ -121,12 +153,24 @@ public sealed class QuestionOrchestrator(
     private static Result<PromptType> GetPromptType(string contextText)
     {
         var context = Enum.Parse<QuestionContext>(contextText);
-        
+
         return context switch
         {
             QuestionContext.Note => PromptType.Question,
             QuestionContext.Code => PromptType.Code,
             _ => Result.Failure<PromptType>(KnowledgeServiceErrors.PromptTypeNotExist.Build())
+        };
+    }
+
+    private static Result<ResourceType> GetResourceType(string contextText)
+    {
+        var context = Enum.Parse<QuestionContext>(contextText);
+
+        return context switch
+        {
+            QuestionContext.Note => ResourceType.Note,
+            QuestionContext.Code => ResourceType.Code,
+            _ => Result.Failure<ResourceType>(KnowledgeServiceErrors.ResourceTypeNotExist.Build())
         };
     }
 }

@@ -15,6 +15,7 @@ public sealed class Question : AuditableEntity<QuestionId>
     private Question()
     {
         Resources = new List<QuestionResource>();
+        Files = new List<QuestionFile>();
     }
 
     private Question(string text, string? connectionId)
@@ -27,6 +28,7 @@ public sealed class Question : AuditableEntity<QuestionId>
         Context = null;
         Embeddings = null;
         Resources = new List<QuestionResource>();
+        Files = new List<QuestionFile>();
 
         RaiseEvent(new QuestionCreatedEvent(Id));
     }
@@ -40,6 +42,7 @@ public sealed class Question : AuditableEntity<QuestionId>
 
     public Answer? Answer { get; private set; }
     public ICollection<QuestionResource> Resources { get; private set; }
+    public ICollection<QuestionFile> Files { get; private set; }
 
     # endregion
 
@@ -48,7 +51,7 @@ public sealed class Question : AuditableEntity<QuestionId>
         return new Question(text, connectionId);
     }
 
-    public Result AddResource(IEnumerable<Resource> resources)
+    public Result AddResources(IEnumerable<Resource> resources)
     {
         var questionResources = resources
             .Select(r => QuestionResource.Create(r.Id));
@@ -66,18 +69,32 @@ public sealed class Question : AuditableEntity<QuestionId>
         return Result.Success();
     }
 
+    public Result AddFiles(QuestionFile file)
+    {
+        Files.Add(file);
+
+        RaiseEvent(new FilesAttachedEvent(Id));
+        
+        return Result.Success();
+    }
+    
     public Result AddEmbeddings(IEnumerable<float> embeddings)
     {
         Embeddings = embeddings.ToList();
+
+        RaiseEvent(new EmbeddingsCreatedEvent(Id));
 
         return Result.Success();
     }
 
     public Result AddContext(QuestionContext context)
     {
+        if (context == QuestionContext.Error)
+            return Result.Failure(QuestionErrors.WrongContext.Build());
+        
         Context = context;
 
-        RaiseEvent(new ContextResolvedEvent(Id));
+        RaiseEvent(new ContextResolvedEvent(Id, context));
 
         return Result.Success();
     }
@@ -97,9 +114,34 @@ public sealed class Question : AuditableEntity<QuestionId>
             ? Context.ToString()!
             : Result.Failure<string>(QuestionErrors.ContextNotProvided.Build());
     }
+    
+    public Result<List<float>> GetEmbeddings()
+    {
+        return Embeddings ?? Result.Failure<List<float>>(QuestionErrors.EmbeddingsNotCreated.Build());
+    }
 
     public Result<string> GetAnswer()
     {
         return Answer?.Text ?? Result.Failure<string>(QuestionErrors.AnswerNotExist.Build());
+    }
+
+    public Result<string> BuildEmbeddableText()
+    {
+        var fileNames = Files.Select(x => x.Text);
+        
+        return Context switch
+        {
+            QuestionContext.Note => Text,
+            QuestionContext.Code => $"{Text} | {string.Join(", ", fileNames)}",
+            QuestionContext.Error => Result.Failure<string>(QuestionErrors.WrongContext.Build()),
+            _ => Result.Failure<string>(QuestionErrors.ContextNotProvided.Build())
+        };
+    }
+    
+    public Result<string> BuildContext()
+    {
+        var resourcesContent = Resources.Select(x => x.Resource).Select(x => x.Content);
+
+        return string.Join(Environment.NewLine, resourcesContent);
     }
 }

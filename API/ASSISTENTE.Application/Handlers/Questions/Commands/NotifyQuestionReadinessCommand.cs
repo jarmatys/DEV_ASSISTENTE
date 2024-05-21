@@ -44,10 +44,14 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
                         question.ConnectionId,
                         question.Text
                     );
-                    
+
                     if (question.ConnectionId is null) return Result.Success();
 
-                    var requestBody = NotifyQuestionReadinessRequest.Create(question.ConnectionId, question.Id);
+                    var requestBody = NotifyQuestionReadinessRequest.Create(
+                        question.ConnectionId,
+                        question.Id
+                    );
+
                     return await clientInternal.NotifyQuestionReadinessAsync(requestBody);
                 });
         }

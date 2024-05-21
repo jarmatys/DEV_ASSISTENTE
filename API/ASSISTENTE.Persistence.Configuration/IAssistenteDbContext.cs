@@ -13,6 +13,7 @@ public  interface IAssistenteDbContext
     DbSet<Resource> Resources { get; set; } 
     DbSet<Question> Questions { get; set; } 
     DbSet<QuestionResource> QuestionResources { get; set; } 
+    DbSet<QuestionFile> QuestionFiles { get; set; } 
     DbSet<Answer> Answers { get; set; } 
 
     #endregion

@@ -7,7 +7,7 @@ namespace ASSISTENTE.Domain.Entities.Resources;
 
 public sealed class Resource : AuditableEntity<ResourceId>
 {
-    public Resource()
+    private Resource()
     {
         Questions = new List<QuestionResource>();
     }

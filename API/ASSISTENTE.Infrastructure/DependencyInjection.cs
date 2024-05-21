@@ -1,6 +1,5 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Common.Settings;
-using ASSISTENTE.Common.Settings.Sections;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
