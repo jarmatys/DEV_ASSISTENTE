@@ -15,6 +15,6 @@ var builder = WebApplication
     .AddLogging(settings.Seq)
     .AddModules(settings);
 
-var app = builder.Build();
+var application = builder.Build();
 
-await app.RunAsync();
+await application.RunAsync();

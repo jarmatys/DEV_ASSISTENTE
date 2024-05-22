@@ -11,7 +11,7 @@ internal static class HubExtensions
         return builder;
     }
 
-    internal static WebApplication UseHubs(this WebApplication app)
+    internal static WebApplication MapHubs(this WebApplication app)
     {
         app.MapHub<QuestionHub>("answers");
 

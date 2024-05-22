@@ -1,5 +1,6 @@
 using ASSISTENTE.API.Extensions.Configurations;
 using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Logging;
 using ASSISTENTE.Common.Settings;
 
@@ -17,13 +18,17 @@ var builder = WebApplication
     .AddCors()
     .AddLimiter()
     .AddHubs()
-    .AddModules(settings);
+    .AddModules(settings)
+    .AddHealthChecks();
 
-var app = builder.Build()
+var application = builder.Build()
     .UseRedoc()
     .UseCors()
     .UseLimiter()
-    .UseEndpoints()
-    .UseHubs();
+    .UseEndpoints();
 
-await app.RunAsync();
+application
+    .MapHubs()
+    .MapHealthChecks();
+
+await application.RunAsync();
