@@ -38,4 +38,11 @@ internal static class LimiterExtensions
 
         return builder;
     }
+    
+    internal static WebApplication UseLimiter(this WebApplication app)
+    {
+        app.UseRateLimiter();
+
+        return app;
+    }
 }

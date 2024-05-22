@@ -9,6 +9,8 @@ internal static class EndpointExtensions
 {
     internal static WebApplicationBuilder AddEndpoints(this WebApplicationBuilder builder)
     {
+        builder.Services.AddEndpointsApiExplorer();
+
         builder.Services
             .AddFastEndpoints()
             .SwaggerDocument(options =>

@@ -14,6 +14,7 @@ internal sealed class QuestionRepository(IAssistenteDbContext context)
     protected override IQueryable<Question> Get()
     {
         return _context.Questions
+            .AsSplitQuery()
             .Include(x => x.Answer)
             .Include(x => x.Files)
             .Include(x => x.Resources)

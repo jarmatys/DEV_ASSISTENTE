@@ -1,9 +1,7 @@
 using ASSISTENTE.API.Extensions.Configurations;
-using ASSISTENTE.API.Hubs;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
 using ASSISTENTE.Common.Settings;
-using ASSISTENTE.Publisher.Rabbit;
 
 var settings = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -11,24 +9,21 @@ var settings = new ConfigurationBuilder()
     .Build()
     .GetSettings<AssistenteSettings>();
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication
+    .CreateBuilder(args)
+    .AddLogging(settings.Seq)
+    .AddEndpoints()
+    .AddMessageBroker(settings)
+    .AddCors()
+    .AddLimiter()
+    .AddHubs()
+    .AddModules(settings);
 
-builder.AddCommon();
-builder.AddLogging(settings.Seq);
-builder.AddCors();
-builder.AddLimiter();
-builder.AddEndpoints();
-builder.AddModules(settings);
-builder.Services.AddRabbitPublisher(settings.Rabbit);
-builder.Services.AddSignalR();
+var app = builder.Build()
+    .UseRedoc()
+    .UseCors()
+    .UseLimiter()
+    .UseEndpoints()
+    .UseHubs();
 
-var app = builder.Build();
-
-app.UseCommon();
-app.UseCors();
-app.UseRateLimiter();
-app.UseEndpoints();
-
-app.MapHub<QuestionHub>("answers");
-
-app.Run();
+await app.RunAsync();

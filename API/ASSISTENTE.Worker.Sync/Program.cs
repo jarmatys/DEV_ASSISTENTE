@@ -11,15 +11,10 @@ var settings = new ConfigurationBuilder()
 
 var builder = WebApplication
     .CreateBuilder(args)
-    .AddQueue(settings.Rabbit)
+    .AddQueue(settings)
     .AddLogging(settings.Seq)
     .AddModules(settings);
 
 var app = builder.Build();
-
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
 
 await app.RunAsync();

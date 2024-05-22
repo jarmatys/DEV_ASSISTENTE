@@ -1,4 +1,5 @@
 using System.Reflection;
+using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Common.Settings.Sections;
 using MassTransit;
 
@@ -6,7 +7,7 @@ namespace ASSISTENTE.Worker.Sync.Common.Extensions;
 
 internal static class QueueExtensions
 {
-    public static WebApplicationBuilder AddQueue(this WebApplicationBuilder builder, RabbitSection rabbit)
+    public static WebApplicationBuilder AddQueue(this WebApplicationBuilder builder, AssistenteSettings settings)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var consumerTypes = GetConsumers(assembly);
@@ -20,7 +21,7 @@ internal static class QueueExtensions
 
             config.UsingRabbitMq((ctx, cfg) =>
             {
-                cfg.Host(rabbit.Url, h =>
+                cfg.Host(settings.Rabbit.Url, h =>
                 {
                     h.ConfigureBatchPublish(bcfg =>
                     {
@@ -31,7 +32,7 @@ internal static class QueueExtensions
                     });
                 });
                 
-                cfg.ReceiveEndpoint(rabbit.Name, c =>
+                cfg.ReceiveEndpoint(settings.Rabbit.Name, c =>
                 {
                     foreach (var type in consumerTypes)
                     {
