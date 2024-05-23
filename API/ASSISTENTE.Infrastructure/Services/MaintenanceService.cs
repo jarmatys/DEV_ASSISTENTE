@@ -1,20 +1,35 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Language.Enums;
+using ASSISTENTE.Persistence.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASSISTENTE.Infrastructure.Services;
 
 public sealed class MaintenanceService(
-    IQdrantService qdrantService
+    IQdrantService qdrantService,
+    IAssistenteDbContext context
 ) : IMaintenanceService
 {
     public async Task<Result> InitAsync()
     {
+        var resourceTypes = Enum.GetValues(typeof(ResourceType));
         var results = new List<Result>();
 
-        foreach (var resourceType in Enum.GetValues(typeof(ResourceType)))
+        var clearanceResult = await ClearDatabase();
+
+        if (clearanceResult.IsFailure) return clearanceResult;
+        
+        foreach (var type in resourceTypes)
         {
-            var result = await qdrantService.CreateCollectionAsync($"embeddings-{resourceType}");
+            var result = await qdrantService.DropCollectionAsync($"embeddings-{type}");
+
+            results.Add(result);
+        }
+
+        foreach (var type in resourceTypes)
+        {
+            var result = await qdrantService.CreateCollectionAsync($"embeddings-{type}");
 
             results.Add(result);
         }
@@ -22,17 +37,21 @@ public sealed class MaintenanceService(
         return Result.Combine(results);
     }
 
-    public async Task<Result> ResetAsync()
+    private async Task<Result> ClearDatabase()
     {
-        var results = new List<Result>();
-
-        foreach (var resourceType in Enum.GetValues(typeof(ResourceType)))
+        try
         {
-            var result = await qdrantService.DropCollectionAsync($"embeddings-{resourceType}");
+            var resources = await context.Resources.ToListAsync();
 
-            results.Add(result);
+            context.Resources.RemoveRange(resources);
+
+            await context.SaveChangesAsync();
+
+            return Result.Success();
         }
-
-        return Result.Combine(results);
+        catch
+        {
+            return Result.Failure("Failed to clear database");
+        }
     }
 }

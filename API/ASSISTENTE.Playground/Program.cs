@@ -35,8 +35,6 @@ if (!parsedParams.IsValid)
 
 Log.Information("Starting Playground...");
 
-if (parsedParams.Reset)
-    await playground.ResetAsync();
 if (parsedParams.Learn)
     await playground.LearnAsync();
 if (parsedParams.Question != null)

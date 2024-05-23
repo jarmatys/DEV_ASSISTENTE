@@ -1,6 +1,5 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Knowledge.Commands;
-using ASSISTENTE.Application.Handlers.Maintenance.Commands;
 using ASSISTENTE.Common.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -34,14 +33,6 @@ public sealed class Playground(
 
         result
             .Log("Learning completed!", logger)
-            .LogError(logger);
-    }
-
-    public async Task ResetAsync()
-    {
-        var result = await mediator.Send(ResetCommand.Create());
-
-        result
             .LogError(logger);
     }
 }
