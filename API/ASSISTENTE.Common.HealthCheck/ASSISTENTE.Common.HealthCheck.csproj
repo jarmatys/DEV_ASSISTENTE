@@ -8,10 +8,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM\ASSISTENTE.Infrastructure.LLM.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Persistence.Configuration\ASSISTENTE.Persistence.Configuration.csproj" /> 
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
+      <PackageReference Include="MassTransit.Abstractions" Version="8.2.1" />
     </ItemGroup>
 
 </Project>

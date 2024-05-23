@@ -19,7 +19,7 @@ var builder = WebApplication
     .AddLimiter()
     .AddHubs()
     .AddModules(settings)
-    .AddHealthChecks();
+    .AddHealthChecks(settings);
 
 var application = builder.Build()
     .UseRedoc()

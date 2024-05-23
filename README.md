@@ -74,13 +74,14 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ Switch from MSSQL to PostgreSQL
 - ✅ Configure VPS to host all environment
 - ✅ Add support for separated scenario for `CODE` generation
-    - ✅ Added table `QuestionFiles` to save information about select files based on question
+    - ✅ Add table `QuestionFiles` to save information about select files based on question
 
 #### Common tasks
 
 - ✅ Prepare `configuration` section in `Readme`
 - ✅ Prepare `quick start` section in `Readme`
 - ✅ Prepare video explainer with simply demo
+- ✅ Add HealthChecks for API & Worker
 
 ---
 ### Configuration

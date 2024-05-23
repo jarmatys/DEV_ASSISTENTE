@@ -1,6 +1,6 @@
 namespace ASSISTENTE.Common.HealthCheck;
 
-public static class Consts
+internal static class Consts
 {
     public const string HealthCheckTag = "assistente";
 }

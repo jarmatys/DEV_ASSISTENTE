@@ -5,9 +5,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace ASSISTENTE.Common.HealthCheck;
 
-public static class Writer
+internal static class Writer
 {
-    public static Task WriteResponse(HttpContext context, HealthReport healthReport)
+    internal static Task WriteResponse(HttpContext context, HealthReport healthReport)
     {
         context.Response.ContentType = "application/json; charset=utf-8";
 
@@ -17,14 +17,25 @@ public static class Writer
         using (var jsonWriter = new Utf8JsonWriter(memoryStream, options))
         {
             jsonWriter.WriteStartObject();
-            jsonWriter.WriteString("status", healthReport.Status.ToString());
-            jsonWriter.WriteStartObject("results");
+            jsonWriter.WriteString("Status", healthReport.Status.ToString());
+            jsonWriter.WriteStartObject("Results");
 
             foreach (var healthReportEntry in healthReport.Entries)
             {
                 jsonWriter.WriteStartObject(healthReportEntry.Key);
-                jsonWriter.WriteString("status", healthReportEntry.Value.Status.ToString());
-                jsonWriter.WriteString("description", healthReportEntry.Value.Description);
+                jsonWriter.WriteString("Status", healthReportEntry.Value.Status.ToString());
+                jsonWriter.WriteString("Description", healthReportEntry.Value.Description);
+                
+                if (healthReportEntry.Value.Data.Count > 0)
+                {
+                    jsonWriter.WriteStartObject("Information");
+                    
+                    foreach(var data in healthReportEntry.Value.Data)
+                        jsonWriter.WriteString(data.Key, data.Value.ToString());
+                    
+                    jsonWriter.WriteEndObject();
+                }
+                
                 jsonWriter.WriteEndObject();
             }
 

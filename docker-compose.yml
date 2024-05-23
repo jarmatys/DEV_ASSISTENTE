@@ -105,7 +105,8 @@ services:
       - Seq__Url=${Seq_Url}
       - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
-      - Qdrant__Port=${Qdrant_Port}
+      - Qdrant__ClientPort=${Qdrant_ClientPort}
+      - Qdrant__ApiPort=${Qdrant_ApiPort}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -124,7 +125,8 @@ services:
       - Seq__Url=${Seq_Url}
       - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
-      - Qdrant__Port=${Qdrant_Port}
+      - Qdrant__ClientPort=${Qdrant_ClientPort}
+      - Qdrant__ApiPort=${Qdrant_ApiPort}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -138,7 +140,8 @@ services:
       - Database__ConnectionString=${Database_ConnectionString}
       - OpenAI__ApiKey=${OpenAI_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
-      - Qdrant__Port=${Qdrant_Port}
+      - Qdrant__ClientPort=${Qdrant_ClientPort}
+      - Qdrant__ApiPort=${Qdrant_ApiPort}
     volumes:
       - ./${KnowledgePaths_MarkdownNotes}:/app/Resources/Notes
       - ./${KnowledgePaths_Repositories}:/app/Resources/Repositories
