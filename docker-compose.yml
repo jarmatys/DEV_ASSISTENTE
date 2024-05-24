@@ -41,19 +41,21 @@ services:
 
   rabbitmq:
     profiles: ["setup"]
-    image: rabbitmq:3.7.7-management
+    image: rabbitmq:3.8.0-management
     container_name: assistente-rabbitmq
     hostname: assistente-rabbitmq
     restart: unless-stopped
     ports:
       - 1004:5672
       - 1005:15672
+      - 1013:15692 
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
       - RABBITMQ_DEFAULT_VHOST=/
     volumes:
       - assistente-rabbitmq:/var/lib/rabbitmq
+      - ./CONF/RabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
   jaeger:
     profiles: ["setup"]
@@ -64,6 +66,8 @@ services:
     ports:
       - 1011:4317
       - 1012:16686
+    environment:
+      - JAEGER_DISABLED=true
 
   seq:
     profiles: ["setup"]
@@ -90,7 +94,7 @@ services:
     ports:
       - 1008:8080
     volumes:
-      - ./blazor.json:/var/www/web/appsettings.json
+      - ./CONF/blazor.json:/var/www/web/appsettings.json
   
   db-upgrade:
     profiles: ["database"]

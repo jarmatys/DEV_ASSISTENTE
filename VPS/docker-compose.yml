@@ -16,6 +16,8 @@ services:
     restart: unless-stopped
     ports:
       - ${External_Jaeger_Port}:16686
+    environment:
+      - JAEGER_DISABLED=true
 
   seq:
     profiles: ["setup"]
