@@ -8,6 +8,15 @@ services:
     volumes:
       - assistente-qdrant:/qdrant/storage
 
+  jaeger:
+    profiles: ["setup"]
+    image: jaegertracing/all-in-one:latest
+    container_name: assistente-jaeger
+    hostname: assistente-jaeger
+    restart: unless-stopped
+    ports:
+      - ${External_Jaeger_Port}:16686
+
   seq:
     profiles: ["setup"]
     image: datalust/seq:latest
@@ -62,6 +71,7 @@ services:
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
+      - OpenTelemetry_Url__Url=${OpenTelemetry_Url}
 
   worker-sync:
     profiles: ["app"]
@@ -80,6 +90,7 @@ services:
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
+      - OpenTelemetry_Url__Url=${OpenTelemetry_Url}
 
   playground:
     profiles: ["playground"]

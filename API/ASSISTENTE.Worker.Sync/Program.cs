@@ -1,6 +1,7 @@
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Common.OpenTelemetry;
 using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Worker.Sync.Common.Extensions;
 
@@ -15,7 +16,8 @@ var builder = WebApplication
     .AddQueue(settings)
     .AddLogging(settings.Seq)
     .AddModules(settings)
-    .AddHealthChecks(settings);
+    .AddHealthChecks(settings)
+    .AddOpenTelemetry(settings.OpenTelemetry);
 
 var application = builder.Build()
     .MapHealthChecks();

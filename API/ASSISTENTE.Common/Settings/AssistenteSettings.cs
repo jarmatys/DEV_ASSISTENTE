@@ -10,4 +10,5 @@ public sealed class AssistenteSettings
     public required QdrantSection Qdrant { get; set; }
     public required RabbitSection Rabbit { get; set; }
     public required InternalApiSection InternalApi { get; set; }
+    public required OpenTelemetrySection OpenTelemetry { get; set; }
 }

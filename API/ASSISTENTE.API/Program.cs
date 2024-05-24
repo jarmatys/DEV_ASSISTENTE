@@ -2,6 +2,7 @@ using ASSISTENTE.API.Extensions.Configurations;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Logging;
+using ASSISTENTE.Common.OpenTelemetry;
 using ASSISTENTE.Common.Settings;
 
 var settings = new ConfigurationBuilder()
@@ -19,7 +20,8 @@ var builder = WebApplication
     .AddLimiter()
     .AddHubs()
     .AddModules(settings)
-    .AddHealthChecks(settings);
+    .AddHealthChecks(settings)
+    .AddOpenTelemetry(settings.OpenTelemetry);
 
 var application = builder.Build()
     .UseRedoc()
