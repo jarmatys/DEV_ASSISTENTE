@@ -22,13 +22,15 @@ public static class DependencyInjection
             .ConfigureResource(resource => resource.AddService(ApplicationName()))
             .WithMetrics(metrics =>
             {
+                // TODO: here we can add our custom metrics by using AddMeter() method
+
                 metrics
                     .AddRuntimeInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddPrometheusExporter();
-                
-                // TODO: here we can add our custom metrics by using AddMeter() method
+
+                metrics.AddOtlpExporter();
             })
             .WithTracing(tracing =>
             {
