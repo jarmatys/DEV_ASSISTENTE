@@ -45,6 +45,7 @@ public static class DependencyInjection
                     .AddEntityFrameworkCoreInstrumentation()
                     .AddNpgsql();
                 
+                // TODO: Switch from Jaeger to SEQ: https://github.com/serilog-tracing/serilog-tracing
                 tracing.AddOtlpExporter(otlpOptions => { otlpOptions.Endpoint = new Uri(openTelemetry.Url); });
             });
         
