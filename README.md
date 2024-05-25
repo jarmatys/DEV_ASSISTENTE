@@ -122,8 +122,9 @@ Prerequisites: `Docker`
 | Seq | 1006 | UI | - |
 | Seq | 1007 | Logs API | - |
 | Blazor UI | 1008 | Assistente UI | - |
-| Internal API | 1009 | Assistente API | - |
-| Worker | 1010 | Assistente worker | - |
+| Internal API | 1009 | Assistente API | `/metrics` |
+| Worker | 1010 | Assistente worker | `/metrics` |
 | Jaeger | 1011 | OpenTelemetry Collector | - |
 | Jaeger | 1012 | UI | - |
+| Jaeger | 1014 | API | `/metrics` |
 

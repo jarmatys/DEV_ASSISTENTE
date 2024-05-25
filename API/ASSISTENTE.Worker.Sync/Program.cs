@@ -20,6 +20,7 @@ var builder = WebApplication
     .AddOpenTelemetry(settings.OpenTelemetry);
 
 var application = builder.Build()
-    .MapHealthChecks();
+    .MapHealthChecks()
+    .UseOpenTelemetry();
 
 await application.RunAsync();

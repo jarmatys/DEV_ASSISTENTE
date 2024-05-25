@@ -66,6 +66,7 @@ services:
     ports:
       - 1011:4317
       - 1012:16686
+      - 1014:14269
     environment:
       - JAEGER_DISABLED=true
 
