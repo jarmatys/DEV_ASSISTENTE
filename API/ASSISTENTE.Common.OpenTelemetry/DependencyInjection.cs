@@ -23,13 +23,13 @@ public static class DependencyInjection
             .WithMetrics(metrics =>
             {
                 // TODO: here we can add our custom metrics by using AddMeter() method
-
                 metrics
                     .AddRuntimeInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddPrometheusExporter();
 
+                // TODO: Fix '/metrics' endpoint for APP in docker - https://opentelemetry.io/docs/languages/net/exporters/
                 metrics.AddOtlpExporter();
             })
             .WithTracing(tracing =>
