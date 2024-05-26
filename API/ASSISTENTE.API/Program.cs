@@ -32,6 +32,7 @@ var application = builder.Build()
 application
     .MapHubs()
     .MapHealthChecks()
-    .UseOpenTelemetry();
+    .UseOpenTelemetry()
+    .UseMiddlewares();
 
 await application.RunAsync();
