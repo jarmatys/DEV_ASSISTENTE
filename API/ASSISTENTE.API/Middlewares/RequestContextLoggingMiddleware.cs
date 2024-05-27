@@ -1,25 +1,19 @@
 using Serilog.Context;
+using System.Diagnostics;
 
 namespace ASSISTENTE.API.Middlewares;
 
 internal class RequestContextLoggingMiddleware(RequestDelegate next)
 {
-    private const string RequestIdHeaderName = "X-Request-Id";
-    
     public Task Invoke(HttpContext context)
     {
-        var requestId = GetRequestId(context);
+        var correlationId = GetCorrelationId(context);
 
-        using (LogContext.PushProperty("RequestId", requestId))
+        using (LogContext.PushProperty("CorrelationId", correlationId))
         {
             return next.Invoke(context);
         }
     }
     
-    private static string GetRequestId(HttpContext context)
-    {
-        context.Request.Headers.TryGetValue(RequestIdHeaderName, out var requestId);
-
-        return requestId.FirstOrDefault() ?? context.TraceIdentifier;
-    }
+    private static string? GetCorrelationId(HttpContext context) => Activity.Current?.RootId;
 }

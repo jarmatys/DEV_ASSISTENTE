@@ -20,6 +20,8 @@ internal static class QueueExtensions
 
             config.UsingRabbitMq((ctx, cfg) =>
             {
+                cfg.UsePipelineFilters();
+                
                 cfg.Host(settings.Rabbit.Url, h =>
                 {
                     h.ConfigureBatchPublish(bcfg =>
