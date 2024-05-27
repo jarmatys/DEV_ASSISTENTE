@@ -15,7 +15,8 @@ public interface IQuestionsBroker
     Task<HttpResult<GetQuestionsCountResponse>> GetQuestionsCountAsync();
 }
 
-public sealed class QuestionsBroker(HttpClient httpClient) : BrokerBase(httpClient, "api/questions"), IQuestionsBroker
+public sealed class QuestionsBroker(HttpClient httpClient, ILogger<QuestionsBroker> logger) 
+    : BrokerBase(httpClient, logger, "api/questions"), IQuestionsBroker
 {
     public async Task<HttpResult> CreateQuestionAsync(CreateQuestionRequest request)
         => await PostAsync(request);

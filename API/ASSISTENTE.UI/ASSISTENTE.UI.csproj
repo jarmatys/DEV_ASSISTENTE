@@ -12,6 +12,8 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0"/>
     </ItemGroup>
 
     <ItemGroup>

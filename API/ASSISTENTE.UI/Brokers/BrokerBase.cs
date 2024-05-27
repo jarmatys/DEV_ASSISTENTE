@@ -1,142 +1,34 @@
+using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Text.Json;
 using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
 using ASSISTENTE.Language;
 using ASSISTENTE.UI.Common.Models;
+using Serilog.Context;
 
 namespace ASSISTENTE.UI.Brokers;
 
-public abstract class BrokerBase(HttpClient httpClient, string relativeUrl)
+public abstract partial class BrokerBase(HttpClient httpClient, ILogger<BrokerBase> logger, string relativeUrl)
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
-
     protected async Task<HttpResult<TResponse>> GetAsync<TResponse, TRequest>(TRequest request)
         where TRequest : GetRequestBase
     {
-        try
-        {
-            var response = await httpClient.GetAsync($"{relativeUrl}?{request.QueryString()}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var successResult = await response.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions);
-                if (successResult != null)
-                {
-                    return HttpResult<TResponse>.Success(successResult);
-                }
-            }
-
-            var errorResult = await response.Content.ReadAsStringAsync();
-
-            var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(errorResult, _jsonSerializerOptions);
-
-            if (errorResponse != null)
-            {
-                return HttpResult<TResponse>.Failure(errorResponse);
-            }
-        }
-        catch
-        {
-            return HttpResult<TResponse>.Failure(503, "InternalError", "API not available.");
-        }
-
-        return HttpResult<TResponse>.Failure(502, "BadGateway", "Wrong response from API.");
+        return await SendRequestAsync<TResponse>(() => httpClient.GetAsync($"{relativeUrl}?{request.QueryString()}"));
     }
-    
+
     protected async Task<HttpResult<TResponse>> GetAsync<TResponse>(string path = "")
     {
-        try
-        {
-            var response = await httpClient.GetAsync($"{relativeUrl}/{path}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var successResult = await response.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions);
-                if (successResult != null)
-                {
-                    return HttpResult<TResponse>.Success(successResult);
-                }
-            }
-
-            var errorResult = await response.Content.ReadAsStringAsync();
-
-            var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(errorResult, _jsonSerializerOptions);
-
-            if (errorResponse != null)
-            {
-                return HttpResult<TResponse>.Failure(errorResponse);
-            }
-        }
-        catch
-        {
-            return HttpResult<TResponse>.Failure(503, "InternalError", "API not available.");
-        }
-
-        return HttpResult<TResponse>.Failure(502, "BadGateway", "Wrong response from API.");
+        return await SendRequestAsync<TResponse>(() => httpClient.GetAsync($"{relativeUrl}/{path}"));
     }
 
     protected async Task<HttpResult<TResponse>> GetDetailsAsync<TResponse, TIdentifier>(TIdentifier identifier)
         where TIdentifier : IIdentifier
     {
-        try
-        {
-            var response = await httpClient.GetAsync($"{relativeUrl}/{identifier.ToString()}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var successResult = await response.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions);
-                if (successResult != null)
-                {
-                    return HttpResult<TResponse>.Success(successResult);
-                }
-            }
-
-            var errorResult = await response.Content.ReadAsStringAsync();
-
-            var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(errorResult, _jsonSerializerOptions);
-
-            if (errorResponse != null)
-            {
-                return HttpResult<TResponse>.Failure(errorResponse);
-            }
-        }
-        catch
-        {
-            return HttpResult<TResponse>.Failure(503, "InternalError", "API not available.");
-        }
-
-        return HttpResult<TResponse>.Failure(502, "BadGateway", "Wrong response from API.");
+        return await SendRequestAsync<TResponse>(() => httpClient.GetAsync($"{relativeUrl}/{identifier}"));
     }
-    
+
     protected async Task<HttpResult> PostAsync<TRequest>(TRequest request)
         where TRequest : PostRequestBase
     {
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync(relativeUrl, request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return HttpResult.Success();
-            }
-
-            var errorResult = await response.Content.ReadAsStringAsync();
-
-            var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(errorResult, _jsonSerializerOptions);
-
-            if (errorResponse != null)
-            {
-                return HttpResult.Failure(errorResponse);
-            }
-        }
-        catch
-        {
-            return HttpResult.Failure(503, "InternalError", "API not available.");
-        }
-
-        return HttpResult.Failure(502, "BadGateway", "Wrong response from API.");
+        return await SendRequestAsync(() => httpClient.PostAsJsonAsync(relativeUrl, request));
     }
 }
