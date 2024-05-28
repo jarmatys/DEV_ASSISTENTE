@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using System.Net.Http.Json;
 using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
 using ASSISTENTE.Language;
 using ASSISTENTE.UI.Common.Models;
-using Serilog.Context;
 
 namespace ASSISTENTE.UI.Brokers;
 

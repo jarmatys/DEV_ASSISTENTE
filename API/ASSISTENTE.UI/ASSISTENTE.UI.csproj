@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj" />
     </ItemGroup>

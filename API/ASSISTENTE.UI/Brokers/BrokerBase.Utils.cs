@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
 using ASSISTENTE.UI.Common.Models;
-using Serilog.Context;
 
 namespace ASSISTENTE.UI.Brokers;
 
