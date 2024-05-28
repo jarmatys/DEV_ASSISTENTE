@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Npgsql.OpenTelemetry" Version="8.0.3" />
       <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.8.1" />
       <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.9.0-alpha.1" />
@@ -19,6 +15,10 @@
       <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.11" />
       <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.8.1" />
       <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.8.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Common.OpenTelemetry;
+namespace ASSISTENTE.Common.Observability;
 
 internal static class DiagnosticConfig
 {

@@ -13,23 +13,15 @@
         </PropertyGroup>
         <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
     </Target>
-    
-    <ItemGroup>
-        <PackageReference Include="MassTransit" Version="8.2.1" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.1" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Common.OpenTelemetry\ASSISTENTE.Common.OpenTelemetry.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Common.Observability\ASSISTENTE.Common.Observability.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Messages.Internal\ASSISTENTE.Contract.Messages.Internal.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="ASSISTENTE.Worker.Sync\bin\Debug\net8.0\appsettings.json" />
+      <ProjectReference Include="..\ASSISTENTE.MessageBroker.Rabbit\ASSISTENTE.MessageBroker.Rabbit.csproj" />
     </ItemGroup>
 
 </Project>

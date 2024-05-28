@@ -2,7 +2,7 @@ using ASSISTENTE.Common.Correlation.Consts;
 using ASSISTENTE.Common.Correlation.Providers;
 using MassTransit;
 
-namespace ASSISTENTE.Publisher.Rabbit.Filters;
+namespace ASSISTENTE.MessageBroker.Rabbit.Filters;
 
 public class ContextPublishLoggingFilter<T>(ICorrelationProvider correlationProvider) : IFilter<PublishContext<T>>
     where T : class

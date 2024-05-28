@@ -7,17 +7,17 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace ASSISTENTE.Common.OpenTelemetry;
+namespace ASSISTENTE.Common.Observability;
 
 public static class DependencyInjection
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
 
-    public static WebApplicationBuilder AddOpenTelemetry(
-        this WebApplicationBuilder builder,
+    public static IServiceCollection AddObservability(
+        this IServiceCollection services,
         OpenTelemetrySection openTelemetry)
     {
-        builder.Services
+        services
             .AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService(ApplicationName()))
             .WithMetrics(metrics =>
@@ -51,7 +51,7 @@ public static class DependencyInjection
                 tracing.AddOtlpExporter(otlpOptions => { otlpOptions.Endpoint = new Uri(openTelemetry.Url); });
             });
         
-        return builder;
+        return services;
     }
     
     public static WebApplication UseOpenTelemetry(this WebApplication app)

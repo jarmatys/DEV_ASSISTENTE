@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Common.Settings.Sections;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -11,27 +10,6 @@ namespace ASSISTENTE.Common.Logging;
 public static class DependencyInjection
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
-
-    public static WebApplicationBuilder AddLogging(this WebApplicationBuilder builder, SeqSection seq)
-    {
-        builder.Logging.ClearProviders();
-
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) 
-            .MinimumLevel.Override("System", LogEventLevel.Warning) 
-            .Enrich.WithProperty("Application", $"{ApplicationName()}")
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.Seq(seq.Url, apiKey: seq.ApiKey)
-            .CreateLogger();
- 
-        Log.Information("{ApplicationName} - Application starting up", ApplicationName());
-        
-        builder.Host.UseSerilog();
-
-        return builder;
-    }
     
     public static IServiceCollection AddLogging(this IServiceCollection services, SeqSection seq)
     {
