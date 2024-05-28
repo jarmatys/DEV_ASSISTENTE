@@ -1,4 +1,4 @@
-namespace ASSISTENTE.API.Extensions.Configurations;
+namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class RedocExtensions
 {

@@ -1,8 +1,8 @@
-using ASSISTENTE.API.Services;
+using ASSISTENTE.API.Common.Services;
 using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Module;
 
-namespace ASSISTENTE.API.Extensions.Configurations;
+namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class ModuleExtensions
 {

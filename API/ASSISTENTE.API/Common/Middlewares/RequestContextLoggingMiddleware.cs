@@ -1,10 +1,10 @@
-using Serilog.Context;
 using ASSISTENTE.Common.Correlation.Consts;
 using ASSISTENTE.Common.Correlation.Generators;
 using ASSISTENTE.Common.Correlation.Providers;
 using ASSISTENTE.Common.Correlation.ValueObjects;
+using Serilog.Context;
 
-namespace ASSISTENTE.API.Middlewares;
+namespace ASSISTENTE.API.Common.Middlewares;
 
 internal class RequestContextLoggingMiddleware(RequestDelegate next)
 {

@@ -14,8 +14,8 @@ public interface IResourcesBroker
 
 }
 
-public sealed class ResourcesBroker(HttpClient httpClient, ILogger<ResourcesBroker> logger) 
-    : BrokerBase(httpClient, logger, "api/resources"), IResourcesBroker
+public sealed class ResourcesBroker(IHttpClientFactory httpFactory, ILogger<ResourcesBroker> logger) 
+    : BrokerBase(httpFactory, logger, "api/resources"), IResourcesBroker
 {
     public async Task<HttpResult<GetResourcesResponse>> GetResourcesAsync(GetResourcesRequest request)
         => await GetAsync<GetResourcesResponse, GetResourcesRequest>(request);

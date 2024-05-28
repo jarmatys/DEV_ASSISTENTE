@@ -1,7 +1,7 @@
 using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Publisher.Rabbit;
 
-namespace ASSISTENTE.API.Extensions.Configurations;
+namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class MessageBrokerExtensions
 {

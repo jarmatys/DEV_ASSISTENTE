@@ -1,4 +1,4 @@
-using ASSISTENTE.API.Extensions.Configurations;
+using ASSISTENTE.API.Common.Extensions;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Logging;
@@ -14,6 +14,7 @@ var settings = new ConfigurationBuilder()
 var builder = WebApplication
     .CreateBuilder(args)
     .AddLogging(settings.Seq)
+    .AddCommon(settings)
     .AddEndpoints()
     .AddMessageBroker(settings)
     .AddCors()

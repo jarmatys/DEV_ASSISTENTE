@@ -3,7 +3,7 @@ using FastEndpoints;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace ASSISTENTE.API.Extensions.Configurations;
+namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class LimiterExtensions
 {

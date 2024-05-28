@@ -14,6 +14,7 @@ var settings = new ConfigurationBuilder()
 var builder = WebApplication
     .CreateBuilder(args)
     .AddQueue(settings)
+    .AddCommon(settings)
     .AddLogging(settings.Seq)
     .AddModules(settings)
     .AddHealthChecks(settings)

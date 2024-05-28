@@ -1,7 +1,7 @@
 using ASSISTENTE.Language;
 using FastEndpoints;
 
-namespace ASSISTENTE.API.Parsers;
+namespace ASSISTENTE.API.Common.Parsers;
 
 public static class IdentifierParsers
 {

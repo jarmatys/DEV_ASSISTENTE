@@ -9,6 +9,7 @@ namespace ASSISTENTE.Publisher.Rabbit
     {
         public static IServiceCollection AddRabbitPublisher(this IServiceCollection services, RabbitSection rabbit)
         {
+            // TODO: Move here publisher configuration and consumers registration
             services.AddMassTransit(config =>
             {
                 config.UsingRabbitMq((ctx, cfg) =>

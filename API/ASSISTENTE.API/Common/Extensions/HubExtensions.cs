@@ -1,6 +1,6 @@
 using ASSISTENTE.API.Hubs;
 
-namespace ASSISTENTE.API.Extensions.Configurations;
+namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class HubExtensions
 {

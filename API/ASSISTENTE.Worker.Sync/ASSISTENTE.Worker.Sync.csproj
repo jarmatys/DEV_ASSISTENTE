@@ -16,11 +16,11 @@
     
     <ItemGroup>
         <PackageReference Include="MassTransit" Version="8.2.1" />
-        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.OpenTelemetry\ASSISTENTE.Common.OpenTelemetry.csproj" />

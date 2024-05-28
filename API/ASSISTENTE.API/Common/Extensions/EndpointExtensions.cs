@@ -1,17 +1,15 @@
-using ASSISTENTE.API.Parsers;
-using ASSISTENTE.Common.Correlation;
+using ASSISTENTE.API.Common.Parsers;
 using ASSISTENTE.Language.Identifiers;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 
-namespace ASSISTENTE.API.Extensions.Configurations;
+namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class EndpointExtensions
 {
     internal static WebApplicationBuilder AddEndpoints(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddCorrelationProvider();
 
         builder.Services
             .AddFastEndpoints()

@@ -1,6 +1,6 @@
 using ASSISTENTE.Domain.Interfaces;
 
-namespace ASSISTENTE.API.Services;
+namespace ASSISTENTE.API.Common.Services;
 
 internal sealed class UserResolver : IUserResolver
 {

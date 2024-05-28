@@ -1,5 +1,6 @@
 using System.Reflection;
 using ASSISTENTE.Common.Settings;
+using ASSISTENTE.Worker.Sync.Common.Filters;
 using MassTransit;
 
 namespace ASSISTENTE.Worker.Sync.Common.Extensions;
@@ -20,8 +21,8 @@ internal static class QueueExtensions
 
             config.UsingRabbitMq((ctx, cfg) =>
             {
-                cfg.UsePipelineFilters();
-                
+                cfg.UseConsumeFilter(typeof(ContextConsumeLoggingFilter<>), ctx);
+
                 cfg.Host(settings.Rabbit.Url, h =>
                 {
                     h.ConfigureBatchPublish(bcfg =>

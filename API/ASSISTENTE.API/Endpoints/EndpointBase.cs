@@ -1,4 +1,4 @@
-using ASSISTENTE.API.Extensions.Configurations;
+using ASSISTENTE.API.Common.Extensions;
 using ASSISTENTE.Common.Results;
 using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
 using CSharpFunctionalExtensions;
