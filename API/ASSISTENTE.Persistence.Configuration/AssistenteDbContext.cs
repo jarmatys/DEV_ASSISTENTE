@@ -5,9 +5,7 @@ using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Language.Enums;
-using ASSISTENTE.Language.Identifiers;
 using ASSISTENTE.Persistence.Configuration.Converters;
-using ASSISTENTE.Persistence.Configuration.Converters.Identifiers;
 using ASSISTENTE.Persistence.Configuration.Extensions;
 using ASSISTENTE.Persistence.Configuration.Seeds;
 using MediatR;
@@ -71,12 +69,7 @@ namespace ASSISTENTE.Persistence.Configuration
                 .Properties<DateTime>()
                 .HaveConversion<DateTimeConverter>();
             
-            // TODO: Prepare generic configuration for all entities
-            configurationBuilder.ConfigureGuidIdentifier<ResourceId, ResourceIdConverter>();
-            configurationBuilder.ConfigureGuidIdentifier<QuestionId, QuestionIdConverter>();
-            configurationBuilder.ConfigureNumberIdentifier<AnswerId, AnswerIdConverter>();
-            configurationBuilder.ConfigureNumberIdentifier<QuestionResourceId, QuestionResourceIdConverter>();
-            configurationBuilder.ConfigureNumberIdentifier<QuestionFileId, QuestionFileIdConverter>();
+            configurationBuilder.ConfigureStrongyIdentifiers();
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
