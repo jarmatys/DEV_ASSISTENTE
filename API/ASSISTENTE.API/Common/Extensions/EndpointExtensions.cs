@@ -1,4 +1,5 @@
 using ASSISTENTE.API.Common.Parsers;
+using ASSISTENTE.Language;
 using ASSISTENTE.Language.Identifiers;
 using FastEndpoints;
 using FastEndpoints.Swagger;
@@ -48,13 +49,36 @@ internal static class EndpointExtensions
         return app;
     }
 
-    private static void RegisterIdentifierParsers(this Config c)
+    private static void RegisterIdentifierParsers(this Config config)
     {
-        // TODO: Preare generic parsers for all identifiers
-        c.Binding.ValueParserFor<QuestionId>(IdentifierParsers.GuidParser<QuestionId>);
-        c.Binding.ValueParserFor<ResourceId>(IdentifierParsers.GuidParser<ResourceId>);
-        c.Binding.ValueParserFor<AnswerId>(IdentifierParsers.NumberParser<AnswerId>);
-        c.Binding.ValueParserFor<QuestionResourceId>(IdentifierParsers.NumberParser<QuestionResourceId>);
-        c.Binding.ValueParserFor<QuestionFileId>(IdentifierParsers.NumberParser<QuestionFileId>);
+        var identifierTypes = typeof(IIdentifier).Assembly.GetTypes()
+            .Where(t => t.IsClass && typeof(IIdentifier).IsAssignableFrom(t) && !t.IsAbstract)
+            .ToList();
+        
+        foreach (var identifierType in identifierTypes)
+        {
+            var valueType = identifierType.BaseType?.GetGenericArguments().FirstOrDefault();
+            if (valueType == typeof(Guid))
+            {
+                config.RegisterParser(identifierType, nameof(IdentifierParsers.GuidParser));
+            }
+            else if (valueType == typeof(int))
+            {
+                config.RegisterParser(identifierType, nameof(IdentifierParsers.NumberParser));
+            }
+        }
+    }
+    
+    private static void RegisterParser(this Config c, Type identifierType, string parserMethodName)
+    {
+        var method = typeof(IdentifierParsers).GetMethod(parserMethodName)?.MakeGenericMethod(identifierType);
+        var delegateType = typeof(Func<,>).MakeGenericType(typeof(object), typeof(ParseResult));
+        var parserDelegate = Delegate.CreateDelegate(delegateType, method!);
+
+        var bindingMethod = c.Binding.GetType()
+            .GetMethod("ValueParserFor", [delegateType])
+            ?.MakeGenericMethod(identifierType);
+        
+        bindingMethod?.Invoke(c.Binding, [parserDelegate]);
     }
 }
