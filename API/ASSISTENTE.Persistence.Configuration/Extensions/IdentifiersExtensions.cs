@@ -1,4 +1,5 @@
 using System.Reflection;
+using ASSISTENTE.Domain.Commons.Interfaces;
 using ASSISTENTE.Language;
 using ASSISTENTE.Persistence.Configuration.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,10 @@ internal static class IdentifiersExtensions
     public static void ConfigureStrongyIdentifiers(this ModelBuilder modelBuilder)
     {
         var entities = modelBuilder.Model.GetEntityTypes();
-        var primaryKeys = entities.Select(x => x.FindPrimaryKey()).ToList();
+        var primaryKeys = entities
+            .Where(x => typeof(IEntity).IsAssignableFrom(x.ClrType)) 
+            .Select(x => x.FindPrimaryKey())
+            .ToList();
 
         foreach (var primaryKey in primaryKeys)
         {

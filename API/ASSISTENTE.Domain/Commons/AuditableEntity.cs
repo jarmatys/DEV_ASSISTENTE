@@ -3,8 +3,8 @@ using ASSISTENTE.Language;
 
 namespace ASSISTENTE.Domain.Commons
 {
-    public abstract class AuditableEntity<TIndentifier> : Entity<TIndentifier>, IAuditableEntity
-        where TIndentifier : class, IIdentifier
+    public abstract class AuditableEntity<TIdentifier> : Entity<TIdentifier>, IAuditableEntity
+        where TIdentifier : class, IIdentifier
     {
         public string? CreatedBy { get; set; }
         public DateTime Created { get; set; }
