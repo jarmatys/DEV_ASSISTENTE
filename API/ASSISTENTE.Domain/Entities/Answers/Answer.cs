@@ -1,4 +1,5 @@
 using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Entities.Answers.ValueObjects;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Language.Identifiers;
 
@@ -9,25 +10,19 @@ public sealed class Answer : AuditableEntity<AnswerId>
     public Answer()
     {
     }
-    
-    private Answer(string text, string prompt, string client, string model, int promptTokens, int completionTokens)
+
+    private Answer(string text, string prompt, LlmMetadata metadata)
     {
         Text = text;
         Prompt = prompt;
-        Client = client;
-        Model = model;
-        PromptTokens = promptTokens;
-        CompletionTokens = completionTokens;
-
+        Metadata = metadata;
         Question = null!;
     }
 
+    public int Id { get; private set; } 
     public string Text { get; private set; } = null!;
     public string Prompt { get; private set; } = null!;
-    public string Client { get; private set; } = null!;
-    public string Model { get; private set; } = null!;
-    public int PromptTokens { get; private set; }
-    public int CompletionTokens { get; private set; }
+    public LlmMetadata Metadata { get; private set; } = null!;
 
     # region NAVIGATION PROPERTIES
 
@@ -39,11 +34,8 @@ public sealed class Answer : AuditableEntity<AnswerId>
     public static Result<Answer> Create(
         string text,
         string prompt,
-        string client,
-        string model,
-        int promptTokens,
-        int completionTokens)
+        LlmMetadata metadata)
     {
-        return new Answer(text, prompt, client, model, promptTokens, completionTokens);
+        return new Answer(text, prompt, metadata);
     }
 }

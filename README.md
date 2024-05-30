@@ -110,21 +110,21 @@ Prerequisites: `Docker`
 
 ### Services
 
-| Service  | Port  | Information |  Metrics URL |
-|---|---|---|---|
-| PostreSQL | 1000 | Database | - |
-| PgAdmin | 1001 | Database UI | - |
-| Qdrant |  1002 | API & UI (dashboard) | `/metrics` |
-| Qdrant |  1003 | Search Engine | - |
-| RabbitMq | 1004 | AMPQ Connection | - |
-| RabbitMq | 1005 | RabbitMq UI | - |
-| RabbitMq | 1013 | RabbitMq Metrics | `/metrics` |
-| Seq | 1006 | UI | - |
-| Seq | 1007 | Logs API | - |
-| Blazor UI | 1008 | Assistente UI | - |
-| Internal API | 1009 | Assistente API | `/metrics` |
-| Worker | 1010 | Assistente worker | `/metrics` |
-| Jaeger | 1011 | OpenTelemetry Collector | - |
-| Jaeger | 1012 | UI | - |
-| Jaeger | 1014 | API | `/metrics` |
+| Service  | Port  | Information |  Metrics URL | Access |
+|---|---|---|---|---|
+| PostreSQL | 1000 | Database | - | - |
+| PgAdmin | 1001 | Database UI | - | L: `admin@assistente.dev`, P: `admin` |
+| Qdrant |  1002 | API & UI (dashboard) | `/metrics` | - |
+| Qdrant |  1003 | Search Engine | - | - |
+| RabbitMq | 1004 | AMPQ Connection | - | - |
+| RabbitMq | 1005 | RabbitMq UI | - | - |
+| RabbitMq | 1013 | RabbitMq Metrics | `/metrics` | - |
+| Seq | 1006 | UI | - | - |
+| Seq | 1007 | Logs API | - | - |
+| Blazor UI | 1008 | Assistente UI | - | - |
+| Internal API | 1009 | Assistente API | `/metrics` | - |
+| Worker | 1010 | Assistente worker | `/metrics` | - |
+| Jaeger | 1011 | OpenTelemetry Collector | - | - |
+| Jaeger | 1012 | UI | - | - |
+| Jaeger | 1014 | API | `/metrics` | - |
 

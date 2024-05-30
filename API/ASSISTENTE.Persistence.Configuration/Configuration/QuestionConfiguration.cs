@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ASSISTENTE.Persistence.Configuration
+namespace ASSISTENTE.Persistence.Configuration.Configuration
 {
     public class QuestionConfiguration : IEntityTypeConfiguration<Question>
     {

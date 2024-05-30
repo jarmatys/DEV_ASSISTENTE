@@ -1,4 +1,5 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
+using ASSISTENTE.Domain.Entities.Answers.ValueObjects;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
@@ -42,7 +43,7 @@ public sealed class QuestionOrchestrator(
             .Check(question.AddContext)
             .Check(_ => questionRepository.UpdateAsync(question));
     }
-    
+
     public async Task<Result> FindFiles(Question question)
     {
         return await question.GetContext()
@@ -66,7 +67,7 @@ public sealed class QuestionOrchestrator(
             .Check(_ => questionRepository.UpdateAsync(question))
             .Map(answer => answer.Text);
     }
-    
+
     public async Task<Result> CreateEmbedding(Question question)
     {
         return await question.BuildEmbeddableText()
@@ -75,7 +76,7 @@ public sealed class QuestionOrchestrator(
             .Check(dto => question.AddEmbeddings(dto.Embeddings))
             .Check(_ => questionRepository.UpdateAsync(question));
     }
-    
+
     public async Task<Result> FindResources(Question question)
     {
         return await question.GetContext()
@@ -104,21 +105,24 @@ public sealed class QuestionOrchestrator(
             .Bind(promptType =>
             {
                 return question.BuildContext()
-                    .Bind(promptContext => PromptInput.Create(question.Text, promptContext, promptType)) // 6. Generate prompt
+                    .Bind(promptContext =>
+                        PromptInput.Create(question.Text, promptContext, promptType)) // 6. Generate prompt
                     .Bind(promptGenerator.GeneratePrompt)
                     .Bind(Prompt.Create)
                     .Bind(prompt =>
                     {
                         var answer = llmClient.GenerateAnswer(prompt) // 7. Generate answer
-                            .Check(answer => AnswerEntity.Create(
-                                    answer.Text,
-                                    prompt.Value,
-                                    answer.Client.Name,
-                                    answer.Audit.Model,
-                                    answer.Audit.PromptTokens,
-                                    answer.Audit.CompletionTokens
-                                )
-                                .Check(question.AddAnswer)); // 8. Save answer to question 
+                            .Check(answer =>
+                            {
+                                return LlmMetadata.Create(
+                                        answer.Client.Name,
+                                        answer.Audit.Model,
+                                        answer.Audit.PromptTokens,
+                                        answer.Audit.CompletionTokens
+                                    )
+                                    .Bind(metadata => AnswerEntity.Create(answer.Text, prompt.Value, metadata))
+                                    .Check(question.AddAnswer);
+                            }); // 8. Save answer to question 
 
                         return answer;
                     })

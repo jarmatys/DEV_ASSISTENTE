@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace ASSISTENTE.Domain.Entities.Answers.ValueObjects;
 
 public sealed class LlmMetadata : ValueObject
