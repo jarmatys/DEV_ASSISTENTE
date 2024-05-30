@@ -19,7 +19,6 @@ public sealed class Answer : AuditableEntity<AnswerId>
         Question = null!;
     }
 
-    public int Id { get; private set; } 
     public string Text { get; private set; } = null!;
     public string Prompt { get; private set; } = null!;
     public LlmMetadata Metadata { get; private set; } = null!;
