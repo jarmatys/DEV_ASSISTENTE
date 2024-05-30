@@ -9,7 +9,7 @@ namespace ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
 
 internal sealed class OpenAiClient(IOpenAIService openAiService) : ILLMClient
 {
-    private readonly LLMClient _llmClient = LLMClient.Create("openAi");
+    private readonly LlmClient _llmClient = LlmClient.Create("openAi");
     
     // TODO: Add new model: https://openai.com/index/hello-gpt-4o/ (gpt-4o)
     private const string Gpt4 = "gpt-4";

@@ -4,7 +4,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 
-public sealed class CodeContent
+public sealed class CodeContent : ValueObject
 {
     public string Title { get; }
     public IEnumerable<string> CodeBlocks { get; }
@@ -51,5 +51,10 @@ public sealed class CodeContent
     private static string CreatePropertiesBlock(string title, string tableOfContents)
     {
         return $"# File name: {title}\n\n{tableOfContents}";
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Title;
     }
 }

@@ -4,7 +4,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
-public sealed class FileContent
+public sealed class FileContent : ValueObject
 {
     public string Title { get; }
     public IEnumerable<string> TextBlocks { get; }
@@ -67,7 +67,11 @@ public sealed class FileContent
         
         return $"File name (title): '{fileName}'\n\n{content}";
     }
-       
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Title;
+    }
 }
 
 public static class FileContentErrors

@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 
-public sealed class PromptInput
+public sealed class PromptInput : ValueObject
 {
     private PromptInput(string question, string context, PromptType type)
     {
@@ -19,5 +19,12 @@ public sealed class PromptInput
     public static Result<PromptInput> Create(string question, string context, PromptType type)
     {
         return new PromptInput(question, context, type);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Question;
+        yield return Context;
+        yield return Type;
     }
 }

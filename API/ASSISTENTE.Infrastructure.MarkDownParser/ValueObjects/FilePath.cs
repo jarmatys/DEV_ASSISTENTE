@@ -3,17 +3,18 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 
-public sealed class FilePath
+public sealed class FilePath : ValueObject
 {
     public string Path { get; }
-    public string Extension { get; }
-    public string FileName { get; }
-
+    public string FileName { get; } 
+    
+    private string Extension { get; }
+    
     private FilePath(string path, string extension, string fileName)
     {
         Path = path;
-        Extension = extension;
         FileName = fileName;
+        Extension = extension;
     }
 
     public static Result<FilePath> Create(string path)
@@ -31,6 +32,13 @@ public sealed class FilePath
     }
 
     public static implicit operator string(FilePath filePath) => filePath.Path;
+    
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Path;
+        yield return Extension;
+        yield return FileName;
+    }
 }
 
 public static class FilePathErrors

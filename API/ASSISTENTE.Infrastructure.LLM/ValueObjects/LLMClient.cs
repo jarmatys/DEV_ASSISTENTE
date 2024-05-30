@@ -1,16 +1,23 @@
+using CSharpFunctionalExtensions;
+
 namespace ASSISTENTE.Infrastructure.LLM.ValueObjects;
 
-public sealed class LLMClient
+public sealed class LlmClient : ValueObject
 {
-    private LLMClient(string name)
+    private LlmClient(string name)
     {
         Name = name;
     }
     
     public string Name { get; }
     
-    public static LLMClient Create(string name)
+    public static LlmClient Create(string name)
     {
-        return new LLMClient(name);
+        return new LlmClient(name);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Name;
     }
 }

@@ -3,20 +3,20 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 
-public sealed class CodePath
+public sealed class CodePath : ValueObject
 {
     private string Path { get; }
-    
-    public string Extension { get; }
     public string FileName { get; }
     public string Content { get; }
 
+    private string Extension { get; }
+    
     private CodePath(string path, string extension, string fileName, string content)
     {
         Path = path;
-        Extension = extension;
         FileName = fileName;
         Content = content;
+        Extension = extension;
     }
 
     public static Result<CodePath> Create(string path)
@@ -36,6 +36,14 @@ public sealed class CodePath
     }
 
     public static implicit operator string(CodePath codePath) => codePath.Path;
+    
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Path;
+        yield return Extension;
+        yield return FileName;
+        yield return Content;
+    }
 }
 
 public static class FilePathErrors

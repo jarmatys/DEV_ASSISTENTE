@@ -1,6 +1,8 @@
+using CSharpFunctionalExtensions;
+
 namespace ASSISTENTE.Application.Abstractions.ValueObjects;
 
-public sealed class ResourceText
+public sealed class ResourceText : ValueObject
 {
     private ResourceText(string title, string content)
     {
@@ -14,5 +16,11 @@ public sealed class ResourceText
     public static ResourceText Create(string title, string content)
     {
         return new ResourceText(title, content);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Title;
+        yield return Content;
     }
 }

@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.LLM.ValueObjects;
 
-public sealed class Audit
+public sealed class Audit : ValueObject
 {
     private Audit(string model, int completionTokens, int promptTokens)
     {
@@ -31,5 +31,12 @@ public sealed class Audit
             return Result.Failure<Audit>(CommonErrors.EmptyParameter.Build());
         
         return new Audit(model, completionTokens.Value, promptTokens.Value);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Model;
+        yield return CompletionTokens;
+        yield return PromptTokens;
     }
 }

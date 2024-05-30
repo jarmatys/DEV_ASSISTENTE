@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.LLM.ValueObjects;
 
-public sealed class Prompt
+public sealed class Prompt : ValueObject
 {
     private Prompt(string value)
     {
@@ -18,6 +18,11 @@ public sealed class Prompt
             return Result.Failure<Prompt>(EmbeddingTextErrors.EmptyContent.Build());
         
         return new Prompt(prompt);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }
 

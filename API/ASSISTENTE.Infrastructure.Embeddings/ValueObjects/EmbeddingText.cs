@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 
-public sealed class EmbeddingText
+public sealed class EmbeddingText : ValueObject
 {
     public string Text { get; }
 
@@ -18,6 +18,11 @@ public sealed class EmbeddingText
             return Result.Failure<EmbeddingText>(EmbeddingTextErrors.EmptyContent.Build());
         
         return new EmbeddingText(text);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Text;
     }
 }
 
