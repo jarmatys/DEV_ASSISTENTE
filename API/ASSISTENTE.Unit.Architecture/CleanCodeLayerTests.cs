@@ -27,4 +27,52 @@ public class CleanCodeLayerTests : ArchitectureTestBase
             .ShoudlNotHaveDependencyOn(AssemblyName(InfrastructureAssembly))
             .ShouldBeSuccessful();
     }
+    
+    [Fact]
+    public void PersistenceAssembly_ShouldNotHaveDependencyOn_InfrastructureLayer()
+    {
+        PersistenceAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(InfrastructureAssembly))
+            .ShouldBeSuccessful();
+    }
+    
+    [Fact]
+    public void ApplicationAssembly_ShouldNotHaveDependencyOn_InfrastructureLayer()
+    {
+        ApplicationAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(InfrastructureAssembly))
+            .ShouldBeSuccessful();
+    }
+    
+    [Fact]
+    public void ApplicationAssembly_ShouldNotHaveDependencyOn_PersistenceAssembly()
+    {
+        ApplicationAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(PersistenceAssembly))
+            .ShouldBeSuccessful();
+    }
+    
+    [Fact]
+    public void EventsAssembly_ShouldNotHaveDependencyOn_PersistenceAssembly()
+    {
+        EventsAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(PersistenceAssembly))
+            .ShouldBeSuccessful();
+    }
+    
+    [Fact]
+    public void EventsAssembly_ShouldNotHaveDependencyOn_ApplicationAssembly()
+    {
+        EventsAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(ApplicationAssembly))
+            .ShouldBeSuccessful();
+    }
+    
+    [Fact]
+    public void EventsAssembly_ShouldNotHaveDependencyOn_InfrastructureAssembly()
+    {
+        EventsAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(InfrastructureAssembly))
+            .ShouldBeSuccessful();
+    }
 }

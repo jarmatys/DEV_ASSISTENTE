@@ -6,7 +6,7 @@ namespace ASSISTENTE.EventHandlers
     {
         public static IServiceCollection AddEvents(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(EventsAssemblyMarker).Assembly));
             
             return services;
         }

@@ -16,5 +16,9 @@
         <PackageReference Include="MassTransit.Abstractions" Version="8.2.1" />
         <PackageReference Include="MediatR" Version="12.2.0"/>
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Unit.Architecture"/>
+    </ItemGroup>
+    
 </Project>
