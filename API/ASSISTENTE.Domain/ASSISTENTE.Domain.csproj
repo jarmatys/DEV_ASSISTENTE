@@ -11,4 +11,8 @@
       <ProjectReference Include="..\ASSISTENTE.Language\ASSISTENTE.Language.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Unit.Architecture"/>
+    </ItemGroup>
+    
 </Project>

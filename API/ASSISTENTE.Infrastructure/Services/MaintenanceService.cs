@@ -1,5 +1,4 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Persistence.Configuration;

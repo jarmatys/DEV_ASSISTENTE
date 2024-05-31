@@ -7,7 +7,7 @@ namespace ASSISTENTE.Domain.Entities.Answers;
 
 public sealed class Answer : AuditableEntity<AnswerId>
 {
-    public Answer()
+    private Answer()
     {
     }
 
