@@ -14,6 +14,8 @@ namespace ASSISTENTE.MessageBroker.Rabbit
             {
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
+                    cfg.UseInMemoryOutbox(ctx);
+
                     cfg.UsePublishFilter(typeof(ContextPublishLoggingFilter<>), ctx);
                     
                     cfg.Host(rabbit.Url, h =>
@@ -45,6 +47,8 @@ namespace ASSISTENTE.MessageBroker.Rabbit
         
                     config.UsingRabbitMq((ctx, cfg) =>
                     {
+                        cfg.UseInMemoryOutbox(ctx);
+                        
                         cfg.UseConsumeFilter(typeof(ContextConsumeLoggingFilter<>), ctx);
         
                         cfg.Host(rabbit.Url, h =>
@@ -63,6 +67,7 @@ namespace ASSISTENTE.MessageBroker.Rabbit
                             foreach (var type in consumerTypes)
                             {
                                 c.ConfigureConsumer(ctx, type);
+                                c.UseMessageRetry(r => r.Immediate(3));
                             }
                         });
                     });

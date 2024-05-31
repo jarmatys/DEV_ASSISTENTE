@@ -91,7 +91,7 @@ namespace ASSISTENTE.Persistence.Configuration
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            await PublishEventsAsync(); // TODO: add in-memory outbox (outbox pattern)
+            await PublishEventsAsync();
             
             return result;
         }
