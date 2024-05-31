@@ -5,7 +5,7 @@ using ASSISTENTE.Persistence.Configuration;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
-using DomainCommons = ASSISTENTE.Domain.Commons;
+using DomainCommons = ASSISTENTE.Domain.Common;
 
 namespace ASSISTENTE.Persistence;
 

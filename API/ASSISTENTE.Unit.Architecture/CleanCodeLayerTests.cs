@@ -8,7 +8,7 @@ public class CleanCodeLayerTests : ArchitectureTestBase
     public void DomainLayer_ShouldNotHaveDependencyOn_ApplicationLayer()
     {
         DomainAssembly
-            .ShoudlHaveDependencyOn(AssemblyName(ApplicationAssembly))
+            .ShoudlNotHaveDependencyOn(AssemblyName(ApplicationAssembly))
             .ShouldBeSuccessful();
     }
 }

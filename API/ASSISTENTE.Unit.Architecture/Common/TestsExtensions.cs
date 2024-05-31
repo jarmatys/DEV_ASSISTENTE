@@ -11,7 +11,7 @@ public static class TestsExtensions
         result.IsSuccessful.ShouldBeTrue();
     }
     
-    public static TestResult ShoudlHaveDependencyOn(this Assembly assembly, string dependency)
+    public static TestResult ShoudlNotHaveDependencyOn(this Assembly assembly, string dependency)
     {
         return Types.InAssembly(assembly)
             .Should()
