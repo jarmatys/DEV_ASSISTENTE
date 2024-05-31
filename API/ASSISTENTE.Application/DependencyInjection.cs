@@ -8,8 +8,8 @@ namespace ASSISTENTE.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
-            services.AddValidatorsFromAssembly(typeof(AssemblyMarker).Assembly);
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
+            services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
             services.AddMiddlewares();
 
             return services;

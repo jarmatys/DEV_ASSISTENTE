@@ -17,4 +17,8 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0"/>
     </ItemGroup>
     
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Unit.Architecture"/>
+    </ItemGroup>
+
 </Project>
