@@ -15,16 +15,19 @@ public abstract partial class BrokerBase(
 
     protected async Task<HttpResult<TResponse>> GetAsync<TResponse, TRequest>(TRequest request)
         where TRequest : GetRequestBase
+        where TResponse : class
     {
         return await SendRequestAsync<TResponse>(() => _httpClient.GetAsync($"{relativeUrl}?{request.QueryString()}"));
     }
 
     protected async Task<HttpResult<TResponse>> GetAsync<TResponse>(string path = "")
+        where TResponse : class
     {
         return await SendRequestAsync<TResponse>(() => _httpClient.GetAsync($"{relativeUrl}/{path}"));
     }
 
     protected async Task<HttpResult<TResponse>> GetDetailsAsync<TResponse, TIdentifier>(TIdentifier identifier)
+        where TResponse : class
         where TIdentifier : IIdentifier
     {
         return await SendRequestAsync<TResponse>(() => _httpClient.GetAsync($"{relativeUrl}/{identifier}"));

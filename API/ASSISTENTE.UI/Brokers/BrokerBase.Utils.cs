@@ -12,11 +12,12 @@ public abstract partial class BrokerBase
     };
     
     private async Task<HttpResult<TResponse>> HandleResponseAsync<TResponse>(HttpResponseMessage response)
+        where TResponse : class
     {
         if (response.IsSuccessStatusCode)
         {
             var successResult = await response.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions);
-            return successResult != null
+            return successResult != default(TResponse)
                 ? HttpResult<TResponse>.Success(successResult)
                 : HttpResult<TResponse>.Failure(502, "BadGateway", "Wrong response from API.");
         }
@@ -24,7 +25,7 @@ public abstract partial class BrokerBase
         var errorResult = await response.Content.ReadAsStringAsync();
         var error = JsonSerializer.Deserialize<ErrorResponse>(errorResult, _jsonSerializerOptions);
         
-        return error == null 
+        return error == default(ErrorResponse) 
             ? HttpResult<TResponse>.Failure(502, "BadGateway", "Wrong response from API.") 
             : HttpResult<TResponse>.Failure(error);
     }
@@ -39,12 +40,13 @@ public abstract partial class BrokerBase
         var errorResult = await response.Content.ReadAsStringAsync();
         var error = JsonSerializer.Deserialize<ErrorResponse>(errorResult, _jsonSerializerOptions);
 
-        return error == null 
+        return error == default(ErrorResponse) 
             ? HttpResult.Failure(502, "BadGateway", "Wrong response from API.") 
             : HttpResult.Failure(error);
     }
     
     private async Task<HttpResult<TResponse>> SendRequestAsync<TResponse>(Func<Task<HttpResponseMessage>> requestFunc)
+        where TResponse : class
     {
         try
         {
