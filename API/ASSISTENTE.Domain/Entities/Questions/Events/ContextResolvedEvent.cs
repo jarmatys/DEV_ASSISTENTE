@@ -1,4 +1,4 @@
-using ASSISTENTE.Domain.Commons.Interfaces;
+using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 

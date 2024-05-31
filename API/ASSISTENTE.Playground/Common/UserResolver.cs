@@ -1,6 +1,6 @@
 using ASSISTENTE.Domain.Interfaces;
 
-namespace ASSISTENTE.Playground.Commons;
+namespace ASSISTENTE.Playground.Common;
 
 internal sealed class UserResolver : IUserResolver
 {

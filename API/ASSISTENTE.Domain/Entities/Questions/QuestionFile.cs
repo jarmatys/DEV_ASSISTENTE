@@ -1,4 +1,4 @@
-using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Common;
 using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Questions;

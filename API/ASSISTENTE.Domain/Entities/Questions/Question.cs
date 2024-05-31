@@ -1,4 +1,4 @@
-using ASSISTENTE.Domain.Commons;
+using ASSISTENTE.Domain.Common;
 using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Domain.Entities.Questions.Events;

@@ -1,4 +1,4 @@
-namespace ASSISTENTE.Domain.Commons.Interfaces;
+namespace ASSISTENTE.Domain.Common.Interfaces;
 
 public interface IEntity
 {

@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using ASSISTENTE.Language;
 
-namespace ASSISTENTE.Domain.Commons.Interfaces;
+namespace ASSISTENTE.Domain.Common.Interfaces;
 
 public interface IBaseRepository<TEntity, in TIdentifier>
     where TEntity : class, IEntity

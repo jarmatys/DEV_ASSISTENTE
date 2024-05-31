@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ASSISTENTE.Common.Logging;
 using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Playground;
-using ASSISTENTE.Playground.Commons;
+using ASSISTENTE.Playground.Common;
 using MassTransit;
 using Serilog;
 

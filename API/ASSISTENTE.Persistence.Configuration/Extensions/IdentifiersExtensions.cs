@@ -1,5 +1,5 @@
 using System.Reflection;
-using ASSISTENTE.Domain.Commons.Interfaces;
+using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Language;
 using ASSISTENTE.Persistence.Configuration.Exceptions;
 using Microsoft.EntityFrameworkCore;

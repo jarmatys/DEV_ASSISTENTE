@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ASSISTENTE.Domain.Commons.Interfaces;
+namespace ASSISTENTE.Domain.Common.Interfaces;
 
 public interface IDomainEvents : INotification
 {

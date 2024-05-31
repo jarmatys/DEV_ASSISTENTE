@@ -1,7 +1,7 @@
-﻿using ASSISTENTE.Domain.Commons.Interfaces;
+﻿using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Language;
 
-namespace ASSISTENTE.Domain.Commons
+namespace ASSISTENTE.Domain.Common
 {
     public abstract class AuditableEntity<TIdentifier> : Entity<TIdentifier>, IAuditableEntity
         where TIdentifier : class, IIdentifier

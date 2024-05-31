@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using ASSISTENTE.Domain.Commons.Interfaces;
+using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Language;
 using ASSISTENTE.Persistence.Configuration;
 using CSharpFunctionalExtensions;

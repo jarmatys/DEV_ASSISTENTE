@@ -1,5 +1,5 @@
 using ASSISTENTE.Common.Results;
-using ASSISTENTE.Domain.Commons.Interfaces;
+using ASSISTENTE.Domain.Common.Interfaces;
 
 namespace ASSISTENTE.Application.Abstractions;
 

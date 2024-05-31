@@ -1,7 +1,7 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace ASSISTENTE.Playground.Commons;
+namespace ASSISTENTE.Playground.Common;
 
 public sealed class DummyPublishEndpoint(ILogger<DummyPublishEndpoint> logger) : IPublishEndpoint
 {
