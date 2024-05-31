@@ -1,7 +1,8 @@
+using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
+using ASSISTENTE.Infrastructure.MarkDownParser.Contracts.Models;
 using ASSISTENTE.Infrastructure.MarkDownParser.Errors;
 using ASSISTENTE.Infrastructure.MarkDownParser.Extensions;
 using ASSISTENTE.Infrastructure.MarkDownParser.Models;
-using ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
 using CSharpFunctionalExtensions;
 using Markdig;
 using Markdig.Syntax;

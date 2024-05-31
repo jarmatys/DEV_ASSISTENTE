@@ -24,7 +24,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddEmbeddings(settings.OpenAi);
             services.AddQdrant(settings.Qdrant);
             services.AddPromptGenerator();
-            services.AddLLM(settings.OpenAi);
+            services.AddLlm(settings.OpenAi);
 
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IQuestionOrchestrator, QuestionOrchestrator>();

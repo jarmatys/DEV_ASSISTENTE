@@ -21,7 +21,7 @@ internal static class IdentifiersExtensions
         foreach (var primaryKey in primaryKeys)
         {
             if (primaryKey == null)
-                throw new ConfiguratonException("Primary key (PK) for new entity not found");
+                throw new ConfigurationException("Primary key (PK) for new entity not found");
             
             primaryKey.Properties[0].ValueGenerated = ValueGenerated.OnAdd;
         }

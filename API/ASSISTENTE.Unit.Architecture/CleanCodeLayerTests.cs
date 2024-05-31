@@ -11,4 +11,20 @@ public class CleanCodeLayerTests : ArchitectureTestBase
             .ShoudlNotHaveDependencyOn(AssemblyName(ApplicationAssembly))
             .ShouldBeSuccessful();
     }
+
+    [Fact]
+    public void DomainLayer_ShouldNotHaveDependencyOn_PersistenceLayer()
+    {
+        DomainAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(PersistenceAssembly))
+            .ShouldBeSuccessful();
+    }
+
+    [Fact]
+    public void DomainLayer_ShouldNotHaveDependencyOn_InfrastructureLayer()
+    {
+        DomainAssembly
+            .ShoudlNotHaveDependencyOn(AssemblyName(InfrastructureAssembly))
+            .ShouldBeSuccessful();
+    }
 }

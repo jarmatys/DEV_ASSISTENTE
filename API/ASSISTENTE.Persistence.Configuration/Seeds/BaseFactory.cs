@@ -2,7 +2,7 @@
 
 namespace ASSISTENTE.Persistence.Configuration.Seeds;
 
-public abstract class BaseFactory
+internal abstract class BaseFactory
 {
     protected static T CreateInstance<T>(params object[] constructorParameters)
     {

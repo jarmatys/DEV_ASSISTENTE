@@ -1,5 +1,5 @@
+using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Errors;
-using ASSISTENTE.Infrastructure.Qdrant.Models;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using CSharpFunctionalExtensions;
 using Qdrant.Client;

@@ -1,11 +1,11 @@
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.PromptGenerator.Errors;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
-using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator;
 
-internal class PromptFactory(IEnumerable<IPrompt> prompts) : IPromptFactory
+internal sealed class PromptFactory(IEnumerable<IPrompt> prompts) : IPromptFactory
 {
     public Result<string> GeneratePrompt(PromptInput input)
     {

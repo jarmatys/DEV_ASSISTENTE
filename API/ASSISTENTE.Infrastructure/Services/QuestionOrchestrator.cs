@@ -4,15 +4,14 @@ using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
 using ASSISTENTE.Domain.Entities.Resources.Interfaces;
 using ASSISTENTE.Infrastructure.Embeddings;
-using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
+using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Errors;
 using ASSISTENTE.Infrastructure.LLM;
-using ASSISTENTE.Infrastructure.LLM.ValueObjects;
-using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
+using ASSISTENTE.Infrastructure.LLM.Contracts;
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
-using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using ASSISTENTE.Infrastructure.Qdrant;
-using ASSISTENTE.Infrastructure.Qdrant.Models;
+using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
@@ -25,7 +24,7 @@ public sealed class QuestionOrchestrator(
     IPromptGenerator promptGenerator,
     IResourceRepository resourceRepository,
     IQuestionRepository questionRepository,
-    ILLMClient llmClient,
+    ILlmClient llmClient,
     IContextProvider contextProvider
 ) : IQuestionOrchestrator
 {

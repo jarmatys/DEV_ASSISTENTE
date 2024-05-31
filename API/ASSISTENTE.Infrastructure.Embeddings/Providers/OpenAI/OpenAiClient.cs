@@ -1,7 +1,6 @@
+using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Errors;
 using CSharpFunctionalExtensions;
-using ASSISTENTE.Infrastructure.Embeddings.Models;
-using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
 using OpenAI.Net;
 using SharpToken;
 

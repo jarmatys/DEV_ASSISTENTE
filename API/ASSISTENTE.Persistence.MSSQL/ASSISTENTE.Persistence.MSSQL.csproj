@@ -10,4 +10,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Persistence.Configuration"/>
+    </ItemGroup>
+    
 </Project>

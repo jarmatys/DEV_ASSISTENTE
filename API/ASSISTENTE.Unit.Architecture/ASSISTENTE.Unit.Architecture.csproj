@@ -28,6 +28,8 @@
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Application\ASSISTENTE.Application.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj" />
     </ItemGroup>
 
 

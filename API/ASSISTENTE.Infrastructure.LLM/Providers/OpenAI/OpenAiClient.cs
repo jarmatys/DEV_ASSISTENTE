@@ -1,13 +1,13 @@
+using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Errors;
 using ASSISTENTE.Infrastructure.LLM.Providers.OpenAI.Enums;
-using ASSISTENTE.Infrastructure.LLM.ValueObjects;
 using CSharpFunctionalExtensions;
 using OpenAI.Net;
 using OpenAI.Net.Models.Requests;
 
 namespace ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
 
-internal sealed class OpenAiClient(IOpenAIService openAiService) : ILLMClient
+internal sealed class OpenAiClient(IOpenAIService openAiService) : ILlmClient
 {
     private readonly LlmClient _llmClient = LlmClient.Create("openAi");
     

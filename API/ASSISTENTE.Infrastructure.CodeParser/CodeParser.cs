@@ -1,7 +1,7 @@
+using ASSISTENTE.Infrastructure.CodeParser.Contracts;
+using ASSISTENTE.Infrastructure.CodeParser.Contracts.Models;
 using ASSISTENTE.Infrastructure.CodeParser.Errors;
 using ASSISTENTE.Infrastructure.CodeParser.Extensions;
-using ASSISTENTE.Infrastructure.CodeParser.Models;
-using ASSISTENTE.Infrastructure.CodeParser.ValueObjects;
 using CSharpFunctionalExtensions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

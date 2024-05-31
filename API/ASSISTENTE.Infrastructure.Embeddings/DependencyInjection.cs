@@ -1,11 +1,12 @@
 ﻿using ASSISTENTE.Common.Settings.Sections;
+using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI.Net;
 
 namespace ASSISTENTE.Infrastructure.Embeddings
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddEmbeddings(this IServiceCollection services, OpenAiSection configuration)
         {

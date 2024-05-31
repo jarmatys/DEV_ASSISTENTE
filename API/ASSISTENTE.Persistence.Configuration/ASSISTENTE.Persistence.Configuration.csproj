@@ -22,5 +22,9 @@
         <ProjectReference Include="..\ASSISTENTE.Persistence.MSSQL\ASSISTENTE.Persistence.MSSQL.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Persistence.POSTGRESQL\ASSISTENTE.Persistence.POSTGRESQL.csproj"/>
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Persistence"/>
+    </ItemGroup>
 
 </Project>

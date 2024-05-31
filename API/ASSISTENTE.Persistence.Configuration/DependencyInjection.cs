@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Persistence.Configuration
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddConfiguration(this IServiceCollection services, DatabaseSection database)
         {

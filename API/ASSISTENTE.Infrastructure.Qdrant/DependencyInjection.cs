@@ -1,10 +1,11 @@
 ﻿using ASSISTENTE.Common.Settings.Sections;
+using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Qdrant.Client;
 
 namespace ASSISTENTE.Infrastructure.Qdrant
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddQdrant(this IServiceCollection services, QdrantSection configuration)
         {

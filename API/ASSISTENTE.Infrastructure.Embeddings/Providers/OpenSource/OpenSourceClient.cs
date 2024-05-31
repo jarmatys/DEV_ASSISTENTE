@@ -1,5 +1,5 @@
-using CSharpFunctionalExtensions;using ASSISTENTE.Infrastructure.Embeddings.Models;
-using ASSISTENTE.Infrastructure.Embeddings.ValueObjects;
+using ASSISTENTE.Infrastructure.Embeddings.Contracts;
+using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.Embeddings.Providers.OpenSource;
 

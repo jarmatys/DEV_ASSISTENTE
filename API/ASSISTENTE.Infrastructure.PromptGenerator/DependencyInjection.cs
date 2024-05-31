@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddPromptGenerator(this IServiceCollection services)
         {

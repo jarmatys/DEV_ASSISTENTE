@@ -1,9 +1,9 @@
-using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator.Prompts;
 
-internal class CodePrompt : IPrompt
+internal sealed class CodePrompt : IPrompt
 {
     public PromptType Type => PromptType.Code;
 

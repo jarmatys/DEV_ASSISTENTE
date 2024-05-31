@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Infrastructure.MarkDownParser
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddMarkDownParser(this IServiceCollection services)
         {

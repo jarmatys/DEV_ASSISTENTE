@@ -17,4 +17,8 @@
         <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Unit.Architecture"/>
+    </ItemGroup>
+    
 </Project>

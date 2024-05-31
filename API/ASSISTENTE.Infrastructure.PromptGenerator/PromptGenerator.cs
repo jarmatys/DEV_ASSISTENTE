@@ -1,5 +1,5 @@
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
-using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator;

@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ASSISTENTE.Infrastructure.CodeParser.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Infrastructure.CodeParser
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddCodeParser(this IServiceCollection services)
         {

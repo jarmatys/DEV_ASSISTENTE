@@ -1,9 +1,9 @@
-using ASSISTENTE.Infrastructure.PromptGenerator.ValueObjects;
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 
-public interface IPromptFactory
+internal interface IPromptFactory
 {
     Result<string> GeneratePrompt(PromptInput input);
 }

@@ -1,6 +1,6 @@
 using ASSISTENTE.Application.Abstractions.ValueObjects;
 using ASSISTENTE.Common.Extensions;
-using ASSISTENTE.Infrastructure.MarkDownParser.ValueObjects;
+using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;

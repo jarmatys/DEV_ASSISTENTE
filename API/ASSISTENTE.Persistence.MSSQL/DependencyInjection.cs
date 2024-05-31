@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Persistence.MSSQL
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddMssql<TContext>(
             this IServiceCollection services,

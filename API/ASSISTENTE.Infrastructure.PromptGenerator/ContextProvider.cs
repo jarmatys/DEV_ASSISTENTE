@@ -1,8 +1,9 @@
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator;
 
-public class ContextProvider : IContextProvider
+internal sealed class ContextProvider : IContextProvider
 {
     public string Prompt<T>(string question) where T : struct, Enum
     {

@@ -14,4 +14,8 @@
       <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Infrastructure"/>
+    </ItemGroup>
+
 </Project>

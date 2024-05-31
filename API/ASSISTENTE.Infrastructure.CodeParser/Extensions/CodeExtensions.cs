@@ -1,4 +1,4 @@
-using ASSISTENTE.Infrastructure.CodeParser.Models;
+using ASSISTENTE.Infrastructure.CodeParser.Contracts.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ASSISTENTE.Infrastructure.CodeParser.Extensions;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Persistence.POSTGRESQL
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
         public static IServiceCollection AddPostreSql<TContext>(
             this IServiceCollection services,

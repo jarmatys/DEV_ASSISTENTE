@@ -1,3 +1,5 @@
+using ASSISTENTE.Infrastructure.MarkDownParser.Contracts.Models;
+
 namespace ASSISTENTE.Infrastructure.MarkDownParser.Models;
 
 internal sealed record Paragraph(string Content, string Urls) : ElementBase(Content)

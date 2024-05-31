@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ASSISTENTE.Persistence.Configuration.Configuration
 {
-    public class QuestionResourceConfiguration : IEntityTypeConfiguration<QuestionResource>
+    internal class QuestionResourceConfiguration : IEntityTypeConfiguration<QuestionResource>
     {
         public void Configure(EntityTypeBuilder<QuestionResource> builder)
         {

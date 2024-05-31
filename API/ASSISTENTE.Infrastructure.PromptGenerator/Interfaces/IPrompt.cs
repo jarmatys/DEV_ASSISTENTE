@@ -1,8 +1,8 @@
-using ASSISTENTE.Infrastructure.PromptGenerator.Enums;
+using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 
 namespace ASSISTENTE.Infrastructure.PromptGenerator.Interfaces;
 
-public interface IPrompt
+internal interface IPrompt
 {
     public PromptType Type { get; }
     public  string Generate(string question, string context);

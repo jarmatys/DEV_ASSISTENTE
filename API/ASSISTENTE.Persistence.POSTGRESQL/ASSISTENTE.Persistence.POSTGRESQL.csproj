@@ -13,5 +13,9 @@
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Persistence.Configuration"/>
+    </ItemGroup>
 
 </Project>
