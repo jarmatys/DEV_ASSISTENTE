@@ -1,5 +1,148 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Getting started</PageTitle>
 
-<h1>Home page!</h1>
+<MudGrid>
+    <MudItem Class="mb-8">
+        <MudText Typo="Typo.h2" GutterBottom="true">
+            ABOUT
+            <MudButton Target="_blank" Class="ml-3" Href="https://www.youtube.com/watch?v=5l5J5WqOT2w" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small" StartIcon="@Icons.Custom.Brands.YouTube">Video explainer</MudButton>
+        </MudText>
+        <MudText Typo="Typo.body1">Every developer, and not just developers, understands how difficult it is to manage notes, bookmarks, and code snippets across various platforms. That's why assistente was created: <strong>to become a personal memory bank, facilitating quick and efficient storage and retrieval of key information</strong>. With assistente, you can say goodbye to wasting time searching for solutions and welcome seamless development.</MudText>
+    </MudItem>
+    <MudItem Class="mb-8">
+        <MudText Typo="Typo.h2" GutterBottom="true">WORKS WITH YOU RESOURCES</MudText>
+        <MudText Typo="Typo.body1">Assistente seamlessly integrates with your resources, such as notes and code snippets.</MudText>
+        <MudGrid Class="mt-4">
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard Elevation="25" Class="rounded-lg pb-4">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5" Align="Align.Center">Notes</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudList Class="mx-auto" Style="min-height: 220px;">
+                            <MudListItem Icon="@Icons.Material.Filled.Info">
+                                Assistente can learn from your notes and use them to answer your questions. (currently only markdown is supported)
+                            </MudListItem>
+                        </MudList>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-center">
+                        <MudButton Href="resources" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Filled.Search">Go to resources</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard Elevation="25" Class="rounded-lg pb-4">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5" Align="Align.Center">Code</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudList Class="mx-auto" Style="min-height: 220px;">
+                            <MudListItem Icon="@Icons.Material.Filled.Info">
+                                Assistente can learn code from your repositories and use them to help you. (currently only C# is supported)
+                            </MudListItem>
+                        </MudList>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-center">
+                        <MudButton Href="resources" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Filled.Search">Go to resources</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard Elevation="25" Class="rounded-lg pb-4">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5" Align="Align.Center">Bookmarks</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudList Class="mx-auto" Style="min-height: 220px;">
+                            <MudListItem Icon="@Icons.Material.Filled.Info">
+                                Based on your bookmarks assistente give you the most accurate link from your bookmarks.
+                            </MudListItem>
+                        </MudList>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-center">
+                        <MudButton Disabled Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Filled.Info">In-progress</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard Elevation="25" Class="rounded-lg pb-4" >
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5" Align="Align.Center">E-mails</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudList Class="mx-auto" Style="min-height: 220px;">
+                            <MudListItem Icon="@Icons.Material.Filled.Info">
+                                Based on your emails, assistente remind you about necessary conversation
+                            </MudListItem>
+                        </MudList>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-center">
+                        <MudButton Disabled Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Filled.Info">In-progress</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudItem Class="mb-8">
+        <MudText Typo="Typo.h2" GutterBottom="true">
+            ANSWERING
+            <MudButton Class="ml-3" Href="questions/ask" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small" StartIcon="@Icons.Material.Filled.CallToAction">Ask the assistente</MudButton>
+        </MudText>
+        <MudText Typo="Typo.body1">
+            After you have added <strong>your resources</strong>, you can ask the assistente questions. The assistente will use the resources you have added to <strong>answer your questions</strong>.
+            <MudAlert Severity="Severity.Info" Class="mt-8">
+                If you don't have any question, you can check <MudLink Href="questions">questions asked</MudLink> by other users.
+            </MudAlert>
+        </MudText>
+    </MudItem>
+    <MudItem Class="mb-8">
+        <MudText Typo="Typo.h2" GutterBottom="true">
+            PROCESS OF ANSWERING
+        </MudText>
+        <MudTimeline TimelineOrientation="TimelineOrientation.Horizontal" TimelinePosition="TimelinePosition.Top">
+            <MudTimelineItem Color="Color.Info" Variant="Variant.Filled">
+                <ItemContent>
+                    <MudAlert Severity="Severity.Success">Ask question</MudAlert>
+                </ItemContent>
+            </MudTimelineItem>
+            <MudTimelineItem Color="Color.Info" Variant="Variant.Filled">
+                <ItemContent>
+                    <MudAlert Severity="Severity.Info">Detect context (code or note)</MudAlert>
+                </ItemContent>
+            </MudTimelineItem>
+            <MudTimelineItem Color="Color.Info" Variant="Variant.Filled">
+                <ItemContent>
+                    <MudAlert Severity="Severity.Info">Find resources</MudAlert>
+                </ItemContent>
+            </MudTimelineItem>
+            <MudTimelineItem Color="Color.Info" Variant="Variant.Filled">
+                <ItemContent>
+                    <MudAlert Severity="Severity.Info">Create prompt</MudAlert>
+                </ItemContent>
+            </MudTimelineItem>
+            <MudTimelineItem Color="Color.Success" Variant="Variant.Filled">
+                <ItemContent>
+                    <MudAlert Severity="Severity.Success">Send answer to client</MudAlert>
+                </ItemContent>
+            </MudTimelineItem>
+        </MudTimeline>
+    </MudItem>
+    <MudItem Class="mb-8">
+        <MudText Typo="Typo.h2" GutterBottom="true">
+            CONFIGURATION
+        </MudText>
+        <MudText Typo="Typo.body1">
+            Instructions how to configure assistente on your own: <MudLink Href="https://github.com/jarmatys/DEV_ASSISTENTE?tab=readme-ov-file#quick-start" Target="_blank">README</MudLink>.
+        </MudText>
+    </MudItem>
+</MudGrid>
+

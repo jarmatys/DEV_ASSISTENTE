@@ -1,14 +1,16 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider/>
+<MudThemeProvider Theme="_assistenteTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="1" Dense="true">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/jarmatys/DEV_ASSISTENTE" Target="_blank" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle"/>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/jarmatys/DEV_ASSISTENTE" Target="_blank"/>
+        <MudIconButton Icon="@Icons.Custom.Brands.YouTube" Color="Color.Inherit" Href="https://www.youtube.com/watch?v=5l5J5WqOT2w" Target="_blank"/>
+        <MudIconButton Icon="@Icons.Material.Filled.FindInPage" Color="Color.Inherit" Href="https://assistente.dev" Target="_blank"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked" Elevation="1" Variant="@DrawerVariant.Responsive">
         <MudDrawerHeader>
@@ -16,8 +18,8 @@
         </MudDrawerHeader>
         <NavMenu/>
     </MudDrawer>
-    <MudMainContent Class="pt-16 px-16">
-        <MudContainer MaxWidth="MaxWidth.Medium" Class="pt-3">
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="pt-16 pb-16">
             @Body
         </MudContainer>
     </MudMainContent>
@@ -31,5 +33,46 @@
     {
         _drawerOpen = !_drawerOpen;
     }
+
+    readonly MudTheme _assistenteTheme = new()
+    {
+        Typography = new Typography
+        {
+            H1 = new H1
+            {
+                FontSize = "2.5rem",
+                FontWeight = 700,
+            },
+            H2 = new H2
+            {
+                FontSize = "2.25rem",
+                FontWeight = 600,
+            },
+            H3 = new H3
+            {
+                FontSize = "2.0rem",
+                FontWeight = 500,
+            },
+            H4 = new H4
+            {
+                FontSize = "1.75rem",
+                FontWeight = 500,
+            },
+            H5 = new H5
+            {
+                FontSize = "1.5rem",
+                FontWeight = 500,
+            },
+            H6 = new H6
+            {
+                FontSize = "1.25rem",
+                FontWeight = 500,
+            },
+            Default = new Default()
+            {
+                FontFamily = ["Poppins"]
+            }
+        }
+    };
 
 }
