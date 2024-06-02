@@ -15,6 +15,7 @@
 
 @inject IAnswersBroker AnswersBroker
 @inject IQuestionsBroker QuestionsBroker
+@inject ISnackbar Snackbar
 @inject HubConnection HubConnection
 
 <PageTitle>Ask question</PageTitle>
@@ -61,7 +62,6 @@ else
         </FormFields>
     </BaseForm>
 }
-
 
 @code {
 
@@ -113,6 +113,15 @@ else
 
             _inProgress = false;
 
+            await InvokeAsync(StateHasChanged);
+        });
+        
+        HubConnection.On("NotifyFailure", async () =>
+        {
+            _inProgress = false;
+            
+            Snackbar.Add("Error during generating answer - try again...", Severity.Error);
+            
             await InvokeAsync(StateHasChanged);
         });
 

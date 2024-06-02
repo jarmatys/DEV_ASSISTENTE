@@ -19,4 +19,5 @@ public interface IQuestionHub
     Task InitConnection(string connectionId);
     Task ReceiveProgress(QuestionProgress progress);
     Task NotifyReadiness(QuestionId questionId);
+    Task NotifyFailure();
 }

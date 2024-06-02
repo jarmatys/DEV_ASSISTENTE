@@ -67,7 +67,7 @@ namespace ASSISTENTE.MessageBroker.Rabbit
                             foreach (var type in consumerTypes)
                             {
                                 c.ConfigureConsumer(ctx, type);
-                                c.UseMessageRetry(r => r.Immediate(3));
+                                // c.UseMessageRetry(r => r.Immediate(3));
                             }
                         });
                     });

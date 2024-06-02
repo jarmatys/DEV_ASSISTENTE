@@ -1,5 +1,6 @@
 using ASSISTENTE.Application.Abstractions;
 using ASSISTENTE.Application.Abstractions.Clients;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionFailed;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Language.Enums;
@@ -16,10 +17,14 @@ public abstract class QuestionCommandBase<TCommand>(
 {
     public async Task<Result> Handle(TCommand request, CancellationToken cancellationToken)
     {
-        return await GetQuestionAsync(request)
+        var connectionId = string.Empty;
+        
+        var result = await GetQuestionAsync(request)
             .ToResult(RepositoryErrors<Question>.NotFound.Build())
             .Bind(async question =>
             {
+                connectionId = question.ConnectionId ?? string.Empty;
+                
                 return await UpdateProgress(question, InitialProgress)
                     .Bind(async () =>
                     {
@@ -34,6 +39,13 @@ public abstract class QuestionCommandBase<TCommand>(
                     })
                     .Bind(async () => await UpdateProgress(question, FinalProgress));
             });
+
+        if (result.IsFailure)
+        {
+            await NotifyFail(connectionId);
+        }
+        
+        return result;
     }
 
     protected abstract Task<Result> HandleAsync(Question question);
@@ -48,5 +60,13 @@ public abstract class QuestionCommandBase<TCommand>(
 
         return await clientInternal
             .UpdateQuestionProgressAsync(UpdateQuestionProgressRequest.Create(question.ConnectionId, progress));
+    }
+    
+    private async Task<Result> NotifyFail(string? connectionId)
+    {
+        if (string.IsNullOrEmpty(connectionId)) return Result.Success();
+
+        return await clientInternal
+            .NotifyQuestionFailAsync(NotifyQuestionFailureRequest.Create(connectionId));
     }
 }

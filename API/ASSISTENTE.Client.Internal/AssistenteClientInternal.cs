@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Contract.Requests.Internal.Hub.NotifyQuestionReadiness;
+using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionFailed;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using CSharpFunctionalExtensions;
 
@@ -22,6 +23,15 @@ internal sealed class AssistenteClientInternal(HttpClient httpClient) : IAssiste
     public async Task<Result> NotifyQuestionReadinessAsync(NotifyQuestionReadinessRequest request)
     {
         var response = await httpClient.PutAsJsonAsync($"{RelativeUrl}/readiness", request);
+        
+        return !response.IsSuccessStatusCode 
+            ? Result.Failure($"Internal API error ({response.StatusCode})") 
+            : Result.Success();
+    }
+    
+    public async Task<Result> NotifyQuestionFailAsync(NotifyQuestionFailureRequest request)
+    {
+        var response = await httpClient.PutAsJsonAsync($"{RelativeUrl}/failure", request);
         
         return !response.IsSuccessStatusCode 
             ? Result.Failure($"Internal API error ({response.StatusCode})") 
