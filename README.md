@@ -45,7 +45,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ I phase (POC) - console app for test purpose `Playground`: [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/tree/master/API/ASSISTENTE.Playground)
 - ✅ II phase - UI in Blazor 
 - ✅ III phase - Request limitation (throttling) + publish application on VPS - [URL](https://app.assistente.dev)
-- 🔳 IV phase - Improve prompts and logic to generate the most accurate answers
+- ✅ IV phase - Improve prompts and logic to generate the most accurate answers
 
 #### Loading user data
 
@@ -55,7 +55,6 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ Loading and parsing  `*.cs` files - code base
 - ✅ Find open source solution for creating embeddins
     - ✅ Done partially (currently in use OpenAI embedding  service)
-    - 🔳 `NICE TO HAVE` Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
 - ✅ Integration with Qdrant - saving embeddings
 
 #### Generating results
@@ -83,7 +82,14 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - ✅ Prepare video explainer with simply demo
 - ✅ Add HealthChecks for API & Worker
 
----
+#### Roadmap
+
+- 🔳 Configure OTEL collector: [TUTORIAL](https://dev.to/kim-ch/observability-net-opentelemetry-collector-25g1) 
+    - 🔳 `Metrics` integration with Prometheus and Graphana
+    - 🔳 `Traces` integration with SEQ (Jaeger shoud be replaces with SEQ)
+- 🔳 Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
+
+
 ### Configuration
 
 1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
@@ -127,4 +133,3 @@ Prerequisites: `Docker`
 | Jaeger | 1011 | OpenTelemetry Collector | - | - |
 | Jaeger | 1012 | UI | - | - |
 | Jaeger | 1014 | API | `/metrics` | - |
-
