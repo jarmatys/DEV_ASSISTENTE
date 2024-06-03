@@ -35,11 +35,11 @@ public static class DependencyInjection
             {
                 tracing
                     .AddSource(DiagnosticConfig.MassTransitSource)
-                    .AddAspNetCoreInstrumentation(configuration =>
+                    .AddAspNetCoreInstrumentation(_ =>
                     { 
                         // INFO: Extra configuration for ASP.NET Core Instrumentation
                     })
-                    .AddHttpClientInstrumentation(configuration =>
+                    .AddHttpClientInstrumentation(_ =>
                     {
                         // INFO: Extra configuration for HttpClient Instrumentation
                     })
