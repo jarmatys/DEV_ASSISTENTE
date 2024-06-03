@@ -22,14 +22,13 @@ public static class DependencyInjection
             .ConfigureResource(resource => resource.AddService(ApplicationName()))
             .WithMetrics(metrics =>
             {
-                // TODO: here we can add our custom metrics by using AddMeter() method
+                // INFO: here we can add our custom metrics by using AddMeter() method
                 metrics
                     .AddRuntimeInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddPrometheusExporter();
 
-                // TODO: Fix '/metrics' endpoint for APP in docker - https://opentelemetry.io/docs/languages/net/exporters/
                 metrics.AddOtlpExporter();
             })
             .WithTracing(tracing =>
@@ -37,12 +36,12 @@ public static class DependencyInjection
                 tracing
                     .AddSource(DiagnosticConfig.MassTransitSource)
                     .AddAspNetCoreInstrumentation(configuration =>
-                    {
-                        // TODO: Verify if we need to add some configuration here
+                    { 
+                        // INFO: Extra configuration for ASP.NET Core Instrumentation
                     })
                     .AddHttpClientInstrumentation(configuration =>
                     {
-                        // TODO: Verify if we need to add some configuration here
+                        // INFO: Extra configuration for HttpClient Instrumentation
                     })
                     .AddEntityFrameworkCoreInstrumentation()
                     .AddNpgsql();

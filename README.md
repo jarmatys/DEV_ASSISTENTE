@@ -85,7 +85,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 #### Roadmap
 
 - 🔳 Configure OTEL collector: [TUTORIAL](https://dev.to/kim-ch/observability-net-opentelemetry-collector-25g1) 
-    - 🔳 `Metrics` integration with Prometheus and Graphana
+    - 🔳 `Metrics` integration with Prometheus and Graphana - [TUTORIAL](https://opentelemetry.io/docs/languages/net/exporters/)
     - 🔳 `Traces` integration with SEQ (Jaeger shoud be replaces with SEQ)
 - 🔳 Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
 
