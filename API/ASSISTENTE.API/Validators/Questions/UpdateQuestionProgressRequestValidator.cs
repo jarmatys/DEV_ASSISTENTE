@@ -15,5 +15,9 @@ public sealed class UpdateQuestionProgressRequestValidator : Validator<UpdateQue
         RuleFor(x => x.Progress)
             .NotEmpty()
             .WithMessage("'Progress' field is is required!");
+        
+        RuleFor(x => x.Information)
+            .NotEmpty()
+            .WithMessage("'Information' field is is required!");
     }
 }

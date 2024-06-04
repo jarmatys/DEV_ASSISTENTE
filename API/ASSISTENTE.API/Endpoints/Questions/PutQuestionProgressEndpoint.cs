@@ -15,7 +15,7 @@ public sealed class PutQuestionProgressEndpoint(IHubContext<QuestionHub, IQuesti
 
     public override async Task HandleAsync(UpdateQuestionProgressRequest req, CancellationToken ct)
     {
-        await hubContext.Clients.Client(req.ConnectionId).ReceiveProgress(req.Progress);
+        await hubContext.Clients.Client(req.ConnectionId).ReceiveProgress(req.Progress, req.Information);
         
         await SendOkAsync(ct);
     }

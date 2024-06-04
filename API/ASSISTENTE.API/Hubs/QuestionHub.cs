@@ -1,4 +1,3 @@
-using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using Microsoft.AspNetCore.SignalR;
 
@@ -17,7 +16,7 @@ public sealed class QuestionHub : Hub<IQuestionHub>
 public interface IQuestionHub
 {
     Task InitConnection(string connectionId);
-    Task ReceiveProgress(QuestionProgress progress);
+    Task ReceiveProgress(int progress, string information);
     Task NotifyReadiness(QuestionId questionId);
     Task NotifyFailure();
 }

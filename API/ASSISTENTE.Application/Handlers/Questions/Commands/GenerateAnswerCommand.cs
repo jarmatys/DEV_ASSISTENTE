@@ -3,7 +3,6 @@ using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Bases;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
-using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -37,8 +36,8 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
 
         protected override async Task<Maybe<Question>> GetQuestionAsync(GenerateAnswerCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);
-
-        protected override QuestionProgress InitialProgress => QuestionProgress.Answering;
-        protected override QuestionProgress FinalProgress => QuestionProgress.Answered;
+        
+        protected override ProgressInformation InitialInformation => new(90, "Generating answer...");
+        protected override ProgressInformation FinalInformation => new(100, "Answer generated!");
     }
 }

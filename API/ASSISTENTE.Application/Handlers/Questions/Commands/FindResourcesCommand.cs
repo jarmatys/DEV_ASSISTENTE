@@ -3,7 +3,6 @@ using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Bases;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
-using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -37,8 +36,8 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
 
         protected override async Task<Maybe<Question>> GetQuestionAsync(FindResourcesCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);
-
-        protected override QuestionProgress InitialProgress => QuestionProgress.SearchingForResources;
-        protected override QuestionProgress FinalProgress => QuestionProgress.ResourcesFound;
+        
+        protected override ProgressInformation InitialInformation => new(60, "Searchin for resources..");
+        protected override ProgressInformation FinalInformation => new(70, "Resources found!");
     }
 }

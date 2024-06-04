@@ -16,7 +16,7 @@ internal sealed class AssistenteClientInternal(HttpClient httpClient) : IAssiste
         var response = await httpClient.PutAsJsonAsync($"{RelativeUrl}/progress", request);
         
         return !response.IsSuccessStatusCode 
-            ? Result.Failure($"Internal API error ({response.StatusCode})") 
+            ? await CreateError(response)
             : Result.Success();
     }
 
@@ -25,7 +25,7 @@ internal sealed class AssistenteClientInternal(HttpClient httpClient) : IAssiste
         var response = await httpClient.PutAsJsonAsync($"{RelativeUrl}/readiness", request);
         
         return !response.IsSuccessStatusCode 
-            ? Result.Failure($"Internal API error ({response.StatusCode})") 
+            ? await CreateError(response)
             : Result.Success();
     }
     
@@ -34,7 +34,14 @@ internal sealed class AssistenteClientInternal(HttpClient httpClient) : IAssiste
         var response = await httpClient.PutAsJsonAsync($"{RelativeUrl}/failure", request);
         
         return !response.IsSuccessStatusCode 
-            ? Result.Failure($"Internal API error ({response.StatusCode})") 
+            ? await CreateError(response)
             : Result.Success();
+    }
+    
+    private static async Task<Result> CreateError(HttpResponseMessage response)
+    {
+        var result = await response.Content.ReadAsStringAsync();
+        
+        return Result.Failure($"Internal API error ({response.StatusCode}) {Environment.NewLine} {result}");
     }
 }

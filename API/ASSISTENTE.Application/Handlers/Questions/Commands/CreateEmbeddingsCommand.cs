@@ -3,7 +3,6 @@ using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Bases;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
-using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -38,7 +37,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         protected override async Task<Maybe<Question>> GetQuestionAsync(CreateEmbeddingsCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);
 
-        protected override QuestionProgress InitialProgress => QuestionProgress.CreatingEmbeddings;
-        protected override QuestionProgress FinalProgress => QuestionProgress.EmbeddingsCreated;
+        protected override ProgressInformation InitialInformation => new(20, "Creating embeddings...");
+        protected override ProgressInformation FinalInformation => new(30, "Embeddings created!");
     }
 }

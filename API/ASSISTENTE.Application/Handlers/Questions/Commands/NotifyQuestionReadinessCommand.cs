@@ -3,7 +3,6 @@ using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Contract.Requests.Internal.Hub.NotifyQuestionReadiness;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Interfaces;
-using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 using CSharpFunctionalExtensions;
 using MediatR;
@@ -39,12 +38,12 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
                 .Bind(async question =>
                 {
                     logger.LogInformation(
-                        "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}'",
-                        QuestionProgress.Ready,
+                        "{Step} | ConnectionId: ({ConnectionId}) - '{Question}'",
+                        nameof(NotifyQuestionReadinessCommand),
                         question.ConnectionId,
                         question.Text
                     );
-
+                    
                     if (question.ConnectionId is null) return Result.Success();
 
                     var requestBody = NotifyQuestionReadinessRequest.Create(

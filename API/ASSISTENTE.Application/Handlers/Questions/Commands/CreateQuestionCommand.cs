@@ -1,6 +1,5 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion;
-using ASSISTENTE.Language.Enums;
 using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -32,8 +31,8 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         public async Task<Result> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation(
-                "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}'",
-                QuestionProgress.Init,
+                "{Step} | ConnectionId: ({ConnectionId}) - '{Question}'",
+                nameof(CreateQuestionCommandHandler),
                 request.ConnectionId,
                 request.Question
             );

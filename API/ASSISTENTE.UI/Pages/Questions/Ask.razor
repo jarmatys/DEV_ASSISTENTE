@@ -4,7 +4,6 @@
 
 @using ASSISTENTE.Contract.Requests.Internal.Questions.Commands.CreateQuestion
 @using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer
-@using ASSISTENTE.Language.Enums
 @using ASSISTENTE.Language.Identifiers
 @using ASSISTENTE.UI.Brokers.Implementations
 @using ASSISTENTE.UI.Common.Models
@@ -22,7 +21,7 @@
 
 @if (_inProgress)
 {
-    <QuestionProgressBar Progress="_questionProgresses"/>
+    <QuestionProgressBar Progress="@_progress" Information="@_information"/>
 }
 
 @if (_response != null)
@@ -68,7 +67,8 @@ else
     private bool _inProgress;
     private bool _connectionInitialization = true;
 
-    private readonly List<QuestionProgress> _questionProgresses = [];
+    private int _progress;
+    private string _information = null!;
 
     CreateQuestionRequest _request = new();
     GetAnswerResponse? _response;
@@ -80,7 +80,9 @@ else
 
     private void HandleOnSubmit()
     {
-        _questionProgresses.Clear();
+        _progress = 0;
+        _information = "Question is being processed...";
+        
         _response = null;
         _inProgress = true;
     }
@@ -95,9 +97,10 @@ else
             InvokeAsync(StateHasChanged);
         });
 
-        HubConnection.On<QuestionProgress>("ReceiveProgress", questionProgress =>
+        HubConnection.On<int, string>("ReceiveProgress", (progress, information) =>
         {
-            _questionProgresses.Add(questionProgress);
+            _progress = progress;
+            _information = information;
 
             InvokeAsync(StateHasChanged);
         });

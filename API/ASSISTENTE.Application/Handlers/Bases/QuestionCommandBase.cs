@@ -3,7 +3,6 @@ using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionFailed;
 using ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionProgress;
 using ASSISTENTE.Domain.Entities.Questions;
-using ASSISTENTE.Language.Enums;
 using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -25,19 +24,19 @@ public abstract class QuestionCommandBase<TCommand>(
             {
                 connectionId = question.ConnectionId ?? string.Empty;
                 
-                return await UpdateProgress(question, InitialProgress)
+                return await UpdateProgress(question, InitialInformation)
                     .Bind(async () =>
                     {
                         logger.LogInformation(
-                            "{StepNumber} | ConnectionId: ({ConnectionId}) - '{Question}'",
-                            InitialProgress,
+                            "{Step} | ConnectionId: ({ConnectionId}) - '{Question}'",
+                            typeof(TCommand).Name,
                             question.ConnectionId,
                             question.Text
                         );
 
                         return await HandleAsync(question);
                     })
-                    .Bind(async () => await UpdateProgress(question, FinalProgress));
+                    .Bind(async () => await UpdateProgress(question, FinalInformation));
             });
 
         if (result.IsFailure)
@@ -51,15 +50,20 @@ public abstract class QuestionCommandBase<TCommand>(
     protected abstract Task<Result> HandleAsync(Question question);
     protected abstract Task<Maybe<Question>> GetQuestionAsync(TCommand request);
 
-    protected abstract QuestionProgress InitialProgress { get; }
-    protected abstract QuestionProgress FinalProgress { get; }
+    protected abstract ProgressInformation InitialInformation { get; }
+    protected abstract ProgressInformation FinalInformation { get; }
 
-    private async Task<Result> UpdateProgress(Question question, QuestionProgress progress)
+    private async Task<Result> UpdateProgress(Question question, ProgressInformation information)
     {
         if (question.ConnectionId is null) return Result.Success();
 
-        return await clientInternal
-            .UpdateQuestionProgressAsync(UpdateQuestionProgressRequest.Create(question.ConnectionId, progress));
+        var request = UpdateQuestionProgressRequest.Create(
+            question.ConnectionId,
+            information.Progress,
+            information.Text
+        );
+        
+        return await clientInternal.UpdateQuestionProgressAsync(request);
     }
     
     private async Task<Result> NotifyFail(string? connectionId)
