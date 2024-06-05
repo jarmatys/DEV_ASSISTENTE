@@ -16,7 +16,6 @@ namespace ASSISTENTE.Application.Handlers.Questions.Queries
             QuestionId = request.QuestionId;
         }
         
-        
         public QuestionId QuestionId { get; }
         
         public static GetQuestionQuery Create(GetQuestionRequest request)
@@ -39,11 +38,17 @@ namespace ASSISTENTE.Application.Handlers.Questions.Queries
                         .Select(r => new ResourceDto(r.Resource.Id, r.Resource.Title))
                         .ToList();
                     
+                    var files = question
+                        .Files
+                        .Select(f => new FileDto(f.Id, f.Text))
+                        .ToList();
+                    
                     return new GetQuestionResponse(
                         question.Text, 
                         question.Answer?.Text, 
                         question.Context!.Value, 
-                        resources);
+                        resources,
+                        files);
                 });
         }
     }

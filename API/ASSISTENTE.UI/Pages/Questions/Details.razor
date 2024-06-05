@@ -75,6 +75,36 @@
             </MudSimpleTable>
         </MudItem>
     </MudGrid>
+    
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" sm="12">
+            <h2 class="mb-2">Files used</h2>
+            <MudSimpleTable Hover="true" Dense="true">
+                <thead>
+                <tr>
+                    <th>File name</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (_response.Files.Any())
+                {
+                    foreach (var files in _response.Files)
+                    {
+                        <tr>
+                            <td>@files.Text</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="1">No files attached to this question...</td>
+                    </tr>
+                }
+                </tbody>
+            </MudSimpleTable>
+        </MudItem>
+    </MudGrid>
 }
 
 @code {

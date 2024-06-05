@@ -7,5 +7,6 @@ public sealed record GetQuestionResponse(
     string Text,
     string? Answer,
     QuestionContext Context,
-    List<ResourceDto> Resources
+    List<ResourceDto> Resources,
+    List<FileDto> Files
 );
