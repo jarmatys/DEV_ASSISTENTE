@@ -4,7 +4,7 @@ using ASSISTENTE.Language;
 namespace ASSISTENTE.Domain.Common.Interfaces;
 
 public interface IBaseRepository<TEntity, in TIdentifier>
-    where TEntity : class, IEntity
+    where TEntity : class, IEntity, IAggregateRoot
     where TIdentifier : class, IIdentifier
 {
     Task<Result<TEntity>> AddAsync(TEntity entity);

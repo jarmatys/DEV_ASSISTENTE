@@ -1,4 +1,5 @@
 using ASSISTENTE.Domain.Common;
+using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Domain.Entities.Questions.Events;
@@ -8,7 +9,7 @@ using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Questions;
 
-public sealed class Question : AuditableEntity<QuestionId>
+public sealed class Question : AuditableEntity<QuestionId>, IAggregateRoot
 {
     // TODO: Added STATE property + machine state to handle transitions between states
 

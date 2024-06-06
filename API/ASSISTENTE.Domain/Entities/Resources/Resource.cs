@@ -1,11 +1,12 @@
 using ASSISTENTE.Domain.Common;
+using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.Resources;
 
-public sealed class Resource : AuditableEntity<ResourceId>
+public sealed class Resource : AuditableEntity<ResourceId>, IAggregateRoot
 {
     private Resource()
     {

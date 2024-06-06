@@ -10,7 +10,7 @@ using DomainCommons = ASSISTENTE.Domain.Common;
 namespace ASSISTENTE.Persistence;
 
 internal abstract class BaseRepository<TEntity, TIdentifier>(IAssistenteDbContext context) : IBaseRepository<TEntity, TIdentifier>
-    where TEntity : DomainCommons.Entity<TIdentifier>
+    where TEntity : DomainCommons.Entity<TIdentifier>, IAggregateRoot
     where TIdentifier : class, IIdentifier
 {
     public async Task<Result<TEntity>> AddAsync(TEntity entity)
