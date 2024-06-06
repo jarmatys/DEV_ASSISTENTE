@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Domain.Entities.Answers;
+using ASSISTENTE.Domain.Entities.QuestionCodes;
+using ASSISTENTE.Domain.Entities.QuestionNotes;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
@@ -46,6 +48,8 @@ namespace ASSISTENTE.Persistence.Configuration
         public DbSet<QuestionResource> QuestionResources { get; set; } 
         public DbSet<QuestionFile> QuestionFiles { get; set; } 
         public DbSet<Answer> Answers { get; set; } 
+        public DbSet<QuestionCode> QuestionCodes { get; set; }
+        public DbSet<QuestionNote> QuestionNotes { get; set; }
 
         #endregion
         

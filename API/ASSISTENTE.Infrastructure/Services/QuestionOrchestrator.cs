@@ -10,7 +10,6 @@ using ASSISTENTE.Infrastructure.PromptGenerator.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
-using AnswerEntity = ASSISTENTE.Domain.Entities.Answers.Answer;
 
 namespace ASSISTENTE.Infrastructure.Services;
 
@@ -114,8 +113,7 @@ public sealed class QuestionOrchestrator(
                                         answer.Audit.PromptTokens,
                                         answer.Audit.CompletionTokens
                                     )
-                                    .Bind(metadata => AnswerEntity.Create(answer.Text, prompt.Value, metadata))
-                                    .Check(question.AddAnswer);
+                                    .Bind(metadata => question.AddAnswer(answer.Text, prompt.Value, metadata));
                             }); // 8. Save answer to question 
 
                         return answer;

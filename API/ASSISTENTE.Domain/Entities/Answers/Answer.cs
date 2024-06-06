@@ -16,7 +16,6 @@ public sealed class Answer : AuditableEntity<AnswerId>
         Text = text;
         Prompt = prompt;
         Metadata = metadata;
-        Question = null!;
     }
 
     public string Text { get; private set; } = null!;
@@ -30,7 +29,7 @@ public sealed class Answer : AuditableEntity<AnswerId>
 
     # endregion
 
-    public static Result<Answer> Create(
+    internal static Result<Answer> Create(
         string text,
         string prompt,
         LlmMetadata metadata)

@@ -149,3 +149,70 @@ BEGIN
 END $EF$;
 COMMIT;
 
+START TRANSACTION;
+
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240606143308_AddedCodeAndNoteQuestionTables') THEN
+    ALTER TABLE "Questions" DROP COLUMN "Embeddings";
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240606143308_AddedCodeAndNoteQuestionTables') THEN
+    CREATE TABLE "QuestionCodes" (
+        "Id" uuid NOT NULL,
+        "Embeddings" real[],
+        "QuestionId" uuid NOT NULL,
+        "CreatedBy" text,
+        "Created" timestamp with time zone NOT NULL,
+        "ModifiedBy" text,
+        "Modified" timestamp with time zone,
+        CONSTRAINT "PK_QuestionCodes" PRIMARY KEY ("Id"),
+        CONSTRAINT "FK_QuestionCodes_Questions_QuestionId" FOREIGN KEY ("QuestionId") REFERENCES "Questions" ("Id") ON DELETE CASCADE
+    );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240606143308_AddedCodeAndNoteQuestionTables') THEN
+    CREATE TABLE "QuestionNotes" (
+        "Id" uuid NOT NULL,
+        "Embeddings" real[],
+        "QuestionId" uuid NOT NULL,
+        "CreatedBy" text,
+        "Created" timestamp with time zone NOT NULL,
+        "ModifiedBy" text,
+        "Modified" timestamp with time zone,
+        CONSTRAINT "PK_QuestionNotes" PRIMARY KEY ("Id"),
+        CONSTRAINT "FK_QuestionNotes_Questions_QuestionId" FOREIGN KEY ("QuestionId") REFERENCES "Questions" ("Id") ON DELETE CASCADE
+    );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240606143308_AddedCodeAndNoteQuestionTables') THEN
+    CREATE UNIQUE INDEX "IX_QuestionCodes_QuestionId" ON "QuestionCodes" ("QuestionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240606143308_AddedCodeAndNoteQuestionTables') THEN
+    CREATE UNIQUE INDEX "IX_QuestionNotes_QuestionId" ON "QuestionNotes" ("QuestionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240606143308_AddedCodeAndNoteQuestionTables') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20240606143308_AddedCodeAndNoteQuestionTables', '8.0.4');
+    END IF;
+END $EF$;
+COMMIT;
+

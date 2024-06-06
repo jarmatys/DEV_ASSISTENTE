@@ -17,6 +17,8 @@ internal sealed class QuestionRepository(IAssistenteDbContext context)
             .AsSplitQuery()
             .Include(x => x.Answer)
             .Include(x => x.Files)
+            .Include(x => x.CodeContext)
+            .Include(x => x.NoteContext)
             .Include(x => x.Resources)
             .ThenInclude(x => x.Resource);
     }

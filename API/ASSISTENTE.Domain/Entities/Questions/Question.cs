@@ -1,6 +1,9 @@
 using ASSISTENTE.Domain.Common;
 using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Domain.Entities.Answers;
+using ASSISTENTE.Domain.Entities.Answers.ValueObjects;
+using ASSISTENTE.Domain.Entities.QuestionCodes;
+using ASSISTENTE.Domain.Entities.QuestionNotes;
 using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Domain.Entities.Questions.Events;
 using ASSISTENTE.Domain.Entities.Resources;
@@ -25,9 +28,8 @@ public sealed class Question : AuditableEntity<QuestionId>, IAggregateRoot
 
         Text = text;
         ConnectionId = connectionId;
-
         Context = null;
-        Embeddings = null;
+
         Resources = new List<QuestionResource>();
         Files = new List<QuestionFile>();
 
@@ -37,11 +39,13 @@ public sealed class Question : AuditableEntity<QuestionId>, IAggregateRoot
     public string Text { get; private set; } = null!;
     public string? ConnectionId { get; private set; }
     public QuestionContext? Context { get; private set; }
-    public List<float>? Embeddings { get; private set; }
-
+    
     # region NAVIGATION PROPERTIES
 
     public Answer? Answer { get; private set; }
+    public QuestionCode? CodeContext { get; private set; }
+    public QuestionNote? NoteContext { get; private set; }
+
     public ICollection<QuestionResource> Resources { get; private set; }
     public ICollection<QuestionFile> Files { get; private set; }
 
@@ -79,11 +83,15 @@ public sealed class Question : AuditableEntity<QuestionId>, IAggregateRoot
 
     public Result AddEmbeddings(IEnumerable<float> embeddings)
     {
-        Embeddings = embeddings.ToList();
-
         RaiseEvent(new EmbeddingsCreatedEvent(Id));
 
-        return Result.Success();
+        return Context switch
+        {
+            QuestionContext.Error => Result.Failure(QuestionErrors.WrongContext.Build()),
+            QuestionContext.Code => CodeContext!.AddEmbeddings(embeddings),
+            QuestionContext.Note => NoteContext!.AddEmbeddings(embeddings),
+            _ => Result.Failure(QuestionErrors.ContextNotProvided.Build())
+        };
     }
 
     public Result AddContext(QuestionContext context)
@@ -93,18 +101,19 @@ public sealed class Question : AuditableEntity<QuestionId>, IAggregateRoot
 
         Context = context;
 
-        RaiseEvent(new ContextResolvedEvent(Id, context));
-
-        return Result.Success();
+        return context switch
+        {
+            QuestionContext.Code => QuestionCode.Create(Id).Tap(questionCode => CodeContext = questionCode),
+            QuestionContext.Note => QuestionNote.Create(Id).Tap(questionNote => NoteContext = questionNote),
+            _ => Result.Failure(QuestionErrors.ContextNotProvided.Build())
+        };
     }
 
-    public Result AddAnswer(Answer answer)
+    public Result AddAnswer(string text, string prompt, LlmMetadata metadata)
     {
-        Answer = answer;
-
-        RaiseEvent(new AnswerAttachedEvent(Id));
-
-        return Result.Success();
+        return Answer.Create(text, prompt, metadata)
+            .Tap(answer => Answer = answer)
+            .Tap(_ => RaiseEvent(new AnswerAttachedEvent(Id)));
     }
 
     public Result<string> GetContext()
@@ -116,7 +125,13 @@ public sealed class Question : AuditableEntity<QuestionId>, IAggregateRoot
 
     public Result<List<float>> GetEmbeddings()
     {
-        return Embeddings ?? Result.Failure<List<float>>(QuestionErrors.EmbeddingsNotCreated.Build());
+        return Context switch
+        {
+            QuestionContext.Error => Result.Failure<List<float>>(QuestionErrors.WrongContext.Build()),
+            QuestionContext.Code => CodeContext!.GetEmbeddings(),
+            QuestionContext.Note => NoteContext!.GetEmbeddings(),
+            _ => Result.Failure<List<float>>(QuestionErrors.ContextNotProvided.Build())
+        };
     }
 
     public Result<string> GetAnswer()

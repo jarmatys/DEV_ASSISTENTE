@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ASSISTENTE.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ASSISTENTE.Persistence.Configuration.Migrations
 {
     [DbContext(typeof(AssistenteDbContext))]
-    partial class AssistenteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240606143308_AddedCodeAndNoteQuestionTables")]
+    partial class AddedCodeAndNoteQuestionTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
