@@ -25,7 +25,7 @@ public sealed class QuestionResource : AuditableEntity<QuestionResourceId>
 
     # endregion
     
-    public static Result<QuestionResource> Create(ResourceId resourceId)
+    internal static Result<QuestionResource> Create(ResourceId resourceId)
     {
         return new QuestionResource(resourceId);
     }

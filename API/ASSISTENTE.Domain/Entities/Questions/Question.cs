@@ -11,7 +11,7 @@ namespace ASSISTENTE.Domain.Entities.Questions;
 public sealed class Question : AuditableEntity<QuestionId>
 {
     // TODO: Added STATE property + machine state to handle transitions between states
-    
+
     private Question()
     {
         Resources = new List<QuestionResource>();
@@ -69,15 +69,13 @@ public sealed class Question : AuditableEntity<QuestionId>
         return Result.Success();
     }
 
-    public Result AddFiles(QuestionFile file)
+    public Result AddFiles(string fileText)
     {
-        Files.Add(file);
-
-        RaiseEvent(new FilesAttachedEvent(Id));
-        
-        return Result.Success();
+        return QuestionFile.Create(fileText)
+            .Tap(questionFile => Files.Add(questionFile))
+            .Tap(_ => RaiseEvent(new FilesAttachedEvent(Id)));
     }
-    
+
     public Result AddEmbeddings(IEnumerable<float> embeddings)
     {
         Embeddings = embeddings.ToList();
@@ -91,7 +89,7 @@ public sealed class Question : AuditableEntity<QuestionId>
     {
         if (context == QuestionContext.Error)
             return Result.Failure(QuestionErrors.WrongContext.Build());
-        
+
         Context = context;
 
         RaiseEvent(new ContextResolvedEvent(Id, context));
@@ -104,17 +102,17 @@ public sealed class Question : AuditableEntity<QuestionId>
         Answer = answer;
 
         RaiseEvent(new AnswerAttachedEvent(Id));
-        
+
         return Result.Success();
     }
 
     public Result<string> GetContext()
     {
-        return Context is not null 
+        return Context is not null
             ? Context.ToString()!
             : Result.Failure<string>(QuestionErrors.ContextNotProvided.Build());
     }
-    
+
     public Result<List<float>> GetEmbeddings()
     {
         return Embeddings ?? Result.Failure<List<float>>(QuestionErrors.EmbeddingsNotCreated.Build());
@@ -128,7 +126,7 @@ public sealed class Question : AuditableEntity<QuestionId>
     public Result<string> BuildEmbeddableText()
     {
         var fileNames = Files.Select(x => x.Text);
-        
+
         return Context switch
         {
             QuestionContext.Note => Text,
@@ -137,7 +135,7 @@ public sealed class Question : AuditableEntity<QuestionId>
             _ => Result.Failure<string>(QuestionErrors.ContextNotProvided.Build())
         };
     }
-    
+
     public Result<string> BuildContext()
     {
         var resourcesContent = Resources.Select(x => x.Resource).Select(x => x.Content);

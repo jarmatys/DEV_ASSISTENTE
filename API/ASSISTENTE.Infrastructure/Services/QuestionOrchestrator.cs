@@ -54,8 +54,7 @@ public sealed class QuestionOrchestrator(
             .Bind(async prompt =>
             {
                 var answer = await llmClient.GenerateAnswer(prompt)
-                    .Check(answer => QuestionFile.Create(answer.Text)
-                        .Check(question.AddFiles));
+                    .Check(answer => question.AddFiles(answer.Text));
 
                 return answer;
             })

@@ -23,7 +23,7 @@ public sealed class QuestionFile : AuditableEntity<QuestionFileId>
 
     # endregion
     
-    public static Result<QuestionFile> Create(string text)
+    internal static Result<QuestionFile> Create(string text)
     {
         return new QuestionFile(text);
     }
