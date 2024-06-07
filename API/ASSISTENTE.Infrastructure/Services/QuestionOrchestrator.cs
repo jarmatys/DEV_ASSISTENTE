@@ -27,14 +27,16 @@ public sealed class QuestionOrchestrator(
 
     public async Task<Result<Question>> InitQuestion(string questionText, string? connectionId)
     {
-        return await Question.Create(questionText, connectionId) // 1. Init question (save in DB for audit purpose)
+        // 1. Init question (save in DB for audit purpose)
+        
+        return await Question.Create(questionText, connectionId)
             .Check(questionRepository.AddAsync);
     }
 
     public async Task<Result> ResolveContext(Question question)
     {
         return await DetermineContextAsync<ResourceType, QuestionContext>(question.Text) // 2. Detect context
-            .Check(question.AddContext)
+            .Check(question.ResolveContext)
             .Check(_ => questionRepository.UpdateAsync(question));
     }
 

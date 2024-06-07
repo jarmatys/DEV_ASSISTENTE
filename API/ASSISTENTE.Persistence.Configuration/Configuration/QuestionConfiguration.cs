@@ -11,6 +11,8 @@ namespace ASSISTENTE.Persistence.Configuration.Configuration
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Text).IsRequired();
+            
+            builder.Property(e => e.State).IsRequired();
 
             builder.HasMany(e => e.Resources)
                 .WithOne(e => e.Question)

@@ -4,6 +4,7 @@ using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.QuestionCodes;
 using ASSISTENTE.Domain.Entities.QuestionNotes;
 using ASSISTENTE.Domain.Entities.Questions;
+using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Resources;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Language.Enums;
@@ -68,6 +69,7 @@ namespace ASSISTENTE.Persistence.Configuration
         {
             configurationBuilder.ConfigureEnum<ResourceType>();
             configurationBuilder.ConfigureEnum<QuestionContext>();
+            configurationBuilder.ConfigureEnum<QuestionStates>();
             
             configurationBuilder
                 .Properties<DateTime>()

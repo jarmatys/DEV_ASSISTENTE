@@ -14,5 +14,9 @@
     <ItemGroup>
         <InternalsVisibleTo Include="ASSISTENTE.Unit.Architecture"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Stateless" Version="5.16.0" />
+    </ItemGroup>
     
 </Project>

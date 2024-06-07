@@ -41,8 +41,10 @@ public sealed class MaintenanceService(
     {
         try
         {
+            var questions = await context.Questions.ToListAsync();
             var resources = await context.Resources.ToListAsync();
 
+            context.Questions.RemoveRange(questions);
             context.Resources.RemoveRange(resources);
 
             await context.SaveChangesAsync();
