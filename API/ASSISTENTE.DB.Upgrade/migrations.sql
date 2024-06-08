@@ -235,3 +235,29 @@ BEGIN
 END $EF$;
 COMMIT;
 
+START TRANSACTION;
+
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240608112850_AddStateColumnToCodeAndNoteQuestionTable') THEN
+    ALTER TABLE "QuestionNotes" ADD "State" text NOT NULL DEFAULT '';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240608112850_AddStateColumnToCodeAndNoteQuestionTable') THEN
+    ALTER TABLE "QuestionCodes" ADD "State" text NOT NULL DEFAULT '';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240608112850_AddStateColumnToCodeAndNoteQuestionTable') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20240608112850_AddStateColumnToCodeAndNoteQuestionTable', '8.0.4');
+    END IF;
+END $EF$;
+COMMIT;
+

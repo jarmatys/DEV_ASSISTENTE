@@ -1,15 +1,16 @@
 using ASSISTENTE.Domain.Common;
+using ASSISTENTE.Domain.Entities.QuestionNotes.Enums;
 using ASSISTENTE.Domain.Entities.QuestionNotes.Events;
 using ASSISTENTE.Domain.Entities.Questions;
-using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.QuestionNotes;
 
-public sealed class QuestionNote : AuditableEntity<QuestionNoteId>
+public sealed partial class QuestionNote : StatefulEntity<QuestionNoteId, QuestionNoteStates, QuestionNoteActions>
 {
     private QuestionNote()
     {
+        ConfigureStateMachine();
     }
 
     private QuestionNote(QuestionId questionId)
@@ -31,17 +32,5 @@ public sealed class QuestionNote : AuditableEntity<QuestionNoteId>
     internal static Result<QuestionNote> Create(QuestionId questionId)
     {
         return new QuestionNote(questionId);
-    }
-    
-    internal Result AddEmbeddings(IEnumerable<float> embeddings)
-    {
-        Embeddings = embeddings.ToList();
-        
-        return Result.Success();
-    }
-    
-    public Result<List<float>> GetEmbeddings()
-    {
-        return Embeddings ?? Result.Failure<List<float>>(QuestionErrors.EmbeddingsNotCreated.Build());
     }
 }

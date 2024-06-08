@@ -2,7 +2,9 @@
 using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.QuestionCodes;
+using ASSISTENTE.Domain.Entities.QuestionCodes.Enums;
 using ASSISTENTE.Domain.Entities.QuestionNotes;
+using ASSISTENTE.Domain.Entities.QuestionNotes.Enums;
 using ASSISTENTE.Domain.Entities.Questions;
 using ASSISTENTE.Domain.Entities.Questions.Enums;
 using ASSISTENTE.Domain.Entities.Resources;
@@ -69,7 +71,10 @@ namespace ASSISTENTE.Persistence.Configuration
         {
             configurationBuilder.ConfigureEnum<ResourceType>();
             configurationBuilder.ConfigureEnum<QuestionContext>();
+            
             configurationBuilder.ConfigureEnum<QuestionStates>();
+            configurationBuilder.ConfigureEnum<QuestionCodeStates>();
+            configurationBuilder.ConfigureEnum<QuestionNoteStates>();
             
             configurationBuilder
                 .Properties<DateTime>()

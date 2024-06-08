@@ -13,40 +13,51 @@ public sealed partial class Question
 {
     public Result AddResources(IEnumerable<Resource> resources)
     {
-        var questionResources = resources
-            .Select(r => QuestionResource.Create(r.Id));
+        var contextActionResult = ExecuteContextAction(
+            onCode: () => CodeContext!.AddResources(),
+            onNote: () => NoteContext!.AddResources()
+        );
 
-        foreach (var resource in questionResources)
-        {
-            if (resource.IsFailure)
-                return Result.Failure(resource.Error);
+        return contextActionResult
+            .Bind(() =>
+            {
+                var questionResources = resources
+                    .Select(r => QuestionResource.Create(r.Id));
 
-            Resources.Add(resource.Value);
-        }
+                foreach (var resource in questionResources)
+                {
+                    if (resource.IsFailure)
+                        return Result.Failure(resource.Error);
 
-        RaiseEvent(new ResourcesAttachedEvent(Id));
+                    Resources.Add(resource.Value);
+                }
 
-        return Result.Success();
+                return Result.Success();
+            })
+            .Tap(() => RaiseEvent(new ResourcesAttachedEvent(Id)));
     }
 
     public Result AddFiles(string fileText)
     {
-        return QuestionFile.Create(fileText)
+        var contextActionResult = ExecuteContextAction(
+            onCode: () => CodeContext!.AddFiles()
+        );
+
+        return contextActionResult
+            .Bind(() => QuestionFile.Create(fileText))
             .Tap(questionFile => Files.Add(questionFile))
             .Tap(_ => RaiseEvent(new FilesAttachedEvent(Id)));
     }
 
     public Result AddEmbeddings(IEnumerable<float> embeddings)
     {
-        RaiseEvent(new EmbeddingsCreatedEvent(Id));
+        var contextActionResult = ExecuteContextAction(
+            onCode: () => CodeContext!.AddEmbeddings(embeddings),
+            onNote: () => NoteContext!.AddEmbeddings(embeddings)
+        );
 
-        return Context switch
-        {
-            QuestionContext.Error => Result.Failure(QuestionErrors.WrongContext.Build()),
-            QuestionContext.Code => CodeContext!.AddEmbeddings(embeddings),
-            QuestionContext.Note => NoteContext!.AddEmbeddings(embeddings),
-            _ => Result.Failure(QuestionErrors.ContextNotProvided.Build())
-        };
+        return contextActionResult
+            .Tap(() => RaiseEvent(new EmbeddingsCreatedEvent(Id)));
     }
 
     public Result ResolveContext(QuestionContext context)
@@ -57,7 +68,7 @@ public sealed partial class Question
             {
                 if (context == QuestionContext.Error)
                     return Result.Failure(QuestionErrors.WrongContext.Build());
-                
+
                 return context switch
                 {
                     QuestionContext.Code => QuestionCode.Create(Id).Tap(questionCode => CodeContext = questionCode),
@@ -69,8 +80,31 @@ public sealed partial class Question
 
     public Result AddAnswer(string text, string prompt, LlmMetadata metadata)
     {
-        return Answer.Create(text, prompt, metadata)
+        var contextActionResult = ExecuteContextAction(
+            onCode: () => CodeContext!.Complete(),
+            onNote: () => NoteContext!.Complete()
+        );
+
+        return contextActionResult
+            .Tap(() => PerformIfPossible(QuestionActions.GenerateAnswer, QuestionStateErrors.UnableToGenerateAnswer))
+            .Bind(() => Answer.Create(text, prompt, metadata))
             .Tap(answer => Answer = answer)
             .Tap(_ => RaiseEvent(new AnswerAttachedEvent(Id)));
+    }
+
+    private Result ExecuteContextAction(
+        Func<Result>? onCode = null,
+        Func<Result>? onNote = null)
+    {
+        return Context switch
+        {
+            QuestionContext.Error => Result.Failure(QuestionErrors.WrongContext.Build()),
+            QuestionContext.Code => onCode?.Invoke() ?? ErrorResult(nameof(onCode)),
+            QuestionContext.Note => onNote?.Invoke() ?? ErrorResult(nameof(onNote)),
+            _ => Result.Failure(QuestionErrors.ContextNotProvided.Build())
+        };
+
+        Result ErrorResult(string action) =>
+            Result.Failure(QuestionErrors.OperationNotSupported.Build($"Context: {Context} - Action: {action}"));
     }
 }

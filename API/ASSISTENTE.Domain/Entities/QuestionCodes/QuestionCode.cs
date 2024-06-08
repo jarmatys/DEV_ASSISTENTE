@@ -1,15 +1,16 @@
 using ASSISTENTE.Domain.Common;
+using ASSISTENTE.Domain.Entities.QuestionCodes.Enums;
 using ASSISTENTE.Domain.Entities.QuestionCodes.Events;
 using ASSISTENTE.Domain.Entities.Questions;
-using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Language.Identifiers;
 
 namespace ASSISTENTE.Domain.Entities.QuestionCodes;
 
-public sealed class QuestionCode : AuditableEntity<QuestionCodeId>
+public sealed partial class QuestionCode : StatefulEntity<QuestionCodeId, QuestionCodeStates, QuestionCodeActions>
 {
     private QuestionCode()
     {
+        ConfigureStateMachine();
     }
 
     private QuestionCode(QuestionId questionId)
@@ -31,17 +32,5 @@ public sealed class QuestionCode : AuditableEntity<QuestionCodeId>
     internal static Result<QuestionCode> Create(QuestionId questionId)
     {
         return new QuestionCode(questionId);
-    }
-    
-    internal Result AddEmbeddings(IEnumerable<float> embeddings)
-    {
-        Embeddings = embeddings.ToList();
-        
-        return Result.Success();
-    }
-    
-    public Result<List<float>> GetEmbeddings()
-    {
-        return Embeddings ?? Result.Failure<List<float>>(QuestionErrors.EmbeddingsNotCreated.Build());
     }
 }

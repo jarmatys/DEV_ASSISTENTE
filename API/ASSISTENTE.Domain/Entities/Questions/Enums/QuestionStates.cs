@@ -4,4 +4,5 @@ public enum QuestionStates
 {
     Created,
     ContextResolved,
+    Answered,
 }

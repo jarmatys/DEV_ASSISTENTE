@@ -11,6 +11,9 @@ public sealed partial class Question
         
         StateMachine.Configure(QuestionStates.Created)
             .Permit(QuestionActions.ResolveContext, QuestionStates.ContextResolved);
+        
+        StateMachine.Configure(QuestionStates.ContextResolved)
+            .Permit(QuestionActions.GenerateAnswer, QuestionStates.Answered);
     }
 }
 
@@ -18,4 +21,5 @@ public enum QuestionActions
 {
     Create = 1,
     ResolveContext = 2,
+    GenerateAnswer = 3,
 }

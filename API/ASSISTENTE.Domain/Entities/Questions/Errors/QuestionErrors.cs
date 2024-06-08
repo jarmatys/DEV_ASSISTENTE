@@ -15,4 +15,7 @@ public static class QuestionErrors
     
     public static readonly Error AnswerNotExist = new(
         "Question.AnswerNotCreated", "Answer for this question not exist.");
+    
+    public static readonly Error OperationNotSupported = new(
+        "Question.OperationNotSupported", "Operation not supported.");
 }
