@@ -18,6 +18,10 @@ public abstract class StatefulEntity<TIdentifier, TState, TAction> : AuditableEn
 
     public TState State { get; protected set; } = default!;
 
+    protected virtual void UpdateDomainTimestamp()
+    {
+    }
+
     private static Result HasPermission(TAction action) => Result.Success();
 
     private Result CheckIfPossible(TAction action, Error cannotFireError)
@@ -33,7 +37,7 @@ public abstract class StatefulEntity<TIdentifier, TState, TAction> : AuditableEn
     {
         StateMachine.Fire(action);
 
-        // TODO: Add logic to update domain timestamps
+        UpdateDomainTimestamp();
 
         return Result.Success();
     }
