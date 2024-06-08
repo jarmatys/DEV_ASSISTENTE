@@ -51,16 +51,19 @@ public sealed partial class Question
 
     public Result ResolveContext(QuestionContext context)
     {
-        if (context == QuestionContext.Error)
-            return Result.Failure(QuestionErrors.WrongContext.Build());
-
         return PerformIfPossible(QuestionActions.ResolveContext, QuestionStateErrors.UnableToSetContext)
             .Tap(() => Context = context)
-            .Bind(() => context switch
+            .Bind(() =>
             {
-                QuestionContext.Code => QuestionCode.Create(Id).Tap(questionCode => CodeContext = questionCode),
-                QuestionContext.Note => QuestionNote.Create(Id).Tap(questionNote => NoteContext = questionNote),
-                _ => Result.Failure(QuestionErrors.ContextNotProvided.Build())
+                if (context == QuestionContext.Error)
+                    return Result.Failure(QuestionErrors.WrongContext.Build());
+                
+                return context switch
+                {
+                    QuestionContext.Code => QuestionCode.Create(Id).Tap(questionCode => CodeContext = questionCode),
+                    QuestionContext.Note => QuestionNote.Create(Id).Tap(questionNote => NoteContext = questionNote),
+                    _ => Result.Failure(QuestionErrors.ContextNotProvided.Build())
+                };
             });
     }
 

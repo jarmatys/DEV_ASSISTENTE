@@ -32,8 +32,6 @@ public sealed partial class Question : StatefulEntity<QuestionId, QuestionStates
 
         Resources = new List<QuestionResource>();
         Files = new List<QuestionFile>();
-
-        State = QuestionStates.Created;
         
         RaiseEvent(new QuestionCreatedEvent(Id));
     }
@@ -57,8 +55,6 @@ public sealed partial class Question : StatefulEntity<QuestionId, QuestionStates
     {
         return new Question(text, connectionId);
     }
-    
-
 
     public Result<string> GetContext()
     {

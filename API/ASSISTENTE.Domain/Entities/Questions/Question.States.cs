@@ -7,6 +7,9 @@ public sealed partial class Question
     private void ConfigureStateMachine()
     {
         StateMachine.Configure(QuestionStates.Created)
+            .OnActivate(() => State = QuestionStates.Created);
+        
+        StateMachine.Configure(QuestionStates.Created)
             .Permit(QuestionActions.ResolveContext, QuestionStates.ContextResolved);
     }
 }
