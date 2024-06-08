@@ -4,7 +4,6 @@ using ASSISTENTE.Domain.Entities.Answers;
 using ASSISTENTE.Domain.Entities.QuestionCodes;
 using ASSISTENTE.Domain.Entities.QuestionNotes;
 using ASSISTENTE.Domain.Entities.Questions.Enums;
-using ASSISTENTE.Domain.Entities.Questions.Errors;
 using ASSISTENTE.Domain.Entities.Questions.Events;
 using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Language.Identifiers;
@@ -54,48 +53,5 @@ public sealed partial class Question : StatefulEntity<QuestionId, QuestionStates
     public static Result<Question> Create(string text, string? connectionId)
     {
         return new Question(text, connectionId);
-    }
-
-    public Result<string> GetContext()
-    {
-        return Context is not null
-            ? Context.ToString()!
-            : Result.Failure<string>(QuestionErrors.ContextNotProvided.Build());
-    }
-
-    public Result<List<float>> GetEmbeddings()
-    {
-        return Context switch
-        {
-            QuestionContext.Error => Result.Failure<List<float>>(QuestionErrors.WrongContext.Build()),
-            QuestionContext.Code => CodeContext!.GetEmbeddings(),
-            QuestionContext.Note => NoteContext!.GetEmbeddings(),
-            _ => Result.Failure<List<float>>(QuestionErrors.ContextNotProvided.Build())
-        };
-    }
-
-    public Result<string> GetAnswer()
-    {
-        return Answer?.Text ?? Result.Failure<string>(QuestionErrors.AnswerNotExist.Build());
-    }
-
-    public Result<string> BuildEmbeddableText()
-    {
-        var fileNames = Files.Select(x => x.Text);
-
-        return Context switch
-        {
-            QuestionContext.Note => Text,
-            QuestionContext.Code => $"{Text} | {string.Join(", ", fileNames)}",
-            QuestionContext.Error => Result.Failure<string>(QuestionErrors.WrongContext.Build()),
-            _ => Result.Failure<string>(QuestionErrors.ContextNotProvided.Build())
-        };
-    }
-
-    public Result<string> BuildContext()
-    {
-        var resourcesContent = Resources.Select(x => x.Resource).Select(x => x.Content);
-
-        return string.Join(Environment.NewLine, resourcesContent);
     }
 }
