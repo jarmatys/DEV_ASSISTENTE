@@ -37,7 +37,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         protected override async Task<Maybe<Question>> GetQuestionAsync(FindFilesCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);
 
-        protected override ProgressInformation InitialInformation => new(40, "Finding files...");
-        protected override ProgressInformation FinalInformation => new(50, "Files found!");
+        protected override ProgressInformation InitialInformation => new(30, "Finding files...");
+        protected override ProgressInformation FinalInformation => new(40, "Files found!");
     }
 }

@@ -37,7 +37,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         protected override async Task<Maybe<Question>> GetQuestionAsync(CreateEmbeddingsCommand request)
             => await questionRepository.GetByIdAsync(request.QuestionId);
 
-        protected override ProgressInformation InitialInformation => new(20, "Creating embeddings...");
-        protected override ProgressInformation FinalInformation => new(30, "Embeddings created!");
+        protected override ProgressInformation InitialInformation => new(40, "Creating embeddings...");
+        protected override ProgressInformation FinalInformation => new(50, "Embeddings created!");
     }
 }
