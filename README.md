@@ -88,7 +88,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
     - 🔳 `Metrics` integration with Prometheus and Graphana - [TUTORIAL](https://opentelemetry.io/docs/languages/net/exporters/)
     - 🔳 `Traces` integration with SEQ (Jaeger shoud be replaces with SEQ)
 - 🔳 Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
-
+- 🔳 Save all content from the file (C# code) and use it at the end of the process in context instead of snippets.
 
 ### Configuration
 
