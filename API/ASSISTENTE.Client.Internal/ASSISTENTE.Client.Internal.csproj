@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Application.Abstractions\ASSISTENTE.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
     </ItemGroup>
 
 </Project>

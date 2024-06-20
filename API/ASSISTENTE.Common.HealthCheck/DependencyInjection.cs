@@ -1,5 +1,6 @@
-﻿using ASSISTENTE.Common.HealthCheck.Checks;
-using ASSISTENTE.Common.Settings;
+﻿using System.Reflection;
+using ASSISTENTE.Common.HealthCheck.Core;
+using ASSISTENTE.Common.HealthCheck.Presentation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,20 +9,17 @@ namespace ASSISTENTE.Common.HealthCheck
 {
     public static class DependencyInjection
     {
-        public static WebApplicationBuilder AddHealthChecks(this WebApplicationBuilder builder, AssistenteSettings settings)
+        public static IServiceCollection AddHealthCheck<THealthCheck>(this IServiceCollection services)
+            where THealthCheck : CheckBase, ICommonHealthCheck
         {
-            builder.Services.AddSingleton<AssistenteSettings>(_ => settings);
+            var healthCheckname = typeof(THealthCheck).Name.Replace("HealthCheck", string.Empty);
             
-            builder.Services.AddHealthChecks()
-                .AddCheck<DatabaseHealthCheck>("Database", tags: [Consts.HealthCheckTag])
-                .AddCheck<MessageBrokerHealthCheck>("MessageBroker", tags: [Consts.HealthCheckTag])
-                .AddCheck<LlmHealthCheck>("LLM", tags: [Consts.HealthCheckTag])
-                .AddCheck<SeqHealthCheck>("Seq", tags: [Consts.HealthCheckTag])
-                .AddCheck<QdrantHealthCheck>("Qdrant", tags: [Consts.HealthCheckTag])
-                .AddCheck<InternalApiHealthCheck>("InternalAPI", tags: [Consts.HealthCheckTag]);
-
-            return builder;
+            services.AddHealthChecks()
+                .AddCheck<THealthCheck>(healthCheckname, tags: new[] { Consts.HealthCheckTag });
+            
+            return services;
         }
+
         public static WebApplication MapHealthChecks(this WebApplication app)
         {
             app.MapHealthChecks("/hc", new HealthCheckOptions
@@ -31,6 +29,27 @@ namespace ASSISTENTE.Common.HealthCheck
             });
 
             return app;
+        }
+
+        private static List<Type> GetCommonHealthCheckTypes()
+        {
+            var referencedAssemblies = Assembly.GetEntryAssembly()!.GetReferencedAssemblies();
+            var healthCheckInterface = typeof(ICommonHealthCheck);
+
+            var allHealthChecks = new List<Type>();
+            
+            foreach (var assembly in referencedAssemblies)
+            {
+                var loadedAssembly = Assembly.Load(assembly);
+                
+                var healthChecks = loadedAssembly!.GetTypes()
+                    .Where(t => healthCheckInterface.IsAssignableFrom(t) && t is { IsClass: true, IsAbstract: false })
+                    .ToList();
+                
+                allHealthChecks.AddRange(healthChecks);
+            }
+
+            return allHealthChecks;
         }
     }
 }

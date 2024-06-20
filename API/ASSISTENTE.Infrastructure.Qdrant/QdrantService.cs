@@ -1,6 +1,6 @@
+using ASSISTENTE.Infrastructure.Qdrant.Configurations;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Errors;
-using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using CSharpFunctionalExtensions;
 using Qdrant.Client;
 using Qdrant.Client.Grpc;

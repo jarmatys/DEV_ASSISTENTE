@@ -1,6 +1,5 @@
 ﻿using ASSISTENTE.Application;
 using ASSISTENTE.Client.Internal;
-using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.EventHandlers;
 using ASSISTENTE.Infrastructure;
@@ -11,17 +10,16 @@ namespace ASSISTENTE.Module
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddAssistenteModule<TUserResolver>(
-            this IServiceCollection services, 
-            AssistenteSettings settings)
-        where TUserResolver : class, IUserResolver
+        public static IServiceCollection AddAssistenteModule<TUserResolver, TSettings>(this IServiceCollection services)
+            where TUserResolver : class, IUserResolver
+            where TSettings : IModuleSettings
         {
-            services.AddInfrastructure(settings);
-            services.AddPersistence<TUserResolver>(settings.Database);
+            services.AddInfrastructure<TSettings>();
+            services.AddPersistence<TUserResolver, TSettings>();
             services.AddApplication();
             services.AddEvents();
-            services.AddInternalClient(settings);
-                
+            services.AddInternalClient<TSettings>();
+
             return services;
         }
     }

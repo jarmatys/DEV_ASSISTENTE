@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
-using ASSISTENTE.Common.Settings.Sections;
+using ASSISTENTE.Common.HealthCheck;
+using ASSISTENTE.Common.Logging.HealthChecks;
+using ASSISTENTE.Common.Logging.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -10,13 +12,16 @@ namespace ASSISTENTE.Common.Logging;
 public static class DependencyInjection
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
-    
-    public static IServiceCollection AddLogging(this IServiceCollection services, SeqSection seq)
+
+    public static IServiceCollection AddSerilogLogging<TSettings>(this IServiceCollection services)
+        where TSettings : ISeqSettings
     {
+        var seq = services.BuildServiceProvider().GetRequiredService<TSettings>().Seq;
+        
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) 
-            .MinimumLevel.Override("System", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("System", LogEventLevel.Warning)
             .Enrich.WithProperty("Application", $"{ApplicationName()}")
             .Enrich.FromLogContext()
             .WriteTo.Console()
@@ -24,12 +29,14 @@ public static class DependencyInjection
             .CreateLogger();
 
         Log.Information("{ApplicationName} - Application starting up", ApplicationName());
-        
+
         services.AddLogging(loggingBuilder =>
         {
             loggingBuilder.ClearProviders();
             loggingBuilder.AddSerilog();
         });
+
+        services.AddHealthCheck<SeqHealthCheck>();
         
         return services;
     }

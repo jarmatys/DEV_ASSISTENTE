@@ -1,14 +1,14 @@
 using ASSISTENTE.API.Common.Services;
-using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Module;
 
 namespace ASSISTENTE.API.Common.Extensions;
 
 internal static class ModuleExtensions
 {
-    internal static WebApplicationBuilder AddModules(this WebApplicationBuilder builder, AssistenteSettings settings)
+    internal static WebApplicationBuilder AddModules<TSettings>(this WebApplicationBuilder builder)
+        where TSettings : IModuleSettings
     {
-        builder.Services.AddAssistenteModule<UserResolver>(settings);
+        builder.Services.AddAssistenteModule<UserResolver, TSettings>();
 
         return builder;
     }

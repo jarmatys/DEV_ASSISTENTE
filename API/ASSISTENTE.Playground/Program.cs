@@ -4,21 +4,20 @@ using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ASSISTENTE.Common.Logging;
-using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Playground;
 using ASSISTENTE.Playground.Common;
 using MassTransit;
 using Serilog;
 
-var settings = new ConfigurationBuilder()
+var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
     .Build()
-    .GetSettings<AssistenteSettings>();
+    .ValidateSettings<PlaygroundSettings>();
 
 var serviceCollection = new ServiceCollection();
 
-ConfigureServices(serviceCollection, settings);
+ConfigureServices(serviceCollection, configuration);
 
 var serviceProvider = serviceCollection.BuildServiceProvider();
 var playground = serviceProvider.GetService<Playground>();
@@ -46,11 +45,12 @@ Log.CloseAndFlush();
 
 return;
 
-static void ConfigureServices(IServiceCollection services, AssistenteSettings settings)
+static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
     services
-        .AddAssistenteModule<UserResolver>(settings)
-        .AddLogging(settings.Seq)
+        .ConfigureSettings<PlaygroundSettings>(configuration)
+        .AddAssistenteModule<UserResolver, PlaygroundSettings>()
+        .AddSerilogLogging<PlaygroundSettings>()
         .AddTransient<Playground>();
 
     services.AddScoped<IPublishEndpoint, DummyPublishEndpoint>();

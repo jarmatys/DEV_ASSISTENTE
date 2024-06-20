@@ -1,4 +1,6 @@
-﻿using ASSISTENTE.Common.Settings.Sections;
+﻿using ASSISTENTE.Common.HealthCheck;
+using ASSISTENTE.Persistence.Configuration.HealthChecks;
+using ASSISTENTE.Persistence.Configuration.Settings;
 using ASSISTENTE.Persistence.POSTGRESQL;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,12 +8,17 @@ namespace ASSISTENTE.Persistence.Configuration
 {
     internal static class DependencyInjection
     {
-        public static IServiceCollection AddConfiguration(this IServiceCollection services, DatabaseSection database)
+        public static IServiceCollection AddConfiguration<TSettings>(this IServiceCollection services)
+            where TSettings : IDatabaseSettings
         {
+            var databaseSettings = services.BuildServiceProvider().GetRequiredService<TSettings>().Database;
+            
             services.AddScoped<IAssistenteDbContext, AssistenteDbContext>();
             
-            services.AddPostreSql<AssistenteDbContext>(database);
+            services.AddPostreSql<AssistenteDbContext>(databaseSettings.ConnectionString);
                 
+            services.AddHealthCheck<DatabaseHealthCheck>();
+
             return services;
         }
     }

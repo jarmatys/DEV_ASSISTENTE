@@ -1,24 +1,24 @@
+using ASSISTENTE.API;
 using ASSISTENTE.API.Common.Extensions;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Observability;
-using ASSISTENTE.Common.Settings;
 
-var settings = new ConfigurationBuilder()
+var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
     .Build()
-    .GetSettings<AssistenteSettings>();
+    .ValidateSettings<ApiSettings>();
 
 var builder = WebApplication
     .CreateBuilder(args)
-    .AddCommon(settings)
+    .ConfigureSettings<ApiSettings>(configuration)
+    .AddCommon<ApiSettings>()
     .AddEndpoints()
     .AddCors()
     .AddLimiter()
     .AddHubs()
-    .AddModules(settings)
-    .AddHealthChecks(settings);
+    .AddModules<ApiSettings>();
 
 var application = builder.Build()
     .UseRedoc()

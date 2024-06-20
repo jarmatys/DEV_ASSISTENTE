@@ -1,5 +1,7 @@
-﻿using ASSISTENTE.Common.Settings.Sections;
+﻿using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
+using ASSISTENTE.Infrastructure.Qdrant.HealthChecks;
+using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Qdrant.Client;
 
@@ -7,14 +9,21 @@ namespace ASSISTENTE.Infrastructure.Qdrant
 {
     internal static class DependencyInjection
     {
-        public static IServiceCollection AddQdrant(this IServiceCollection services, QdrantSection configuration)
+        public static IServiceCollection AddQdrant<TSettings>(this IServiceCollection services)
+            where TSettings : IQdrantSettings
         {
-            services.AddSingleton<QdrantClient>(_ => new QdrantClient(
-                host: configuration.Host, 
-                port: configuration.ClientPort)
-            );
-            
+            services.AddSingleton<QdrantClient>(serviceProvider =>
+            {
+                var qdrantSettings = serviceProvider.GetRequiredService<TSettings>().Qdrant;
+
+                return new QdrantClient(
+                    host: qdrantSettings.Host,
+                    port: qdrantSettings.ClientPort);
+            });
+
             services.AddScoped<IQdrantService, QdrantService>();
+
+            services.AddHealthCheck<QdrantHealthCheck>();
             
             return services;
         }

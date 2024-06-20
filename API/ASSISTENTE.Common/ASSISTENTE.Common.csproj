@@ -15,4 +15,10 @@
       <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
+        <HintPath>C:\Program Files (x86)\dotnet\shared\Microsoft.AspNetCore.App\8.0.1\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

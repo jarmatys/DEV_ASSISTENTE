@@ -116,16 +116,19 @@ services:
       - 1009:8080
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
-      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Llm__ApiKey=${Llm_ApiKey}
       - Seq__Url=${Seq_Url}
       - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
+      - Embeddings__Host=${Qdrant_Host}
+      - Embeddings__ClientPort=${Qdrant_ClientPort}
+      - Embeddings__ApiPort=${Qdrant_ApiPort}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
-      - OpenTelemetry_Url__Url=${OpenTelemetry_Url}
+      - Observability__Url=${Observability_Url}
 
   worker-sync:
     profiles: ["app"]
@@ -137,16 +140,19 @@ services:
       - 1010:8080
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
-      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Llm__ApiKey=${Llm_ApiKey}
       - Seq__Url=${Seq_Url}
       - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
+      - Embeddings__Host=${Qdrant_Host}
+      - Embeddings__ClientPort=${Qdrant_ClientPort}
+      - Embeddings__ApiPort=${Qdrant_ApiPort}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
-      - OpenTelemetry_Url__Url=${OpenTelemetry_Url}
+      - Observability__Url=${Observability_Url}
 
   playground:
     profiles: ["playground"]
@@ -155,10 +161,13 @@ services:
     entrypoint: ["dotnet", "ASSISTENTE.Playground.dll", "-l"]
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
-      - OpenAI__ApiKey=${OpenAI_ApiKey}
+      - Llm__ApiKey=${Llm_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
+      - Embeddings__Host=${Qdrant_Host}
+      - Embeddings__ClientPort=${Qdrant_ClientPort}
+      - Embeddings__ApiPort=${Qdrant_ApiPort}
     volumes:
       - ./${KnowledgePaths_MarkdownNotes}:/app/Resources/Notes
       - ./${KnowledgePaths_Repositories}:/app/Resources/Repositories

@@ -1,5 +1,5 @@
 using System.Reflection;
-using ASSISTENTE.Common.Settings.Sections;
+using ASSISTENTE.UI.Common.Settings;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -10,7 +10,7 @@ internal static class LoggingExtensions
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
     
-    public static WebAssemblyHostBuilder AddLogging(this WebAssemblyHostBuilder builder, SeqSection seq)
+    public static WebAssemblyHostBuilder AddLogging(this WebAssemblyHostBuilder builder, SeqSettings seq)
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()

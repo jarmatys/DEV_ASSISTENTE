@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ASSISTENTE.Common.Settings.Sections;
+using ASSISTENTE.Common.Observability.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
@@ -13,10 +13,11 @@ public static class DependencyInjection
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
 
-    public static IServiceCollection AddObservability(
-        this IServiceCollection services,
-        OpenTelemetrySection openTelemetry)
+    public static IServiceCollection AddObservability<TSettings>(this IServiceCollection services)
+        where TSettings : IObservabilitySettings
     {
+        var openTelemetrySettings = services.BuildServiceProvider().GetRequiredService<TSettings>().Observability;
+        
         services
             .AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService(ApplicationName()))
@@ -46,7 +47,7 @@ public static class DependencyInjection
                     .AddEntityFrameworkCoreInstrumentation()
                     .AddNpgsql();
                 
-                tracing.AddOtlpExporter(otlpOptions => { otlpOptions.Endpoint = new Uri(openTelemetry.Url); });
+                tracing.AddOtlpExporter((otlpOptions) => { otlpOptions.Endpoint = new Uri(openTelemetrySettings.Url); });
             });
         
         return services;

@@ -21,6 +21,7 @@
         <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Persistence.MSSQL\ASSISTENTE.Persistence.MSSQL.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Persistence.POSTGRESQL\ASSISTENTE.Persistence.POSTGRESQL.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
     </ItemGroup>
     
     <ItemGroup>

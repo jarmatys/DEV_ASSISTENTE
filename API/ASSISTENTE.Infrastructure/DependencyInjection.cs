@@ -1,12 +1,14 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
-using ASSISTENTE.Common.Settings;
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
+using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using ASSISTENTE.Infrastructure.LLM;
+using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.Qdrant;
+using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Infrastructure.Services;
 using ASSISTENTE.Infrastructure.Services.Parsers;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,16 +17,15 @@ namespace ASSISTENTE.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(
-            this IServiceCollection services,
-            AssistenteSettings settings)
+        public static IServiceCollection AddInfrastructure<TSettings>(this IServiceCollection services)
+            where TSettings : IEmbeddingsSettings, ILlmSettings, IQdrantSettings
         {
             services.AddMarkDownParser();
             services.AddCodeParser();
-            services.AddEmbeddings(settings.OpenAi);
-            services.AddQdrant(settings.Qdrant);
+            services.AddEmbeddings<TSettings>();
+            services.AddQdrant<TSettings>();
             services.AddPromptGenerator();
-            services.AddLlm(settings.OpenAi);
+            services.AddLlm<TSettings>();
 
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IQuestionOrchestrator, QuestionOrchestrator>();

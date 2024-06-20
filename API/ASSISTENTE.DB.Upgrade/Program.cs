@@ -1,42 +1,37 @@
 ﻿using ASSISTENTE.Common.Extensions;
-using ASSISTENTE.Common.Settings;
-using ASSISTENTE.DB.Upgrade.Migrators;
+using ASSISTENTE.DB.Upgrade;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace ASSISTENTE.DB.Upgrade
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build()
+    .ValidateSettings<DbUpgradeSettings>();
+
+var serviceCollection = new ServiceCollection();
+
+ConfigureServices(serviceCollection, configuration);
+
+var serviceProvider = serviceCollection.BuildServiceProvider();
+var upgrader = serviceProvider.GetService<Upgrader>();
+
+try
 {
-    internal abstract class Program
-    {
-        private static void Main(string[] args)
-        {
-            try
-            {
-                Console.WriteLine("Starting database upgrade...");
+    if (upgrader == null) return;
+    
+    await upgrader.UpgradeAsync();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"FAIL: {ex.Message}");
+}
 
-                var settings = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json")
-                    .AddEnvironmentVariables()
-                    .Build()
-                    .GetSettings<AssistenteSettings>();
-                
-                var script = File.ReadAllText("migrations.sql");
-                var connectionString = settings.Database.ConnectionString;
-                
-                if (connectionString.Contains("Server="))
-                {
-                    MssqlMigrator.Migrate(connectionString, script);
-                }
-                else
-                {
-                    PostgreMigrator.Migrate(connectionString, script);
-                }
+return;
 
-                Console.WriteLine("Database upgrade completed.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"FAIL: {ex.Message}");
-            }
-        }
-    }
+static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+{
+    services
+        .ConfigureSettings<DbUpgradeSettings>(configuration)
+        .AddTransient<Upgrader>();
 }
