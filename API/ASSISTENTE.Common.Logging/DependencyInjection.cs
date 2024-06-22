@@ -13,7 +13,7 @@ public static class DependencyInjection
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
 
-    public static IServiceCollection AddSerilogLogging<TSettings>(this IServiceCollection services)
+    public static IServiceCollection AddCommonLogging<TSettings>(this IServiceCollection services)
         where TSettings : ISeqSettings
     {
         var seq = services.BuildServiceProvider().GetRequiredService<TSettings>().Seq;
@@ -36,7 +36,7 @@ public static class DependencyInjection
             loggingBuilder.AddSerilog();
         });
 
-        services.AddHealthCheck<SeqHealthCheck>();
+        services.AddCommonHealthCheck<SeqHealthCheck>();
         
         return services;
     }

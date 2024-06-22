@@ -5,7 +5,7 @@ namespace ASSISTENTE.Common.Correlation
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddCorrelationProvider(this IServiceCollection services)
+        public static IServiceCollection AddCommonCorrelationProvider(this IServiceCollection services)
         {
             services.AddScoped<ICorrelationProvider, CorrelationProvider>();
             

@@ -22,10 +22,10 @@ internal static class CommonExtensions
     public static WebApplicationBuilder AddCommon<TSettings>(this WebApplicationBuilder builder)
         where TSettings : ISeqSettings, IObservabilitySettings, IRabbitSettings
     {
-        builder.Services.AddSerilogLogging<TSettings>();
-        builder.Services.AddObservability<TSettings>();
-        builder.Services.AddCorrelationProvider();
-        builder.Services.AddPublisher<TSettings>();
+        builder.Services.AddCommonLogging<TSettings>();
+        builder.Services.AddCommonObservability<TSettings>();
+        builder.Services.AddCommonCorrelationProvider();
+        builder.Services.AddCommonPublisher<TSettings>();
     
         return builder;
     }

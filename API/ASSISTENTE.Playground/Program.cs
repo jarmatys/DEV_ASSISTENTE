@@ -50,7 +50,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
     services
         .ConfigureSettings<PlaygroundSettings>(configuration)
         .AddAssistenteModule<UserResolver, PlaygroundSettings>()
-        .AddSerilogLogging<PlaygroundSettings>()
+        .AddCommonLogging<PlaygroundSettings>()
         .AddTransient<Playground>();
 
     services.AddScoped<IPublishEndpoint, DummyPublishEndpoint>();

@@ -28,8 +28,8 @@ var application = builder.Build()
 
 application
     .MapHubs()
-    .MapHealthChecks()
-    .UseOpenTelemetry()
+    .MapCommonHealthChecks()
+    .UseCommonOpenTelemetry()
     .UseMiddlewares();
 
 await application.RunAsync();

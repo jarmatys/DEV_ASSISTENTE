@@ -25,10 +25,10 @@ internal static class CommonExtensions
     {
         var assembly = Assembly.GetExecutingAssembly();
         
-        builder.Services.AddConsumers<TSettings>(assembly);
-        builder.Services.AddSerilogLogging<TSettings>();
-        builder.Services.AddObservability<TSettings>();
-        builder.Services.AddCorrelationProvider();
+        builder.Services.AddCommonConsumers<TSettings>(assembly);
+        builder.Services.AddCommonLogging<TSettings>();
+        builder.Services.AddCommonObservability<TSettings>();
+        builder.Services.AddCommonCorrelationProvider();
     
         return builder;
     }

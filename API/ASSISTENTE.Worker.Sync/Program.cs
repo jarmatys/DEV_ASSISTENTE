@@ -17,7 +17,7 @@ var builder = WebApplication
     .AddModules<WorkerSettings>();
 
 var application = builder.Build()
-    .MapHealthChecks()
-    .UseOpenTelemetry();
+    .MapCommonHealthChecks()
+    .UseCommonOpenTelemetry();
 
 await application.RunAsync();

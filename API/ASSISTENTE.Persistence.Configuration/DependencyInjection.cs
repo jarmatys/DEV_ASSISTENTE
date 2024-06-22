@@ -17,7 +17,7 @@ namespace ASSISTENTE.Persistence.Configuration
             
             services.AddPostreSql<AssistenteDbContext>(databaseSettings.ConnectionString);
                 
-            services.AddHealthCheck<DatabaseHealthCheck>();
+            services.AddCommonHealthCheck<DatabaseHealthCheck>();
 
             return services;
         }

@@ -18,7 +18,7 @@ namespace ASSISTENTE.Client.Internal
             
             services.AddScoped<IAssistenteClientInternal, AssistenteClientInternal>();
 
-            services.AddHealthCheck<InternalApiHealthCheck>();
+            services.AddCommonHealthCheck<InternalApiHealthCheck>();
             
             return services;
         }

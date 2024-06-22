@@ -12,7 +12,7 @@ public static class DependencyInjection
 {
     public const string RetryPipeline = "retry";
 
-    public static IServiceCollection AddResilience(this IServiceCollection services)
+    public static IServiceCollection AddCommonResilience(this IServiceCollection services)
     {
         // INJECT: ResiliencePipelineProvider<string> pipelineProvider
         // var pipeline = pipelineProvider.GetPipeline<HttpResponseMessage>(RetryPipeline);

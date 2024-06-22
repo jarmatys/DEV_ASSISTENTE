@@ -22,7 +22,7 @@ namespace ASSISTENTE.Infrastructure.LLM
                 options.ApiKey = llmSettings.ApiKey;
             });
 
-            services.AddHealthCheck<LlmHealthCheck>();
+            services.AddCommonHealthCheck<LlmHealthCheck>();
             
             return services;
         }

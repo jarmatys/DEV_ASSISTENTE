@@ -23,7 +23,7 @@ namespace ASSISTENTE.Infrastructure.Qdrant
 
             services.AddScoped<IQdrantService, QdrantService>();
 
-            services.AddHealthCheck<QdrantHealthCheck>();
+            services.AddCommonHealthCheck<QdrantHealthCheck>();
             
             return services;
         }

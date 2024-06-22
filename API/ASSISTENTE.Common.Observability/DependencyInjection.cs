@@ -13,7 +13,7 @@ public static class DependencyInjection
 {
     private static string ApplicationName() => Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown";
 
-    public static IServiceCollection AddObservability<TSettings>(this IServiceCollection services)
+    public static IServiceCollection AddCommonObservability<TSettings>(this IServiceCollection services)
         where TSettings : IObservabilitySettings
     {
         var openTelemetrySettings = services.BuildServiceProvider().GetRequiredService<TSettings>().Observability;
@@ -53,7 +53,7 @@ public static class DependencyInjection
         return services;
     }
     
-    public static WebApplication UseOpenTelemetry(this WebApplication app)
+    public static WebApplication UseCommonOpenTelemetry(this WebApplication app)
     {
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
 

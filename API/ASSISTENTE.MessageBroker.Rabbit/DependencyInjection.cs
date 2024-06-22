@@ -10,7 +10,7 @@ namespace ASSISTENTE.MessageBroker.Rabbit
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPublisher<TSettings>(this IServiceCollection services)
+        public static IServiceCollection AddCommonPublisher<TSettings>(this IServiceCollection services)
             where TSettings : IRabbitSettings
         {
             services.AddMassTransit(config =>
@@ -39,7 +39,7 @@ namespace ASSISTENTE.MessageBroker.Rabbit
             return services;
         }
 
-        public static IServiceCollection AddConsumers<TSettings>(this IServiceCollection services, Assembly assembly)
+        public static IServiceCollection AddCommonConsumers<TSettings>(this IServiceCollection services, Assembly assembly)
             where TSettings : IRabbitSettings
         {
             var consumerTypes = GetConsumers(assembly);
@@ -80,7 +80,7 @@ namespace ASSISTENTE.MessageBroker.Rabbit
                 });
             });
 
-            services.AddHealthCheck<MessageBrokerHealthCheck>();
+            services.AddCommonHealthCheck<MessageBrokerHealthCheck>();
 
             return services;
         }
