@@ -1,4 +1,3 @@
-using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.HealthCheck.Core;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using CSharpFunctionalExtensions;

@@ -1,5 +1,4 @@
 using System.Net;
-using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.HealthCheck.Core;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using CSharpFunctionalExtensions;

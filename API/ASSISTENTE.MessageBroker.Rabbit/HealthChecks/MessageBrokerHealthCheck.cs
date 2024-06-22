@@ -1,5 +1,3 @@
-
-using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.HealthCheck.Core;
 using CSharpFunctionalExtensions;
 using MassTransit;
