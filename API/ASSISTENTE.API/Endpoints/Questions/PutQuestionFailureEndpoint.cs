@@ -11,6 +11,7 @@ public sealed class PutQuestionFailureEndpoint(IHubContext<QuestionHub, IQuestio
     public override void Configure()
     {
         Put("questions/failure");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(NotifyQuestionFailureRequest req, CancellationToken ct)

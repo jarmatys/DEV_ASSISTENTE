@@ -11,7 +11,8 @@ public sealed class GetResourceEndpoint(ISender mediator)
     {
         Get("resources/{@Id}", x => new { Id = x.ResourceId });
         SetupSwagger();
-        
+        AllowAnonymous();
+
         Summary(x =>
         {
             x.RequestParam(r => r.ResourceId, "Resource identifier");

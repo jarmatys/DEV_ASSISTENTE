@@ -11,6 +11,7 @@ public sealed class PutQuestionProgressEndpoint(IHubContext<QuestionHub, IQuesti
     public override void Configure()
     {
         Put("questions/progress");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(UpdateQuestionProgressRequest req, CancellationToken ct)

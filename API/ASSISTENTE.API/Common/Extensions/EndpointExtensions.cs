@@ -37,9 +37,9 @@ internal static class EndpointExtensions
                 c.Endpoints.RoutePrefix = "api";
                 c.Endpoints.ShortNames = true;
 
-                c.Endpoints.Configurator = endpointDefinition =>
+                c.Endpoints.Configurator = config =>
                 {
-                    endpointDefinition.AllowAnonymous();
+                    // Configuration to apply for all endpoints
                 };
             })
             .UseSwaggerGen()

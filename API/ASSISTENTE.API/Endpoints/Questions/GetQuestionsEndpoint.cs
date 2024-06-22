@@ -11,6 +11,7 @@ public sealed class GetQuestionsEndpoint(ISender mediator)
     {
         Get("questions");
         SetupSwagger();
+        AllowAnonymous();
     }
 
     protected override GetQuestionsQuery MediatRequest(GetQuestionsRequest req) 

@@ -11,6 +11,7 @@ public sealed class GetResourcesEndpoint(ISender mediator)
     {
         Get("resources");
         SetupSwagger();
+        AllowAnonymous();
     }
 
     protected override GetResourcesQuery MediatRequest(GetResourcesRequest req) 

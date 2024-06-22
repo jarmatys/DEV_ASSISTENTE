@@ -11,6 +11,7 @@ public sealed class GetResourcesCountEndpoint(ISender mediator)
     {
         Get("resources/count");
         SetupSwagger();
+        AllowAnonymous();
     }
 
     protected override GetResourcesCountQuery MediatRequest() 

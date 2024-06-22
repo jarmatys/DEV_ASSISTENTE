@@ -11,6 +11,7 @@ public sealed class PutQuestionReadinessEndpoint(IHubContext<QuestionHub, IQuest
     public override void Configure()
     {
         Put("questions/readiness");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(NotifyQuestionReadinessRequest req, CancellationToken ct)

@@ -11,6 +11,7 @@ public sealed class GetQuestionsCountEndpoint(ISender mediator)
     {
         Get("questions/count");
         SetupSwagger();
+        AllowAnonymous();
     }
 
     protected override GetQuestionsCountQuery MediatRequest() 

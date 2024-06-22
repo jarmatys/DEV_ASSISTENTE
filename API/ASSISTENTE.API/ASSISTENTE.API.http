@@ -1,6 +1,9 @@
-@ASSISTENTE.API_HostAddress = http://localhost:1009
+@ApiUrl = http://localhost:1009
+@AccessToken = ""
 
-POST {{ASSISTENTE.API_HostAddress}}/api/questions/
+###
+
+POST {{ApiUrl}}/api/questions/
 Content-Type: application/json
 Accept: application/json
 
@@ -11,14 +14,16 @@ Accept: application/json
 
 ###
 
-GET {{ASSISTENTE.API_HostAddress}}/api/questions/5b6cef00-dfc5-4c9b-958e-04526ae22e6c
+GET {{ApiUrl}}/api/questions/5b6cef00-dfc5-4c9b-958e-04526ae22e6c
 
 ###
 
-GET {{ASSISTENTE.API_HostAddress}}/api/questions/count
+GET {{ApiUrl}}/api/questions/count
+
+Authorization: Bearer {{AccessToken}}
 
 ###
 
-GET {{ASSISTENTE.API_HostAddress}}/api/resources/count
+GET {{ApiUrl}}/api/resources/count
 
 ###

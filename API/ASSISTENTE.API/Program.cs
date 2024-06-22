@@ -7,6 +7,7 @@ using ASSISTENTE.Common.Observability;
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
+    .AddUserSecrets<Program>()
     .Build()
     .ValidateSettings<ApiSettings>();
 

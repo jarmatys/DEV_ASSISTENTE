@@ -11,7 +11,8 @@ public sealed class GetQuestionEndpoint(ISender mediator)
     {
         Get("questions/{@Id}", x => new { Id = x.QuestionId });
         SetupSwagger();
-        
+        AllowAnonymous();
+
         Summary(x =>
         {
             x.RequestParam(r => r.QuestionId, "Question identifier");

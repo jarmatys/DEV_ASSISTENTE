@@ -1,4 +1,5 @@
-﻿using ASSISTENTE.Common.HealthCheck;
+﻿using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.LLM.HealthChecks;
 using ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
@@ -13,13 +14,13 @@ namespace ASSISTENTE.Infrastructure.LLM
         public static IServiceCollection AddLlm<TSettings>(this IServiceCollection services)
             where TSettings : ILlmSettings
         {
-            var llmSettings = services.BuildServiceProvider().GetRequiredService<TSettings>().Llm;
+            var settings = services.GetSettings<TSettings, LlmSettings>(x => x.Llm);
             
             services.AddScoped<ILlmClient, OpenAiClient>();
             
             services.AddOpenAIServices(options =>
             {
-                options.ApiKey = llmSettings.ApiKey;
+                options.ApiKey = settings.ApiKey;
             });
 
             services.AddCommonHealthCheck<LlmHealthCheck>();

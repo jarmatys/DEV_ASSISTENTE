@@ -1,4 +1,5 @@
 using ASSISTENTE.Client.Internal.Settings;
+using ASSISTENTE.Common.Authentication.Settings;
 using ASSISTENTE.Common.Logging.Settings;
 using ASSISTENTE.Common.Observability.Settings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
@@ -10,7 +11,12 @@ using ASSISTENTE.Persistence.Configuration.Settings;
 
 namespace ASSISTENTE.API;
 
-internal sealed class ApiSettings : IModuleSettings, ISeqSettings, IRabbitSettings, IObservabilitySettings
+internal sealed class ApiSettings : 
+    IModuleSettings, 
+    ISeqSettings, 
+    IRabbitSettings, 
+    IObservabilitySettings, 
+    IAuthenticationSettings
 {
     public required InternalApiSettings InternalApi { get; init; }
     public required SeqSettings Seq { get; init; }
@@ -20,4 +26,5 @@ internal sealed class ApiSettings : IModuleSettings, ISeqSettings, IRabbitSettin
     public required EmbeddingsSettings Embeddings { get; init; }
     public required RabbitSettings Rabbit { get; init; }
     public required ObservabilitySettings Observability { get; init; }
+    public required AuthenticationSettings Authentication { get; init; }
 }

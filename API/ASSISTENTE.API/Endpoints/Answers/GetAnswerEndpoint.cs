@@ -11,6 +11,7 @@ public sealed class GetAnswerEndpoint(ISender mediator)
     {
         Get("answers/{@Id}", x => new { Id = x.QuestionId });
         SetupSwagger();
+        AllowAnonymous();
     }
 
     protected override GetAnswerQuery MediatRequest(GetAnswerRequest req) 

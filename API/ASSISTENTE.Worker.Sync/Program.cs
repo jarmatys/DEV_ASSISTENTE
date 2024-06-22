@@ -7,6 +7,7 @@ using ASSISTENTE.Worker.Sync.Common.Extensions;
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
+    .AddUserSecrets<Program>()
     .Build()
     .ValidateSettings<WorkerSettings>();
 

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Logging.HealthChecks;
 using ASSISTENTE.Common.Logging.Settings;
@@ -16,7 +17,7 @@ public static class DependencyInjection
     public static IServiceCollection AddCommonLogging<TSettings>(this IServiceCollection services)
         where TSettings : ISeqSettings
     {
-        var seq = services.BuildServiceProvider().GetRequiredService<TSettings>().Seq;
+        var settings = services.GetSettings<TSettings, SeqSettings>(x => x.Seq);
         
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
@@ -25,7 +26,7 @@ public static class DependencyInjection
             .Enrich.WithProperty("Application", $"{ApplicationName()}")
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.Seq(seq.Url, apiKey: seq.ApiKey)
+            .WriteTo.Seq(settings.Url, apiKey: settings.ApiKey)
             .CreateLogger();
 
         Log.Information("{ApplicationName} - Application starting up", ApplicationName());

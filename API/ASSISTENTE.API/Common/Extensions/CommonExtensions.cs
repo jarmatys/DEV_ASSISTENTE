@@ -1,3 +1,5 @@
+using ASSISTENTE.Common.Authentication;
+using ASSISTENTE.Common.Authentication.Settings;
 using ASSISTENTE.Common.Correlation;
 using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Logging;
@@ -20,13 +22,14 @@ internal static class CommonExtensions
     }
     
     public static WebApplicationBuilder AddCommon<TSettings>(this WebApplicationBuilder builder)
-        where TSettings : ISeqSettings, IObservabilitySettings, IRabbitSettings
+        where TSettings : ISeqSettings, IObservabilitySettings, IRabbitSettings, IAuthenticationSettings
     {
         builder.Services.AddCommonLogging<TSettings>();
         builder.Services.AddCommonObservability<TSettings>();
         builder.Services.AddCommonCorrelationProvider();
         builder.Services.AddCommonPublisher<TSettings>();
-    
+        builder.Services.AddCommonAuthentication<TSettings>();
+        
         return builder;
     }
 }

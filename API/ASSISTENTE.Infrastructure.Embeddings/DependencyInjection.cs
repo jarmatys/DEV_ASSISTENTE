@@ -1,4 +1,5 @@
-﻿using ASSISTENTE.Infrastructure.Embeddings.Contracts;
+﻿using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,13 +12,13 @@ namespace ASSISTENTE.Infrastructure.Embeddings
         public static IServiceCollection AddEmbeddings<TSettings>(this IServiceCollection services)
             where TSettings : IEmbeddingsSettings
         {
-            var embeddingsSettings = services.BuildServiceProvider().GetRequiredService<TSettings>().Embeddings;
+            var settings = services.GetSettings<TSettings, EmbeddingsSettings>(x => x.Embeddings);
 
             services.AddScoped<IEmbeddingClient, OpenAiClient>();
             
             services.AddOpenAIServices(options =>
             {
-                options.ApiKey = embeddingsSettings.ApiKey;
+                options.ApiKey = settings.ApiKey;
             });
             
             return services;

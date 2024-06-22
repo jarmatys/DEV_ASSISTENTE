@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <InvariantGlobalization>false</InvariantGlobalization>
+        <UserSecretsId>8fe28d93-c150-4d35-9f8f-69918e9bda6a</UserSecretsId>
     </PropertyGroup>
 
     <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">

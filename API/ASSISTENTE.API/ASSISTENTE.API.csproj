@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>8fe28d93-c150-4d35-9f8f-69918e9bda6a</UserSecretsId>
     </PropertyGroup>
 
     <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">
@@ -14,14 +15,15 @@
     </Target>
     
     <ItemGroup>
-        <PackageReference Include="FastEndpoints" Version="5.24.0" />
-        <PackageReference Include="FastEndpoints.Swagger" Version="5.24.0" />
+        <PackageReference Include="FastEndpoints" Version="5.26.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.26.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
         <PackageReference Include="NSwag.AspNetCore" Version="14.0.7" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common.Authentication\ASSISTENTE.Common.Authentication.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Observability\ASSISTENTE.Common.Observability.csproj" />
