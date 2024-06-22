@@ -1,0 +1,99 @@
+﻿@page "/auth/login"
+
+@using System.ComponentModel.DataAnnotations
+@using ASSISTENTE.UI.Common.Extensions
+@using ASSISTENTE.UI.Common.Models
+
+@inject SubabaseClient SubabaseClient
+@inject NavigationManager NavigationManager
+
+<PageTitle>Login page</PageTitle>
+
+<EditForm EditContext="@_editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+    <MudGrid>
+        <MudItem xs="12">
+            <MudCard>
+                @if (!_isSuccess)
+                {
+                    <MudCardHeader>
+                        <MudText Color="@Color.Error">
+                            <ValidationSummary/>
+                        </MudText>
+                    </MudCardHeader>
+                }
+                <MudCardContent>
+                    <MudTextField Label="Email" Class="mt-3"
+                                  @bind-Value="_model.Email" For="@(() => _model.Email)"/>
+                    <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                  @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                </MudCardContent>
+                <MudCardActions Class="mx-auto">
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Disabled="_isLoading"
+                               Class="ml-auto">
+                        @(_isLoading ? "Loading..." : "Login")
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+
+    readonly LoginForm _model = new();
+
+    bool _isSuccess;
+    bool _isLoading;
+
+    public class LoginForm
+    {
+        [Required] [EmailAddress] public string? Email { get; set; }
+
+        [Required] public string? Password { get; set; }
+    }
+
+    readonly GeneralError _generalError = new();
+    ValidationMessageStore _messageStore = null!;
+    EditContext _editContext = null!;
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(_model);
+        _messageStore = new ValidationMessageStore(_editContext);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _isLoading = true;
+        
+        try
+        {
+            var user = await SubabaseClient.Auth.SignIn(_model.Email!, _model.Password!);
+
+            _isSuccess = true;
+            
+            // TODO: Save token in local storage
+
+            NavigationManager.NavigateTo("/");
+        }
+        catch
+        {
+            _messageStore.Add(() => _generalError.Error, "Wrong credentials - try again...");
+
+            _isSuccess = false;
+
+            _editContext.NotifyValidationStateChanged();
+        }
+
+        _isLoading = false;
+
+        StateHasChanged();
+
+        _messageStore.Clear();
+    }
+
+}

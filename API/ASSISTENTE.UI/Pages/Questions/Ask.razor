@@ -45,7 +45,7 @@ else
               SubmitMethod="CreateQuestionAsync"
               OnRequestClear="HandleRequestUpdate"
               OnSuccessSubmit="HandleOnSubmit">
-
+        
         <FormFields>
             <MudTextField
                 @bind-Value="_request.Question"
@@ -59,6 +59,7 @@ else
                 Disabled="@_inProgress"
                 RequiredError="Question name is required!"/>
         </FormFields>
+        
     </BaseForm>
 }
 

@@ -8,4 +8,5 @@ public sealed class ClientSettings
     public required string ApiUrl { get; init; }
     public required string HubUrl { get; init; }
     public required SeqSettings Seq { get; init; }
+    public required AuthenticationSettings Authentication { get; init; }
 }

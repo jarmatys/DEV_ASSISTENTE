@@ -7,7 +7,7 @@ namespace ASSISTENTE.UI.Common.Extensions;
 
 internal static class ClientExtensions
 {
-    public static WebAssemblyHostBuilder ConfigureClient(this WebAssemblyHostBuilder builder, ClientSettings settings)
+    public static WebAssemblyHostBuilder ConfigureClient(this WebAssemblyHostBuilder builder)
     {
         builder.Services.AddBrokers();
         

@@ -13,8 +13,9 @@ var settings = builder.Configuration.GetSettings();
 builder.Services.AddSingleton(settings);
 
 builder.AddLogging(settings.Seq);
+builder.AddAuthentication(settings.Authentication);
 builder.ConfigureApi(settings);
-builder.ConfigureClient(settings);
+builder.ConfigureClient();
 
 await builder
     .Build()
