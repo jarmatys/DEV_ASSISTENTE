@@ -1,9 +1,9 @@
-﻿@page "/auth/login"
+﻿@page "/auth/register"
 
 @inject SubabaseClient SubabaseClient
 @inject NavigationManager NavigationManager
 
-<PageTitle>Login page</PageTitle>
+<PageTitle>Register page</PageTitle>
 
 <EditForm EditContext="@_editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
@@ -19,10 +19,14 @@
                     </MudCardHeader>
                 }
                 <MudCardContent>
+                    <MudTextField Label="Username" Class="mt-3"
+                                  @bind-Value="_model.Username" For="@(() => _model.Username)"/>
                     <MudTextField Label="Email" Class="mt-3"
                                   @bind-Value="_model.Email" For="@(() => _model.Email)"/>
                     <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
                                   @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                    <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                                  @bind-Value="_model.Password2" For="@(() => _model.Password2)" InputType="InputType.Password"/>
                 </MudCardContent>
                 <MudCardActions Class="mx-auto">
                     <MudButton ButtonType="ButtonType.Submit"
@@ -30,7 +34,7 @@
                                Color="Color.Primary"
                                Disabled="_isLoading"
                                Class="ml-auto">
-                        @(_isLoading ? "Loading..." : "Login")
+                        @(_isLoading ? "Loading..." : "Register")
                     </MudButton>
                 </MudCardActions>
             </MudCard>
@@ -40,11 +44,11 @@
 
 @code {
 
-    readonly LoginForm _model = new();
+    readonly RegisterForm _model = new();
 
     bool _isSuccess;
     bool _isLoading;
-    
+
     readonly GeneralError _generalError = new();
     ValidationMessageStore _messageStore = null!;
     EditContext _editContext = null!;
@@ -58,25 +62,32 @@
     private async Task OnValidSubmit(EditContext context)
     {
         _isLoading = true;
-        
+
         try
         {
-            var user = await SubabaseClient.Auth.SignIn(_model.Email!, _model.Password!);
+            var registerOptions = new SignUpOptions
+            {
+                RedirectTo = "http://localhost:1008/auth/redirect",
+                Data = new Dictionary<string, object>
+                {
+                    { "display_name", _model.Username! }
+                }
+            };
+
+            var user = await SubabaseClient.Auth.SignUp(Constants.SignUpType.Email, _model.Email!, _model.Password!, registerOptions);
 
             _isSuccess = true;
-            
-            // TODO: Save token in local storage
 
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/auth/login");
         }
         catch (Exception ex)
         {
             var error = JsonConvert.DeserializeObject<AuthError>(ex.Message);
 
-            _messageStore.Add(() => _generalError.Error, error != null 
-                ? error.Description! 
+            _messageStore.Add(() => _generalError.Error, error != null
+                ? error.Description!
                 : "Something went wrong - try again...");
-            
+
             _isSuccess = false;
 
             _editContext.NotifyValidationStateChanged();
