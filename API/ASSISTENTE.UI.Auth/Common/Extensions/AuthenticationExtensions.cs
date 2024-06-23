@@ -1,8 +1,9 @@
-using ASSISTENTE.UI.Common.Settings;
+using ASSISTENTE.UI.Auth.Common.Settings;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Supabase;
 
-namespace ASSISTENTE.UI.Common.Extensions;
+namespace ASSISTENTE.UI.Auth.Common.Extensions;
 
 internal class SubabaseClient(AuthenticationSettings settings, SupabaseOptions options)
     : Client(settings.Url, settings.PublicKey, options);

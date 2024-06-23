@@ -1,3 +1,4 @@
+using ASSISTENTE.UI.Auth.Common.Settings;
 using ASSISTENTE.UI.Common.Settings;
 
 namespace ASSISTENTE.UI.Common;

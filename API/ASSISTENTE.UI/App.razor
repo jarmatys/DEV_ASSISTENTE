@@ -1,11 +1,13 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using ASSISTENTE.UI.Common.Helpers
+
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="AssemblyScanning.GetAssemblies().ToArray()">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <MudAlert Severity="Severity.Warning">404 - Sorry, there's nothing at this address.</MudAlert>
         </LayoutView>
     </NotFound>
 </Router>

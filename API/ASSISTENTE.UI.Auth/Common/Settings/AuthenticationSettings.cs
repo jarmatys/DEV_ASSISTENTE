@@ -1,4 +1,4 @@
-namespace ASSISTENTE.UI.Common.Settings;
+namespace ASSISTENTE.UI.Auth.Common.Settings;
 
 public sealed class AuthenticationSettings
 {

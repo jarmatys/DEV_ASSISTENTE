@@ -7,28 +7,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Markdig" Version="0.37.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-        <PackageReference Include="MudBlazor" Version="6.19.1" />
+        <PackageReference Include="Markdig" Version="0.37.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4"/>
         <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0"/>
-        <PackageReference Include="Supabase" Version="1.0.4" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="wwwroot\appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Update="wwwroot\appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Common.Resilience\ASSISTENTE.Common.Resilience.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Common.Resilience\ASSISTENTE.Common.Resilience.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.UI.Auth\ASSISTENTE.UI.Auth.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.UI.Common\ASSISTENTE.UI.Common.csproj" />
     </ItemGroup>
-    
+
 </Project>
