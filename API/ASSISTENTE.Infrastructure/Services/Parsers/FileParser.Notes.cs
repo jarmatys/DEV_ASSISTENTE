@@ -15,7 +15,7 @@ public sealed partial class FileParser
     
     public Result<IEnumerable<ResourceText>> GetNotes()
     {
-        var filePaths = GetPaths(_notesPath)!;
+        var filePaths = GetPaths(_notesPath);
 
         if (filePaths.Count == 0)
             logger.LogWarning("No notes files found in the path '{Path}'. Mount location as volume.", _notesPath);

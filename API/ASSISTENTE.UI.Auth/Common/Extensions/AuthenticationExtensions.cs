@@ -5,7 +5,7 @@ using Supabase;
 
 namespace ASSISTENTE.UI.Auth.Common.Extensions;
 
-internal class SubabaseClient(AuthenticationSettings settings, SupabaseOptions options)
+public class SubabaseClient(AuthenticationSettings settings, SupabaseOptions options)
     : Client(settings.Url, settings.PublicKey, options);
 
 

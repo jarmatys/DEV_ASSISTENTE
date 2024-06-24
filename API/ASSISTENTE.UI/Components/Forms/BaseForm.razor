@@ -55,7 +55,7 @@
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(Request!);
+        _editContext = new EditContext(Request);
         _messageStore = new ValidationMessageStore(_editContext);
     }
 

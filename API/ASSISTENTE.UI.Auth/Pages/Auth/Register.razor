@@ -1,6 +1,6 @@
 ﻿@page "/auth/register"
 
-@inject SubabaseClient SubabaseClient
+@inject AuthStateProvider AuthProvider
 @inject NavigationManager NavigationManager
 
 <PageTitle>Register page</PageTitle>
@@ -65,16 +65,7 @@
 
         try
         {
-            var registerOptions = new SignUpOptions
-            {
-                RedirectTo = "http://localhost:1008/auth/redirect",
-                Data = new Dictionary<string, object>
-                {
-                    { "display_name", _model.Username! }
-                }
-            };
-
-            var user = await SubabaseClient.Auth.SignUp(Constants.SignUpType.Email, _model.Email!, _model.Password!, registerOptions);
+            await AuthProvider.RegisterAsync(new RegisterDto(_model.Username!, _model.Email!, _model.Password!));
 
             _isSuccess = true;
 

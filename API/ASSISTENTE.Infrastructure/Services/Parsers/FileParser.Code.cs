@@ -15,7 +15,7 @@ public sealed partial class FileParser
     
     public Result<IEnumerable<ResourceText>> GetCode()
     {
-        var filePaths = GetPaths(_repositoriesPath)!;
+        var filePaths = GetPaths(_repositoriesPath);
 
         if (filePaths.Count == 0)
             logger.LogWarning("No code files found in the path '{Path}'. Mount location as volume.", _repositoriesPath);

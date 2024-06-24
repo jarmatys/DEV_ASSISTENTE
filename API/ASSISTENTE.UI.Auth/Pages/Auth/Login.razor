@@ -1,6 +1,6 @@
 ﻿@page "/auth/login"
 
-@inject SubabaseClient SubabaseClient
+@inject AuthStateProvider AuthProvider
 @inject NavigationManager NavigationManager
 
 <PageTitle>Login page</PageTitle>
@@ -61,12 +61,10 @@
         
         try
         {
-            var user = await SubabaseClient.Auth.SignIn(_model.Email!, _model.Password!);
+            await AuthProvider.LoginAsync(new LoginDto(_model.Email!, _model.Password!));
 
             _isSuccess = true;
             
-            // TODO: Save token in local storage
-
             NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)

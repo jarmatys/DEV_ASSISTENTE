@@ -68,11 +68,11 @@ internal static class IdentifiersExtensions
     }
 
     private class GuidToIdentifierConverter<TIdentifier>() : ValueConverter<TIdentifier, Guid>(id => id.Value,
-        value => ((TIdentifier)Activator.CreateInstance(typeof(TIdentifier), value)!)!)
+        value => ((TIdentifier)Activator.CreateInstance(typeof(TIdentifier), value)!))
         where TIdentifier : IdentifierBase<Guid>;
 
     private class IntToIdentifierConverter<TIdentifier>() : ValueConverter<TIdentifier, int>(id => id.Value,
-        value => ((TIdentifier)Activator.CreateInstance(typeof(TIdentifier), value)!)!)
+        value => ((TIdentifier)Activator.CreateInstance(typeof(TIdentifier), value)!))
         where TIdentifier : IdentifierBase<int>;
     
     

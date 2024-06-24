@@ -1,2 +1,11 @@
-<MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Href="/auth/login"/>
-<MudIconButton Icon="@Icons.Material.Filled.Create" Color="Color.Inherit" Href="/auth/register"/>
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Href="/auth/logout"/>
+    </Authorized>
+    <NotAuthorized>
+        <MudIconButton Icon="@Icons.Material.Filled.Create" Color="Color.Inherit" Href="/auth/register"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Href="/auth/login"/>
+    </NotAuthorized>
+</AuthorizeView>

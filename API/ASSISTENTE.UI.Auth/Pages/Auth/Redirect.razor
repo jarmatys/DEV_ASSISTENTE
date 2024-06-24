@@ -1,25 +1,23 @@
 ﻿@page "/auth/redirect"
-@using ASSISTENTE.UI.Common.Extensions
 
-@inject SubabaseClient SubabaseClient
+@inject AuthStateProvider AuthProvider
 @inject NavigationManager NavigationManager
 
 <PageTitle>Redirect login...</PageTitle>
 
-@AccessToken
-
 @code {
     
     string? AccessToken { get; set; }
+    string? RefreshToken { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
         AccessToken = NavigationManager.GetQueryString<string>("access_token");
+        RefreshToken = NavigationManager.GetQueryString<string>("refresh_token");
 
         try
         {
-            // TODO: Login with the access token
-            // var response = await SubabaseClient.Auth.SignIn(...)
+            await AuthProvider.LoginAsync(new RedirectDto(AccessToken!, RefreshToken!));
         }
         catch (Exception ex)
         {
