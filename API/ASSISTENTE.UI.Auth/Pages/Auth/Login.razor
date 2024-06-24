@@ -44,7 +44,7 @@
 
     bool _isSuccess;
     bool _isLoading;
-    
+
     readonly GeneralError _generalError = new();
     ValidationMessageStore _messageStore = null!;
     EditContext _editContext = null!;
@@ -58,30 +58,25 @@
     private async Task OnValidSubmit(EditContext context)
     {
         _isLoading = true;
-        
-        try
-        {
-            await AuthProvider.LoginAsync(new LoginDto(_model.Email!, _model.Password!));
 
-            _isSuccess = true;
-            
+        var result = await AuthProvider.LoginAsync(new LoginDto(_model.Email!, _model.Password!));
+
+        _isLoading = false;
+        _isSuccess = result.IsSuccess;
+        
+        if (result.IsSuccess)
+        {
             NavigationManager.NavigateTo("/");
         }
-        catch (Exception ex)
+        else
         {
-            var error = JsonConvert.DeserializeObject<AuthError>(ex.Message);
-
-            _messageStore.Add(() => _generalError.Error, error != null 
-                ? error.Description! 
+            _messageStore.Add(() => _generalError.Error, result.Error != null
+                ? result.Error.Description!
                 : "Something went wrong - try again...");
-            
-            _isSuccess = false;
 
             _editContext.NotifyValidationStateChanged();
         }
-
-        _isLoading = false;
-
+        
         StateHasChanged();
 
         _messageStore.Clear();

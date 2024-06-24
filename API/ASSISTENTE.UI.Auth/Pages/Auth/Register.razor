@@ -63,28 +63,23 @@
     {
         _isLoading = true;
 
-        try
+        var result = await AuthProvider.RegisterAsync(new RegisterDto(_model.Username!, _model.Email!, _model.Password!));
+
+        _isSuccess = result.IsSuccess;
+        _isLoading = false;
+
+        if (_isSuccess)
         {
-            await AuthProvider.RegisterAsync(new RegisterDto(_model.Username!, _model.Email!, _model.Password!));
-
-            _isSuccess = true;
-
             NavigationManager.NavigateTo("/auth/login");
         }
-        catch (Exception ex)
+        else
         {
-            var error = JsonConvert.DeserializeObject<AuthError>(ex.Message);
-
-            _messageStore.Add(() => _generalError.Error, error != null
-                ? error.Description!
+            _messageStore.Add(() => _generalError.Error, result.Error != null
+                ? result.Error.Description!
                 : "Something went wrong - try again...");
-
-            _isSuccess = false;
 
             _editContext.NotifyValidationStateChanged();
         }
-
-        _isLoading = false;
 
         StateHasChanged();
 

@@ -5,11 +5,12 @@ using ASSISTENTE.UI.Auth.Models;
 using ASSISTENTE.UI.Auth.Providers.Models;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Newtonsoft.Json;
 using Supabase.Gotrue;
 
 namespace ASSISTENTE.UI.Auth.Providers
 {
-    public class AuthStateProvider(ILocalStorageService localStorage, SubabaseClient supabaseClient) 
+    public class AuthStateProvider(ILocalStorageService localStorage, SubabaseClient supabaseClient)
         : AuthenticationStateProvider
     {
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new();
@@ -17,7 +18,7 @@ namespace ASSISTENTE.UI.Auth.Providers
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity());
-            
+
             var authStore = await localStorage.GetItemAsync<AuthStore>("auth");
 
             if (authStore?.AccessToken == null)
@@ -30,90 +31,121 @@ namespace ASSISTENTE.UI.Auth.Providers
             if (tokenContent.ValidTo < DateTime.Now)
             {
                 // TODO: Logic to refresh token
-                
+
                 return new AuthenticationState(user);
             }
 
-            var claims = GetClaims(authStore?.AccessToken!);
+            return await AuthState(authStore?.AccessToken);
+        }
 
+        public async Task<AuthResponse> LoginAsync(RedirectDto model)
+        {
+            try
+            {
+                await supabaseClient.Auth.SetSession(model.AccessToken, model.RefreshToken);
+
+                await localStorage.SetItemAsync("auth", new AuthStore(model.AccessToken, model.RefreshToken));
+
+                var authState = AuthState(model.AccessToken);
+
+                NotifyAuthenticationStateChanged(authState);
+
+                return AuthResponse.Success();
+            }
+            catch (Exception ex)
+            {
+                var authError = JsonConvert.DeserializeObject<AuthError>(ex.Message);
+
+                return AuthResponse.Fail(authError);
+            }
+        }
+
+        public async Task<AuthResponse> LoginAsync(LoginDto model)
+        {
+            try
+            {
+                var result = await supabaseClient.Auth.SignIn(model.Email, model.Password);
+
+                await localStorage.SetItemAsync("auth", new AuthStore(result?.AccessToken!, result?.RefreshToken!));
+            
+                var authState = AuthState(result?.AccessToken);
+            
+                NotifyAuthenticationStateChanged(authState);
+
+                return AuthResponse.Success();
+            }
+            catch (Exception ex)
+            {
+                var authError = JsonConvert.DeserializeObject<AuthError>(ex.Message);
+
+                return AuthResponse.Fail(authError);
+            }
+        }
+
+        public async Task<AuthResponse> RegisterAsync(RegisterDto model)
+        {
+            try
+            {
+                var registerOptions = new SignUpOptions
+                {
+                    RedirectTo = "http://localhost:1008/auth/redirect",
+                    Data = new Dictionary<string, object>
+                    {
+                        { "display_name", model.Username }
+                    }
+                };
+
+                var user = await supabaseClient.Auth.SignUp(
+                    Constants.SignUpType.Email,
+                    model.Email,
+                    model.Password,
+                    registerOptions);
+
+                return AuthResponse.Success();
+            }
+            catch (Exception ex)
+            {
+                var authError = JsonConvert.DeserializeObject<AuthError>(ex.Message);
+
+                return AuthResponse.Fail(authError);
+            }
+        }
+
+        public async Task<AuthResponse> LogoutAsync()
+        {
+            try
+            {
+                await localStorage.ClearAsync();
+
+                await supabaseClient.Auth.SignOut();
+
+                NotifyAuthenticationStateChanged(AuthState());
+
+                return AuthResponse.Success();
+            }
+            catch (Exception ex)
+            {
+                var authError = JsonConvert.DeserializeObject<AuthError>(ex.Message);
+
+                return AuthResponse.Fail(authError);
+            }
+        }
+
+        private Task<AuthenticationState> AuthState(string? accessToken = null)
+        {
+            var user = new ClaimsPrincipal(new ClaimsIdentity());
+
+            if (string.IsNullOrEmpty(accessToken))
+                return Task.FromResult(new AuthenticationState(user));
+
+            var claims = _jwtSecurityTokenHandler
+                .ReadJwtToken(accessToken)
+                .Claims
+                .ToList();
+            
             user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
-            return new AuthenticationState(user);
-        }
-
-        public async Task LoginAsync(RedirectDto model)
-        {
-            // TODO: parsed error to AuthError.cs
-            
-            await supabaseClient.Auth.SetSession(model.AccessToken, model.RefreshToken);
-
-            await localStorage.SetItemAsync("auth", new AuthStore(model.AccessToken, model.RefreshToken));
-
-            var claims = GetClaims(model.AccessToken);
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
-
-            var authState = Task.FromResult(new AuthenticationState(user));
-
-            NotifyAuthenticationStateChanged(authState);
-        }
-
-        public async Task LoginAsync(LoginDto model)
-        {
-            // TODO: parsed error to AuthError.cs
-            
-            var result = await supabaseClient.Auth.SignIn(model.Email, model.Password);
-
-            await localStorage.SetItemAsync("auth", new AuthStore(result?.AccessToken!, result?.RefreshToken!));
-
-            var claims = GetClaims(result?.AccessToken!);
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
-
-            var authState = Task.FromResult(new AuthenticationState(user));
-
-            NotifyAuthenticationStateChanged(authState);
-        }
-
-        public async Task RegisterAsync(RegisterDto model)
-        {
-            // TODO: parsed error to AuthError.cs
-
-            var registerOptions = new SignUpOptions
-            {
-                RedirectTo = "http://localhost:1008/auth/redirect",
-                Data = new Dictionary<string, object>
-                {
-                    { "display_name", model.Username }
-                }
-            };
-
-            var user = await supabaseClient.Auth.SignUp(
-                Constants.SignUpType.Email,
-                model.Email, 
-                model.Password, 
-                registerOptions);
-        }
-
-        public async Task LogoutAsync()
-        {
-            await localStorage.ClearAsync();
-
-            await supabaseClient.Auth.SignOut();
-            
-            var nobody = new ClaimsPrincipal(new ClaimsIdentity());
-
-            var authState = Task.FromResult(new AuthenticationState(nobody));
-
-            NotifyAuthenticationStateChanged(authState);
-        }
-
-        private List<Claim> GetClaims(string token)
-        {
-            var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(token);
-            var claims = tokenContent.Claims.ToList();
-
-            return claims;
+            return Task.FromResult(new AuthenticationState(user));
         }
     }
 }

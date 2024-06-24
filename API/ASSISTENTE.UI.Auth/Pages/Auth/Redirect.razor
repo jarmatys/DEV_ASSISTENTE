@@ -6,25 +6,18 @@
 <PageTitle>Redirect login...</PageTitle>
 
 @code {
-    
+
     string? AccessToken { get; set; }
     string? RefreshToken { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         AccessToken = NavigationManager.GetQueryString<string>("access_token");
         RefreshToken = NavigationManager.GetQueryString<string>("refresh_token");
 
-        try
-        {
-            await AuthProvider.LoginAsync(new RedirectDto(AccessToken!, RefreshToken!));
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        
-        NavigationManager.NavigateTo("/");
+        var result = await AuthProvider.LoginAsync(new RedirectDto(AccessToken!, RefreshToken!));
+
+        NavigationManager.NavigateTo(result.IsSuccess ? "/" : "/auth/login");
     }
 
 }
