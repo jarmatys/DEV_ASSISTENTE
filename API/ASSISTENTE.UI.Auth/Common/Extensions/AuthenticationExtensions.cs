@@ -22,7 +22,7 @@ internal static class AuthenticationExtensions
 
         var supabaseClient = new SubabaseClient(settings, supaBaseOptions);
         
-        builder.Services.AddScoped<SubabaseClient>(_ => supabaseClient);
+        builder.Services.AddSingleton<SubabaseClient>(_ => supabaseClient);
         
         return builder;
     }

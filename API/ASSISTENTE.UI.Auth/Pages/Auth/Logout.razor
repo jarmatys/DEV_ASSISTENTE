@@ -3,13 +3,20 @@
 @inject AuthStateProvider AuthProvider
 @inject NavigationManager NavigationManager
 
+@inject ISnackbar Snackbar
+
 <PageTitle>Logout...</PageTitle>
 
 @code {
     
     protected override async Task OnInitializedAsync()
     {
-        await AuthProvider.LogoutAsync();
+        var result = await AuthProvider.LogoutAsync();
+
+        if (!result.IsSuccess)
+        {
+            Snackbar.Add("Error during logout...", Severity.Error);
+        }
         
         NavigationManager.NavigateTo("/");
     }

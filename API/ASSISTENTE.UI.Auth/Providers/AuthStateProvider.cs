@@ -21,21 +21,31 @@ namespace ASSISTENTE.UI.Auth.Providers
 
             var authStore = await localStorage.GetItemAsync<AuthStore>("auth");
 
-            if (authStore?.AccessToken == null)
+            if (authStore == null)
             {
                 return new AuthenticationState(user);
             }
 
-            var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(authStore?.AccessToken);
+            var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(authStore.AccessToken);
 
-            if (tokenContent.ValidTo < DateTime.Now)
+            if (tokenContent.ValidTo >= DateTime.UtcNow)
             {
-                // TODO: Logic to refresh token
-
-                return new AuthenticationState(user);
+                return await AuthState(authStore.AccessToken);
             }
 
-            return await AuthState(authStore?.AccessToken);
+            try
+            {
+                var session = await supabaseClient.Auth
+                    .SignIn(Constants.SignInType.RefreshToken, authStore.RefreshToken);
+
+                await SetSession(session);
+
+                return await AuthState(session?.AccessToken);
+            }
+            catch
+            {
+                return new AuthenticationState(user);
+            }
         }
 
         public async Task<AuthResponse> LoginAsync(RedirectDto model)
@@ -64,12 +74,12 @@ namespace ASSISTENTE.UI.Auth.Providers
         {
             try
             {
-                var result = await supabaseClient.Auth.SignIn(model.Email, model.Password);
+                var session = await supabaseClient.Auth.SignIn(model.Email, model.Password);
 
-                await localStorage.SetItemAsync("auth", new AuthStore(result?.AccessToken!, result?.RefreshToken!));
-            
-                var authState = AuthState(result?.AccessToken);
-            
+                await SetSession(session);
+
+                var authState = AuthState(session?.AccessToken);
+
                 NotifyAuthenticationStateChanged(authState);
 
                 return AuthResponse.Success();
@@ -80,6 +90,11 @@ namespace ASSISTENTE.UI.Auth.Providers
 
                 return AuthResponse.Fail(authError);
             }
+        }
+
+        private async Task SetSession(Session? result)
+        {
+            await localStorage.SetItemAsync("auth", new AuthStore(result?.AccessToken!, result?.RefreshToken!));
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterDto model)
@@ -142,7 +157,7 @@ namespace ASSISTENTE.UI.Auth.Providers
                 .ReadJwtToken(accessToken)
                 .Claims
                 .ToList();
-            
+
             user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
             return Task.FromResult(new AuthenticationState(user));
