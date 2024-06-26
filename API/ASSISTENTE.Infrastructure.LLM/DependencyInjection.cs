@@ -5,7 +5,7 @@ using ASSISTENTE.Infrastructure.LLM.HealthChecks;
 using ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using Microsoft.Extensions.DependencyInjection;
-using OpenAI.Net;
+using OpenAI;
 
 namespace ASSISTENTE.Infrastructure.LLM
 {
@@ -18,10 +18,8 @@ namespace ASSISTENTE.Infrastructure.LLM
             
             services.AddScoped<ILlmClient, OpenAiClient>();
             
-            services.AddOpenAIServices(options =>
-            {
-                options.ApiKey = settings.ApiKey;
-            });
+            services.AddScoped<OpenAIClient>(_ => 
+                new OpenAIClient(new OpenAIAuthentication(settings.ApiKey), client: new HttpClient()));
 
             services.AddCommonHealthCheck<LlmHealthCheck>();
             

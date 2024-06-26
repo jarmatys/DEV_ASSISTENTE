@@ -12,6 +12,7 @@ using Serilog;
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables()
+    .AddUserSecrets<Program>()
     .Build()
     .ValidateSettings<PlaygroundSettings>();
 

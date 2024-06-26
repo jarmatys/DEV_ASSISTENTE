@@ -22,6 +22,14 @@ public static class SettingsExtensions
             {
                 throw new SettingsException($"Missing required section: '{property.Name}' in 'appsettings.json'");
             }
+            
+            foreach (var nestedProperty in property.PropertyType.GetProperties())
+            {
+                if (nestedProperty.GetValue(property.GetValue(settings)) == null)
+                {
+                    throw new SettingsException($"Missing value '{nestedProperty.Name}' for section: '{property.Name}' in 'appsettings.json'");
+                }
+            }
         }
 
         return configuration;

@@ -1,12 +1,12 @@
 using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Errors;
 using CSharpFunctionalExtensions;
-using OpenAI.Net;
+using OpenAI;
 using SharpToken;
 
 namespace ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
 
-internal class OpenAiClient(IOpenAIService openAiService) : IEmbeddingClient
+internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
 {
     private const string EmbeddingModel = "text-embedding-ada-002";
     private const int MaxTokens = 8192;
@@ -16,13 +16,9 @@ internal class OpenAiClient(IOpenAIService openAiService) : IEmbeddingClient
         return await TextCanBeProcessable(text)
             .Bind(async () =>
             {
-                var response = await openAiService.Embeddings.Create(text.Text);
+                var response = await client.EmbeddingsEndpoint.CreateEmbeddingAsync(text.Text);
 
-                if (!response.IsSuccess)
-                    return Result.Failure<EmbeddingDto>(
-                        OpenAiClientErrors.InvalidResult.Build(response.ErrorResponse?.Error.Message!));
-
-                var embeddings = response.Result?.Data.First().Embedding.Select(i => (float)i);
+                var embeddings = response.Data.Select(x => x.Embedding).FirstOrDefault()?.Select(x => (float)x);
 
                 return embeddings is null
                     ? Result.Failure<EmbeddingDto>(OpenAiClientErrors.EmptyEmbeddings.Build())

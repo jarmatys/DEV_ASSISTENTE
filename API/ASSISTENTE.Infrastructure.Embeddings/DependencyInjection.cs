@@ -3,7 +3,7 @@ using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using Microsoft.Extensions.DependencyInjection;
-using OpenAI.Net;
+using OpenAI;
 
 namespace ASSISTENTE.Infrastructure.Embeddings
 {
@@ -15,11 +15,9 @@ namespace ASSISTENTE.Infrastructure.Embeddings
             var settings = services.GetSettings<TSettings, EmbeddingsSettings>(x => x.Embeddings);
 
             services.AddScoped<IEmbeddingClient, OpenAiClient>();
-            
-            services.AddOpenAIServices(options =>
-            {
-                options.ApiKey = settings.ApiKey;
-            });
+
+            services.AddScoped<OpenAIClient>(_ => 
+                new OpenAIClient(new OpenAIAuthentication(settings.ApiKey), client: new HttpClient()));
             
             return services;
         }

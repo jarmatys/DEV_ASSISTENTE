@@ -70,9 +70,7 @@ services:
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
-      - Embeddings__Host=${Qdrant_Host}
-      - Embeddings__ClientPort=${Qdrant_ClientPort}
-      - Embeddings__ApiPort=${Qdrant_ApiPort}
+      - Embeddings__ApiKey=${Llm_ApiKey}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -92,9 +90,7 @@ services:
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
-      - Embeddings__Host=${Qdrant_Host}
-      - Embeddings__ClientPort=${Qdrant_ClientPort}
-      - Embeddings__ApiPort=${Qdrant_ApiPort}
+      - Embeddings__ApiKey=${Llm_ApiKey}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -111,9 +107,7 @@ services:
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
-      - Embeddings__Host=${Qdrant_Host}
-      - Embeddings__ClientPort=${Qdrant_ClientPort}
-      - Embeddings__ApiPort=${Qdrant_ApiPort}
+      - Embeddings__ApiKey=${Llm_ApiKey}
     volumes:
       - ./${KnowledgePaths_MarkdownNotes}:/app/Resources/Notes
       - ./${KnowledgePaths_Repositories}:/app/Resources/Repositories
