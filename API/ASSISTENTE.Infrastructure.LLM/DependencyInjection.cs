@@ -19,7 +19,7 @@ namespace ASSISTENTE.Infrastructure.LLM
             services.AddScoped<ILlmClient, OpenAiClient>();
             
             services.AddScoped<OpenAIClient>(_ => 
-                new OpenAIClient(new OpenAIAuthentication(settings.ApiKey), client: new HttpClient()));
+                new OpenAIClient(new OpenAIAuthentication(settings.ApiKey)));
 
             services.AddCommonHealthCheck<LlmHealthCheck>();
             
