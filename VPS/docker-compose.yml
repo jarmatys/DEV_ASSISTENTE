@@ -64,13 +64,17 @@ services:
       - ${External_API_Port}:8080
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
-      - Llm__ApiKey=${Llm_ApiKey}
+      - Llm__ApiKey=${OpenAi_ApiKey}
+      - Llm__OrganizationId=${OpenAi_OrganizationId}
+      - Llm__ProjectId=${OpenAi_ProjectId}
       - Seq__Url=${Seq_Url}
       - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
-      - Embeddings__ApiKey=${Llm_ApiKey}
+      - Embeddings__ApiKey=${OpenAi_ApiKey}
+      - Embeddings__OrganizationId=${OpenAi_OrganizationId}
+      - Embeddings__ProjectId=${OpenAi_ProjectId}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -84,13 +88,17 @@ services:
     restart: always
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
-      - Llm__ApiKey=${Llm_ApiKey}
+      - Llm__ApiKey=${OpenAi_ApiKey}
+      - Llm__OrganizationId=${OpenAi_OrganizationId}
+      - Llm__ProjectId=${OpenAi_ProjectId}
       - Seq__Url=${Seq_Url}
       - Seq__ApiKey=${Seq_ApiKey}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
-      - Embeddings__ApiKey=${Llm_ApiKey}
+      - Embeddings__ApiKey=${OpenAi_ApiKey}
+      - Embeddings__OrganizationId=${OpenAi_OrganizationId}
+      - Embeddings__ProjectId=${OpenAi_ProjectId}
       - Rabbit__Name=${Rabbit_Name}
       - Rabbit__Url=${Rabbit_Url}
       - InternalApi__Url=${InternalApi_Url}
@@ -103,11 +111,15 @@ services:
     entrypoint: ["dotnet", "ASSISTENTE.Playground.dll", "-l"]
     environment:
       - Database__ConnectionString=${Database_ConnectionString}
-      - Llm__ApiKey=${Llm_ApiKey}
+      - Llm__ApiKey=${OpenAi_ApiKey}
+      - Llm__OrganizationId=${OpenAi_OrganizationId}
+      - Llm__ProjectId=${OpenAi_ProjectId}
       - Qdrant__Host=${Qdrant_Host}
       - Qdrant__ClientPort=${Qdrant_ClientPort}
       - Qdrant__ApiPort=${Qdrant_ApiPort}
-      - Embeddings__ApiKey=${Llm_ApiKey}
+      - Embeddings__ApiKey=${OpenAi_ApiKey}
+      - Embeddings__OrganizationId=${OpenAi_OrganizationId}
+      - Embeddings__ProjectId=${OpenAi_ProjectId}
     volumes:
       - ./${KnowledgePaths_MarkdownNotes}:/app/Resources/Notes
       - ./${KnowledgePaths_Repositories}:/app/Resources/Repositories

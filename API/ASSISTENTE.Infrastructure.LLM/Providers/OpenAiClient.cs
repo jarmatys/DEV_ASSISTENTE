@@ -1,11 +1,19 @@
+using System.Globalization;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Errors;
 using CSharpFunctionalExtensions;
 using OpenAI;
+using OpenAI.Assistants;
 using OpenAI.Chat;
+using OpenAI.Files;
+using OpenAI.Images;
 using OpenAI.Models;
+using OpenAI.Threads;
+using OpenAI.VectorStores;
+using ChatMessage = OpenAI.Chat.Message;
+using ThreadMessage = OpenAI.Threads.Message;
 
-namespace ASSISTENTE.Infrastructure.LLM.Providers.OpenAI;
+namespace ASSISTENTE.Infrastructure.LLM.Providers;
 
 internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
 {
@@ -13,15 +21,16 @@ internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
 
     public async Task<Result<Answer>> GenerateAnswer(Prompt prompt)
     {
-        var messages = new List<Message>
+        var messages = new List<ChatMessage>
         {
+            new(Role.System, "You are programmer assistant, please answer correctly as you can."),
             new(Role.User, prompt.Value)
         };
-        
+
         var chatRequest = new ChatRequest(messages, Model.GPT4o, maxTokens: 4096);
-        
+
         var response = await client.ChatEndpoint.GetCompletionAsync(chatRequest);
-        
+
         var choice = response.FirstChoice;
 
         if (choice is null)
@@ -30,9 +39,10 @@ internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
         var answer = choice.Message.ToString();
         var model = response.Model;
         var promptTokens = response.Usage.PromptTokens;
-        var completionTokens =  response.Usage.CompletionTokens;
+        var completionTokens = response.Usage.CompletionTokens;
 
         return Audit.Create(model, promptTokens, completionTokens)
             .Bind(audit => Answer.Create(answer, prompt.Value, _llmClient, audit));
     }
+    
 }

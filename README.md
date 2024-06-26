@@ -95,10 +95,18 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 1. Fill out the settings file `appsettings.json` - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/API/appsettings.json)
     
     - `Llm_ApiKey` - `<API_KEY>`
+    - `Llm_OrganizationId` - `<ORG_ID>`
+    - `Llm_ProjectId` - `<PROJ_ID>`
+
+    - `Embeddings_ApiKey` - `<API_KEY>`
+    - `Embeddings_OrganizationId` - `<ORG_ID>`
+    - `Embeddings_ProjectId` - `<PROJ_ID>`
 
 2. Fill out the `.env` file - [QUICK LINK](https://github.com/jarmatys/DEV_ASSISTENTE/blob/master/.env)
 
-    - `Llm_ApiKey` - `<API_KEY>`
+    - `OpenAi_ApiKey` - `<API_KEY>`
+    - `OpenAi_OrganizationId` - `<ORG_ID>`
+    - `OpenAi_ProjectId` - `<PROJ_ID>`
 
 ### Quick start
 

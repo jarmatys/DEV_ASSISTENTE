@@ -16,8 +16,14 @@ namespace ASSISTENTE.Infrastructure.Embeddings
 
             services.AddScoped<IEmbeddingClient, OpenAiClient>();
 
-            services.AddScoped<OpenAIClient>(_ => 
-                new OpenAIClient(new OpenAIAuthentication(settings.ApiKey)));
+            services.AddScoped<OpenAIClient>(_ =>
+                new OpenAIClient(
+                    new OpenAIAuthentication(
+                        apiKey: settings.ApiKey,
+                        organization: settings.OrganizationId,
+                        projectId: settings.ProjectId)
+                )
+            );
             
             return services;
         }

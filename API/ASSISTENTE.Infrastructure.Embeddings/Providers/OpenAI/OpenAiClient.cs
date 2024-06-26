@@ -16,7 +16,10 @@ internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
         return await TextCanBeProcessable(text)
             .Bind(async () =>
             {
-                var response = await client.EmbeddingsEndpoint.CreateEmbeddingAsync(text.Text);
+                var response = await client.EmbeddingsEndpoint.CreateEmbeddingAsync(
+                    input: text.Text,
+                    model: EmbeddingModel
+                );
 
                 var embeddings = response.Data.Select(x => x.Embedding).FirstOrDefault()?.Select(x => (float)x);
 
