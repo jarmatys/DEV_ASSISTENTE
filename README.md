@@ -90,6 +90,7 @@ Simply paste your query and watch as `assistente.dev` draws from your notes, boo
 - 🔳 Integrate [LLamaSharp](https://github.com/SciSharp/LLamaSharp) for embeding creation
 - 🔳 Save all content from the file (C# code) and use it at the end of the process in context instead of snippets.
 - 🔳 Add `Tool` which can search in Google (will be use as `OpenAi` function)
+- 🔳 Saving (to knowledge base) and analyzing tech newsletters
 
 ### Configuration
 
