@@ -1,7 +1,7 @@
 using ASSISTENTE.Common.Correlation.Consts;
 using ASSISTENTE.Common.Correlation.Generators;
 
-namespace ASSISTENTE.UI.Common.Middlewares;
+namespace ASSISTENTE.UI.Http.Middlewares;
 
 internal class RequestContextLoggingMiddleware : DelegatingHandler
 {

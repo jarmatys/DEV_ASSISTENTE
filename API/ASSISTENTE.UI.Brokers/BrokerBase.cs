@@ -1,17 +1,18 @@
 using System.Net.Http.Json;
-using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
-using ASSISTENTE.Language;
-using ASSISTENTE.UI.Common.Extensions;
-using ASSISTENTE.UI.Common.Models;
+using ASSISTENTE.Contract.Common.RequestBases;
+using ASSISTENTE.Language.Common;
+using ASSISTENTE.UI.Brokers.Models;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.UI.Brokers;
 
 public abstract partial class BrokerBase(
     IHttpClientFactory httpFactory, 
     ILogger<BrokerBase> logger, 
-    string relativeUrl)
+    string relativeUrl,
+    string clientName)
 {
-    private readonly HttpClient _httpClient = httpFactory.CreateClient(ApiExtensions.InternalApi);
+    private readonly HttpClient _httpClient = httpFactory.CreateClient(clientName);
 
     protected async Task<HttpResult<TResponse>> GetAsync<TResponse, TRequest>(TRequest request)
         where TRequest : GetRequestBase

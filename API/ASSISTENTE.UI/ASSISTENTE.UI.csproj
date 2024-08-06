@@ -23,12 +23,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj"/>
-        <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj"/>
-        <ProjectReference Include="..\ASSISTENTE.Common.Resilience\ASSISTENTE.Common.Resilience.csproj"/>
-        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj" />
         <ProjectReference Include="..\ASSISTENTE.UI.Auth\ASSISTENTE.UI.Auth.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.UI.Brokers\ASSISTENTE.UI.Brokers.csproj" />
         <ProjectReference Include="..\ASSISTENTE.UI.Common\ASSISTENTE.UI.Common.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.UI.Http\ASSISTENTE.UI.Http.csproj" />
     </ItemGroup>
 
 </Project>

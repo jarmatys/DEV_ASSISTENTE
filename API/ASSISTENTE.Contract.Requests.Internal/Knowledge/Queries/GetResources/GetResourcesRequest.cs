@@ -1,4 +1,4 @@
-using ASSISTENTE.Contract.Requests.Internal.Common;
+using ASSISTENTE.Contract.Common;
 
 namespace ASSISTENTE.Contract.Requests.Internal.Knowledge.Queries.GetResources;
 

@@ -1,5 +1,5 @@
 using ASSISTENTE.Common.Results;
-using ASSISTENTE.Language;
+using ASSISTENTE.Language.Common;
 using Stateless;
 
 namespace ASSISTENTE.Domain.Common;

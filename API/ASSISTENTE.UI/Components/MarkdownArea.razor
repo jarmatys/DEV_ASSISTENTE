@@ -5,6 +5,7 @@
 </MudPaper>
 
 @code {
+    
     [Parameter] public required string Content { get; set; }
 
     string Preview => Markdown.ToHtml(Content);

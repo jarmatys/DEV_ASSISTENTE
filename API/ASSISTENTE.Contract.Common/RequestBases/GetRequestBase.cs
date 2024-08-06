@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
+namespace ASSISTENTE.Contract.Common.RequestBases;
 
 public abstract class GetRequestBase : RequestBase
 {

@@ -1,6 +1,7 @@
 using System.Reflection;
 using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Language;
+using ASSISTENTE.Language.Common;
 using ASSISTENTE.Persistence.Configuration.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -10,7 +11,7 @@ namespace ASSISTENTE.Persistence.Configuration.Extensions;
 
 internal static class IdentifiersExtensions
 {
-    public static void ConfigureStrongyIdentifiers(this ModelBuilder modelBuilder)
+    public static void ConfigureStronglyIdentifiers(this ModelBuilder modelBuilder)
     {
         var entities = modelBuilder.Model.GetEntityTypes();
         var primaryKeys = entities
@@ -27,9 +28,11 @@ internal static class IdentifiersExtensions
         }
     }
     
-    public static void ConfigureStrongyIdentifiers(this ModelConfigurationBuilder configurationBuilder)
+    public static void ConfigureStronglyIdentifiers(this ModelConfigurationBuilder configurationBuilder)
     {
-        var identifierTypes = typeof(IIdentifier).Assembly.GetTypes()
+        var identifiersAssembly = typeof(LanguageAssemblyMarker).Assembly;
+        
+        var identifierTypes = identifiersAssembly.GetTypes()
             .Where(t => t.IsClass && typeof(IIdentifier).IsAssignableFrom(t) && !t.IsAbstract)
             .ToList();
 

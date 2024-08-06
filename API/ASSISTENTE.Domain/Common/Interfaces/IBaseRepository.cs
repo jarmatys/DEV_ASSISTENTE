@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using ASSISTENTE.Language;
+using ASSISTENTE.Language.Common;
 
 namespace ASSISTENTE.Domain.Common.Interfaces;
 

@@ -62,7 +62,7 @@ namespace ASSISTENTE.Persistence.Configuration
 
             modelBuilder.SeedData();
 
-            modelBuilder.ConfigureStrongyIdentifiers();
+            modelBuilder.ConfigureStronglyIdentifiers();
 
             base.OnModelCreating(modelBuilder);
         }
@@ -80,7 +80,7 @@ namespace ASSISTENTE.Persistence.Configuration
                 .Properties<DateTime>()
                 .HaveConversion<DateTimeConverter>();
             
-            configurationBuilder.ConfigureStrongyIdentifiers();
+            configurationBuilder.ConfigureStronglyIdentifiers();
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -1,5 +1,6 @@
 using ASSISTENTE.API.Common.Parsers;
 using ASSISTENTE.Language;
+using ASSISTENTE.Language.Common;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 
@@ -50,7 +51,9 @@ internal static class EndpointExtensions
 
     private static void RegisterIdentifierParsers(this Config config)
     {
-        var identifierTypes = typeof(IIdentifier).Assembly.GetTypes()
+        var identifiersAssembly = typeof(LanguageAssemblyMarker).Assembly;
+
+        var identifierTypes = identifiersAssembly.GetTypes()
             .Where(t => t.IsClass && typeof(IIdentifier).IsAssignableFrom(t) && !t.IsAbstract)
             .ToList();
         

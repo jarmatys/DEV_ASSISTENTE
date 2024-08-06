@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Contract.Common\ASSISTENTE.Contract.Common.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Language\ASSISTENTE.Language.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Common.Resilience\ASSISTENTE.Common.Resilience.csproj" />
     </ItemGroup>
 
 </Project>

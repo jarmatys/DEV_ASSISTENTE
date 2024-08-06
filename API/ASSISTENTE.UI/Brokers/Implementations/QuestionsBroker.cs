@@ -3,7 +3,7 @@ using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestion;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions;
 using ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestionsCount;
 using ASSISTENTE.Language.Identifiers;
-using ASSISTENTE.UI.Common.Models;
+using ASSISTENTE.UI.Brokers.Models;
 
 namespace ASSISTENTE.UI.Brokers.Implementations;
 
@@ -16,7 +16,7 @@ public interface IQuestionsBroker
 }
 
 public sealed class QuestionsBroker(IHttpClientFactory httpFactory, ILogger<QuestionsBroker> logger) 
-    : BrokerBase(httpFactory, logger, "api/questions"), IQuestionsBroker
+    : BrokerBase(httpFactory, logger, "api/questions", BrokerConst.InternalApi), IQuestionsBroker
 {
     public async Task<HttpResult> CreateQuestionAsync(CreateQuestionRequest request)
         => await PostAsync(request);

@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using ASSISTENTE.Domain.Common.Interfaces;
-using ASSISTENTE.Language;
+using ASSISTENTE.Language.Common;
 using ASSISTENTE.Persistence.Configuration;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;

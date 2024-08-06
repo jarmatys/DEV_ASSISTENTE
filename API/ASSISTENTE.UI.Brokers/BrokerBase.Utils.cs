@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using System.Text.Json;
-using ASSISTENTE.UI.Common.Models;
+using ASSISTENTE.UI.Brokers.Models;
+using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.UI.Brokers;
 

@@ -1,3 +1,5 @@
+using ASSISTENTE.Language.Common;
+
 namespace ASSISTENTE.Language.Identifiers;
 
 public sealed record QuestionResourceId(int Value) : IdentifierBase<int>(Value)

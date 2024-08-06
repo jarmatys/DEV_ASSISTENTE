@@ -1,4 +1,4 @@
-using ASSISTENTE.Language;
+using ASSISTENTE.Language.Common;
 using FastEndpoints;
 
 namespace ASSISTENTE.API.Common.Parsers;

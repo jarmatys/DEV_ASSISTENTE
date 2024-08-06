@@ -1,17 +1,10 @@
-using System.Globalization;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Errors;
 using CSharpFunctionalExtensions;
 using OpenAI;
-using OpenAI.Assistants;
 using OpenAI.Chat;
-using OpenAI.Files;
-using OpenAI.Images;
 using OpenAI.Models;
-using OpenAI.Threads;
-using OpenAI.VectorStores;
 using ChatMessage = OpenAI.Chat.Message;
-using ThreadMessage = OpenAI.Threads.Message;
 
 namespace ASSISTENTE.Infrastructure.LLM.Providers;
 

@@ -1,4 +1,4 @@
-namespace ASSISTENTE.UI.Common.Models;
+namespace ASSISTENTE.UI.Brokers.Models;
 
 public class HttpResult
 {

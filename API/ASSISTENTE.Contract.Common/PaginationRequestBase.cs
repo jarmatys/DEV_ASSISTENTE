@@ -1,6 +1,6 @@
-using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
+using ASSISTENTE.Contract.Common.RequestBases;
 
-namespace ASSISTENTE.Contract.Requests.Internal.Common;
+namespace ASSISTENTE.Contract.Common;
 
 public abstract class PaginationRequestBase : GetRequestBase
 {

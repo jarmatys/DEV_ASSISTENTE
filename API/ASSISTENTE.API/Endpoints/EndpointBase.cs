@@ -1,6 +1,6 @@
 using ASSISTENTE.API.Common.Extensions;
 using ASSISTENTE.Common.Results;
-using ASSISTENTE.Contract.Requests.Internal.Common.RequestBases;
+using ASSISTENTE.Contract.Common.RequestBases;
 using CSharpFunctionalExtensions;
 using FastEndpoints;
 using FluentValidation.Results;
