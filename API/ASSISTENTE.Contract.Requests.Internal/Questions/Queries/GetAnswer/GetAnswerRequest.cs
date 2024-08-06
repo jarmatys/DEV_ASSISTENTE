@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using ASSISTENTE.Contract.Common.RequestBases;
 using ASSISTENTE.Language.Identifiers;
+using SOFTURE.Contract.Common.RequestBases;
 
 namespace ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetAnswer;
 

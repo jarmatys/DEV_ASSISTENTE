@@ -1,4 +1,4 @@
-using ASSISTENTE.Language.Common;
+using SOFTURE.Language.Common;
 
 namespace ASSISTENTE.Language.Identifiers;
 

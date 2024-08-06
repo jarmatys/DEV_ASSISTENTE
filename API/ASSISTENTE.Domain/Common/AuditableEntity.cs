@@ -1,5 +1,5 @@
 ﻿using ASSISTENTE.Domain.Common.Interfaces;
-using ASSISTENTE.Language.Common;
+using SOFTURE.Language.Common;
 
 namespace ASSISTENTE.Domain.Common
 {

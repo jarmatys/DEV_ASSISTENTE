@@ -1,5 +1,5 @@
 using ASSISTENTE.Common.Results;
-using ASSISTENTE.Language.Common;
+using SOFTURE.Language.Common;
 using Stateless;
 
 namespace ASSISTENTE.Domain.Common;

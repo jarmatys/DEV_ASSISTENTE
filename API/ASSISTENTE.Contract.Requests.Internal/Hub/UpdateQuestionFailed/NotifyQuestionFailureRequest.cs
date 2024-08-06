@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using ASSISTENTE.Contract.Common.RequestBases;
+using SOFTURE.Contract.Common.RequestBases;
 
 namespace ASSISTENTE.Contract.Requests.Internal.Hub.UpdateQuestionFailed;
 

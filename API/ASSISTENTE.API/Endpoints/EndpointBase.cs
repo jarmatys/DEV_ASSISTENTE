@@ -1,11 +1,11 @@
 using ASSISTENTE.API.Common.Extensions;
 using ASSISTENTE.Common.Results;
-using ASSISTENTE.Contract.Common.RequestBases;
 using CSharpFunctionalExtensions;
 using FastEndpoints;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
+using SOFTURE.Contract.Common.RequestBases;
 
 namespace ASSISTENTE.API.Endpoints;
 

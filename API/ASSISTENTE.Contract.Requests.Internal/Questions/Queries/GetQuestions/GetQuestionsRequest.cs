@@ -1,4 +1,4 @@
-using ASSISTENTE.Contract.Common;
+using SOFTURE.Contract.Common;
 
 namespace ASSISTENTE.Contract.Requests.Internal.Questions.Queries.GetQuestions;
 

@@ -1,11 +1,11 @@
 using System.Reflection;
 using ASSISTENTE.Domain.Common.Interfaces;
 using ASSISTENTE.Language;
-using ASSISTENTE.Language.Common;
 using ASSISTENTE.Persistence.Configuration.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SOFTURE.Language.Common;
 
 namespace ASSISTENTE.Persistence.Configuration.Extensions;
 
