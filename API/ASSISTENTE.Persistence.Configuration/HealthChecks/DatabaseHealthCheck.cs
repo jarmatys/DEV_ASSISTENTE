@@ -1,6 +1,6 @@
-using ASSISTENTE.Common.HealthCheck.Core;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using SOFTURE.Common.HealthCheck.Core;
 
 namespace ASSISTENTE.Persistence.Configuration.HealthChecks;
 

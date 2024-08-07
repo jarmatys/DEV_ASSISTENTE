@@ -1,6 +1,6 @@
-using ASSISTENTE.Common.HealthCheck.Core;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using CSharpFunctionalExtensions;
+using SOFTURE.Common.HealthCheck.Core;
 
 namespace ASSISTENTE.Infrastructure.LLM.HealthChecks;
 

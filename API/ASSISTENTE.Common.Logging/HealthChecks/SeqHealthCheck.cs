@@ -1,8 +1,8 @@
 using System.Net;
-using ASSISTENTE.Common.HealthCheck.Core;
 using ASSISTENTE.Common.Logging.Settings;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Options;
+using SOFTURE.Common.HealthCheck.Core;
 
 namespace ASSISTENTE.Common.Logging.HealthChecks;
 

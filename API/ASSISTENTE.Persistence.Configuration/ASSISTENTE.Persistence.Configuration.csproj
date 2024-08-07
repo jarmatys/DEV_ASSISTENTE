@@ -15,6 +15,7 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
+        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.2" />
         <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
     </ItemGroup>
 
@@ -22,7 +23,6 @@
         <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Persistence.MSSQL\ASSISTENTE.Persistence.MSSQL.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Persistence.POSTGRESQL\ASSISTENTE.Persistence.POSTGRESQL.csproj"/>
-        <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
     </ItemGroup>
     
     <ItemGroup>

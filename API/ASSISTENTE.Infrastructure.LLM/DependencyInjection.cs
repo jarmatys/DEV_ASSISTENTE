@@ -1,10 +1,10 @@
-﻿using ASSISTENTE.Common.HealthCheck;
-using ASSISTENTE.Infrastructure.LLM.Contracts;
+﻿using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.LLM.HealthChecks;
 using ASSISTENTE.Infrastructure.LLM.Providers;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
+using SOFTURE.Common.HealthCheck;
 using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Infrastructure.LLM

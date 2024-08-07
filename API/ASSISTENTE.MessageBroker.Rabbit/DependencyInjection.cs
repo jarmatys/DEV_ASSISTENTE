@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.MessageBroker.Rabbit.Filters;
 using ASSISTENTE.MessageBroker.Rabbit.HealthChecks;
 using ASSISTENTE.MessageBroker.Rabbit.Settings;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using SOFTURE.Common.HealthCheck;
 
 namespace ASSISTENTE.MessageBroker.Rabbit
 {

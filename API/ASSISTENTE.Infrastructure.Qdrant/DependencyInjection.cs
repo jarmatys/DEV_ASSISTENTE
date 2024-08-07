@@ -1,9 +1,9 @@
-﻿using ASSISTENTE.Common.HealthCheck;
-using ASSISTENTE.Infrastructure.Qdrant.Contracts;
+﻿using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.HealthChecks;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Qdrant.Client;
+using SOFTURE.Common.HealthCheck;
 
 namespace ASSISTENTE.Infrastructure.Qdrant
 {

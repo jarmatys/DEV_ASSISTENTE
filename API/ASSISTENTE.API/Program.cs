@@ -1,7 +1,7 @@
 using ASSISTENTE.API;
 using ASSISTENTE.API.Common.Extensions;
-using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Observability;
+using SOFTURE.Common.HealthCheck;
 using SOFTURE.Settings.Extensions;
 
 var configuration = new ConfigurationBuilder()

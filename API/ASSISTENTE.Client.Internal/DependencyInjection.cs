@@ -1,8 +1,8 @@
 ﻿using ASSISTENTE.Application.Abstractions.Clients;
 using ASSISTENTE.Client.Internal.HealthChecks;
 using ASSISTENTE.Client.Internal.Settings;
-using ASSISTENTE.Common.HealthCheck;
 using Microsoft.Extensions.DependencyInjection;
+using SOFTURE.Common.HealthCheck;
 
 namespace ASSISTENTE.Client.Internal
 {

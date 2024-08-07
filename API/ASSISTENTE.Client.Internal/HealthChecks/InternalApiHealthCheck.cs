@@ -1,8 +1,8 @@
 using System.Net;
 using ASSISTENTE.Client.Internal.Settings;
-using ASSISTENTE.Common.HealthCheck.Core;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Options;
+using SOFTURE.Common.HealthCheck.Core;
 
 namespace ASSISTENTE.Client.Internal.HealthChecks;
 

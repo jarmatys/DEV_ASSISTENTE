@@ -1,6 +1,6 @@
-using ASSISTENTE.Common.HealthCheck.Core;
 using CSharpFunctionalExtensions;
 using MassTransit;
+using SOFTURE.Common.HealthCheck.Core;
 
 namespace ASSISTENTE.MessageBroker.Rabbit.HealthChecks;
 
