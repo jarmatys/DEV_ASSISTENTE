@@ -1,8 +1,8 @@
 using ASSISTENTE.API;
 using ASSISTENTE.API.Common.Extensions;
-using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Observability;
+using SOFTURE.Settings.Extensions;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")

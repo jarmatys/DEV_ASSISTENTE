@@ -1,5 +1,5 @@
-using ASSISTENTE.Common.Results;
 using ASSISTENTE.Domain.Common.Interfaces;
+using SOFTURE.Results;
 
 namespace ASSISTENTE.Application.Abstractions;
 

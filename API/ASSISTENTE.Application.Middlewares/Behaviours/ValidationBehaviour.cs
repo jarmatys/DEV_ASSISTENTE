@@ -1,7 +1,7 @@
-﻿using ASSISTENTE.Common.Results;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using MediatR;
+using SOFTURE.Results;
 
 namespace ASSISTENTE.Application.Middlewares.Behaviours
 {

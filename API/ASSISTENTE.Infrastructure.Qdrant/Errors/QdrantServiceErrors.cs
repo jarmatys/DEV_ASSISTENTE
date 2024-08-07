@@ -1,4 +1,4 @@
-using ASSISTENTE.Common.Results;
+using SOFTURE.Results;
 
 namespace ASSISTENTE.Infrastructure.Qdrant.Errors;
 

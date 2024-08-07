@@ -29,7 +29,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         IQuestionOrchestrator questionOrchestrator,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger<GenerateAnswerCommandHandler> logger) : QuestionCommandBase<GenerateAnswerCommand>(logger, clientInternal)
+        ILogger logger) : QuestionCommandBase<GenerateAnswerCommand>(logger, clientInternal)
     {
         protected override async Task<Result> HandleAsync(Question question)
             => await questionOrchestrator.GenerateAnswer(question);

@@ -1,8 +1,8 @@
-using ASSISTENTE.Common.Messaging;
 using ASSISTENTE.Worker.Sync.Common.Exceptions;
 using CSharpFunctionalExtensions;
 using MassTransit;
 using MediatR;
+using SOFTURE.Contract.Common.Messaging;
 
 namespace ASSISTENTE.Worker.Sync.Common.Bases;
 

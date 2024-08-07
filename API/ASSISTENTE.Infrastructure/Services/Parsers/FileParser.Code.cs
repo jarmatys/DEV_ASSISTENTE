@@ -1,5 +1,5 @@
 using ASSISTENTE.Application.Abstractions.ValueObjects;
-using ASSISTENTE.Common.Extensions;
+using ASSISTENTE.Common.Logging.Extensions;
 using ASSISTENTE.Infrastructure.CodeParser.Contracts;
 using Microsoft.Extensions.Logging;
 

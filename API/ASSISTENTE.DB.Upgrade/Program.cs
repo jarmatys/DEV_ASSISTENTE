@@ -1,7 +1,7 @@
-﻿using ASSISTENTE.Common.Extensions;
-using ASSISTENTE.DB.Upgrade;
+﻿using ASSISTENTE.DB.Upgrade;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SOFTURE.Settings.Extensions;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")

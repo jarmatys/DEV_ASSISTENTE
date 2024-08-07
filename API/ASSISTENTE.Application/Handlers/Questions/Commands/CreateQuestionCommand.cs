@@ -25,7 +25,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
 
     public class CreateQuestionCommandHandler(
         IQuestionOrchestrator questionOrchestrator,
-        ILogger<CreateQuestionCommandHandler> logger)
+        ILogger logger)
         : IRequestHandler<CreateQuestionCommand, Result>
     {
         public async Task<Result> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)

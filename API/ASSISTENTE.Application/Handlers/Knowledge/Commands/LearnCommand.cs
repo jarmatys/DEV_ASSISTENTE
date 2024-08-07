@@ -21,7 +21,7 @@ namespace ASSISTENTE.Application.Handlers.Knowledge.Commands
     public class LearnCommandHandler(
         IFileParser fileParser, 
         IKnowledgeService knowledgeService,
-        ILogger<LearnCommandHandler> logger)
+        ILogger logger)
         : IRequestHandler<LearnCommand, Result>
     {
         public async Task<Result> Handle(LearnCommand request, CancellationToken cancellationToken)

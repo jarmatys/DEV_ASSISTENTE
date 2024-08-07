@@ -29,7 +29,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         IQuestionOrchestrator questionOrchestrator,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger<CreateEmbeddingsCommand> logger) : QuestionCommandBase<CreateEmbeddingsCommand>(logger, clientInternal)
+        ILogger logger) : QuestionCommandBase<CreateEmbeddingsCommand>(logger, clientInternal)
     {
         protected override async Task<Result> HandleAsync(Question question)
             => await questionOrchestrator.CreateEmbedding(question);

@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using ASSISTENTE.Common.Authentication.Settings;
-using ASSISTENTE.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Common.Authentication
 {

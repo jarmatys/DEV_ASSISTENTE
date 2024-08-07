@@ -1,7 +1,7 @@
-using ASSISTENTE.Common.Results;
 using ASSISTENTE.Infrastructure.MarkDownParser.Contracts.Models;
 using ASSISTENTE.Infrastructure.MarkDownParser.Models;
 using CSharpFunctionalExtensions;
+using SOFTURE.Results;
 
 namespace ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 

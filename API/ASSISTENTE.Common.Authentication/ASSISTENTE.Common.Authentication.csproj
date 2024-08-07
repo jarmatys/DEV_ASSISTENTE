@@ -7,11 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+      <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
     </ItemGroup>
 
 </Project>
