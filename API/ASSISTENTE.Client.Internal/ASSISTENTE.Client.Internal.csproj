@@ -11,8 +11,4 @@
       <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
-    </ItemGroup>
-
 </Project>

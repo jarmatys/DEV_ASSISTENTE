@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Common.Logging.HealthChecks;
 using ASSISTENTE.Common.Logging.Settings;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
-using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Common.Logging;
 

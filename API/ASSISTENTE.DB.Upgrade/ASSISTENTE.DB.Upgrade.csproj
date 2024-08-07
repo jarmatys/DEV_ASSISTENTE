@@ -20,7 +20,6 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
         <PackageReference Include="Npgsql" Version="8.0.3" />
-        <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Persistence.Configuration\ASSISTENTE.Persistence.Configuration.csproj" />
     </ItemGroup>
     

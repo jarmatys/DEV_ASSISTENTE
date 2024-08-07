@@ -10,12 +10,12 @@
         <PackageReference Include="MassTransit" Version="8.2.1"/>
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.1"/>
         <PackageReference Include="Serilog" Version="3.1.1" />
-        <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
     
 </Project>

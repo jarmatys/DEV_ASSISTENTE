@@ -1,8 +1,8 @@
+using ASSISTENTE.Common.Results;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using SOFTURE.Results;
 
-namespace ASSISTENTE.Common.Logging.Extensions;
+namespace ASSISTENTE.Common.Extensions;
 
 public static class LogExtensions
 {

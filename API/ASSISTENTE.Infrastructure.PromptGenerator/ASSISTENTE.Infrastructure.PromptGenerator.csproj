@@ -7,12 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="ASSISTENTE.Infrastructure"/>
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
-      <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
+        <InternalsVisibleTo Include="ASSISTENTE.Infrastructure"/>
     </ItemGroup>
 
 </Project>

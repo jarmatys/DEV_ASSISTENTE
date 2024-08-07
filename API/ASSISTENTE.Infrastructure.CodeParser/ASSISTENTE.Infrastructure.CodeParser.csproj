@@ -8,8 +8,10 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.CodeAnalysis" Version="4.9.2" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

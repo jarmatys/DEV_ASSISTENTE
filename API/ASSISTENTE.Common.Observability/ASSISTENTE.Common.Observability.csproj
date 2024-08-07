@@ -15,7 +15,10 @@
       <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.11" />
       <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.8.1" />
       <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.8.1" />
-      <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
 </Project>

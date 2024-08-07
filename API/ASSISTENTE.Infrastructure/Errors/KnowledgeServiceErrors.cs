@@ -1,4 +1,4 @@
-using SOFTURE.Results;
+using ASSISTENTE.Common.Results;
 
 namespace ASSISTENTE.Infrastructure.Errors;
 

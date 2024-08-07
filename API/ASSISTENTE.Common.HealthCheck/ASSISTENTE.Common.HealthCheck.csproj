@@ -7,8 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
     </ItemGroup>
 
 </Project>
