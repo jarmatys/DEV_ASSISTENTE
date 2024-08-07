@@ -1,9 +1,9 @@
-﻿using ASSISTENTE.Common.Extensions;
-using ASSISTENTE.Infrastructure.Embeddings.Contracts;
+﻿using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
+using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Infrastructure.Embeddings
 {

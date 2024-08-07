@@ -9,6 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Application.Abstractions\ASSISTENTE.Application.Abstractions.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Application.Middlewares\ASSISTENTE.Application.Middlewares.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
     </ItemGroup>
 
     <ItemGroup>

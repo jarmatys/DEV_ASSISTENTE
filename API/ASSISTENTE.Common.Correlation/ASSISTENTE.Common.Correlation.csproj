@@ -7,7 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
     </ItemGroup>
 
 </Project>

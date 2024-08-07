@@ -1,9 +1,9 @@
-﻿using ASSISTENTE.Common.Extensions;
-using ASSISTENTE.Common.HealthCheck;
+﻿using ASSISTENTE.Common.HealthCheck;
 using ASSISTENTE.Persistence.Configuration.HealthChecks;
 using ASSISTENTE.Persistence.Configuration.Settings;
 using ASSISTENTE.Persistence.POSTGRESQL;
 using Microsoft.Extensions.DependencyInjection;
+using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Persistence.Configuration
 {

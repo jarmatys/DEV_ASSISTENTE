@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common.HealthCheck\ASSISTENTE.Common.HealthCheck.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

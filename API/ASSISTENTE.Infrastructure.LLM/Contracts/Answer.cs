@@ -1,5 +1,5 @@
-using ASSISTENTE.Common.Errors;
 using CSharpFunctionalExtensions;
+using SOFTURE.Results;
 
 namespace ASSISTENTE.Infrastructure.LLM.Contracts;
 

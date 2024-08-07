@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Domain\ASSISTENTE.Domain.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Contract.Messages.Internal\ASSISTENTE.Contract.Messages.Internal.csproj" />
     </ItemGroup>

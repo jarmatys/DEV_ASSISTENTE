@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ASSISTENTE.Common.Extensions;
 using ASSISTENTE.Common.Observability.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +6,7 @@ using Npgsql;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Common.Observability;
 

@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common\ASSISTENTE.Common.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Language\ASSISTENTE.Language.csproj" />
     </ItemGroup>
 
@@ -16,6 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
       <PackageReference Include="Stateless" Version="5.16.0" />
     </ItemGroup>
     

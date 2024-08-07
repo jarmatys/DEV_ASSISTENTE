@@ -1,4 +1,4 @@
-using ASSISTENTE.Common.Messaging;
+using SOFTURE.Contract.Common.Messaging;
 
 namespace ASSISTENTE.Contract.Messages.Internal.Knowledge;
 
