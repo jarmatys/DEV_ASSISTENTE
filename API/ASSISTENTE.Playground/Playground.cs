@@ -1,8 +1,8 @@
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Knowledge.Commands;
-using ASSISTENTE.Common.Logging.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using SOFTURE.Common.Logging.Extensions;
 
 namespace ASSISTENTE.Playground;
 

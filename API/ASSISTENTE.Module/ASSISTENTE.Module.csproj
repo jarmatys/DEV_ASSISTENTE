@@ -6,6 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="SOFTURE.Common.Logging" Version="0.0.8"/>
+        <PackageReference Include="SOFTURE.MessageBroker.Rabbit" Version="0.0.8"/>
+    </ItemGroup>
+
     <PropertyGroup>
         <AssemblyName>ASSISTENTE</AssemblyName>
         <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
@@ -31,16 +36,16 @@
 
     <ItemGroup>
         <None Include="..\..\ASSETS\logo.png" Pack="true" PackagePath="\"/>
-        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\LICENSE" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Application\ASSISTENTE.Application.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Client.Internal\ASSISTENTE.Client.Internal.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.EventHandlers\ASSISTENTE.EventHandlers.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Application\ASSISTENTE.Application.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Client.Internal\ASSISTENTE.Client.Internal.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.EventHandlers\ASSISTENTE.EventHandlers.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure\ASSISTENTE.Infrastructure.csproj"/>
+        <ProjectReference Include="..\ASSISTENTE.Persistence\ASSISTENTE.Persistence.csproj"/>
     </ItemGroup>
 
 </Project>

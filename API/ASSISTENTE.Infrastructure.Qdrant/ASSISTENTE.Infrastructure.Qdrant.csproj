@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Qdrant.Client" Version="1.8.0" />
-      <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.2" />
+      <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.5" />
       <PackageReference Include="SOFTURE.Results" Version="0.0.9" />
       <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
     </ItemGroup>

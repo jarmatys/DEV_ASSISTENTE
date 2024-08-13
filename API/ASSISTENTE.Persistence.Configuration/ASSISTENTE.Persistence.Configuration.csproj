@@ -15,7 +15,7 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
-        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.4" />
+        <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.5" />
         <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
     </ItemGroup>
 

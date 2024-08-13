@@ -1,7 +1,7 @@
 using ASSISTENTE.Application.Abstractions.ValueObjects;
-using ASSISTENTE.Common.Logging.Extensions;
 using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 using Microsoft.Extensions.Logging;
+using SOFTURE.Common.Logging.Extensions;
 
 namespace ASSISTENTE.Infrastructure.Services.Parsers;
 

@@ -1,5 +1,4 @@
-﻿using ASSISTENTE.Common.Logging;
-using ASSISTENTE.Module;
+﻿using ASSISTENTE.Module;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +6,7 @@ using ASSISTENTE.Playground;
 using ASSISTENTE.Playground.Common;
 using MassTransit;
 using Serilog;
+using SOFTURE.Common.Logging;
 using SOFTURE.Settings.Extensions;
 
 var configuration = new ConfigurationBuilder()

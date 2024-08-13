@@ -1,10 +1,10 @@
 using ASSISTENTE.Client.Internal.Settings;
-using ASSISTENTE.Common.Logging.Settings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
 using ASSISTENTE.Persistence.Configuration.Settings;
+using SOFTURE.Common.Logging.Settings;
 
 namespace ASSISTENTE.Playground;
 
