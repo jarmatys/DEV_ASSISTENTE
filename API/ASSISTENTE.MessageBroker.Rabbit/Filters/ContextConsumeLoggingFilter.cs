@@ -1,9 +1,8 @@
-using ASSISTENTE.Common.Correlation.Consts;
-using ASSISTENTE.Common.Correlation.Generators;
-using ASSISTENTE.Common.Correlation.Providers;
-using ASSISTENTE.Common.Correlation.ValueObjects;
 using MassTransit;
-
+using SOFTURE.Common.Correlation.Consts;
+using SOFTURE.Common.Correlation.Generators;
+using SOFTURE.Common.Correlation.Providers;
+using SOFTURE.Common.Correlation.ValueObjects;
 using LogContext = Serilog.Context.LogContext;
 
 namespace ASSISTENTE.MessageBroker.Rabbit.Filters;

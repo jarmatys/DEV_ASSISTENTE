@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
-      <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
+      <PackageReference Include="SOFTURE.Results" Version="0.0.9" />
+      <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
     </ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
+      <PackageReference Include="SOFTURE.Results" Version="0.0.9" />
       <PackageReference Include="Stateless" Version="5.16.0" />
     </ItemGroup>
     

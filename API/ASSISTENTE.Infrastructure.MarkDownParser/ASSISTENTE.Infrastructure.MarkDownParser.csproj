@@ -9,7 +9,7 @@
     <ItemGroup>
       <PackageReference Include="Markdig" Version="0.35.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-      <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
+      <PackageReference Include="SOFTURE.Results" Version="0.0.9" />
     </ItemGroup>
 
     <ItemGroup>

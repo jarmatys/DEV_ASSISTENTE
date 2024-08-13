@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
-      <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
+      <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
     </ItemGroup>
 
 </Project>

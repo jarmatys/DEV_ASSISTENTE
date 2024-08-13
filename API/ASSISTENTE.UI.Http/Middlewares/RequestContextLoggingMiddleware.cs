@@ -1,5 +1,5 @@
-using ASSISTENTE.Common.Correlation.Consts;
-using ASSISTENTE.Common.Correlation.Generators;
+using SOFTURE.Common.Correlation.Consts;
+using SOFTURE.Common.Correlation.Generators;
 
 namespace ASSISTENTE.UI.Http.Middlewares;
 

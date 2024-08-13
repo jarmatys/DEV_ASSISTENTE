@@ -9,8 +9,8 @@
     <ItemGroup>
         <PackageReference Include="OpenAI-DotNet" Version="8.1.0" />
         <PackageReference Include="SOFTURE.Common.HealthCheck" Version="0.0.2" />
-        <PackageReference Include="SOFTURE.Results" Version="0.0.7" />
-        <PackageReference Include="SOFTURE.Settings" Version="0.0.7" />
+        <PackageReference Include="SOFTURE.Results" Version="0.0.9" />
+        <PackageReference Include="SOFTURE.Settings" Version="0.0.9" />
     </ItemGroup>
 
     <ItemGroup>

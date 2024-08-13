@@ -7,8 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Resilience\ASSISTENTE.Common.Resilience.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SOFTURE.Common.Correlation" Version="0.0.5" />
     </ItemGroup>
 
 </Project>

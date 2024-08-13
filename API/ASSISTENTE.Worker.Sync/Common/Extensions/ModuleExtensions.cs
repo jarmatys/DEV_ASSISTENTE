@@ -1,6 +1,5 @@
 using ASSISTENTE.Module;
 using ASSISTENTE.Worker.Sync.Services;
-using Microsoft.AspNetCore.Builder;
 
 namespace ASSISTENTE.Worker.Sync.Common.Extensions;
 

@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ASSISTENTE.Common.Authentication\ASSISTENTE.Common.Authentication.csproj" />
-      <ProjectReference Include="..\ASSISTENTE.Common.Correlation\ASSISTENTE.Common.Correlation.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Logging\ASSISTENTE.Common.Logging.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Common.Observability\ASSISTENTE.Common.Observability.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Requests.Internal\ASSISTENTE.Contract.Requests.Internal.csproj" />

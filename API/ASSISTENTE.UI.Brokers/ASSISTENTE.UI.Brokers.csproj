@@ -8,8 +8,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/>
-        <PackageReference Include="SOFTURE.Contract.Common" Version="0.0.4" />
-        <PackageReference Include="SOFTURE.Language.Common" Version="0.0.4" />
+        <PackageReference Include="SOFTURE.Contract.Common" Version="0.0.9" />
+        <PackageReference Include="SOFTURE.Language.Common" Version="0.0.9" />
     </ItemGroup>
 
 </Project>

@@ -1,13 +1,11 @@
 using System.Reflection;
-using ASSISTENTE.Common.Correlation;
 using ASSISTENTE.Common.Logging;
 using ASSISTENTE.Common.Logging.Settings;
 using ASSISTENTE.Common.Observability;
 using ASSISTENTE.Common.Observability.Settings;
 using ASSISTENTE.MessageBroker.Rabbit;
 using ASSISTENTE.MessageBroker.Rabbit.Settings;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+using SOFTURE.Common.Correlation;
 using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Worker.Sync.Common.Extensions;

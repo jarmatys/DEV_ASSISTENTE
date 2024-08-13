@@ -1,6 +1,6 @@
-using ASSISTENTE.Common.Correlation.Consts;
-using ASSISTENTE.Common.Correlation.Providers;
 using MassTransit;
+using SOFTURE.Common.Correlation.Consts;
+using SOFTURE.Common.Correlation.Providers;
 
 namespace ASSISTENTE.MessageBroker.Rabbit.Filters;
 
