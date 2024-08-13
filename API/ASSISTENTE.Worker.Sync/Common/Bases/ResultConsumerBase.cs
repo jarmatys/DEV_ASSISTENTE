@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ASSISTENTE.Worker.Sync.Common.Exceptions;
 using CSharpFunctionalExtensions;
 using MassTransit;

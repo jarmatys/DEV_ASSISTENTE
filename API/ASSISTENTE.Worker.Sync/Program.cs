@@ -1,6 +1,8 @@
 using ASSISTENTE.Common.Observability;
 using ASSISTENTE.Worker.Sync;
 using ASSISTENTE.Worker.Sync.Common.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using SOFTURE.Common.HealthCheck;
 using SOFTURE.Settings.Extensions;
 
