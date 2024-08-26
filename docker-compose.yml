@@ -8,6 +8,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    #  - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 1000:5432
     volumes: 
