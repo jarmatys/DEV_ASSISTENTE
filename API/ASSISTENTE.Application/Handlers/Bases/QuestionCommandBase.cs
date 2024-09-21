@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace ASSISTENTE.Application.Handlers.Bases;
 
 public abstract class QuestionCommandBase<TCommand>(
-    ILogger logger,
+    ILogger<TCommand> logger,
     IAssistenteClientInternal clientInternal) : IRequestHandler<TCommand, Result>
     where TCommand : IRequest<Result>
 {

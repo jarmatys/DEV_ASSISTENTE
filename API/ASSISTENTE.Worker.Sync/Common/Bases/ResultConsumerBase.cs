@@ -7,7 +7,7 @@ using SOFTURE.Contract.Common.Messaging;
 namespace ASSISTENTE.Worker.Sync.Common.Bases;
 
 public abstract class ResultConsumerBase<TMessage, TMediatRequest>(
-    ILogger logger,
+    ILogger<IConsumer<TMessage>> logger,
     ISender mediator) : IConsumer<TMessage>
     where TMessage : class, IMessage
     where TMediatRequest : IRequest<Result>

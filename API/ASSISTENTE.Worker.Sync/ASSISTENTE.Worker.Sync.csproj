@@ -15,9 +15,12 @@
     </Target>
 
     <ItemGroup>
-      <ProjectReference Include="..\ASSISTENTE.Common.Observability\ASSISTENTE.Common.Observability.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Contract.Messages.Internal\ASSISTENTE.Contract.Messages.Internal.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SOFTURE.Common.Observability" Version="0.0.10" />
     </ItemGroup>
 
 </Project>

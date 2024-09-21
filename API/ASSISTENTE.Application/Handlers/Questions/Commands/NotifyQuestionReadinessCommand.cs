@@ -28,7 +28,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
     public class NotifyQuestionReadinessCommandHandler(
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger logger)
+        ILogger<NotifyQuestionReadinessCommand> logger)
         : IRequestHandler<NotifyQuestionReadinessCommand, Result>
     {
         public async Task<Result> Handle(NotifyQuestionReadinessCommand request, CancellationToken cancellationToken)

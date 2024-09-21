@@ -29,7 +29,7 @@ namespace ASSISTENTE.Application.Handlers.Questions.Commands
         IQuestionOrchestrator questionOrchestrator,
         IQuestionRepository questionRepository,
         IAssistenteClientInternal clientInternal,
-        ILogger logger) : QuestionCommandBase<FindResourcesCommand>(logger, clientInternal)
+        ILogger<FindResourcesCommand> logger) : QuestionCommandBase<FindResourcesCommand>(logger, clientInternal)
     {
         protected override async Task<Result> HandleAsync(Question question)
             => await questionOrchestrator.FindResources(question);

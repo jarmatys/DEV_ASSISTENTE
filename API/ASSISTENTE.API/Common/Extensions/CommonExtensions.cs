@@ -1,10 +1,10 @@
-using ASSISTENTE.Common.Authentication;
-using ASSISTENTE.Common.Authentication.Settings;
-using ASSISTENTE.Common.Observability;
-using ASSISTENTE.Common.Observability.Settings;
+using SOFTURE.Common.Authentication;
+using SOFTURE.Common.Authentication.Settings;
 using SOFTURE.Common.Correlation;
 using SOFTURE.Common.Logging;
 using SOFTURE.Common.Logging.Settings;
+using SOFTURE.Common.Observability;
+using SOFTURE.Common.Observability.Settings;
 using SOFTURE.MessageBroker.Rabbit;
 using SOFTURE.MessageBroker.Rabbit.Settings;
 using SOFTURE.Settings.Extensions;

@@ -1,11 +1,11 @@
 using ASSISTENTE.Client.Internal.Settings;
-using ASSISTENTE.Common.Observability.Settings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
 using ASSISTENTE.Persistence.Configuration.Settings;
 using SOFTURE.Common.Logging.Settings;
+using SOFTURE.Common.Observability.Settings;
 using SOFTURE.MessageBroker.Rabbit.Settings;
 
 namespace ASSISTENTE.Worker.Sync;
