@@ -23,8 +23,6 @@ namespace ASSISTENTE.Persistence.Configuration
     {
         private readonly IUserResolver? _userResolver;
         private readonly ISystemTimeProvider? _systemTimeProvider;
-        private readonly IPublisher? _publisher;
-        private readonly ILogger<AssistenteDbContext>? _logger;
         
         public AssistenteDbContext(DbContextOptions<AssistenteDbContext> options) : base(options)
         {
@@ -33,15 +31,11 @@ namespace ASSISTENTE.Persistence.Configuration
         public AssistenteDbContext(
             DbContextOptions<AssistenteDbContext> options, 
             IUserResolver userResolver,
-            ISystemTimeProvider systemTimeProvider,
-            IPublisher publisher,
-            ILogger<AssistenteDbContext> logger) 
+            ISystemTimeProvider systemTimeProvider) 
             : base(options)
         {
             _userResolver = userResolver ?? throw new ArgumentNullException(nameof(userResolver));
             _systemTimeProvider = systemTimeProvider ?? throw new ArgumentNullException(nameof(systemTimeProvider));
-            _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #region ENTITIES
@@ -100,34 +94,10 @@ namespace ASSISTENTE.Persistence.Configuration
                 }
             }
 
-            var result = await base.SaveChangesAsync(cancellationToken);
-
-            await PublishEventsAsync();
-            
-            return result;
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task PublishEventsAsync()
-        {
-            var domainEvents = ChangeTracker
-                .Entries<IEntity>()
-                .Select(entry => entry.Entity)
-                .SelectMany(entity =>
-                {
-                    var events = entity.GetEvents();
-                    entity.ClearEvents();
-                    return events;
-                })
-                .ToList();
-            
-            foreach (var domainEvent in domainEvents)
-            {
-                _logger!.LogInformation("Publishing domain event: {EventName}", domainEvent.GetType().Name);
-                
-                await _publisher!.Publish(domainEvent);
-            }
-        }
-        
+   
         public new DbSet<TEntity> Set<TEntity>() where TEntity : class, IEntity
         {
             return base.Set<TEntity>();
