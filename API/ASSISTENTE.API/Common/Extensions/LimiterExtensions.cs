@@ -19,7 +19,7 @@ internal static class LimiterExtensions
         builder.Services.AddRateLimiter(options =>
         {
             options.RejectionStatusCode = StatusCode;
-            options.OnRejected = async (context, token) =>
+            options.OnRejected = async (OnRejectedContext context, CancellationToken token) =>
             {
                 var error = new ErrorResponse([new ValidationFailure(RateLimitErrorKey, RateLimitError)], StatusCode);
                
