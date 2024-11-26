@@ -3,6 +3,8 @@ using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
+using ASSISTENTE.Infrastructure.Firecrawl;
+using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.LLM;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.MarkDownParser;
@@ -18,7 +20,7 @@ namespace ASSISTENTE.Infrastructure
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure<TSettings>(this IServiceCollection services)
-            where TSettings : IEmbeddingsSettings, ILlmSettings, IQdrantSettings
+            where TSettings : IEmbeddingsSettings, ILlmSettings, IQdrantSettings, IFirecrawlSettings
         {
             services.AddMarkDownParser();
             services.AddCodeParser();
@@ -26,6 +28,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddQdrant<TSettings>();
             services.AddPromptGenerator();
             services.AddLlm<TSettings>();
+            services.AddFirecrawl<TSettings>();
 
             services.AddScoped<IKnowledgeService, KnowledgeService>();
             services.AddScoped<IQuestionOrchestrator, QuestionOrchestrator>();

@@ -1,5 +1,6 @@
 using ASSISTENTE.Client.Internal.Settings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
+using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Persistence.Configuration.Settings;
@@ -11,6 +12,7 @@ public interface IModuleSettings :
     IDatabaseSettings, 
     IQdrantSettings, 
     IEmbeddingsSettings, 
-    ILlmSettings
+    ILlmSettings,
+    IFirecrawlSettings
 {
 }

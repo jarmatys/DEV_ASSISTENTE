@@ -9,6 +9,10 @@ internal sealed class PlaygroundParams
     
     [Option('l', "learn", Required = false, HelpText = "Learn from a files")]
     public bool Learn { get; set; }
-    public bool IsValid => Learn || !string.IsNullOrWhiteSpace(Question);
-    public static string NotValidMessage => "Select an option: -l or -q";
+    
+    [Option('r', "run", Required = false, HelpText = "Start the playground")]
+    public bool Run { get; set; }
+    
+    public bool IsValid => Learn || !string.IsNullOrWhiteSpace(Question) || Run;
+    public static string NotValidMessage => "Select an option: -l, -q or -r";
 }

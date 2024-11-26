@@ -1,5 +1,6 @@
 using ASSISTENTE.Client.Internal.Settings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
+using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
@@ -27,4 +28,5 @@ internal sealed class ApiSettings :
     public required RabbitSettings Rabbit { get; init; }
     public required ObservabilitySettings Observability { get; init; }
     public required AuthenticationSettings Authentication { get; init; }
+    public required FirecrawlSettings Firecrawl { get; init; }
 }
