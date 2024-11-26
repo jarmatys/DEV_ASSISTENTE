@@ -17,6 +17,7 @@ namespace ASSISTENTE.UI.Auth
         {
             builder.Services.AddScoped<AuthStateProvider>();
             builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<AuthStateProvider>());
+
             builder.Services.AddAuthorizationCore();
 
             builder.Services.AddBlazoredLocalStorage(config =>

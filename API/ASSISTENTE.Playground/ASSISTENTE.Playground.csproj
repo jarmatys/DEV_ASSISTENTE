@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UserSecretsId>8fe28d93-c150-4d35-9f8f-69918e9bda6a</UserSecretsId>
@@ -10,7 +10,7 @@
 
     <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">
         <PropertyGroup>
-            <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net8.0</BinPath>
+            <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net9.0</BinPath>
         </PropertyGroup>
         <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
     </Target>
@@ -21,8 +21,8 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
     
     <Target Name="CreateDirectories" AfterTargets="Build">

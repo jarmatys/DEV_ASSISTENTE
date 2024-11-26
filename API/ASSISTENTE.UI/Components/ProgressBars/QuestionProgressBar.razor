@@ -6,7 +6,8 @@
                            Size="Size.Large"/>
     </MudItem>
     <MudItem xs="3" Class="d-flex align-center justify-center mud-width-full">
-        <MudChip Icon="@Icons.Material.Outlined.Downloading"
+        <MudChip T="string"
+                 Icon="@Icons.Material.Outlined.Downloading"
                  Label="true"
                  Color="Color.Success"
                  Size="Size.Small">
@@ -19,5 +20,5 @@
 
     [Parameter] public required int Progress { get; set; }
     [Parameter] public required string Information { get; set; }
-    
+
 }
