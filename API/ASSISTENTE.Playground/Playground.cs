@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Knowledge.Commands;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
@@ -47,7 +48,7 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await Task_02();
+        var result = await Task_03();
 
         result
             .Log("Task completed!", logger)
@@ -59,9 +60,8 @@ public sealed class Playground(
         const string url = "https://xyz.ag3nts.org";
 
         return await firecrawlService.ScrapeAsync(url)
-            .Bind(markdownContent =>
-                Prompt.Create(
-                    $"Answer the question, extract only date without any extra infomation: {markdownContent}"))
+            .Bind(markdownContent => Prompt.Create($"Answer the question, extract " +
+                                                   $"only date without any extra infomation: {markdownContent}"))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
             .Bind(async answer =>
             {
@@ -102,6 +102,70 @@ public sealed class Playground(
                     .Bind(async answer => await VerifyRequest(verifyResponse.MessageId, answer.Text));
             })
             .Tap(result => Console.WriteLine(result.Text));
+    }
+
+    private async Task<Result> Task_03()
+    {
+        // LanguageFuse is a library to monitor the language model performance.
+        // TODO: library https://langfuse.com/
+
+        const string url = "https://centrala.ag3nts.org/report";
+        const string taskName = "JSON";
+        const string apiKey = "<API-KEY>";
+        const string filePath = "Data/data.json";
+
+        var fileContent = await File.ReadAllTextAsync(filePath);
+        var parsedFile = JsonSerializer.Deserialize<DataModel>(fileContent);
+
+        if (parsedFile is null)
+            return Result.Failure("Failed to parse data file.");
+
+        foreach (var item in parsedFile.Data)
+        {
+            if (item.AdditionalInformation is not null)
+            {
+                var answer = await Prompt.Create($"{item.AdditionalInformation.Question}")
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
+                
+                item.AdditionalInformation.Answer = answer.Value.Text;
+            }
+
+            var calculation = item.Question.Split(" + ").Select(int.Parse).Sum();
+            if (calculation != item.Answer)
+            {
+                item.Answer = calculation;
+            }
+        }
+
+        var updatedFileContent = JsonSerializer.Serialize(parsedFile, new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        });
+
+        await File.WriteAllTextAsync(filePath, updatedFileContent);
+
+        var request = new TaskRequestModel
+        {
+            Task = taskName,
+            ApiKey = apiKey,
+            Answer = parsedFile
+        };
+
+        var response = await httpClient.PostAsync(
+            url,
+            new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8, "application/json"
+            )
+        );
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        return response.IsSuccessStatusCode
+            ? Result.Success(responseContent)
+            : Result.Failure("");
     }
 
     private async Task<Result<HumanCaptchaModel>> VerifyRequest(

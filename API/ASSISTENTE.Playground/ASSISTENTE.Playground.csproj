@@ -24,6 +24,12 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\data.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
     
     <Target Name="CreateDirectories" AfterTargets="Build">
         <MakeDir Directories="$(OutputPath)Resources\Repositories" />
