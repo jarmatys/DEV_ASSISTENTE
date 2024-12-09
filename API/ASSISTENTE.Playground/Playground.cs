@@ -47,7 +47,7 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await Task_02();
+        var result = await Task_03();
 
         result
             .Log("Task completed!", logger)
@@ -102,6 +102,26 @@ public sealed class Playground(
                     .Bind(async answer => await VerifyRequest(verifyResponse.MessageId, answer.Text));
             })
             .Tap(result => Console.WriteLine(result.Text));
+    }
+
+    private async Task<Result> Task_03()
+    {
+        // LanguageFuse is a library to monitor the language model performance.
+        // TODO: library https://langfuse.com/
+        // TODO: watch the video about langfuse
+        // https://bravecourses.circle.so/c/lekcje-programu-ai3-806660/s01e03-limity-duzych-modeli-jezykowych-i-api
+        
+        const string url = "https://centrala.ag3nts.org/report";
+        const string taskName = "JSON";
+        const string apiKey = "XXX";
+        
+        // {
+        //     "task": "1234",
+        //     "apikey": "Twój klucz API",
+        //     "answer": [0,1,2,3,4]
+        // }
+        
+        return Result.Success();
     }
 
     private async Task<Result<HumanCaptchaModel>> VerifyRequest(
