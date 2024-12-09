@@ -31,6 +31,9 @@ internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
 
     private static Result TextCanBeProcessable(EmbeddingText text)
     {
+        //  Tokenizer is a simple library that can be used to count the number of tokens in a string.
+        // https://github.com/Microsoft/Tokenizer -> Alternative to 'SharpToken'
+        
         var encoding = GptEncoding.GetEncodingForModel(EmbeddingModel);
         var tokens = encoding.CountTokens(text.Text);
 
