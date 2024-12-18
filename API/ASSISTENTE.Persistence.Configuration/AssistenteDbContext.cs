@@ -13,9 +13,7 @@ using ASSISTENTE.Language.Enums;
 using ASSISTENTE.Persistence.Configuration.Converters;
 using ASSISTENTE.Persistence.Configuration.Extensions;
 using ASSISTENTE.Persistence.Configuration.Seeds;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ASSISTENTE.Persistence.Configuration
 {

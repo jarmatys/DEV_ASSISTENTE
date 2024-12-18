@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Knowledge.Commands;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
+using ASSISTENTE.Infrastructure.Langfuse.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Playground.Models;
 using CSharpFunctionalExtensions;
@@ -17,6 +18,7 @@ public sealed class Playground(
     IKnowledgeService knowledgeService,
     IMaintenanceService maintenanceService,
     IFirecrawlService firecrawlService,
+    ILangfuseService langfuseService,
     ILlmClient llmClient,
     HttpClient httpClient,
     ISender mediator,
