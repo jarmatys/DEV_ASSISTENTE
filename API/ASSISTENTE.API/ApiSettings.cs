@@ -1,6 +1,7 @@
 using ASSISTENTE.Client.Internal.Settings;
 using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using ASSISTENTE.Infrastructure.Firecrawl.Settings;
+using ASSISTENTE.Infrastructure.Langfuse.Settings;
 using ASSISTENTE.Infrastructure.LLM.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
@@ -17,7 +18,8 @@ internal sealed class ApiSettings :
     ISeqSettings, 
     IRabbitSettings, 
     IObservabilitySettings, 
-    IAuthenticationSettings
+    IAuthenticationSettings,
+    ILangfuseSettings
 {
     public required InternalApiSettings InternalApi { get; init; }
     public required SeqSettings Seq { get; init; }
@@ -29,4 +31,5 @@ internal sealed class ApiSettings :
     public required ObservabilitySettings Observability { get; init; }
     public required AuthenticationSettings Authentication { get; init; }
     public required FirecrawlSettings Firecrawl { get; init; }
+    public required LangfuseSettings Langfuse { get; init; }
 }
