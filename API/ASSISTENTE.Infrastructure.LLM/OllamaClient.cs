@@ -17,7 +17,7 @@ internal sealed class OllamaClient(OllamaApiClient client, IOptions<OllamaSettin
         var request = new GenerateRequest
         {
             Stream = false,
-            System = "You are programmer assistant, please answer correctly as you can.",
+            System = "Always answer short and correct",
             Prompt = prompt.Value,
             Model = options.Value.SelectedModel
         };

@@ -50,11 +50,14 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await Task_05();
-
-        result
-            .Log("Task completed!", logger)
-            .LogError(logger);
+        foreach (var _ in Enumerable.Range(0, 10))
+        {
+            var result = await Task_05();
+            
+            result
+                .Log("Task completed!", logger)
+                .LogError(logger);
+        }
     }
 
     private async Task<Result> Task_01()
@@ -172,12 +175,38 @@ public sealed class Playground(
 
     private async Task<Result> Task_05()
     {
-        var result = await Prompt.Create("What is the capital of Poland?")
+        const string fileUrl = "https://centrala.ag3nts.org/data/<API-KEY>/cenzura.txt";
+        
+        var fileResponse = await httpClient.GetAsync(fileUrl);
+        var fileContent = await fileResponse.Content.ReadAsStringAsync();
+
+        const string taskName = "CENZURA";
+            
+        var result = await Prompt.Create($"{fileContent}")
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
         
-        return true
+        var request = new TaskRequestModel
+        {
+            Task = taskName,
+            ApiKey = "8bc8fcfb-f273-435c-bcb8-284d12cfa30e",
+            Answer = result.Value.Text
+        };
+
+        const string url = "https://centrala.ag3nts.org/report";
+
+        var response = await httpClient.PostAsync(
+            url,
+            new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8, "application/json"
+            )
+        );
+        
+        var responseContent = await response.Content.ReadAsStringAsync();
+        
+        return response.IsSuccessStatusCode
             ? Result.Success()
-            : Result.Failure("");
+            : Result.Failure(responseContent);
     }
 
     private async Task<Result<HumanCaptchaModel>> VerifyRequest(
