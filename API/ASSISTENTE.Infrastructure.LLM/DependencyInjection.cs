@@ -15,9 +15,7 @@ namespace ASSISTENTE.Infrastructure.LLM
             where TSettings : ILlmSettings
         {
             var settings = services.GetSettings<TSettings, LlmSettings>(x => x.Llm);
-
-            services.AddScoped<ILlmClient, OpenAiClient>();
-
+            
             services.AddScoped<OpenAIClient>(_ =>
                 new OpenAIClient(
                     new OpenAIAuthentication(
@@ -26,6 +24,8 @@ namespace ASSISTENTE.Infrastructure.LLM
                         projectId: settings.ProjectId)
                 )
             );
+            
+            services.AddScoped<ILlmClient, OpenAiClient>();
 
             services.AddCommonHealthCheck<LlmHealthCheck>();
 

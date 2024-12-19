@@ -13,9 +13,7 @@ namespace ASSISTENTE.Infrastructure.Embeddings
             where TSettings : IEmbeddingsSettings
         {
             var settings = services.GetSettings<TSettings, EmbeddingsSettings>(x => x.Embeddings);
-
-            services.AddScoped<IEmbeddingClient, OpenAiClient>();
-
+            
             services.AddScoped<OpenAIClient>(_ =>
                 new OpenAIClient(
                     new OpenAIAuthentication(
@@ -25,6 +23,8 @@ namespace ASSISTENTE.Infrastructure.Embeddings
                 )
             );
             
+            services.AddScoped<IEmbeddingClient, OpenAiClient>();
+
             return services;
         }
     }
