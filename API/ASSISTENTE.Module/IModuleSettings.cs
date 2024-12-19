@@ -1,6 +1,7 @@
 using ASSISTENTE.Client.Internal.Settings;
 using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
+using ASSISTENTE.Infrastructure.LLM.Ollama.Settings;
 using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Persistence.Configuration.Settings;
@@ -12,6 +13,7 @@ public interface IModuleSettings :
     IDatabaseSettings, 
     IQdrantSettings, 
     IOpenAiSettings, 
+    IOllamaSettings,
     IFirecrawlSettings,
     ILangfuseSettings
 {

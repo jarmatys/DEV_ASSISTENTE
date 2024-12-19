@@ -24,7 +24,7 @@ internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
                 var embeddings = response.Data.Select(x => x.Embedding).FirstOrDefault()?.Select(x => (float)x);
 
                 return embeddings is null
-                    ? Result.Failure<EmbeddingDto>(OpenAiClientErrors.EmptyEmbeddings.Build())
+                    ? Result.Failure<EmbeddingDto>(ClientErrors.EmptyEmbeddings.Build())
                     : Result.Success(EmbeddingDto.Create(embeddings));
             });
     }
@@ -39,7 +39,7 @@ internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
 
         if (tokens > MaxTokens)
         {
-            Result.Failure<EmbeddingDto>(OpenAiClientErrors.TooManyTokens.Build());
+            Result.Failure<EmbeddingDto>(ClientErrors.TooManyTokens.Build());
         }
 
         return Result.Success();

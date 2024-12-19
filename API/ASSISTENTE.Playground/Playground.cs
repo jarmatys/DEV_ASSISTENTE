@@ -50,7 +50,7 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await Task_03();
+        var result = await Task_05();
 
         result
             .Log("Task completed!", logger)
@@ -128,7 +128,7 @@ public sealed class Playground(
             {
                 var answer = await Prompt.Create($"{item.AdditionalInformation.Question}")
                     .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
-                
+
                 item.AdditionalInformation.Answer = answer.Value.Text;
             }
 
@@ -167,6 +167,16 @@ public sealed class Playground(
 
         return response.IsSuccessStatusCode
             ? Result.Success(responseContent)
+            : Result.Failure("");
+    }
+
+    private async Task<Result> Task_05()
+    {
+        var result = await Prompt.Create("What is the capital of Poland?")
+            .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
+        
+        return true
+            ? Result.Success()
             : Result.Failure("");
     }
 

@@ -27,7 +27,7 @@ internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
         var choice = response.FirstChoice;
 
         if (choice is null)
-            return Result.Failure<Answer>(OpenAiClientErrors.EmptyAnswer.Build());
+            return Result.Failure<Answer>(ClientErrors.EmptyAnswer.Build());
 
         var answer = choice.Message.ToString();
         var model = response.Model;

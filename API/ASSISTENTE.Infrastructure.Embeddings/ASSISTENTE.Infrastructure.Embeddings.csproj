@@ -11,6 +11,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM.Ollama\ASSISTENTE.Infrastructure.LLM.Ollama.csproj" />
       <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM.OpenAi\ASSISTENTE.Infrastructure.LLM.OpenAi.csproj" />
     </ItemGroup>
     

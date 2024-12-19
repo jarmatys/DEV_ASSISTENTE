@@ -1,6 +1,7 @@
 using ASSISTENTE.Client.Internal.Settings;
 using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
+using ASSISTENTE.Infrastructure.LLM.Ollama.Settings;
 using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
@@ -29,4 +30,5 @@ internal sealed class ApiSettings :
     public required AuthenticationSettings Authentication { get; init; }
     public required FirecrawlSettings Firecrawl { get; init; }
     public required LangfuseSettings Langfuse { get; init; }
+    public required OllamaSettings Ollama { get; init; }
 }
