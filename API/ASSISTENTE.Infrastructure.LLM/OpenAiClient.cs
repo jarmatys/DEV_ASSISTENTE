@@ -1,12 +1,12 @@
 using ASSISTENTE.Infrastructure.LLM.Contracts;
-using ASSISTENTE.Infrastructure.LLM.Errors;
+using ASSISTENTE.Infrastructure.LLM.OpenAi.Errors;
 using CSharpFunctionalExtensions;
 using OpenAI;
 using OpenAI.Chat;
 using OpenAI.Models;
 using ChatMessage = OpenAI.Chat.Message;
 
-namespace ASSISTENTE.Infrastructure.LLM.Providers;
+namespace ASSISTENTE.Infrastructure.LLM;
 
 internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
 {

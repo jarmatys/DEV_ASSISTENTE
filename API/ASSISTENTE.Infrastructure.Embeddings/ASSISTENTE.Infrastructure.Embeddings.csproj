@@ -5,16 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="OpenAI-DotNet" Version="8.4.1" />
-      <PackageReference Include="SharpToken" Version="2.0.3" />
-      <PackageReference Include="SOFTURE.Results" Version="0.1.1" />
-      <PackageReference Include="SOFTURE.Settings" Version="0.1.1" />
-    </ItemGroup>
-
+    
     <ItemGroup>
         <InternalsVisibleTo Include="ASSISTENTE.Infrastructure"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM.OpenAi\ASSISTENTE.Infrastructure.LLM.OpenAi.csproj" />
     </ItemGroup>
     
 </Project>

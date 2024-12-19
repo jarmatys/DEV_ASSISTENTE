@@ -1,34 +1,19 @@
 ﻿using ASSISTENTE.Infrastructure.LLM.Contracts;
-using ASSISTENTE.Infrastructure.LLM.HealthChecks;
-using ASSISTENTE.Infrastructure.LLM.Providers;
-using ASSISTENTE.Infrastructure.LLM.Settings;
+using ASSISTENTE.Infrastructure.LLM.OpenAi;
+using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using Microsoft.Extensions.DependencyInjection;
-using OpenAI;
-using SOFTURE.Common.HealthCheck;
-using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Infrastructure.LLM
 {
     internal static class DependencyInjection
     {
         public static IServiceCollection AddLlm<TSettings>(this IServiceCollection services)
-            where TSettings : ILlmSettings
+            where TSettings : IOpenAiSettings
         {
-            var settings = services.GetSettings<TSettings, LlmSettings>(x => x.Llm);
-            
-            services.AddScoped<OpenAIClient>(_ =>
-                new OpenAIClient(
-                    new OpenAIAuthentication(
-                        apiKey: settings.ApiKey,
-                        organization: settings.OrganizationId,
-                        projectId: settings.ProjectId)
-                )
-            );
-            
+            services.AddOpenAi<TSettings>();
+
             services.AddScoped<ILlmClient, OpenAiClient>();
-
-            services.AddCommonHealthCheck<LlmHealthCheck>();
-
+            
             return services;
         }
     }

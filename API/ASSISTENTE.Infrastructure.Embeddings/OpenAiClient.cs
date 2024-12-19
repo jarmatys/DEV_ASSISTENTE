@@ -1,10 +1,10 @@
 using ASSISTENTE.Infrastructure.Embeddings.Contracts;
-using ASSISTENTE.Infrastructure.Embeddings.Errors;
+using ASSISTENTE.Infrastructure.LLM.OpenAi.Errors;
 using CSharpFunctionalExtensions;
 using OpenAI;
 using SharpToken;
 
-namespace ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
+namespace ASSISTENTE.Infrastructure.Embeddings;
 
 internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
 {

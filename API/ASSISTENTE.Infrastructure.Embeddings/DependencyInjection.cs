@@ -1,30 +1,19 @@
 ﻿using ASSISTENTE.Infrastructure.Embeddings.Contracts;
-using ASSISTENTE.Infrastructure.Embeddings.Providers.OpenAI;
-using ASSISTENTE.Infrastructure.Embeddings.Settings;
+using ASSISTENTE.Infrastructure.LLM.OpenAi;
+using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using Microsoft.Extensions.DependencyInjection;
-using OpenAI;
-using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Infrastructure.Embeddings
 {
     internal static class DependencyInjection
     {
         public static IServiceCollection AddEmbeddings<TSettings>(this IServiceCollection services)
-            where TSettings : IEmbeddingsSettings
+            where TSettings : IOpenAiSettings
         {
-            var settings = services.GetSettings<TSettings, EmbeddingsSettings>(x => x.Embeddings);
-            
-            services.AddScoped<OpenAIClient>(_ =>
-                new OpenAIClient(
-                    new OpenAIAuthentication(
-                        apiKey: settings.ApiKey,
-                        organization: settings.OrganizationId,
-                        projectId: settings.ProjectId)
-                )
-            );
+            services.AddOpenAi<TSettings>();
             
             services.AddScoped<IEmbeddingClient, OpenAiClient>();
-
+            
             return services;
         }
     }

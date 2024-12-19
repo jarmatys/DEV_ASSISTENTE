@@ -2,13 +2,12 @@
 using ASSISTENTE.Domain.Interfaces;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
-using ASSISTENTE.Infrastructure.Embeddings.Settings;
 using ASSISTENTE.Infrastructure.Firecrawl;
 using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.Langfuse;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
 using ASSISTENTE.Infrastructure.LLM;
-using ASSISTENTE.Infrastructure.LLM.Settings;
+using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.Qdrant;
@@ -22,7 +21,7 @@ namespace ASSISTENTE.Infrastructure
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure<TSettings>(this IServiceCollection services)
-            where TSettings : IEmbeddingsSettings, ILlmSettings, IQdrantSettings, IFirecrawlSettings, ILangfuseSettings
+            where TSettings : IOpenAiSettings, IQdrantSettings, IFirecrawlSettings, ILangfuseSettings
         {
             services.AddMarkDownParser();
             services.AddCodeParser();
