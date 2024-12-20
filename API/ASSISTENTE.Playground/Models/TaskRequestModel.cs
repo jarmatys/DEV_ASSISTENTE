@@ -11,5 +11,5 @@ public class TaskRequestModel
     public required string ApiKey { get; set; }
     
     [JsonPropertyName("answer")]
-    public required object Answer { get; set; }
+    public required object? Answer { get; set; }
 }

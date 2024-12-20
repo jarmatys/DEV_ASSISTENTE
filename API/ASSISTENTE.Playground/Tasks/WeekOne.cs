@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
-using ASSISTENTE.Infrastructure.Langfuse.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Playground.Models;
 using CSharpFunctionalExtensions;

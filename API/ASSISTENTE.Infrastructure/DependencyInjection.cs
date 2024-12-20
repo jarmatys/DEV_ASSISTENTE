@@ -1,5 +1,6 @@
 ﻿using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Domain.Interfaces;
+using ASSISTENTE.Infrastructure.Audio;
 using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Enums;
@@ -8,7 +9,6 @@ using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.Langfuse;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
 using ASSISTENTE.Infrastructure.LLM;
-using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Ollama.Settings;
 using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using ASSISTENTE.Infrastructure.MarkDownParser;
@@ -39,6 +39,7 @@ namespace ASSISTENTE.Infrastructure
             {
                 services.AddOpenAiLlm<TSettings>();
                 services.AddOpenAiEmbeddings<TSettings>();
+                services.AddOpenAiAudio<TSettings>();
             }
 
             if (privacyMode == PrivacyMode.Local)

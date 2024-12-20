@@ -1,14 +1,6 @@
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using ASSISTENTE.Application.Abstractions.Interfaces;
 using ASSISTENTE.Application.Handlers.Knowledge.Commands;
-using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
-using ASSISTENTE.Infrastructure.Langfuse.Contracts;
-using ASSISTENTE.Infrastructure.LLM.Contracts;
-using ASSISTENTE.Playground.Models;
 using ASSISTENTE.Playground.Tasks;
-using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SOFTURE.Common.Logging.Extensions;

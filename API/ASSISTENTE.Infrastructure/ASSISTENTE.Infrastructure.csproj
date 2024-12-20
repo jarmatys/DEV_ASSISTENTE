@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ASSISTENTE.Application.Abstractions\ASSISTENTE.Application.Abstractions.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Audio\ASSISTENTE.Infrastructure.Audio.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.CodeParser\ASSISTENTE.Infrastructure.CodeParser.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Firecrawl\ASSISTENTE.Infrastructure.Firecrawl.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Langfuse\ASSISTENTE.Infrastructure.Langfuse.csproj" />

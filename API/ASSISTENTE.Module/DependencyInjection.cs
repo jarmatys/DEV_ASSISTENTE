@@ -15,7 +15,7 @@ namespace ASSISTENTE.Module
             where TUserResolver : class, IUserResolver
             where TSettings : IModuleSettings
         {
-            services.AddInfrastructure<TSettings>(privacyMode: PrivacyMode.Local);
+            services.AddInfrastructure<TSettings>(privacyMode: PrivacyMode.Cloud);
             services.AddPersistence<TUserResolver, TSettings>();
             services.AddApplication();
             services.AddEvents();
