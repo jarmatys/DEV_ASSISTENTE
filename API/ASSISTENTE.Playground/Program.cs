@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ASSISTENTE.Playground;
 using ASSISTENTE.Playground.Common;
+using ASSISTENTE.Playground.Tasks;
 using MassTransit;
 using Serilog;
 using SOFTURE.Common.Logging;
@@ -54,7 +55,9 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         .ConfigureSettings<PlaygroundSettings>(configuration)
         .AddAssistenteModule<UserResolver, PlaygroundSettings>()
         .AddCommonLogging<PlaygroundSettings>()
-        .AddTransient<Playground>();
+        .AddTransient<Playground>()
+        .AddTransient<WeekOne>()
+        .AddTransient<WeekTwo>();
 
     services.AddScoped<IPublishEndpoint, DummyPublishEndpoint>();
 }
