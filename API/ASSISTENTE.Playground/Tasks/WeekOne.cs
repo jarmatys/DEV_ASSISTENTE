@@ -13,6 +13,8 @@ public class WeekOne(
     IFirecrawlService firecrawlService,
     ILlmClient llmClient)
 {
+    private const string ApiKey = "<API-KEY>";
+    
     public async Task<Result> Task_01()
     {
         const string url = "https://xyz.ag3nts.org";
@@ -69,7 +71,6 @@ public class WeekOne(
 
         const string url = "https://centrala.ag3nts.org/report";
         const string taskName = "JSON";
-        const string apiKey = "<API-KEY>";
         const string filePath = "Data/data.json";
 
         var fileContent = await File.ReadAllTextAsync(filePath);
@@ -107,7 +108,7 @@ public class WeekOne(
         var request = new TaskRequestModel
         {
             Task = taskName,
-            ApiKey = apiKey,
+            ApiKey = ApiKey,
             Answer = parsedFile
         };
 
@@ -128,7 +129,7 @@ public class WeekOne(
 
     public async Task<Result> Task_05()
     {
-        const string fileUrl = "https://centrala.ag3nts.org/data/<API-KEY>/cenzura.txt";
+        const string fileUrl = $"https://centrala.ag3nts.org/data/{ApiKey}/cenzura.txt";
 
         var fileResponse = await httpClient.GetAsync(fileUrl);
         var fileContent = await fileResponse.Content.ReadAsStringAsync();
@@ -141,7 +142,7 @@ public class WeekOne(
         var request = new TaskRequestModel
         {
             Task = taskName,
-            ApiKey = "8bc8fcfb-f273-435c-bcb8-284d12cfa30e",
+            ApiKey = ApiKey,
             Answer = result.Value.Text
         };
 

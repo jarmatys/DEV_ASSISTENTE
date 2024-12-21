@@ -10,12 +10,12 @@ namespace ASSISTENTE.Infrastructure.Vision;
 
 internal sealed class OpenAiClient(OpenAIClient client) : IVisionClient
 {
-    public async Task<Result<Recognition>> Recognize(Image image)
+    public async Task<Result<Recognition>> Recognize(VisionImage visionImage)
     {
-        var imageUrl = new ImageUrl(image.ImageUrl);
+        var imageUrl = new ImageUrl(visionImage.ImageUrl);
         var messages = new List<ChatMessage>
         {
-            new(Role.System, image.Prompt),
+            new(Role.System, visionImage.Prompt),
             new(Role.User, new List<Content>
             {
                 new(imageUrl)

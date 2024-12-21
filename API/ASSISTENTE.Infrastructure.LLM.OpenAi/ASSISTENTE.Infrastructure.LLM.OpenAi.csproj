@@ -19,6 +19,7 @@
         <InternalsVisibleTo Include="ASSISTENTE.Infrastructure.LLM"/>
         <InternalsVisibleTo Include="ASSISTENTE.Infrastructure.Audio"/>
         <InternalsVisibleTo Include="ASSISTENTE.Infrastructure.Vision"/>
+        <InternalsVisibleTo Include="ASSISTENTE.Infrastructure.Image"/>
     </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Enums;
 using ASSISTENTE.Infrastructure.Firecrawl;
 using ASSISTENTE.Infrastructure.Firecrawl.Settings;
+using ASSISTENTE.Infrastructure.Image;
 using ASSISTENTE.Infrastructure.Langfuse;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
 using ASSISTENTE.Infrastructure.LLM;
@@ -42,6 +43,7 @@ namespace ASSISTENTE.Infrastructure
                 services.AddOpenAiEmbeddings<TSettings>();
                 services.AddOpenAiAudio<TSettings>();
                 services.AddOpenAiVision<TSettings>();
+                services.AddOpenAiImage<TSettings>();
             }
 
             if (privacyMode == PrivacyMode.Local)

@@ -11,6 +11,7 @@
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Audio\ASSISTENTE.Infrastructure.Audio.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.CodeParser\ASSISTENTE.Infrastructure.CodeParser.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Firecrawl\ASSISTENTE.Infrastructure.Firecrawl.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Image\ASSISTENTE.Infrastructure.Image.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Langfuse\ASSISTENTE.Infrastructure.Langfuse.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.MarkDownParser\ASSISTENTE.Infrastructure.MarkDownParser.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Embeddings\ASSISTENTE.Infrastructure.Embeddings.csproj"/>
