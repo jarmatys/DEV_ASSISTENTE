@@ -15,7 +15,7 @@ public sealed class Prompt : ValueObject
     public static Result<Prompt> Create(string prompt)
     {
         if (string.IsNullOrEmpty(prompt))
-            return Result.Failure<Prompt>(EmbeddingTextErrors.EmptyContent.Build());
+            return Result.Failure<Prompt>(CommonErrors.EmptyParameter.Build());
         
         return new Prompt(prompt);
     }
@@ -24,10 +24,4 @@ public sealed class Prompt : ValueObject
     {
         yield return Value;
     }
-}
-
-public static class EmbeddingTextErrors
-{
-    public static readonly Error EmptyContent = new(
-        "Prompt.EmptyContent", "Prompt cannot be empty.");
 }

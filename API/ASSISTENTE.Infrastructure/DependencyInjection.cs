@@ -17,6 +17,7 @@ using ASSISTENTE.Infrastructure.Qdrant;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Infrastructure.Services;
 using ASSISTENTE.Infrastructure.Services.Parsers;
+using ASSISTENTE.Infrastructure.Vision;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASSISTENTE.Infrastructure
@@ -40,6 +41,7 @@ namespace ASSISTENTE.Infrastructure
                 services.AddOpenAiLlm<TSettings>();
                 services.AddOpenAiEmbeddings<TSettings>();
                 services.AddOpenAiAudio<TSettings>();
+                services.AddOpenAiVision<TSettings>();
             }
 
             if (privacyMode == PrivacyMode.Local)

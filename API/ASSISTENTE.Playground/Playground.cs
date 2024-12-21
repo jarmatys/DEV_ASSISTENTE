@@ -40,7 +40,7 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await weekTwo.Task_01();
+        var result = await weekTwo.Task_02();
 
         result
             .Log("Task completed!", logger)
