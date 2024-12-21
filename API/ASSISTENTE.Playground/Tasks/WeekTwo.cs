@@ -16,7 +16,7 @@ public class WeekTwo(
     IVisionClient visionClient,
     IImageClient imageClient)
 {
-    private const string ApiKey = "<API-KEY>";
+    private const string ApiKey = "<API_KEY>";
 
     public async Task<Result> Task_01()
     {
@@ -58,9 +58,7 @@ public class WeekTwo(
 
         var answer = await Prompt.Create($"<INSTRUKCJE>{instuctions}</INSTRUKCJE>\n\n <ZEZNANIA>{context}</ZEZNANIA>")
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
-            .Bind(answer =>
-                Prompt.Create(
-                    $"Na podstawie otrzymanych informacji: \n <INFORMACJE>{answer.Text}</INFORMACJE>. \n\n Zwróć tylko i wyłącznie nazwę ulicy przy której znajduje się zidentifikowane miejsce."))
+            .Bind(answer => Prompt.Create($"Na podstawie otrzymanych informacji: \n <INFORMACJE>{answer.Text}</INFORMACJE>. \n\n Zwróć tylko i wyłącznie nazwę ulicy przy której znajduje się zidentifikowane miejsce."))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
 
         var request = new TaskRequestModel
@@ -134,13 +132,9 @@ public class WeekTwo(
 
         var answer = await Prompt.Create($"<INSTRUKCJE>{instuctions}</INSTRUKCJE>\n\n <OPIS>{context}</OPIS>")
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
-            .Bind(answer =>
-                Prompt.Create(
-                    $"Na podstawie otrzymanych informacji {step1} \n\n <INFORMACJE>{answer.Text}</INFORMACJE>."))
+            .Bind(answer => Prompt.Create($"Na podstawie otrzymanych informacji {step1} \n\n <INFORMACJE>{answer.Text}</INFORMACJE>."))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
-            .Bind(answer =>
-                Prompt.Create(
-                    $"Na podstawie otrzymanych informacji {step2} \n\n <INFORMACJE>{answer.Text}</INFORMACJE>."))
+            .Bind(answer => Prompt.Create($"Na podstawie otrzymanych informacji {step2} \n\n <INFORMACJE>{answer.Text}</INFORMACJE>."))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
 
         Console.WriteLine($"Miasto: {answer.GetValueOrDefault(x => x.Text)}");
@@ -156,15 +150,135 @@ public class WeekTwo(
 
         var fileResponse = await httpClient.GetAsync(robotDescriptionUrl);
         var robotDescription = await fileResponse.Content.ReadAsStringAsync();
-        
+
         var image = await ImagePrompt.Create(robotDescription)
             .Bind(async prompt => await imageClient.GenerateImage(prompt));
-        
+
         var request = new TaskRequestModel
         {
             Task = taskName,
             ApiKey = ApiKey,
             Answer = image.GetValueOrDefault(x => x.ImageUrl)
+        };
+
+        var response = await httpClient.PostAsync(
+            url,
+            new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8, "application/json"
+            )
+        );
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        return response.IsSuccessStatusCode
+            ? Result.Success(responseContent)
+            : Result.Failure(responseContent);
+    }
+
+    public async Task<Result> Task_04()
+    {
+        const string url = "https://centrala.ag3nts.org/report";
+        const string taskName = "kategorie";
+        const string filesPath = "Data/Files";
+
+        const string masterPrompt = "Twoim zadaniem jest na podstawie treści podanej w <OPIS> zwrócić odpowiednie " +
+                                    "słowo kluczowe: HARDWARE, PEOPLE, MISSING.\n\n" +
+                                    "Przykład: 'Czujniki dźwięku wykryły ultradźwiękowy sygnał, pochodzenie: nadajnik ukryty w zielonych krzakach'\n" +
+                                    "Zwracasz: HARDWARE\n\n" +
+                                    "Przykład: Osobnik przedstawił się jako Aleksander Ragowski." +
+                                    "Zwracasz: PEOPLE\n\n";
+
+        const string rules = "1. Jeżeli w danym pliku znajdują się informacje o sprzęcie to ZWRACASZ SŁOWO: HARDWARE" +
+                             "2. Jeżeli w danym pliku znajdują się informacje o ludziach to ZWRACASZ SŁOWO: PEOPLE" +
+                             "3. Istnieje szansa, że znaleziona informacja nie dotyczy ani ludzi, ani maszyn! ZWRACASZ SŁOWO: MISSING";
+
+        var filePaths = Directory.GetFiles(filesPath);
+        
+        var peopleList = new List<string>();
+        var hardwareList = new List<string>();
+        
+        foreach (var filePath in filePaths)
+        {
+            var fileName = Path.GetFileName(filePath);
+            var fileExtension = Path.GetExtension(filePath);
+        
+            if (fileExtension == ".txt")
+            {
+                var fileText = await File.ReadAllTextAsync(filePath);
+                
+                var promptText = $"<ZADANIE>{masterPrompt}</ZADANIE\n\n" +
+                                 $"<ZASADY>{rules}</ZASADY>\n\n" +
+                                 $"<OPIS>{fileText}</OPIS>";
+        
+                var answer = await Prompt.Create(promptText)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text);
+                
+                if (answer == "PEOPLE")
+                    peopleList.Add(fileName);
+                
+                if (answer == "HARDWARE")
+                    hardwareList.Add(fileName);
+            }
+        
+            if (fileExtension == ".mp3")
+            {
+                await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        
+                var answer = await AudioFile.Create(fileName, fileStream)
+                    .Bind(async prompt => await audioClient.GenerateTranscription(prompt))
+                    .Map(transcription => $"<ZADANIE>{masterPrompt}</ZADANIE\n\n" +
+                                          $"<ZASADY>{rules}</ZASADY>\n\n" +
+                                          $"<OPIS>{transcription.Text}</OPIS>")
+                    .Bind(Prompt.Create)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text);
+                
+                if (answer == "PEOPLE")
+                    peopleList.Add(fileName);
+                
+                if (answer == "HARDWARE")
+                    hardwareList.Add(fileName);
+            }
+            
+            if (fileExtension == ".png")
+            {
+                await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        
+                using var memoryStream = new MemoryStream();
+                await fileStream.CopyToAsync(memoryStream);
+                var byteImage = memoryStream.ToArray();
+        
+                var base64Image = Convert.ToBase64String(byteImage);
+                var extension = Path.GetExtension(filePath);
+        
+                var answer = await VisionImage.Create("Zwróć treść z obrazka", base64Image, extension)
+                    .Bind(async prompt => await visionClient.Recognize(prompt))
+                    .Map(recognition => $"<ZADANIE>{masterPrompt}</ZADANIE\n\n" +
+                                        $"<ZASADY>{rules}</ZASADY>\n\n" +
+                                        $"<OPIS>{recognition.Text}</OPIS>")
+                    .Bind(Prompt.Create)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text);
+                
+                if (answer == "PEOPLE")
+                    peopleList.Add(fileName);
+                
+                if (answer == "HARDWARE")
+                    hardwareList.Add(fileName);
+            }
+        }
+
+        var request = new TaskRequestModel
+        {
+            Task = taskName,
+            ApiKey = ApiKey,
+            Answer = new
+            {
+                people = peopleList,
+                hardware = hardwareList
+            }
         };
 
         var response = await httpClient.PostAsync(
