@@ -57,7 +57,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         .AddCommonLogging<PlaygroundSettings>()
         .AddTransient<Playground>()
         .AddTransient<WeekOne>()
-        .AddTransient<WeekTwo>();
+        .AddTransient<WeekTwo>()
+        .AddTransient<WeekThree>();
 
     services.AddScoped<IPublishEndpoint, DummyPublishEndpoint>();
 }

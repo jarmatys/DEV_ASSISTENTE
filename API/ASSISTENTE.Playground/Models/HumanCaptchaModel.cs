@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace ASSISTENTE.Playground.Models;
 
-internal class HumanCaptchaModel
+public class HumanCaptchaModel
 {
     [JsonPropertyName("msgID")]
     public required int MessageId { get; set; }

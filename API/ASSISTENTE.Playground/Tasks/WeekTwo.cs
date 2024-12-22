@@ -1,12 +1,10 @@
 using System.Text;
-using System.Text.Json;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
 using ASSISTENTE.Infrastructure.Image.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
-using ASSISTENTE.Playground.Models;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Playground.Tasks;
@@ -18,13 +16,12 @@ public class WeekTwo(
     IVisionClient visionClient,
     IImageClient imageClient,
     IFirecrawlService firecrawlService,
-    IMarkDownParser markDownParser)
+    IMarkDownParser markDownParser) : TaskBase(httpClient)
 {
-    private const string ApiKey = "<API_KEY>";
+    private readonly HttpClient _httpClient = httpClient;
 
-    public async Task<Result> Task_01()
+    public async Task<Result<string>> Task_01()
     {
-        const string url = "https://centrala.ag3nts.org/report";
         const string taskName = "mp3";
         const string audioFilePath = "Data/Audio";
 
@@ -65,29 +62,10 @@ public class WeekTwo(
             .Bind(answer => Prompt.Create($"Na podstawie otrzymanych informacji: \n <INFORMACJE>{answer.Text}</INFORMACJE>. \n\n Zwróć tylko i wyłącznie nazwę ulicy przy której znajduje się zidentifikowane miejsce."))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
 
-        var request = new TaskRequestModel
-        {
-            Task = taskName,
-            ApiKey = ApiKey,
-            Answer = answer.GetValueOrDefault(x => x.Text)
-        };
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.IsSuccessStatusCode
-            ? Result.Success(responseContent)
-            : Result.Failure(responseContent);
+        return await ReportResult(taskName, answer.GetValueOrDefault(x => x.Text));
     }
 
-    public async Task<Result> Task_02()
+    public async Task<Result<string>> Task_02()
     {
         const string audioFilePath = "Data/Images";
 
@@ -140,49 +118,26 @@ public class WeekTwo(
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
             .Bind(answer => Prompt.Create($"Na podstawie otrzymanych informacji {step2} \n\n <INFORMACJE>{answer.Text}</INFORMACJE>."))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
-
-        Console.WriteLine($"Miasto: {answer.GetValueOrDefault(x => x.Text)}");
-
-        return Result.Success();
+        
+        return Result.Success($"Miasto: {answer.GetValueOrDefault(x => x.Text)}");
     }
 
-    public async Task<Result> Task_03()
+    public async Task<Result<string>> Task_03()
     {
-        const string url = "https://centrala.ag3nts.org/report";
         const string taskName = "robotid";
         const string robotDescriptionUrl = $"https://centrala.ag3nts.org/data/{ApiKey}/robotid.json";
 
-        var fileResponse = await httpClient.GetAsync(robotDescriptionUrl);
+        var fileResponse = await _httpClient.GetAsync(robotDescriptionUrl);
         var robotDescription = await fileResponse.Content.ReadAsStringAsync();
 
         var image = await ImagePrompt.Create(robotDescription)
             .Bind(async prompt => await imageClient.GenerateImage(prompt));
 
-        var request = new TaskRequestModel
-        {
-            Task = taskName,
-            ApiKey = ApiKey,
-            Answer = image.GetValueOrDefault(x => x.ImageUrl)
-        };
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.IsSuccessStatusCode
-            ? Result.Success(responseContent)
-            : Result.Failure(responseContent);
+        return await ReportResult(taskName, image.GetValueOrDefault(x => x.ImageUrl));
     }
 
-    public async Task<Result> Task_04()
+    public async Task<Result<string>> Task_04()
     {
-        const string url = "https://centrala.ag3nts.org/report";
         const string taskName = "kategorie";
         const string filesPath = "Data/Files";
 
@@ -274,35 +229,17 @@ public class WeekTwo(
             }
         }
 
-        var request = new TaskRequestModel
+        var result = new
         {
-            Task = taskName,
-            ApiKey = ApiKey,
-            Answer = new
-            {
-                people = peopleList,
-                hardware = hardwareList
-            }
+            people = peopleList,
+            hardware = hardwareList
         };
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.IsSuccessStatusCode
-            ? Result.Success(responseContent)
-            : Result.Failure(responseContent);
+        
+        return await ReportResult(taskName, result);
     }
 
-    public async Task<Result> Task_05()
+    public async Task<Result<string>> Task_05()
     {
-        const string url = "https://centrala.ag3nts.org/report";
         const string taskName = "arxiv";
 
         const string articleUrl = "https://centrala.ag3nts.org/dane";
@@ -332,7 +269,7 @@ public class WeekTwo(
                     
                     if (mediaUrl.Extension == "mp3")
                     {
-                        var file = await httpClient.GetByteArrayAsync(mediaFullUrl);
+                        var file = await _httpClient.GetByteArrayAsync(mediaFullUrl);
                         
                         await using var fileStream = new MemoryStream(file);
                         
@@ -345,7 +282,7 @@ public class WeekTwo(
         
                     if (mediaUrl.Extension == "png")
                     {
-                        var file = await httpClient.GetByteArrayAsync(mediaFullUrl);
+                        var file = await _httpClient.GetByteArrayAsync(mediaFullUrl);
                     
                         var base64Image = Convert.ToBase64String(file);
                         
@@ -362,7 +299,7 @@ public class WeekTwo(
 
         var fullContext = context.ToString();
            
-        var questions = await httpClient.GetStringAsync(questionsUrl);
+        var questions = await _httpClient.GetStringAsync(questionsUrl);
 
         var questionsList = questions
             .Split("\n").Where(q => q != string.Empty)
@@ -382,25 +319,6 @@ public class WeekTwo(
                 .Tap(answer => finalAnswers.Add(questionId, answer.Text));
         }
 
-        var request = new TaskRequestModel
-        {
-            Task = taskName,
-            ApiKey = ApiKey,
-            Answer = finalAnswers
-        };
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.IsSuccessStatusCode
-            ? Result.Success(responseContent)
-            : Result.Failure(responseContent);
+        return await ReportResult(taskName, finalAnswers);
     }
 }

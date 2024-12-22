@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
@@ -11,11 +10,11 @@ namespace ASSISTENTE.Playground.Tasks;
 public class WeekOne(
     HttpClient httpClient,
     IFirecrawlService firecrawlService,
-    ILlmClient llmClient)
+    ILlmClient llmClient) : TaskBase(httpClient)
 {
-    private const string ApiKey = "<API-KEY>";
-    
-    public async Task<Result> Task_01()
+    private readonly HttpClient _httpClient = httpClient;
+
+    public async Task<Result<string>> Task_01()
     {
         const string url = "https://xyz.ag3nts.org";
 
@@ -35,17 +34,17 @@ public class WeekOne(
                     { "answer", answer.Text }
                 };
 
-                var response = await httpClient.PostAsync(url, new FormUrlEncodedContent(formData));
+                var response = await _httpClient.PostAsync(url, new FormUrlEncodedContent(formData));
 
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 return response.IsSuccessStatusCode
                     ? Result.Success(responseContent)
-                    : Result.Failure("");
+                    : Result.Failure<string>(responseContent);
             });
     }
 
-    public async Task<Result> Task_02()
+    public async Task<Result<string>> Task_02()
     {
         const string memory = "- The capital of Poland is Kraków." +
                               "- A well-known number from the book The Hitchhiker's Guide to the Galaxy is 69." +
@@ -61,15 +60,14 @@ public class WeekOne(
                     .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
                     .Bind(async answer => await VerifyRequest(verifyResponse.MessageId, answer.Text));
             })
-            .Tap(result => Console.WriteLine(result.Text));
+            .Map(result => result.Text);
     }
 
-    public async Task<Result> Task_03()
+    public async Task<Result<string>> Task_03()
     {
         // LanguageFuse is a library to monitor the language model performance.
         // TODO: library https://langfuse.com/
 
-        const string url = "https://centrala.ag3nts.org/report";
         const string taskName = "JSON";
         const string filePath = "Data/data.json";
 
@@ -77,7 +75,7 @@ public class WeekOne(
         var parsedFile = JsonSerializer.Deserialize<DataModel>(fileContent);
 
         if (parsedFile is null)
-            return Result.Failure("Failed to parse data file.");
+            return Result.Failure<string>("Failed to parse data file.");
 
         foreach (var item in parsedFile.Data)
         {
@@ -105,33 +103,14 @@ public class WeekOne(
 
         await File.WriteAllTextAsync(filePath, updatedFileContent);
 
-        var request = new TaskRequestModel
-        {
-            Task = taskName,
-            ApiKey = ApiKey,
-            Answer = parsedFile
-        };
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.IsSuccessStatusCode
-            ? Result.Success(responseContent)
-            : Result.Failure("");
+        return await ReportResult(taskName, parsedFile);
     }
 
-    public async Task<Result> Task_05()
+    public async Task<Result<string>> Task_05()
     {
         const string fileUrl = $"https://centrala.ag3nts.org/data/{ApiKey}/cenzura.txt";
 
-        var fileResponse = await httpClient.GetAsync(fileUrl);
+        var fileResponse = await _httpClient.GetAsync(fileUrl);
         var fileContent = await fileResponse.Content.ReadAsStringAsync();
 
         const string taskName = "CENZURA";
@@ -139,65 +118,6 @@ public class WeekOne(
         var result = await Prompt.Create($"{fileContent}")
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
 
-        var request = new TaskRequestModel
-        {
-            Task = taskName,
-            ApiKey = ApiKey,
-            Answer = result.Value.Text
-        };
-
-        const string url = "https://centrala.ag3nts.org/report";
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(request),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.IsSuccessStatusCode
-            ? Result.Success()
-            : Result.Failure(responseContent);
-    }
-
-    private async Task<Result<HumanCaptchaModel>> VerifyRequest(
-        int? messageId = null,
-        string? text = null)
-    {
-        const string url = "https://xyz.ag3nts.org/verify";
-
-        var requestBody = messageId == null
-            ? new HumanCaptchaModel
-            {
-                MessageId = 0,
-                Text = "READY"
-            }
-            : new HumanCaptchaModel
-            {
-                MessageId = messageId.Value,
-                Text = text ?? ""
-            };
-
-        var response = await httpClient.PostAsync(
-            url,
-            new StringContent(
-                JsonSerializer.Serialize(requestBody),
-                Encoding.UTF8, "application/json"
-            )
-        );
-
-        if (!response.IsSuccessStatusCode)
-            return Result.Failure<HumanCaptchaModel>("");
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-
-        var parsedResponse = JsonSerializer.Deserialize<HumanCaptchaModel>(responseContent);
-
-        return parsedResponse is null
-            ? Result.Failure<HumanCaptchaModel>("")
-            : Result.Success(parsedResponse);
+        return await ReportResult(taskName, result.Value.Text);
     }
 }
