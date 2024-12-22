@@ -22,6 +22,8 @@ internal sealed class MarkDownParser : IMarkDownParser
 
     public Result<FileContent> Parse(FilePath filePath)
     {
+        // TODO: calculate chunk tokens and split by 1000 tokens
+        
         var content = File.ReadAllText(filePath.Path);
         var parsedMarkdown = Markdown.Parse(content);
 

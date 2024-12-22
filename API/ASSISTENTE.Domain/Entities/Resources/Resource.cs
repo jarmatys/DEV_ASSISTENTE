@@ -29,6 +29,8 @@ public sealed class Resource : AuditableEntity<ResourceId>, IAggregateRoot
     public string Title { get; private set; } = null!;
     public ResourceType Type { get; private set; }
     public List<float> Embeddings { get; private set; } = null!;
+    
+    // public Metadata Metadata { get; private set; } // TODO: Implement Metadata class
 
     #region NAVIGATION PROPERTIES
 

@@ -4,5 +4,6 @@ public enum PromptType
 {
     Question,
     Code,
-    Files
+    Files,
+    ContextPreProcessing
 }
