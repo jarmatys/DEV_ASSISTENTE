@@ -1,8 +1,10 @@
 using System.Text;
 using System.Text.Json;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
+using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
 using ASSISTENTE.Infrastructure.Image.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
+using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
 using ASSISTENTE.Playground.Models;
 using CSharpFunctionalExtensions;
@@ -14,7 +16,9 @@ public class WeekTwo(
     ILlmClient llmClient,
     IAudioClient audioClient,
     IVisionClient visionClient,
-    IImageClient imageClient)
+    IImageClient imageClient,
+    IFirecrawlService firecrawlService,
+    IMarkDownParser markDownParser)
 {
     private const string ApiKey = "<API_KEY>";
 
@@ -194,38 +198,38 @@ public class WeekTwo(
                              "3. Istnieje szansa, że znaleziona informacja nie dotyczy ani ludzi, ani maszyn! ZWRACASZ SŁOWO: MISSING";
 
         var filePaths = Directory.GetFiles(filesPath);
-        
+
         var peopleList = new List<string>();
         var hardwareList = new List<string>();
-        
+
         foreach (var filePath in filePaths)
         {
             var fileName = Path.GetFileName(filePath);
             var fileExtension = Path.GetExtension(filePath);
-        
+
             if (fileExtension == ".txt")
             {
                 var fileText = await File.ReadAllTextAsync(filePath);
-                
+
                 var promptText = $"<ZADANIE>{masterPrompt}</ZADANIE\n\n" +
                                  $"<ZASADY>{rules}</ZASADY>\n\n" +
                                  $"<OPIS>{fileText}</OPIS>";
-        
+
                 var answer = await Prompt.Create(promptText)
                     .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
                     .GetValueOrDefault(x => x.Text);
-                
+
                 if (answer == "PEOPLE")
                     peopleList.Add(fileName);
-                
+
                 if (answer == "HARDWARE")
                     hardwareList.Add(fileName);
             }
-        
+
             if (fileExtension == ".mp3")
             {
                 await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        
+
                 var answer = await AudioFile.Create(fileName, fileStream)
                     .Bind(async prompt => await audioClient.GenerateTranscription(prompt))
                     .Map(transcription => $"<ZADANIE>{masterPrompt}</ZADANIE\n\n" +
@@ -234,25 +238,25 @@ public class WeekTwo(
                     .Bind(Prompt.Create)
                     .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
                     .GetValueOrDefault(x => x.Text);
-                
+
                 if (answer == "PEOPLE")
                     peopleList.Add(fileName);
-                
+
                 if (answer == "HARDWARE")
                     hardwareList.Add(fileName);
             }
-            
+
             if (fileExtension == ".png")
             {
                 await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        
+
                 using var memoryStream = new MemoryStream();
                 await fileStream.CopyToAsync(memoryStream);
                 var byteImage = memoryStream.ToArray();
-        
+
                 var base64Image = Convert.ToBase64String(byteImage);
                 var extension = Path.GetExtension(filePath);
-        
+
                 var answer = await VisionImage.Create("Zwróć treść z obrazka", base64Image, extension)
                     .Bind(async prompt => await visionClient.Recognize(prompt))
                     .Map(recognition => $"<ZADANIE>{masterPrompt}</ZADANIE\n\n" +
@@ -261,10 +265,10 @@ public class WeekTwo(
                     .Bind(Prompt.Create)
                     .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
                     .GetValueOrDefault(x => x.Text);
-                
+
                 if (answer == "PEOPLE")
                     peopleList.Add(fileName);
-                
+
                 if (answer == "HARDWARE")
                     hardwareList.Add(fileName);
             }
@@ -279,6 +283,110 @@ public class WeekTwo(
                 people = peopleList,
                 hardware = hardwareList
             }
+        };
+
+        var response = await httpClient.PostAsync(
+            url,
+            new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8, "application/json"
+            )
+        );
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        return response.IsSuccessStatusCode
+            ? Result.Success(responseContent)
+            : Result.Failure(responseContent);
+    }
+
+    public async Task<Result> Task_05()
+    {
+        const string url = "https://centrala.ag3nts.org/report";
+        const string taskName = "arxiv";
+
+        const string articleUrl = "https://centrala.ag3nts.org/dane";
+        const string questionsUrl = $"https://centrala.ag3nts.org/data/{ApiKey}/arxiv.txt";
+
+        const string markdownContentPath = "Data/firecrawl-example.md";
+
+        const string masterPrompt = "Na podstawie otrzymanego kontekstu <CONTEXT> odpowiedz " +
+                                    "na pytania podane w tagu <PYTANIA>. Odpowiedz krótko na temat i " +
+                                    "zwięźle. Max jedno zdanie.";
+
+        // var markdownContent = await firecrawlService.ScrapeAsync($"{articleUrl}/arxiv-draft.html");
+
+        var context = new StringBuilder();
+
+        var fileContent = await File.ReadAllTextAsync(markdownContentPath);
+        
+        context.Append($"Informacje pobrane ze strony: {fileContent} \n\n");
+        
+        await FilePath.Create(markdownContentPath)
+            .Bind(markDownParser.GetMediaUrls)
+            .Bind(async mediaUrls =>
+            {
+                foreach (var mediaUrl in mediaUrls)
+                {
+                    var mediaFullUrl = $"{articleUrl}/{mediaUrl.Url}";
+                    
+                    if (mediaUrl.Extension == "mp3")
+                    {
+                        var file = await httpClient.GetByteArrayAsync(mediaFullUrl);
+                        
+                        await using var fileStream = new MemoryStream(file);
+                        
+                        var answer = await AudioFile.Create(mediaUrl.Url, fileStream)
+                            .Bind(async prompt => await audioClient.GenerateTranscription(prompt))
+                            .GetValueOrDefault(x => x.Text);
+                        
+                        context.Append($"Informacje pobrane z pliku: '{mediaUrl.Url}': \n{answer}\n\n");
+                    }
+        
+                    if (mediaUrl.Extension == "png")
+                    {
+                        var file = await httpClient.GetByteArrayAsync(mediaFullUrl);
+                    
+                        var base64Image = Convert.ToBase64String(file);
+                        
+                        var answer = await VisionImage.Create("Opisz co widzisz na obrazku w języku polskim", base64Image, "png")
+                            .Bind(async prompt => await visionClient.Recognize(prompt))
+                            .GetValueOrDefault(x => x.Text);
+                        
+                        context.Append($"Informacje pobrane z pliku: '{mediaUrl.Url}': \n{answer}\n\n");
+                    }
+                }
+        
+                return Result.Success();
+            });
+
+        var fullContext = context.ToString();
+           
+        var questions = await httpClient.GetStringAsync(questionsUrl);
+
+        var questionsList = questions
+            .Split("\n").Where(q => q != string.Empty)
+            .ToList();
+
+        var finalAnswers = new Dictionary<string, string>();
+
+        foreach (var question in questionsList)
+        {
+            var questionId = question.Split("=")[0];
+            var questionText = question.Split("=")[1];
+
+            await Prompt.Create($"<INSTRUKCJE>{masterPrompt}</INSTRUKCJE>" +
+                                $"<CONTEXT>{fullContext}</CONTEXT>" +
+                                $"<PYTANIE>{questionText}</PYTANIE>")
+                .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                .Tap(answer => finalAnswers.Add(questionId, answer.Text));
+        }
+
+        var request = new TaskRequestModel
+        {
+            Task = taskName,
+            ApiKey = ApiKey,
+            Answer = finalAnswers
         };
 
         var response = await httpClient.PostAsync(

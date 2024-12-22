@@ -7,7 +7,6 @@ public sealed class FilePath : ValueObject
 {
     public string Path { get; }
     public string FileName { get; } 
-    
     private string Extension { get; }
     
     private FilePath(string path, string extension, string fileName)

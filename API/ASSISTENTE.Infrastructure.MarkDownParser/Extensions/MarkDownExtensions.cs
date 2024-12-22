@@ -27,17 +27,18 @@ internal static class MarkDownExtensions
         return string.Join(" ", contentsList);
     }
 
-    public static string GetUrls(this LeafBlock leaf)
+    public static List<string> GetUrls(this LeafBlock leaf)
     {
-        if (leaf.Inline == null) return string.Empty;
+        if (leaf.Inline == null) return [];
 
         var urls = leaf.Inline
             .Descendants()
             .OfType<LinkInline>()
             .Select(x => x.Url)
+            .Where(url => url != string.Empty)
             .ToList();
 
-        return string.Join(" ", urls);
+        return urls!;
     }
 
     public static string GetCodeLine(this LeafBlock leaf)
@@ -91,8 +92,8 @@ internal static class MarkDownExtensions
 
                 var line = $"{counter}. {content}";
 
-                if (!string.IsNullOrEmpty(urls))
-                    line += $" | Links associated with this point: {urls}";
+                if (urls.Count != 0)
+                    line += $" | Links associated with this point: {string.Join(" ", urls)}";
 
                 listContent.Add(line);
             }

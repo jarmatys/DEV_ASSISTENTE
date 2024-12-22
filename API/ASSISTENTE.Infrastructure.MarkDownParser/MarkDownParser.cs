@@ -46,6 +46,30 @@ internal sealed class MarkDownParser : IMarkDownParser
         return FileContent.Create(filePath.FileName, elements);
     }
 
+    public Result<List<MediaUrl>> GetMediaUrls(FilePath filePath)
+    {
+        var content = File.ReadAllText(filePath.Path);
+        var parsedMarkdown = Markdown.Parse(content);
+
+        var mediaUrls = parsedMarkdown
+            .Descendants<ParagraphBlock>()
+            .Select(paragraphBlock => paragraphBlock.GetUrls())
+            .Where(mediaUrl => mediaUrl.Count != 0)
+            .SelectMany(mediaUrl => mediaUrl)
+            .Select(MediaUrl.Create)
+            .ToList();
+        
+        if (mediaUrls.Count == 0)
+            return Result.Failure<List<MediaUrl>>(MarkDownParserErrors.EmptyContent.Build());
+        
+        if (mediaUrls.Any(x => x.IsFailure))
+            return Result.Failure<List<MediaUrl>>(MarkDownParserErrors.UnsupportedMedia.Build());
+        
+        return mediaUrls
+            .Select(x => x.Value)
+            .ToList();
+    }
+
     private static Result<ElementBase> GetElement(IMarkdownObject block)
     {
         switch (block)
@@ -88,7 +112,7 @@ internal sealed class MarkDownParser : IMarkDownParser
             {
                 var paragraphContent = paragraph.GetContent();
                 var paragraphUrls = paragraph.GetUrls();
-                
+
                 var paragraphElement = new Paragraph(paragraphContent, paragraphUrls) as ElementBase;
 
                 return Result.Success(paragraphElement);

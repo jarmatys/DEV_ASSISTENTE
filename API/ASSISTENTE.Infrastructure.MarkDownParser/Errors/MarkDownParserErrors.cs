@@ -12,4 +12,7 @@ internal static class MarkDownParserErrors
     
     public static readonly Error OnlyHeadersNotAllowed = new(
         "MarkDownParser.OnlyHeadersNotAllowed", "Notes with only headers are not allowed");
+    
+    public static readonly Error UnsupportedMedia = new(
+        "MarkDownParser.UnsupportedMedia", "Media type is not supported");
 }
