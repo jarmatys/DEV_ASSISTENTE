@@ -149,15 +149,15 @@ public class WeekThree(
         const string question = "W raporcie, z którego dnia znajduje się wzmianka o kradzieży prototypu broni?";
 
         var weaponsFiles = Directory.GetFiles(dataFilesWeapons);
-        
+
         await qdrantService.DropCollectionAsync("aidevs");
         await qdrantService.CreateCollectionAsync("aidevs");
-        
+
         foreach (var weaponFile in weaponsFiles)
         {
             var fileName = Path.GetFileName(weaponFile);
             var fileContent = await File.ReadAllTextAsync(weaponFile);
-        
+
             await EmbeddingText.Create(fileContent)
                 .Bind(async embeddingText => await embeddingClient.GetAsync(embeddingText))
                 .Bind(embedding =>
@@ -166,11 +166,15 @@ public class WeekThree(
                     {
                         { "fileName", fileName }
                     };
-        
+
                     return DocumentDto.Create("aidevs", embedding.Embeddings, metadata);
                 })
                 .Bind(async document => await qdrantService.UpsertAsync(document));
         }
+
+        // TODO: Create library 'ASSISTENTE.Infrastructure.Search' which will be combined qdrant, embedding and other services like typsense, database simple query
+        // Implement hybrid search service which will be able to search in multiple sources and score them together
+        // Combined score formula: (1 / vector rank) + (1 / full text rank)
 
         var date = await EmbeddingText.Create(question)
             .Bind(async embeddingText => await embeddingClient.GetAsync(embeddingText))
@@ -181,8 +185,114 @@ public class WeekThree(
             .Map(Path.GetFileNameWithoutExtension)
             .Map(dateString => DateTime.Parse(dateString!.Replace("_", "-")).ToString("yyyy-MM-dd"))
             .GetValueOrDefault(x => x);
-        
+
 
         return await ReportResult("wektory", date);
+    }
+
+    public async Task<Result<string>> Task_03()
+    {
+        // Dostępne tabele: users, datacenters & connections
+
+        const string question = "które aktywne datacenter (DC_ID) są zarządzane przez pracowników, " +
+                                "którzy są na urlopie (is_active=0)";
+
+        const string acceptableFormat = "1, 2, 3";
+        
+        var context = new StringBuilder();
+
+        while (true)
+        {
+            var masterContext = context.ToString() == string.Empty
+                ? "BRAK INFORMACJI - NAPISZ ZAPYTANIE SQL"
+                : context.ToString();
+
+            if (context.ToString() != string.Empty)
+            {
+                var verifyPrompt = $"""
+                                    Twoim zadaniem jest zweryfikować czy w pozyskanych informacjach znajduje się 
+                                    odpowiedź na zadane pytanie.
+                                    
+                                    <PYTANIE>
+                                    {question}
+                                    </PYTANIE>
+                                    
+                                    <KONTEKST>
+                                    {masterContext}
+                                     </KONTEKST>
+                                    
+                                    
+                                    Jeżeli nie znajdziesz odpowiedzi, zwróć "BRAK".
+                                    
+                                    Jeżeli znajdziesz odpowiedź, zwróć znalezioną informację.
+                                    
+                                    Zwrócona informacja powinna zawierać tylko i wyłącznie odpowiedź na pytanie 
+                                    w formacie: {acceptableFormat}
+                                    """;
+
+                var hasAnswer = await Prompt.Create(verifyPrompt)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text, "");
+
+                if (hasAnswer != "BRAK")
+                {
+                    var inActiveDataCenterIds = hasAnswer.Split(", ")
+                        .Select(int.Parse)
+                        .ToList();
+                    
+                    return await ReportResult("database", inActiveDataCenterIds);
+                }
+            }
+
+            var masterPrompt = $"""
+                                Twoim zadaniem jest otrzymać odpowiedź na pytanie:
+                                <PYTANIE>
+                                {question}
+                                </PYTANIE>
+
+                                <ZASADY>
+                                1. Do dyspozycji masz dostęp do bazy danych. Musisz napisać zapytania SQL, które naprowadzą Cię na odpowiedź.
+                                2. Nie podawaj żadnych dodatkowych informacji, zwróć sam SQL lub odpowiedź na pytanie.
+                                3. Nie zwracaj żadnych tagów markdown, ani znaków specjalnych, same zapytanie SQL.
+                                </ZASADY>
+
+                                <PRZYDATNE ZAPYTANIA>
+                                `show tables` = zwraca listę tabel
+                                `show create table <NAZWA_TABELI>` = pokazuje, jak zbudowana jest konkretna tabela
+                                </PRZYDATNE ZAPYTANIA>
+
+                                Jeżeli nie jesteś pewny jak odpowiedzieć na zadane pytanie przygotuj kolejne zapytanie SQL aby uzyskać więcej szczegółów.
+                                Jeżeli masz wszystko czego potrzebujesz zwróć rezultat w postaci liczb po przecinku np. 1, 2, 3.
+
+                                <PRZYKŁAD ODPOWIEDZI>
+                                select * from datacenters
+                                </PRZYKŁAD ODPOWIEDZI>
+
+                                <POZYSKANE INFORMACJE>
+                                {masterContext}
+                                </POZYSKANE INFORMACJE>
+                                """;
+
+            var sqlQuery = await Prompt.Create(masterPrompt)
+                .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                .GetValueOrDefault(x => x.Text, "");
+
+            var isSqlQuery = sqlQuery.Contains("select", StringComparison.OrdinalIgnoreCase) ||
+                             sqlQuery.Contains("show", StringComparison.OrdinalIgnoreCase);
+
+            if (isSqlQuery)
+            {
+                var queryResult = await DatabaseQuery("database", sqlQuery);
+
+                context.Append($"<WYKONANE ZAPYTANIE>{sqlQuery}</WYKONANE ZAPYTANIE>\n" +
+                               $"<REZULTAT>{queryResult}</REZULTAT>\n\n");
+
+                continue;
+            }
+
+            break;
+        }
+       
+        return Result.Success("Zadanie zakończone");
     }
 }

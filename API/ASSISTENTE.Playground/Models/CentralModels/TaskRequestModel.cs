@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ASSISTENTE.Playground.Models.CentralModel;
+namespace ASSISTENTE.Playground.Models.CentralModels;
 
 public class TaskRequestModel
 {

@@ -1,7 +1,8 @@
 using System.Text;
 using System.Text.Json;
 using ASSISTENTE.Playground.Models;
-using ASSISTENTE.Playground.Models.CentralModel;
+using ASSISTENTE.Playground.Models.CentralModels;
+using ASSISTENTE.Playground.Models.DatabaseModels;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Playground.Tasks;
@@ -74,5 +75,33 @@ public abstract class TaskBase(HttpClient httpClient)
         return !response.IsSuccessStatusCode 
             ? Result.Failure<string>(deserializedContent?.Message) 
             : Result.Success(deserializedContent!.Message);
+    }
+    
+    protected async Task<Result<string>> DatabaseQuery(string taskName, string query)
+    {
+        const string databaseUrl = "https://centrala.ag3nts.org/apidb";
+
+        var request = new DatabaseRequestModel
+        {
+            Task = taskName,
+            ApiKey = ApiKey,
+            Query = query
+        };
+
+        var response = await httpClient.PostAsync(
+            databaseUrl,
+            new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8, "application/json"
+            )
+        );
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        var deserializedContent = JsonSerializer.Deserialize<DatabaseResponse>(responseContent);
+
+        return !response.IsSuccessStatusCode 
+            ? Result.Failure<string>(deserializedContent?.Error) 
+            : Result.Success(deserializedContent!.Reply.ToString())!;
     }
 }
