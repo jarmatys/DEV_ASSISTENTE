@@ -1,9 +1,11 @@
 using System.Text;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
+using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
 using ASSISTENTE.Infrastructure.Image.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
+using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
 using CSharpFunctionalExtensions;
 
@@ -16,12 +18,12 @@ public class WeekThree(
     IVisionClient visionClient,
     IImageClient imageClient,
     IFirecrawlService firecrawlService,
-    IMarkDownParser markDownParser) : TaskBase(httpClient)
+    IMarkDownParser markDownParser,
+    IEmbeddingClient embeddingClient,
+    IQdrantService qdrantService) : TaskBase(httpClient)
 {
     public async Task<Result<string>> Task_01()
     {
-        const string taskName = "dokumenty";
-
         const string reportFiles = "Data/Files";
         const string factFiles = "Data/Files/Facts";
 
@@ -38,8 +40,6 @@ public class WeekThree(
 
             if (extension != ".txt")
                 continue;
-            
-            await using var fileStream = new FileStream(reportFile, FileMode.Open, FileAccess.Read);
 
             var currentReport = await File.ReadAllTextAsync(reportFile);
 
@@ -69,7 +69,7 @@ public class WeekThree(
                 .GetValueOrDefault(x => x.Text, "");
 
             var masterContext = new StringBuilder();
-            
+
             if (factFileName != "BRAK")
             {
                 var factFile = await File.ReadAllTextAsync($"Data/Files/Facts/{factFileName}");
@@ -123,7 +123,7 @@ public class WeekThree(
                 .Tap(keyWord => keyWords.Add(fileName, keyWord.Text));
         }
 
-        return await ReportResult(taskName, keyWords);
+        return await ReportResult("dokumenty", keyWords);
 
         async Task<string> GetFactContext()
         {
@@ -134,8 +134,6 @@ public class WeekThree(
             {
                 var fileName = Path.GetFileName(factFile);
 
-                await using var fileStream = new FileStream(factFile, FileMode.Open, FileAccess.Read);
-
                 var fileContent = await File.ReadAllTextAsync(factFile);
 
                 fullFactContext.Append($"<PLIK>{fileName}</PLIK>\n<FAKT>{fileContent}</FAKT>\n\n");
@@ -143,5 +141,48 @@ public class WeekThree(
 
             return fullFactContext.ToString();
         }
+    }
+
+    public async Task<Result<string>> Task_02()
+    {
+        const string dataFilesWeapons = "Data/Files/Weapons";
+        const string question = "W raporcie, z którego dnia znajduje się wzmianka o kradzieży prototypu broni?";
+
+        var weaponsFiles = Directory.GetFiles(dataFilesWeapons);
+        
+        await qdrantService.DropCollectionAsync("aidevs");
+        await qdrantService.CreateCollectionAsync("aidevs");
+        
+        foreach (var weaponFile in weaponsFiles)
+        {
+            var fileName = Path.GetFileName(weaponFile);
+            var fileContent = await File.ReadAllTextAsync(weaponFile);
+        
+            await EmbeddingText.Create(fileContent)
+                .Bind(async embeddingText => await embeddingClient.GetAsync(embeddingText))
+                .Bind(embedding =>
+                {
+                    var metadata = new Dictionary<string, string>
+                    {
+                        { "fileName", fileName }
+                    };
+        
+                    return DocumentDto.Create("aidevs", embedding.Embeddings, metadata);
+                })
+                .Bind(async document => await qdrantService.UpsertAsync(document));
+        }
+
+        var date = await EmbeddingText.Create(question)
+            .Bind(async embeddingText => await embeddingClient.GetAsync(embeddingText))
+            .Bind(embedding => VectorDto.Create("aidevs", embedding.Embeddings, elements: 1))
+            .Bind(async document => await qdrantService.SearchAsync(document))
+            .Map(documents => documents.First())
+            .Map(document => document.Metadata.GetValueOrDefault("fileName"))
+            .Map(Path.GetFileNameWithoutExtension)
+            .Map(dateString => DateTime.Parse(dateString!.Replace("_", "-")).ToString("yyyy-MM-dd"))
+            .GetValueOrDefault(x => x);
+        
+
+        return await ReportResult("wektory", date);
     }
 }

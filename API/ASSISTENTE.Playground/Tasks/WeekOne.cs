@@ -68,7 +68,6 @@ public class WeekOne(
         // LanguageFuse is a library to monitor the language model performance.
         // TODO: library https://langfuse.com/
 
-        const string taskName = "JSON";
         const string filePath = "Data/data.json";
 
         var fileContent = await File.ReadAllTextAsync(filePath);
@@ -103,7 +102,7 @@ public class WeekOne(
 
         await File.WriteAllTextAsync(filePath, updatedFileContent);
 
-        return await ReportResult(taskName, parsedFile);
+        return await ReportResult("JSON", parsedFile);
     }
 
     public async Task<Result<string>> Task_05()
@@ -112,12 +111,10 @@ public class WeekOne(
 
         var fileResponse = await _httpClient.GetAsync(fileUrl);
         var fileContent = await fileResponse.Content.ReadAsStringAsync();
-
-        const string taskName = "CENZURA";
-
+        
         var result = await Prompt.Create($"{fileContent}")
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
 
-        return await ReportResult(taskName, result.Value.Text);
+        return await ReportResult("CENZURA", result.Value.Text);
     }
 }

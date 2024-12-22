@@ -47,13 +47,24 @@ internal sealed class QdrantService(QdrantClient client) : IQdrantService
     {
         try
         {
+            var searchParams = new SearchParams
+                { };
+
+            var filter = new Filter
+            {
+                Must = { },
+                Should = { }
+            };
+
             var response = await client.SearchAsync(
-                vectorDto.GetCollectionName(),
-                vectorDto.GetVector(),
-                limit: 5
+                collectionName: vectorDto.GetCollectionName(),
+                vector: vectorDto.GetVector(),
+                limit: (ulong)vectorDto.Elements,
+                searchParams: searchParams,
+                filter: filter
             );
 
-            var result = response.Select(x => SearchResult.Create(x.Id, x.Score)).ToList();
+            var result = response.Select(x => SearchResult.Create(x.Id, x.Score, x.Payload)).ToList();
 
             return result.Count == 0
                 ? Result.Failure<List<SearchResult>>(QdrantServiceErrors.MissingResources.Build())

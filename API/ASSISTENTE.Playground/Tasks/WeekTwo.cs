@@ -22,7 +22,6 @@ public class WeekTwo(
 
     public async Task<Result<string>> Task_01()
     {
-        const string taskName = "mp3";
         const string audioFilePath = "Data/Audio";
 
         var filePaths = Directory.GetFiles(audioFilePath);
@@ -62,7 +61,7 @@ public class WeekTwo(
             .Bind(answer => Prompt.Create($"Na podstawie otrzymanych informacji: \n <INFORMACJE>{answer.Text}</INFORMACJE>. \n\n Zwróć tylko i wyłącznie nazwę ulicy przy której znajduje się zidentifikowane miejsce."))
             .Bind(async prompt => await llmClient.GenerateAnswer(prompt));
 
-        return await ReportResult(taskName, answer.GetValueOrDefault(x => x.Text));
+        return await ReportResult("mp3", answer.GetValueOrDefault(x => x.Text));
     }
 
     public async Task<Result<string>> Task_02()
@@ -124,7 +123,6 @@ public class WeekTwo(
 
     public async Task<Result<string>> Task_03()
     {
-        const string taskName = "robotid";
         const string robotDescriptionUrl = $"https://centrala.ag3nts.org/data/{ApiKey}/robotid.json";
 
         var fileResponse = await _httpClient.GetAsync(robotDescriptionUrl);
@@ -133,12 +131,11 @@ public class WeekTwo(
         var image = await ImagePrompt.Create(robotDescription)
             .Bind(async prompt => await imageClient.GenerateImage(prompt));
 
-        return await ReportResult(taskName, image.GetValueOrDefault(x => x.ImageUrl));
+        return await ReportResult("robotid", image.GetValueOrDefault(x => x.ImageUrl));
     }
 
     public async Task<Result<string>> Task_04()
     {
-        const string taskName = "kategorie";
         const string filesPath = "Data/Files";
 
         const string masterPrompt = "Twoim zadaniem jest na podstawie treści podanej w <OPIS> zwrócić odpowiednie " +
@@ -235,13 +232,11 @@ public class WeekTwo(
             hardware = hardwareList
         };
         
-        return await ReportResult(taskName, result);
+        return await ReportResult("kategorie", result);
     }
 
     public async Task<Result<string>> Task_05()
     {
-        const string taskName = "arxiv";
-
         const string articleUrl = "https://centrala.ag3nts.org/dane";
         const string questionsUrl = $"https://centrala.ag3nts.org/data/{ApiKey}/arxiv.txt";
 
@@ -319,6 +314,6 @@ public class WeekTwo(
                 .Tap(answer => finalAnswers.Add(questionId, answer.Text));
         }
 
-        return await ReportResult(taskName, finalAnswers);
+        return await ReportResult("arxiv", finalAnswers);
     }
 }

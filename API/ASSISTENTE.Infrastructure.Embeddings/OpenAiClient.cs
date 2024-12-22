@@ -8,7 +8,9 @@ namespace ASSISTENTE.Infrastructure.Embeddings;
 
 internal class OpenAiClient(OpenAIClient client) : IEmbeddingClient
 {
-    private const string EmbeddingModel = "text-embedding-ada-002";
+    private const string EmbeddingModel = "text-embedding-ada-002"; // 1536 dimensions
+    // private const string EmbeddingModel = "text-embedding-3-large"; // 3072 dimensions
+
     private const int MaxTokens = 8192;
 
     public async Task<Result<EmbeddingDto>> GetAsync(EmbeddingText text)
