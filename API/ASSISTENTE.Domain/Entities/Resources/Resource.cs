@@ -30,6 +30,9 @@ public sealed class Resource : AuditableEntity<ResourceId>, IAggregateRoot
     public ResourceType Type { get; private set; }
     public List<float> Embeddings { get; private set; } = null!;
     
+    // TODO: Save in 'Resource' table full resource content
+    // Splitted chunks of content will be saved in 'ResourceChunk' table and linked to 'Resource' table
+    
     // public Metadata Metadata { get; private set; } // TODO: Implement Metadata class
 
     #region NAVIGATION PROPERTIES
