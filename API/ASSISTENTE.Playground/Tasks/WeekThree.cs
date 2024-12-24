@@ -198,7 +198,7 @@ public class WeekThree(
                                 "którzy są na urlopie (is_active=0)";
 
         const string acceptableFormat = "1, 2, 3";
-        
+
         var context = new StringBuilder();
 
         while (true)
@@ -212,20 +212,20 @@ public class WeekThree(
                 var verifyPrompt = $"""
                                     Twoim zadaniem jest zweryfikować czy w pozyskanych informacjach znajduje się 
                                     odpowiedź na zadane pytanie.
-                                    
+
                                     <PYTANIE>
                                     {question}
                                     </PYTANIE>
-                                    
+
                                     <KONTEKST>
                                     {masterContext}
                                      </KONTEKST>
-                                    
-                                    
+
+
                                     Jeżeli nie znajdziesz odpowiedzi, zwróć "BRAK".
-                                    
+
                                     Jeżeli znajdziesz odpowiedź, zwróć znalezioną informację.
-                                    
+
                                     Zwrócona informacja powinna zawierać tylko i wyłącznie odpowiedź na pytanie 
                                     w formacie: {acceptableFormat}
                                     """;
@@ -239,7 +239,7 @@ public class WeekThree(
                     var inActiveDataCenterIds = hasAnswer.Split(", ")
                         .Select(int.Parse)
                         .ToList();
-                    
+
                     return await ReportResult("database", inActiveDataCenterIds);
                 }
             }
@@ -292,7 +292,130 @@ public class WeekThree(
 
             break;
         }
-       
+
         return Result.Success("Zadanie zakończone");
+    }
+
+    public async Task<Result<string>> Task_04()
+    {
+        const string question = "Twoim zadaniem jest zweryfikowanie wszystkich kombinacji imion i miast na podstawie " +
+                                "dostępnych informacji. Sprawdzaj osoby, dostaniesz informacje o miastach, a nastepnie " +
+                                "sprawdzaj miasta, dostaniesz informacje o osobach.";
+
+        const string placesDescription = """
+                                         Pierwszy z nich to wyszukiwarka członków ruchu oporu. Możemy wyszukiwać ich z 
+                                         użyciem imienia podanego w formie mianownika, a w odpowiedzi otrzymamy listę 
+                                         miejsc, w których ich widziano.
+
+                                         <PRZYKŁAD>
+                                         RAFAL
+                                         <PRZYKŁAD>
+                                         """;
+
+        const string peopleDescription = """
+                                         Drugi system to wyszukiwarka miejsc odwiedzonych przez konkretne osoby.
+                                         Podajesz nazwę miasta do sprawdzenia (bez polskich znaków) i w odpowiedzi 
+                                         dowiadujesz się, których z członków ruchu oporu tam widziano.
+
+                                         <PRZYKŁAD>
+                                         WARSZAWA
+                                         <PRZYKŁAD>
+                                         """;
+
+        var introInformation = await File.ReadAllTextAsync("Data/barbara.txt");
+
+        const string restrictedData = "[**RESTRICTED DATA**]";
+
+        var placesWithPeople = new Dictionary<string, List<string>>();
+        var peopleWithPlaces = new Dictionary<string, List<string>>();
+
+        var checkedPlaces = new List<string>();
+        var checkedPeople = new List<string>();
+
+        var forbiddenRecords = new List<string>();
+
+        return Result.Success("");
+
+        string MasterPrompt()
+        {
+            return """
+                   Twoim zadaniem jest znalezienie odpowiedzi na pytanie:
+                   <PYTANIE>
+                   {question}
+                   </PYTANIE>
+
+                   <KONTEKST>
+                   {introInformation}
+                   </KONTEKST>
+
+                   <ZASADY>
+                   1. Jeżeli w zebranych informacjach nie udało się namierzyć odpowiedzi, wykonaj kolejne zapytanie!
+                   2. Zwracaj tylko i wyłącznie nazwę miasta lub osoby duzymi literami bez polskich znaków!
+                   3. Nie formatuj tekstu i nie zwracaj markdown oraz znaków specjalnych!
+                   4. Nie używaj polskich znaków!
+                   5. NIE UŻYWAJ ZAKAZANYCH WARTOŚCI!
+                   </ZASADY>
+
+                   <ZAKAZANE WARTOŚCI>
+                   {forbiddenRecords}
+                   </ZAKAZANE WARTOŚCI>
+
+                   <DOSTĘPNE SYSTEMY - WERYFIKACJA MIEJSC>
+                   {placesDescription}
+                   </DOSTĘPNE SYSTEMY - WERYFIKACJA MIEJSC>
+
+                   <DOSTĘPNE SYSTEMY - WERYFIKACJA OSÓB>
+                   {peopleDescription}
+                   </DOSTĘPNE SYSTEMY - WERYFIKACJA OSÓB>
+
+                   <ZEBRANE INFORMACJE>
+                   OSOBY DO SPRAWDZENIA: {string.Join(", ", peopleToCheck)}
+                   MIEJSCA DO SPRAWDZENIA: {string.Join(", ", placesToCheck)}
+
+                   SPRAWDZIŁEŚ JUŻ:
+                   SPRAWDZONE OSOBY: {string.Join(", ", checkedPeople)}
+                   SPRAWDZONE MIEJSCA: {string.Join(", ", checkedPlaces)}
+                   </ZEBRANE INFORMACJE>
+
+                   Na podstawie zebranych informacji oraz kontekstu, generuj zapytania do people api i 
+                   places api według podanego formatu. Zwróć tylko i wyłącznie to czego wymaga dane zapytanie.
+                   """;
+        }
+
+        string VerifyPrompt(string answer)
+        {
+            return $"""
+                    Rozpoznaj czy otrzymana wartość dotyczy osób czy miejsc
+
+                    <WARTOŚĆ>
+                    {answer}
+                    </WARTOŚĆ>
+
+                    Otrzymana wartość nie może zawierać polskich znaków, jeżeli wykryjesz polskie znaki 
+                    zwróć error.
+
+                    <PRZYKŁAD>
+                    Otrzymałeś: BARBARA
+                    Zwróć: PEOPLE
+                    </PRZYKŁAD>
+
+                    <PRZYKŁAD>
+                    Otrzymałeś: WARSZAWA
+                    Zwróć: PLACES
+                    </PRZYKŁAD>
+
+                    <PRZYKŁAD>
+                    Otrzymałeś: Nie mamy wystarczajacych informacji w zebranych danych, aby okreslic aktualne miejsce pobytu Barbary. Spróbuje uzyskac wiecej informacji.
+                    Zwróć: ERROR
+                    </PRZYKŁAD>
+
+                    <PRZYKŁAD>
+                    Otrzymałeś: RAFAŁ
+                    Zwróć: ERROR
+                    </PRZYKŁAD>
+
+                    NIE ZWRACAJ NIC POZA WARTOŚCIĄ: PLACES, PEOPLE, ERROR
+                    """;
+        }
     }
 }

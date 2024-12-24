@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using ASSISTENTE.Playground.Models;
 using ASSISTENTE.Playground.Models.CentralModels;
+using ASSISTENTE.Playground.Models.DataApiModels;
 using ASSISTENTE.Playground.Models.DatabaseModels;
 using CSharpFunctionalExtensions;
 
@@ -72,11 +73,11 @@ public abstract class TaskBase(HttpClient httpClient)
 
         var deserializedContent = JsonSerializer.Deserialize<TaskResponse>(responseContent);
 
-        return !response.IsSuccessStatusCode 
-            ? Result.Failure<string>(deserializedContent?.Message) 
+        return !response.IsSuccessStatusCode
+            ? Result.Failure<string>(deserializedContent?.Message)
             : Result.Success(deserializedContent!.Message);
     }
-    
+
     protected async Task<Result<string>> DatabaseQuery(string taskName, string query)
     {
         const string databaseUrl = "https://centrala.ag3nts.org/apidb";
@@ -100,8 +101,55 @@ public abstract class TaskBase(HttpClient httpClient)
 
         var deserializedContent = JsonSerializer.Deserialize<DatabaseResponse>(responseContent);
 
-        return !response.IsSuccessStatusCode 
-            ? Result.Failure<string>(deserializedContent?.Error) 
+        return !response.IsSuccessStatusCode
+            ? Result.Failure<string>(deserializedContent?.Error)
             : Result.Success(deserializedContent!.Reply.ToString())!;
+    }
+
+    protected async Task<Result<string>> DataApiQuery(string source, string query)
+    {
+        const string peopleUrl = "https://centrala.ag3nts.org/people";
+        const string placesUrl = "https://centrala.ag3nts.org/places";
+        
+        var request = new DataApiRequestModel
+        {
+            ApiKey = ApiKey,
+            Query = query
+        };
+
+        HttpResponseMessage response;
+        
+        if (source == "PEOPLE")
+        {
+            response = await httpClient.PostAsync(
+                peopleUrl,
+                new StringContent(
+                    JsonSerializer.Serialize(request),
+                    Encoding.UTF8, "application/json"
+                )
+            );
+        }
+        else if (source == "PLACES")
+        {
+            response = await httpClient.PostAsync(
+                placesUrl,
+                new StringContent(
+                    JsonSerializer.Serialize(request),
+                    Encoding.UTF8, "application/json"
+                )
+            );
+        }
+        else
+        {
+            return Result.Failure<string>("Invalid source");
+        }
+        
+        var responseContent = await response.Content.ReadAsStringAsync();
+        
+        var deserializedContent = JsonSerializer.Deserialize<DataApiResponse>(responseContent);
+
+        return !response.IsSuccessStatusCode
+            ? Result.Failure<string>(deserializedContent?.Message)
+            : Result.Success(deserializedContent!.Message);
     }
 }
