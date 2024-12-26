@@ -3,6 +3,7 @@ using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
 using ASSISTENTE.Infrastructure.LLM.Ollama.Settings;
 using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
+using ASSISTENTE.Infrastructure.Neo4J.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
 using ASSISTENTE.Persistence.Configuration.Settings;
@@ -24,4 +25,5 @@ internal sealed class WorkerSettings : IModuleSettings, ISeqSettings, IRabbitSet
     public required FirecrawlSettings Firecrawl { get; init; }
     public required LangfuseSettings Langfuse { get; init; }
     public required OllamaSettings Ollama { get; init; }
+    public required Neo4JSettings Neo4J { get; init; }
 }

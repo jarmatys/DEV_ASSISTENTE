@@ -1,13 +1,18 @@
 using System.Text;
+using System.Text.Json;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
 using ASSISTENTE.Infrastructure.Embeddings.Contracts;
 using ASSISTENTE.Infrastructure.Firecrawl.Contracts;
 using ASSISTENTE.Infrastructure.Image.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
+using ASSISTENTE.Infrastructure.Neo4J.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
+using ASSISTENTE.Playground.Models.CentralModels;
+using ASSISTENTE.Playground.Models.DataApiModels.DataModels;
 using CSharpFunctionalExtensions;
+using Neo4j.Driver;
 
 namespace ASSISTENTE.Playground.Tasks;
 
@@ -20,6 +25,7 @@ public class WeekThree(
     IFirecrawlService firecrawlService,
     IMarkDownParser markDownParser,
     IEmbeddingClient embeddingClient,
+    INeo4JService neo4JService,
     IQdrantService qdrantService) : TaskBase(httpClient)
 {
     public async Task<Result<string>> Task_01()
@@ -417,5 +423,28 @@ public class WeekThree(
                     NIE ZWRACAJ NIC POZA WARTOŚCIĄ: PLACES, PEOPLE, ERROR
                     """;
         }
+    }
+
+    public async Task<Result<string>> Task_05()
+    {
+        var connections = await DatabaseQuery("database", "select * from connections")
+            .Map(users => JsonSerializer.Deserialize<List<UserConnections>>(users))
+            .GetValueOrDefault(x => x);
+
+        var users = await DatabaseQuery("database", "select * from users")
+            .Map(users => JsonSerializer.Deserialize<List<UserDetails>>(users))
+            .GetValueOrDefault(x => x);
+
+        var creationResult = await neo4JService.CreateGraph(database: "aidevs3", creationQuery: string.Empty);
+
+        const string shortestPathQuery = """
+                                         MATCH (start:User {username: 'Rafał'}), (end:User {username: 'Barbara'}),
+                                               path = shortestPath((start)-[*]-(end))
+                                         RETURN path;
+                                         """;
+
+        var searchResult = await neo4JService.Search(database: "aidevs3", shortestPathQuery);
+
+        return await ReportResult("connections", taskResult: null);
     }
 }

@@ -6,6 +6,8 @@ using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Enums;
 using ASSISTENTE.Infrastructure.Firecrawl;
 using ASSISTENTE.Infrastructure.Firecrawl.Settings;
+using ASSISTENTE.Infrastructure.Neo4J;
+using ASSISTENTE.Infrastructure.Neo4J.Settings;
 using ASSISTENTE.Infrastructure.Image;
 using ASSISTENTE.Infrastructure.Langfuse;
 using ASSISTENTE.Infrastructure.Langfuse.Settings;
@@ -28,7 +30,7 @@ namespace ASSISTENTE.Infrastructure
         public static IServiceCollection AddInfrastructure<TSettings>(
             this IServiceCollection services,
             PrivacyMode privacyMode)
-            where TSettings : IOpenAiSettings, IQdrantSettings, IFirecrawlSettings, ILangfuseSettings, IOllamaSettings
+            where TSettings : IOpenAiSettings, IQdrantSettings, IFirecrawlSettings, ILangfuseSettings, IOllamaSettings, INeo4JSettings
         {
             services.AddMarkDownParser();
             services.AddCodeParser();
@@ -36,6 +38,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddPromptGenerator();
             services.AddFirecrawl<TSettings>();
             services.AddLangfuse<TSettings>();
+            services.AddNeo4J<TSettings>();
 
             if (privacyMode == PrivacyMode.Cloud)
             {
