@@ -3,6 +3,8 @@ using ASSISTENTE.Infrastructure.LLM.OpenAi.Errors;
 using CSharpFunctionalExtensions;
 using OpenAI;
 using OpenAI.Chat;
+using OpenAI.Files;
+using OpenAI.FineTuning;
 using OpenAI.Models;
 using ChatMessage = OpenAI.Chat.Message;
 
@@ -14,13 +16,17 @@ internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
 
     public async Task<Result<Answer>> GenerateAnswer(Prompt prompt)
     {
+        var systemPrompt = prompt.System ?? "You are programmer assistant, please answer correctly as you can.";
+
         var messages = new List<ChatMessage>
         {
-            new(Role.System, "You are programmer assistant, please answer correctly as you can."),
+            new(Role.System, systemPrompt),
             new(Role.User, prompt.Value)
         };
 
-        var chatRequest = new ChatRequest(messages, Model.GPT4o, maxTokens: 4096);
+        var chosenModel = prompt.Model ?? Model.GPT4o;
+
+        var chatRequest = new ChatRequest(messages, chosenModel, maxTokens: 4096);
 
         var response = await client.ChatEndpoint.GetCompletionAsync(chatRequest);
 
@@ -37,5 +43,23 @@ internal sealed class OpenAiClient(OpenAIClient client) : ILlmClient
         return Audit.Create(model, promptTokens, completionTokens)
             .Bind(audit => Answer.Create(answer, prompt.Value, _llmClient, audit));
     }
-    
+
+    public async Task<Result> FineTune(FineTuning fineTuning)
+    {
+        var fileUploadRequest = new FileUploadRequest(
+            filePath: fineTuning.FilePath,
+            purpose: "fine-tune"
+        );
+        
+        var fileId = await client.FilesEndpoint.UploadFileAsync(fileUploadRequest);
+            
+        var fineTuningRequest = new CreateFineTuneJobRequest(
+            model: Model.GPT4o,
+            trainingFileId: fileId
+        );
+
+        var response = await client.FineTuningEndpoint.CreateJobAsync(fineTuningRequest);
+
+        return Result.Success();
+    }
 }

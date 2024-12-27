@@ -176,10 +176,18 @@ public class Week3(
                 .Bind(async document => await qdrantService.UpsertAsync(document));
         }
 
-        // TODO: Create library 'ASSISTENTE.Infrastructure.Search' which will be combined qdrant, embedding and other services like typsense, database simple query
+        // TODO: Create library 'ASSISTENTE.Infrastructure.Search' which will be combined qdrant embedding search,
+        // and other services like typsense (or algolia) & database simple query
+        
         // Implement hybrid search service which will be able to search in multiple sources and score them together
         // Combined score formula: (1 / vector rank) + (1 / full text rank)
 
+        // Text rank == ALGOLIA/TYPESENSE - search by keywords (full text search) - need to extract keywords from text
+        // Vector rank == QDRANT - search by vector embeddings - need to create embeddings based on text
+        
+        // ASSISTENTE.Infrastructure.Search = qdrantService + typsenseService + algoliaService + databaseService == information based on text
+        // Graph database (neo4j) - wide context search with connections between data
+        
         var date = await EmbeddingText.Create(question)
             .Bind(async embeddingText => await embeddingClient.GetAsync(embeddingText))
             .Bind(embedding => VectorDto.Create("aidevs", embedding.Embeddings, elements: 1))

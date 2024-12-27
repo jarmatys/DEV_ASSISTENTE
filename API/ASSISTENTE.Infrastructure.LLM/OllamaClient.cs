@@ -41,4 +41,9 @@ internal sealed class OllamaClient(OllamaApiClient client, IOptions<OllamaSettin
             )
             .Bind(audit => Answer.Create(answer, prompt.Value, _llmClient, audit));
     }
+
+    public Task<Result> FineTune(FineTuning fineTuning)
+    {
+        return Task.FromResult(Result.Failure("Fine-tuning is not supported by Ollama API"));
+    }
 }

@@ -20,6 +20,8 @@ internal sealed class MarkDownParser : IMarkDownParser
         typeof(FencedCodeBlock)
     ];
 
+    // TODO: https://github.com/microsoft/markitdown - library parsing a lot of formats to markdown
+    
     public Result<FileContent> Parse(FilePath filePath)
     {
         // TODO: calculate chunk tokens and split by 1000 tokens
