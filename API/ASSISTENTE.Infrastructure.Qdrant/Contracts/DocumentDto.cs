@@ -1,5 +1,4 @@
 using CSharpFunctionalExtensions;
-using Google.Protobuf.Collections;
 using Qdrant.Client.Grpc;
 
 namespace ASSISTENTE.Infrastructure.Qdrant.Contracts;

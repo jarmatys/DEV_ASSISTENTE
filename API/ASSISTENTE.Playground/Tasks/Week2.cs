@@ -9,7 +9,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Playground.Tasks;
 
-public class WeekTwo(
+public class Week2(
     HttpClient httpClient,
     ILlmClient llmClient,
     IAudioClient audioClient,

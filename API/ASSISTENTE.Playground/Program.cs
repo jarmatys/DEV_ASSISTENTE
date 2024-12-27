@@ -56,9 +56,10 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         .AddAssistenteModule<UserResolver, PlaygroundSettings>()
         .AddCommonLogging<PlaygroundSettings>()
         .AddTransient<Playground>()
-        .AddTransient<WeekOne>()
-        .AddTransient<WeekTwo>()
-        .AddTransient<WeekThree>();
+        .AddTransient<Week1>()
+        .AddTransient<Week2>()
+        .AddTransient<Week3>()
+        .AddTransient<Week4>();
 
     services.AddScoped<IPublishEndpoint, DummyPublishEndpoint>();
 }

@@ -12,7 +12,7 @@ public sealed class Playground(
     IKnowledgeService knowledgeService,
     IMaintenanceService maintenanceService,
     ISender mediator,
-    WeekThree weekThree,
+    Week4 week4,
     ILogger<Playground> logger)
 {
     public async Task AnswerAsync(string question)
@@ -41,7 +41,7 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await weekThree.Task_05()
+        var result = await week4.Task_01()
             .Tap(result => logger.LogInformation(result))
             .TapError(error => logger.LogError(error));
     }

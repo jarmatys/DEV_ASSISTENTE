@@ -7,7 +7,7 @@ using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Playground.Tasks;
 
-public class WeekOne(
+public class Week1(
     HttpClient httpClient,
     IFirecrawlService firecrawlService,
     ILlmClient llmClient) : TaskBase(httpClient)

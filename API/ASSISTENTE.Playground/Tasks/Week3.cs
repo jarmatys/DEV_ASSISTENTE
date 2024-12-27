@@ -9,14 +9,12 @@ using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 using ASSISTENTE.Infrastructure.Neo4J.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
-using ASSISTENTE.Playground.Models.CentralModels;
 using ASSISTENTE.Playground.Models.DataApiModels.DataModels;
 using CSharpFunctionalExtensions;
-using Neo4j.Driver;
 
 namespace ASSISTENTE.Playground.Tasks;
 
-public class WeekThree(
+public class Week3(
     HttpClient httpClient,
     ILlmClient llmClient,
     IAudioClient audioClient,
