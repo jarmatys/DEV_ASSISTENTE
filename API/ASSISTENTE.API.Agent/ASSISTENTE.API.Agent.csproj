@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>8fe28d93-c150-4d35-9f8f-69918e9bda6a</UserSecretsId>
+    </PropertyGroup>
+
+    <Target Name="CopyAppsettings" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <BinPath>$(SolutionDir)$(ProjectName)\bin\$(ConfigurationName)\net9.0</BinPath>
+        </PropertyGroup>
+        <Copy SourceFiles="../appsettings.json" DestinationFolder="$(BinPath)" />
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="SOFTURE.Common.Authentication" Version="0.1.1" />
+        <PackageReference Include="SOFTURE.Common.Observability" Version="0.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ASSISTENTE.Module\ASSISTENTE.Module.csproj" />
+    </ItemGroup>
+
+</Project>

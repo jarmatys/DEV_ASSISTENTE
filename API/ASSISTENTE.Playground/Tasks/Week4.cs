@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
@@ -11,7 +10,6 @@ using ASSISTENTE.Infrastructure.Neo4J.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
 using ASSISTENTE.Playground.Models;
-using ASSISTENTE.Playground.Models.DataApiModels.DataModels;
 using CSharpFunctionalExtensions;
 
 namespace ASSISTENTE.Playground.Tasks;
@@ -270,5 +268,12 @@ public class Week4(
         }
 
         return await ReportResult("softo", taskResult: result);
+    }
+
+    public async Task<Result<string>> Task_04()
+    {
+        const string apiUrl = "https://azyl-52752.ag3nts.org/api/instructions";
+        
+        return await ReportResult("webhook", taskResult: apiUrl);
     }
 }

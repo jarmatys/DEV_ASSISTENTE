@@ -1,8 +1,6 @@
-﻿using ASSISTENTE.Infrastructure.LLM.OpenAi.HealthChecks;
-using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
+﻿using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
-using SOFTURE.Common.HealthCheck;
 using SOFTURE.Settings.Extensions;
 
 namespace ASSISTENTE.Infrastructure.LLM.OpenAi
@@ -23,7 +21,8 @@ namespace ASSISTENTE.Infrastructure.LLM.OpenAi
                 )
             );
 
-            services.AddCommonHealthCheck<OpenAiHealthCheck>();
+            // TODO: Fix health check - OpenAiHealthCheck shouldn't be verified each package injection
+            // services.AddCommonHealthCheck<OpenAiHealthCheck>();
 
             return services;
         }
