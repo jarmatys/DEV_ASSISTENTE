@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
@@ -27,6 +28,8 @@ public class Week4(
     INeo4JService neo4JService,
     IQdrantService qdrantService) : TaskBase(httpClient)
 {
+    private readonly HttpClient _httpClient = httpClient;
+
     public async Task<Result<string>> Task_01()
     {
         // TODO: Prompt wybierający metody do rozwiązania zadania
@@ -136,9 +139,9 @@ public class Week4(
 
             return text.ToString();
         }
-        
+
         static List<FineTuningModel> GenerateFineTuningModels(
-            IEnumerable<string> records, 
+            IEnumerable<string> records,
             string systemPrompt,
             string assistantResponse)
         {
@@ -173,5 +176,99 @@ public class Week4(
 
             return fineTuningModels;
         }
+    }
+
+    public async Task<Result<string>> Task_03()
+    {
+        const string url = $"https://centrala.ag3nts.org/data/{ApiKey}/softo.json";
+
+        var softoData = await _httpClient.GetStringAsync(url);
+
+        var questions = JsonSerializer.Deserialize<Dictionary<string, string>>(softoData);
+
+        const string crawlUrl = "https://softo.ag3nts.org";
+
+        // var initCrawl = await firecrawlService.InitCrawlAsync(crawlUrl);
+
+        var pagesDetails = await firecrawlService.CrawlResultAsync("cf7e3926-722f-48c8-99b0-e30763332f88")
+            .GetValueOrDefault(x => x);
+
+        var sources = new StringBuilder();
+
+        foreach (var page in pagesDetails!)
+        {
+            sources.AppendLine($"<ŹRÓDŁO>{page.Url}</ŹRÓDŁO>");
+        }
+
+        var result = new Dictionary<string, string>();
+        
+        foreach (var question in questions!)
+        {
+            var masterPrompt = $"""
+                                Twoim jest wybranie źródeł informacji, które pomogą odpowiedzieć na pytanie:
+                                <PYTANIE>
+                                {question.Value}
+                                </PYTANIE>
+
+                                Żródła informacji:
+                                {sources}
+
+                                <ZASADY>
+                                1. Zwróć tylko i wyłącznie adresy URL, według przykładu
+                                2. Możesz zwrócić więcej niż 1 adres, jeżeli uważasz, że dana strona może zawierać niezbędne informacje
+                                <ZASADY>
+
+                                <PRZYKŁAD>
+                                https://softo.ag3nts.org
+                                <PRZYKŁAD>
+
+                                <PRZYKŁAD>
+                                https://softo.ag3nts.org/porfolio, https://softo.ag3nts.org/about, https://softo.ag3nts.org/contact
+                                <PRZYKŁAD>
+                                """;
+
+            var sourcesToVerify = await Prompt.Create(masterPrompt)
+                .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                .GetValueOrDefault(x => x.Text);
+
+            var urlsToCheck = sourcesToVerify!.Split(",").Select(x => x.Trim());
+
+            var context = new StringBuilder();
+
+            pagesDetails.ForEach(page =>
+            {
+                if (!urlsToCheck.Contains(page.Url)) return;
+
+                context.AppendLine($"<ŹRÓDŁO>{page.Url}</ŹRÓDŁO>");
+                context.AppendLine($"<TYTUŁ>{page.Title}</TYTUŁ>");
+                context.AppendLine($"<ZAWARTOŚĆ>{page.Content}</ZAWARTOŚĆ>");
+                context.AppendLine($"<LINKI>{page.Links}</LINKI>");
+            });
+
+            var answerPrompt = $"""
+                                Odpowiedz na pytanie na podstawie zebranych informacji i zwróć odpowiedź w formie krótkiej i zwięzłej.
+                                <PYTANIE>
+                                {question.Value}
+                                </PYTANIE>
+
+                                <ZASADY>
+                                1. Zwróć tylko i wyłącznie odpowiedź na pytanie, bez dodatkowych informacji i zdań
+                                2. Bądź bardzo konkretny i zwięzły
+                                </ZASADY>
+                                
+                                <KONTEKST>
+                                {context}
+                                </KONTEKST>
+                                """;
+            
+            var answer = await Prompt.Create(answerPrompt)
+                .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                .GetValueOrDefault(x => x.Text);
+            
+
+            result.Add(question.Key, answer!);
+        }
+
+        return await ReportResult("softo", taskResult: result);
     }
 }
