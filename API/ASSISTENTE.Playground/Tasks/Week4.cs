@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using ASSISTENTE.Infrastructure.Audio.Contracts;
@@ -7,6 +8,7 @@ using ASSISTENTE.Infrastructure.Image.Contracts;
 using ASSISTENTE.Infrastructure.LLM.Contracts;
 using ASSISTENTE.Infrastructure.MarkDownParser.Contracts;
 using ASSISTENTE.Infrastructure.Neo4J.Contracts;
+using ASSISTENTE.Infrastructure.Pdf4Me.Contracts;
 using ASSISTENTE.Infrastructure.Qdrant.Contracts;
 using ASSISTENTE.Infrastructure.Vision.Contracts;
 using ASSISTENTE.Playground.Models;
@@ -24,7 +26,8 @@ public class Week4(
     IMarkDownParser markDownParser,
     IEmbeddingClient embeddingClient,
     INeo4JService neo4JService,
-    IQdrantService qdrantService) : TaskBase(httpClient)
+    IQdrantService qdrantService,
+    IPdf4MeService pdf4MeService) : TaskBase(httpClient)
 {
     private readonly HttpClient _httpClient = httpClient;
 
@@ -149,17 +152,17 @@ public class Week4(
             {
                 var fineTuningMessage = new List<FineTuningMessage>
                 {
-                    new FineTuningMessage
+                    new()
                     {
                         Role = "system",
                         Content = systemPrompt
                     },
-                    new FineTuningMessage
+                    new()
                     {
                         Role = "user",
                         Content = record
                     },
-                    new FineTuningMessage
+                    new()
                     {
                         Role = "assistant",
                         Content = assistantResponse
@@ -273,7 +276,257 @@ public class Week4(
     public async Task<Result<string>> Task_04()
     {
         const string apiUrl = "https://azyl-52752.ag3nts.org/api/instructions";
-        
+
         return await ReportResult("webhook", taskResult: apiUrl);
+    }
+
+    public async Task<Result<string>> Task_05()
+    {
+        var questions = await GetQuestions();
+
+        var extractedData = await pdf4MeService.ExtractDataAsync("Data/notatnik.pdf")
+            .GetValueOrDefault(x => x);
+
+        if (extractedData == null || extractedData.Pages.Count == 0)
+            return Result.Failure<string>("Failed to extract data from the document.");
+
+        var textContext = await BuildContext();
+        
+        var facts = await GetFacts();
+
+        var additionalInfo = await GetAdditionalInformation();
+        
+        var answers = await GetAnswers();
+
+        return await ReportResult("notes", taskResult: answers);
+
+        async Task<Dictionary<string, string>?> GetQuestions()
+        {
+            const string url = $"https://centrala.ag3nts.org/data/{ApiKey}/notes.json";
+
+            var result = await _httpClient.GetStringAsync(url);
+
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(result);
+        }
+
+        async Task<Dictionary<string, string>> GetAdditionalInformation()
+        {
+            var additionalInformation = new Dictionary<string, string>();
+
+            var forbiddenAnswers = new Dictionary<string, List<string>?>
+            {
+                { "01", ["2024", "2022", "2023", "2021"] },
+                { "02", ["Azazel"] },
+                { "03", ["Teren poza miastem.", "Lubawa koło Grudziądza.", "Miejsce poza miastem."] }
+            };
+        
+            foreach (var question in questions!)
+            {
+                forbiddenAnswers.TryGetValue(question.Key, out var forbidden);
+
+                var forbiddenText = forbidden != null ? string.Join(", ", forbidden) : "Brak";
+
+                var masterPrompt = $"""
+                                   Przeprowadz analizę tekstu i odpowiedz na pytanie, zwracając uwagę na zakazane wartości.
+                                   W tekście znajdują się informacje, które pomogą Ci znaleźć odpowiedź na pytanie.
+                                   Przeprowadz cały tok rozumowania 
+
+                                   <ZASADY>
+                                   1. WYKLUCZ Z ROZUMOWANIA ZAKAZANE WARTOŚCI,
+                                   2. ZACZNIJ OD WNIOSKÓW, A NASTĘPNIE PRZEJDŹ DO ODPOWIEDZI NA PYTANIE
+                                   </ZASADY>
+
+                                   <PYTANIE>
+                                   {question.Value}
+                                   </PYTANIE>
+
+                                   <KONTEKST>
+                                   {textContext}
+                                   </KONTEKST>
+
+                                   <ZAKAZANE WARTOŚCI>
+                                   {forbiddenText}
+                                   </ZAKAZANE WARTOŚCI>
+
+                                   ZWRÓĆ ODPOWIEDŹ W FORMACIE:
+
+                                   ** OTO MOJE ROZUMOWANIE **
+                                   tutaj wpisz swoje rozumowanie
+
+                                   ** WNIOSKI **
+                                   tutaj wpisz swoje wnioski
+
+                                   ** ODPOWIEDŹ NA PYTANIE **
+                                   twoja odpowiedź
+                                   """;
+
+                var answer = await Prompt.Create(masterPrompt)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text);
+
+                additionalInformation.Add(question.Key, answer!);
+            }
+
+            return additionalInformation;
+        }
+
+        async Task<Dictionary<string, string>> GetAnswers()
+        {
+            var answerResult = new Dictionary<string, string>();
+            
+            foreach (var question in questions!)
+            { 
+                var additionalInfoText = additionalInfo[question.Key];
+
+                var masterPrompt = $"""
+                                   Odpowiedz na pytanie na podstawie zebranych informacji i 
+                                   zwróć odpowiedź w formie krótkiej i zwięzłej.
+
+                                   <ZASADY>
+                                   1. Zwróć tylko i wyłącznie odpowiedź na pytanie, bez dodatkowych informacji i zdań
+                                   2. Bądź bardzo konkretny i zwięzły
+                                   </ZASADY>
+
+                                   <PYTANIE>
+                                   {question.Value}
+                                   </PYTANIE>
+
+                                   <KONTEKST>
+                                   {textContext}
+                                   </KONTEKST>
+                                    
+                                   <DODATKOWE ROZUMOWANIE>
+                                   {additionalInfoText}
+                                   </DODATKOWE ROZUMOWANIE>
+                                   """;
+
+                var answer = await Prompt.Create(masterPrompt)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text);
+
+                answerResult.Add(question.Key, answer!);
+            }
+
+            return answerResult;
+        }
+
+        async Task<string> BuildContext()
+        {
+            var context = new StringBuilder();
+            
+            foreach (var page in extractedData.Pages)
+            {
+                context.AppendLine("<STRONA>");
+                context.AppendLine("<TEKST>");
+            
+                var correctionPrompt = $"""
+                                        Zredaguj tekst tak aby był czytelny i zrozumiały. Uzupełnij informacje, które pomogą 
+                                        lepiej zrozumieć przedstawione fakty i wydarzenia. 
+
+                                        <ZASADY>
+                                        1. Kluczowe są wszystkie informacje takie jak daty, miejsca, nazwy, które pomogą zrozumieć kontekst
+                                        </ZASADY>
+
+                                        <DO REDAKCJI>
+                                        {page.Text}
+                                        </DO REDAKCJI>
+                                        """;
+            
+                var editedText = await Prompt.Create(correctionPrompt)
+                    .Bind(async prompt => await llmClient.GenerateAnswer(prompt))
+                    .GetValueOrDefault(x => x.Text);
+            
+                context.AppendLine(editedText);
+            
+                context.AppendLine("</TEKST>");
+            
+                foreach(var image in page.ImagesBase64)
+                {
+                    context.AppendLine("<ZDJĘCIE>");
+                
+                    var visionPrompt = $"""
+                                        Rozpoznaj tekst lub obiekt na zdjęciu i zwróć jego opis/treść PO POLSKU. 
+
+                                        <ZASADY>
+                                        1. Treść ma być PO POLSKU
+                                        </ZASADY>
+
+                                        Zdjęcie znajduje się na stronie pliku PDF na którym znajduje się tekst:
+
+                                        <TEKST>
+                                        {editedText}
+                                        </TEKST>
+                                        """;
+                
+                    var imageDescription = await VisionImage.Create(visionPrompt, image, "png")
+                        .Bind(async visionImage => await visionClient.Recognize(visionImage))
+                        .GetValueOrDefault(x => x.Text);
+                
+                    context.AppendLine(imageDescription);
+                
+                    context.AppendLine("</ZDJĘCIE>");
+                }
+        
+                context.AppendLine("</STRONA>");
+            }
+
+            return context.ToString();
+        }
+
+        async Task<Dictionary<string, string>> GetFacts()
+        {
+            var factsResult = new Dictionary<string, string>();
+            
+            var factsSystemPrompt = "Jesteś śledczym który analizuje wszystkie fakty, " +
+                                    "wydarzenia miejsca i daty, uzupełnia brakujące informacj";
+
+            var factsPrompt = """
+                              Na podstawie otrzymanego tekstu zwróć listę faktów z datami, miejscami osobami w formie listy
+
+                              <ZASADY>
+                              1. Kluczowe są wszystkie informacje takie jak daty, miejsca, nazwy, które pomogą zrozumieć kontekst
+                              </ZASADY>
+
+                              <KONTEKST>
+                              {editedText}
+                              </KONTEKST>
+
+                              <PRZYKŁAD>
+                              1. [FAKT] - [DATA] - [MIEJSCE] - [OSOBA] 
+                              2. [FAKT] - [DATA] - [MIEJSCE] - [OSOBA] 
+                              ....
+                              </PRZYKŁAD>
+                              """;
+            
+            return factsResult;
+        }
+    }
+
+    private static async Task<Result<string>> RunPythonScript(string dataPath, string scriptName, string argument)
+    {
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "python3",
+                Arguments = $"{dataPath}/{scriptName} {dataPath}/{argument}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            }
+        };
+
+        process.Start();
+
+        var output = await process.StandardOutput.ReadToEndAsync();
+        var error = await process.StandardError.ReadToEndAsync();
+
+        await process.WaitForExitAsync();
+
+        return process.ExitCode != 0
+            ? Result.Failure<string>($"Python script error: {error}")
+            : output.Trim();
     }
 }

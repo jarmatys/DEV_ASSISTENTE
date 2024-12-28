@@ -5,19 +5,14 @@ using ASSISTENTE.Infrastructure.CodeParser;
 using ASSISTENTE.Infrastructure.Embeddings;
 using ASSISTENTE.Infrastructure.Enums;
 using ASSISTENTE.Infrastructure.Firecrawl;
-using ASSISTENTE.Infrastructure.Firecrawl.Settings;
 using ASSISTENTE.Infrastructure.Neo4J;
-using ASSISTENTE.Infrastructure.Neo4J.Settings;
 using ASSISTENTE.Infrastructure.Image;
 using ASSISTENTE.Infrastructure.Langfuse;
-using ASSISTENTE.Infrastructure.Langfuse.Settings;
+using ASSISTENTE.Infrastructure.Pdf4Me;
 using ASSISTENTE.Infrastructure.LLM;
-using ASSISTENTE.Infrastructure.LLM.Ollama.Settings;
-using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using ASSISTENTE.Infrastructure.MarkDownParser;
 using ASSISTENTE.Infrastructure.PromptGenerator;
 using ASSISTENTE.Infrastructure.Qdrant;
-using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Infrastructure.Services;
 using ASSISTENTE.Infrastructure.Services.Parsers;
 using ASSISTENTE.Infrastructure.Vision;
@@ -30,7 +25,7 @@ namespace ASSISTENTE.Infrastructure
         public static IServiceCollection AddInfrastructure<TSettings>(
             this IServiceCollection services,
             PrivacyMode privacyMode)
-            where TSettings : IOpenAiSettings, IQdrantSettings, IFirecrawlSettings, ILangfuseSettings, IOllamaSettings, INeo4JSettings
+            where TSettings : IInfrastructureInterface
         {
             services.AddMarkDownParser();
             services.AddCodeParser();
@@ -39,6 +34,7 @@ namespace ASSISTENTE.Infrastructure
             services.AddFirecrawl<TSettings>();
             services.AddLangfuse<TSettings>();
             services.AddNeo4J<TSettings>();
+            services.AddPdf4Me<TSettings>();
 
             if (privacyMode == PrivacyMode.Cloud)
             {

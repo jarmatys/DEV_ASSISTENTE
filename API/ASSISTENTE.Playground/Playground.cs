@@ -41,7 +41,7 @@ public sealed class Playground(
 
     public async Task RunAsync()
     {
-        var result = await week4.Task_04()
+        await week4.Task_05()
             .Tap(result => logger.LogInformation(result))
             .TapError(error => logger.LogError(error));
     }

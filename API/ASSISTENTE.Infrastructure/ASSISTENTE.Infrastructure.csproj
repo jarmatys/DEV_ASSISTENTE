@@ -17,6 +17,7 @@
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Embeddings\ASSISTENTE.Infrastructure.Embeddings.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.LLM\ASSISTENTE.Infrastructure.LLM.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Neo4J\ASSISTENTE.Infrastructure.Neo4J.csproj" />
+        <ProjectReference Include="..\ASSISTENTE.Infrastructure.Pdf4Me\ASSISTENTE.Infrastructure.Pdf4Me.csproj" />
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.PromptGenerator\ASSISTENTE.Infrastructure.PromptGenerator.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Qdrant\ASSISTENTE.Infrastructure.Qdrant.csproj"/>
         <ProjectReference Include="..\ASSISTENTE.Infrastructure.Vision\ASSISTENTE.Infrastructure.Vision.csproj" />

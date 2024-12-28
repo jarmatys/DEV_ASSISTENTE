@@ -8,7 +8,7 @@ public class Module : IModule
 
     public List<NavItem> NavItems =>
     [
-        new NavItem { Name = "Login", Url = "/auth/login" },
-        new NavItem { Name = "Register", Url = "/auth/register" }
+        new() { Name = "Login", Url = "/auth/login" },
+        new() { Name = "Register", Url = "/auth/register" }
     ];
 }

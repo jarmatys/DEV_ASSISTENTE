@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Pdf4me.Client" Version="1.1.1"/>
+        <PackageReference Include="SOFTURE.Results" Version="0.1.1"/>
+        <PackageReference Include="SOFTURE.Settings" Version="0.1.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="ASSISTENTE.Infrastructure"/>
+    </ItemGroup>
+
+</Project>

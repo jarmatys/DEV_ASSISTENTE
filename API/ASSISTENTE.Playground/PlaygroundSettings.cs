@@ -4,6 +4,7 @@ using ASSISTENTE.Infrastructure.Langfuse.Settings;
 using ASSISTENTE.Infrastructure.LLM.Ollama.Settings;
 using ASSISTENTE.Infrastructure.LLM.OpenAi.Settings;
 using ASSISTENTE.Infrastructure.Neo4J.Settings;
+using ASSISTENTE.Infrastructure.Pdf4Me.Settings;
 using ASSISTENTE.Infrastructure.Qdrant.Settings;
 using ASSISTENTE.Module;
 using ASSISTENTE.Persistence.Configuration.Settings;
@@ -22,4 +23,5 @@ internal sealed class PlaygroundSettings : IModuleSettings, ISeqSettings
     public required LangfuseSettings Langfuse { get; init; }
     public required OllamaSettings Ollama { get; init; }
     public required Neo4JSettings Neo4J { get; init; }
+    public required Pdf4MeSettings Pdf4Me { get; init; }
 }
